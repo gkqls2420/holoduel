@@ -1,0 +1,342 @@
+[gd_scene load_steps=14 format=3 uid="uid://dl8ct7vpm73vm"]
+
+[ext_resource type="Theme" uid="uid://dpxwceaf3f35h" path="res://themes/menubuttontheme.tres" id="1_i5wud"]
+[ext_resource type="Script" uid="uid://ysxcr27seo8e" path="res://scenes/menu/main_menu.gd" id="1_wc6th"]
+[ext_resource type="PackedScene" uid="uid://cqnd85rwaunjt" path="res://scenes/misc/main_background.tscn" id="2_d2trv"]
+[ext_resource type="PackedScene" uid="uid://wmclosx28ofb" path="res://scenes/misc/modal_dialog.tscn" id="3_6lbr4"]
+[ext_resource type="PackedScene" uid="uid://blev8t8g4iq0m" path="res://scenes/misc/icon_button.tscn" id="4_1cxk2"]
+[ext_resource type="Texture2D" uid="uid://bh0c0vkyounat" path="res://assets/icons/gear.png" id="5_rki3m"]
+[ext_resource type="PackedScene" uid="uid://dqeoyiig2xv07" path="res://scenes/misc/settings_window.tscn" id="6_gl1g0"]
+[ext_resource type="PackedScene" uid="uid://bpprngv5b681f" path="res://scenes/misc/howtoplay.tscn" id="7_nksnh"]
+[ext_resource type="AudioStream" uid="uid://c8gq118r05gw8" path="res://assets/sounds/match_available.mp3" id="8_myxxr"]
+[ext_resource type="AudioStream" uid="uid://corg1ley43ot1" path="res://assets/sounds/match_notification.mp3" id="9_2ujf4"]
+[ext_resource type="PackedScene" uid="uid://bvhny66vw8bs" path="res://scenes/menu/deckbuilder.tscn" id="10_b34kr"]
+[ext_resource type="PackedScene" uid="uid://bmhrys6ja8i7y" path="res://scenes/misc/match_list.tscn" id="11_76glj"]
+[ext_resource type="PackedScene" uid="uid://cski8ipfpnd7e" path="res://scenes/menu/change_log.tscn" id="13_ubu6o"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wc6th")
+
+[node name="MainBackground" parent="." instance=ExtResource("2_d2trv")]
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[node name="Background" type="ColorRect" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+color = Color(6.73831e-07, 0.467541, 0.546514, 1)
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -296.5
+offset_top = 1.0
+offset_right = 296.5
+offset_bottom = 84.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 60
+text = "HoloDuel"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ServerStatus" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 650.0
+offset_right = 137.0
+offset_bottom = 690.0
+
+[node name="ServerStatusLabel" type="Label" parent="ServerStatus"]
+layout_mode = 2
+text = "Uninitialized"
+
+[node name="ClientVersion" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 1000.0
+offset_top = 680.0
+offset_right = 1213.0
+offset_bottom = 720.0
+
+[node name="ClientVersionHeader" type="Label" parent="ClientVersion"]
+layout_mode = 2
+text = "Client Version:"
+
+[node name="ClientVersionLabel" type="Label" parent="ClientVersion"]
+layout_mode = 2
+text = "Uninitialized"
+
+[node name="MainButtons" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -176.0
+offset_top = -200.0
+offset_right = 176.0
+offset_bottom = 198.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="PlayAIButton" type="Button" parent="MainButtons"]
+layout_mode = 2
+theme = ExtResource("1_i5wud")
+disabled = true
+text = "Play vs AI"
+
+[node name="ServerConnectButton" type="Button" parent="MainButtons"]
+layout_mode = 2
+theme = ExtResource("1_i5wud")
+disabled = true
+text = "Connect to Server"
+
+[node name="JoinQueueButton" type="Button" parent="MainButtons"]
+layout_mode = 2
+theme = ExtResource("1_i5wud")
+disabled = true
+text = "Enter Queue"
+
+[node name="JoinMatchButton" type="Button" parent="MainButtons"]
+layout_mode = 2
+theme = ExtResource("1_i5wud")
+disabled = true
+text = "Join Match Now"
+
+[node name="JoinCustomBox" type="HBoxContainer" parent="MainButtons"]
+layout_mode = 2
+
+[node name="CustomRoomEditBox" type="LineEdit" parent="MainButtons/JoinCustomBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Enter Custom Room"
+max_length = 10
+
+[node name="JoinCustomButton" type="Button" parent="MainButtons/JoinCustomBox"]
+layout_mode = 2
+theme = ExtResource("1_i5wud")
+text = "Custom"
+
+[node name="LeaveQueueButton" type="Button" parent="MainButtons"]
+layout_mode = 2
+theme = ExtResource("1_i5wud")
+disabled = true
+text = "Leave Queue"
+
+[node name="ServerInfoList" type="ItemList" parent="."]
+layout_mode = 0
+offset_left = 864.0
+offset_top = 274.0
+offset_right = 1265.0
+offset_bottom = 675.0
+item_count = 1
+max_columns = 3
+item_0/text = "disconnected"
+
+[node name="DebugSpewButton" type="CheckButton" parent="."]
+layout_mode = 0
+offset_right = 44.0
+offset_bottom = 24.0
+button_pressed = true
+
+[node name="PlayerUsernameLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -624.0
+offset_top = 12.0
+offset_right = -308.0
+offset_bottom = 67.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 32
+text = "Player Name"
+
+[node name="PlayersLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 872.0
+offset_top = 218.0
+offset_right = 1003.0
+offset_bottom = 263.0
+theme_override_font_sizes/font_size = 32
+text = "Players -"
+
+[node name="PlayerCountLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1010.0
+offset_top = 218.0
+offset_right = 1122.0
+offset_bottom = 263.0
+theme_override_font_sizes/font_size = 32
+
+[node name="SettingsButton" parent="." instance=ExtResource("4_1cxk2")]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 0
+offset_left = 1215.0
+offset_top = 10.0
+offset_right = 1263.0
+offset_bottom = 58.0
+texture = ExtResource("5_rki3m")
+
+[node name="HowToPlayButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 930.0
+offset_top = 10.0
+offset_right = 1184.0
+offset_bottom = 77.0
+theme_override_font_sizes/font_size = 43
+text = "How to Play"
+
+[node name="DeckBuilderButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 82.0
+offset_right = 231.0
+offset_bottom = 135.0
+theme_override_font_sizes/font_size = 32
+text = "Deck Builder"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 452.0
+offset_top = 80.0
+offset_right = 823.0
+offset_bottom = 103.0
+text = "A fan implementation of the Hololive card game"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 900.0
+offset_top = 120.0
+offset_right = 1096.0
+offset_bottom = 173.0
+theme_override_constants/separation = 10
+
+[node name="ViewMatchListButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Match List"
+
+[node name="MatchCount" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "0"
+
+[node name="DebugDeckSelector" type="OptionButton" parent="."]
+layout_mode = 2
+offset_left = 306.0
+offset_top = 33.0
+offset_right = 373.0
+offset_bottom = 73.0
+selected = 0
+item_count = 2
+popup/item_0/text = "Sora"
+popup/item_0/id = 0
+popup/item_1/text = "Azki"
+popup/item_1/id = 1
+
+[node name="DeckControls" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="DeckControls"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 150.0
+offset_right = 134.0
+offset_bottom = 190.0
+
+[node name="Label" type="Label" parent="DeckControls/HBoxContainer"]
+layout_mode = 2
+text = "Deck:"
+
+[node name="DeckSelector" type="OptionButton" parent="DeckControls/HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text_overrun_behavior = 1
+
+[node name="MatchList" parent="." instance=ExtResource("11_76glj")]
+visible = false
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[node name="Howtoplay" parent="." instance=ExtResource("7_nksnh")]
+visible = false
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 1280.0
+offset_bottom = 720.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="ModalDialog" parent="." instance=ExtResource("3_6lbr4")]
+visible = false
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="SettingsWindow" parent="." instance=ExtResource("6_gl1g0")]
+visible = false
+layout_mode = 0
+
+[node name="ShowChangeLog" type="Button" parent="."]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 579.0
+offset_right = 207.0
+offset_bottom = 635.0
+theme_override_font_sizes/font_size = 32
+text = "Changelog"
+
+[node name="ChangeLog" parent="." instance=ExtResource("13_ubu6o")]
+visible = false
+layout_mode = 0
+offset_left = 27.0
+offset_right = 1307.0
+offset_bottom = 720.0
+
+[node name="MatchAvailableSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_myxxr")
+
+[node name="MatchJoinedSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_2ujf4")
+
+[node name="Deckbuilder" parent="." instance=ExtResource("10_b34kr")]
+visible = false
+
+[connection signal="pressed" from="MainButtons/PlayAIButton" to="." method="_on_play_ai_button_pressed"]
+[connection signal="pressed" from="MainButtons/ServerConnectButton" to="." method="_on_server_connect_button_pressed"]
+[connection signal="pressed" from="MainButtons/JoinQueueButton" to="." method="_on_join_queue_button_pressed"]
+[connection signal="pressed" from="MainButtons/JoinMatchButton" to="." method="_on_join_queue_button_pressed"]
+[connection signal="pressed" from="MainButtons/JoinCustomBox/JoinCustomButton" to="." method="_on_join_custom_button_pressed"]
+[connection signal="pressed" from="MainButtons/LeaveQueueButton" to="." method="_on_leave_queue_button_pressed"]
+[connection signal="toggled" from="DebugSpewButton" to="." method="_on_debug_spew_button_toggled"]
+[connection signal="pressed" from="SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="HowToPlayButton" to="." method="_on_how_to_play_button_pressed"]
+[connection signal="pressed" from="DeckBuilderButton" to="." method="_on_deck_builder_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/ViewMatchListButton" to="." method="_on_view_match_list_button_pressed"]
+[connection signal="item_selected" from="DebugDeckSelector" to="." method="_on_debug_deck_selector_item_selected"]
+[connection signal="item_selected" from="DeckControls/HBoxContainer/DeckSelector" to="." method="_on_deck_selector_item_selected"]
+[connection signal="observe_match" from="MatchList" to="." method="_on_match_list_observe_match"]
+[connection signal="pressed" from="ShowChangeLog" to="." method="show_change_log"]
+[connection signal="exit_deck_builder" from="Deckbuilder" to="." method="_on_deckbuilder_exit_deck_builder"]

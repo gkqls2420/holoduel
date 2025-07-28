@@ -1,0 +1,763 @@
+keys,en,kr,jp,es
+Player Name,Player Name,플레이어 이름,プレイヤー名,Nombre del Jugador
+Deck Builder,Deck Builder,덱 편집,デッキビルダー,Constructor de Mazo
+Deck:,Deck:,사용 덱:,デッキ:,Mazo:
+Supported Cards,Supported Cards,지원되는 카드,サポートカード,Cartas de Apoyo
+,,,,
+Play vs AI,Play vs AI,플레이어 대 AI,AIと対戦,Jugar vs IA
+Connect to Server,Connect to Server,서버 접속,サーバーに接続,Conectarse al Servidor
+Enter Queue,Enter Queue,대기열 참여,キューに参加,Hacer Fila
+Join Match Now,Join Match Now,게임 참가하기,今すぐ対戦に参加,Únirse Ahora
+Enter Custom Room,Enter Custom Room,커스텀 룸 번호 입력,カスタムルームに参加,Entrar a Cuarto Personalizado
+Custom,Custom,커스텀,カスタム,Personalizar
+Leave Queue,Leave Queue,대기열 떠나기,キューから退出,Salir de la Fila
+,,,,
+How to Play,How to Play,게임 방법,遊び方,Cómo Jugar
+Previous Page,Previous Page,이전 페이지,前のページ,Página Anterior
+Next Page,Next Page,다음 페이지,次のページ,Página Siguiente
+,,,,
+Settings,Settings,환경설정,設定,Configuración
+Game sound enabled,Game sound enabled,게임 사운드 켜기,ゲーム音を有効にする,Habilitar Sonido del Juego
+Use Proxies when available,Use Proxies when available,사용 가능한프록시 사용,利用可能な場合、プロキシを使用する,Usar proxies si es posible
+Hide Overlay Card Text,Hide Overlay Card Text,영문 텍스트 가리기,オーバーレイカードテキストを隠す,Ocultar Texto Sobrepuesto
+Language,Language,언어,言語,Lenguaje
+Exit Game,Exit Game,게임 나가기,ゲームを終了,Salir del Juego
+,,,,
+Match List,Match List,진행중인 게임,対戦リスト,Lista de Partidas
+Active Matches,Active Matches,진행중인 게임 목록,進行中の対戦,Partidas Activas
+Room Name,Room Name,방 이름,ルーム名,Nombre del Cuarto
+Observe?,Observe?,관전 참여하기,観戦しますか？,¿Observar?
+,,,,
+Are you sure you want to quit?,Are you sure you want to quit?,정말 나가시겠습니까?,本当に終了しますか？,¿Seguro que deseas salir?
+QUIT TO MENU,QUIT TO MENU,메뉴로 나가기,メニューに戻る,SALIR AL MENU
+CANCEL,CANCEL,취소,キャンセル,CANCELAR
+,,,,
+Main Menu,Main Menu,메인 메뉴,メインメニュー,Menú Principal
+Filter,Filter,필터,フィルター,Filtro
+Your Decks (,Your Decks (,덱 개수(,デッキ(,Tus Mazos (
+Load Deck,Load Deck,덱 불러오기,デッキを読み込む,Cargar Mazo
+New Deck,New Deck,새로운 덱,新しいデッキ,Nuevo Mazo
+Delete Deck,Delete Deck,덱 삭제,デッキを削除,Borrar Mazo
+Export Deck,Export Deck,덱 내보내기,デッキをエクスポート,Exportar Mazo
+Load Sample Decks,Load Sample Decks,샘플 덱 불러오기,サンプル,Cargar Mazos de Muestra
+Cheer:,Cheer:,옐:,エール：,Aplauso
+Cards:,Cards:,카드:,カード：,Cartas
+,,,,
+Filters,Filters,필터,フィルター,Filtros
+Filter By Name: ,Filter By Name: ,카드명 필터: ,名前でフィルター:,Filtrar por Nombre
+Enter partial name,Enter partial name,일부 카드명 입력,部分名を入力,Introducir nombre parcial
+Clear Name,Clear Name,카드명 지우기,名前をクリア,Limpiar Nombre
+Holomem Card Type,Holomem Card Type,홀로멤 카드 타입,ホロメンカードタイプ,Tipo de Carta Holomem
+Support Card Type,Support Card Type,서포트 카드 타입,サポートカードタイプ,Tipo de Carta de Apoyo
+Colors,Colors,색,色,Colores
+All,All,전부체크,全て,Todos
+None,None,체크해제,なし,Ninguno
+Oshi,Oshi,오시,推し,Oshi
+event,Event,이벤트,イベント,Evento
+fan,Fan,팬,ファン,Fan
+item,Item,아이템,アイテム,Objeto
+mascot,Mascot,마스코트,マスコット,Mascota
+staff,Staff,스태프,スタッフ,Staff
+tool,Tool,툴,ツール,Herramienta
+White,White,백색,白,Blanco
+Green,Green,녹색,緑,Verde
+Red,Red,적색,赤,Rojo
+Blue,Blue,청색,青,Azul
+Yellow,Yellow,황색,,Amarillo
+Purple,Purple,자색,紫,Morado
+None-Color,None,무색,なし,Sin Color
+Any-Color,any,모든색,任意,Cualquier
+Reset Filters,Reset Filters,필터 초기화,フィルターをリセット,Reestablecer
+,,,,
+Backstage,Backstage,백 스테이지,バックステージ,Tras Bastidores
+Collab,Collab,콜라보,コラボ,Collab
+Center,Center,센터,センター,Centro
+Archive,Archive,아카이브,アーカイブ,Archivo
+Back,Back,백,戻る,Trasero
+Playing,Playing,사용중인 카드,プレイ中,En Juego
+,,,,
+OK,OK,확인,OK,OK
+Yes,Yes,네,はい,Sí
+No,No,아니요,いいえ,No
+Pass,Pass,건너뛰기,パス,Pasar
+Cancel,Cancel,취소,キャンセル,Cancelar
+Show Choice,Show Choice,대상 확인,選択を表示,Mostrar Opción
+Close,Close,닫기,閉じる,Cerrar
+Done,Done,완료,完了,Finalizado
+Select Cheer,Select Cheer,옐 선택하기,エールを選択,Elegir Aplauso
+End Ability,End Ability,효과처리종료,アビリティ終了,Terminar Habilidad
+Include unchooseable cards,Include unchooseable cards,선택할 수 없는 카드도 보이기,選べないカードも含める,Incluir cartas inelegibles
+all_amount,all,all,all,all
+damage_dealt_floor_round_to_10s,damage dealt (increments of 10),damage dealt (increments of 10),damage dealt (increments of 10),damage dealt (increments of 10)
+,,,,
+,,,,
+Mulligan all cards?,Mulligan all cards?,손패를 전부 멀리건 하시겠습니까?,全てのカードをマリガンしますか？,¿Mulligan a todas las cartas?
+Debut your Center!,Debut your Center!,센터 포지션으로 데뷔!,センターをデビューさせよう！,¡Debut de tú Centro!
+Select 0-5 backup members (Debut/Spot),Select 0-5 backup members (Debut/Spot),백 스테이지에 (Debut/Spot) 홀로멤을 5장까지 두세요,バックアップメンバーを0～5人選択（デビュー/スポット）,Selecciona de 0-5 miembros de apoyo (Debut/Spot)
+,,,,
+Main Step - Choose an action,Main Step - Choose an action,메인 스텝 - 진행할 행동을 고르세요,メインステップ - 行動を選択,Fase Principal - Elige una Acción
+Perform an art or end your turn,Perform an art or end your turn,아츠를 사용하거나 턴을 종료하세요,アートを行うか、ターンを終了する,Realizar un Arte o Termina el Turno
+Choose a Holomem to enter the stage,Choose a Holomem to enter the stage,스테이지에 설 홀로멤을 선택하세요,ステージに登場させるホロメンを選択,Elige un holomem para entrar al Escenario
+Choose a Bloom card to play,Choose a Bloom card to play,Bloom할 카드를 선택하세요,プレイするブルームカードを選択,Elige una carta de Bloom para jugar
+Choose a Holomem to Bloom,Choose a Holomem to Bloom,Bloom할 홀로멤을 선택하세요,ブルームするホロメンを選択,Elige un holomem a hacer Bloom
+Choose a Holomem for the Baton Pass,Choose a Holomem for the Baton Pass,배턴 터치할 홀로멤을 선택하세요,バトンパスするホロメンを選択,Elige un holomem para recibir el Bastón
+Choose a Support card to play,Choose a Support card to play,사용할 서포트 카드를 선택하세요,プレイするサポートカードを選択,Elige una carta de Apoyo a Jugar
+Choose a Holomem to Collab,Choose a Holomem to Collab,콜라보할 홀로멤을 선택하세요,コラボするホロメンを選択,Elige un holomem para Collab
+Choose a Holomem to Baton Pass,Choose a Holomem to Baton Pass,배턴 터치할 홀로멤을 선택하세요,バトンパスするホロメンを選択,Elige un holomem a Pasar el Bastón
+Send Collab back?,Send Collab back?,콜라보 홀로멤을 되돌리시겠습니까?,コラボを戻しますか？,¿Enviar un Collab Atrás?
+Choose a new Center,Choose a new Center,새로 등장할 센터 홀로멤을 선택하세요,新しいセンターを選択,Elige un nuevo Centro
+Choose a Holomem to swap into the Center,Choose a Holomem to swap into the Center,교체할 홀로멤을 선택하세요,センターに入れ替えるホロメンを選択,Elige un nuevo holomem para cambiar al Centro
+Choose a target for this Art,Choose a target for this Art,아츠의 대상을 선택하세요,このアートのターゲットを選択,Elige un blanco para este Arte
+Choose a Holomem to remove Cheer from,Choose a Holomem to remove Cheer from,옐을 제거할 홀로멤을 선택하세요,エールを取り除くホロメンを選んでください,Elige un holomem para remover Aplausos
+Choose a Holomem to receive Cheer,Choose a Holomem to receive Cheer,옐을 받을 홀로멤을 선택하세요,エールを受け取るホロメンを選んでください,Elige un holomem para recibir Aplausos
+Choose one effect,Choose one effect,효과를 하나 선택하세요,1つの効果を選択,Elige un efecto
+,,,,
+Your Archive,Your Archive,당신의 아카이브,あなたのアーカイブ,Tu Archivo
+Opponent Archive,Opponent Archive,상대의 아카이브,相手のアーカイブ,Archivo del Oponente
+Attached Cards,Attached Cards,붙어있는 카드,付属カード,Cartas Apiladas
+,,,,
+holomem,Holomem,Holomem,ホロメン,Holomem
+holomem_debut,Debut Holomem,Debut Holomem,Debutホロメン,Debut Holomem
+holomem_spot,Spot Holomem,Spot Holomem,Spotホロメン,Spot Holomem
+,,,,
+replacement,Replacement,리플레이스먼트,交換,Reemplazo
+soyouretheenemy,"So, you're the enemy?",그럼 적이네?,じゃあ敵だね,"¿Así, que eres el enemigo?"
+mapinthelefthand,Map in the left hand,왼손엔 지도,左手に地図,Mapa en la Mano Izquierda
+micintherighthand,Mic in the right hand,오른손엔 마이크,右手にマイク,Micrófono en la Mano Derecha
+squeezesqueeze,Squeeze squeeze,꾸욱 꾸욱,ぎゅっぎゅ,Aprieta Aprieta
+illcrushyou,I'll crush you,쥐어짜버릴 거야,つぶしてやる,Te Aplastaré
+guardianofcivilization,Guardian of Civilization,문명의 수호자,文明の守護者,Guardiana de la Civilización
+amazingdrawing,Amazing Drawing,어메이징 드로잉,すごい絵,Dibujo Asombroso
+hawkeye,Hawkeye,호크 아이,ホークアイ,Ojo de Halcón
+executivesorder,Executive's Order,여간부의 지휘,幹部命令,Ordenes Ejecutivas
+phoenixtail,Phoenix Tail,피닉스 테일,フェニックスの尾,Cola de Fénix
+risefromtheashes,Rise from the Ashes,Rise from the ashes,灰から蘇る,Rise from the Ashes
+comet,Comet,혜성,彗星,Cometa
+shootingstar,Shooting Star,슈팅스타,流れ星,Estrella Fugaz
+prayingforrain,Praying for rain,기우,雨乞い,Rezando por Lluvia
+rainshamanism,Rain Shamanism,레인 샤머니즘,雨の呪術,Chamanismo de Lluvia
+whitebaton,White Baton,화이트 배턴,白バトン,Bastón Blanco
+greenbaton,Green Baton,그린 배턴,緑バトン,Bastón Verde
+bluebaton,Blue Baton,블루 배턴,青バトン,Bastón Azul
+redbaton,Red Baton,레드 배턴,赤バトン,Bastón Rojo
+quickguard,Quick Guard,퀵 가드,クイックガード,Guardía Veloz
+letsdoourbesteveryone,"Let's do our best, everyone!",모두 힘내~!,みんな、頑張ろう！,¡Hagamos nuestro mejor esfuerzo!
+comeonagain,Come on! Again!,자아! 다시 한 번!,もう一回だ！,¡Vamos! ¡De nuevo!
+backshot,Back Shot,백샷,バックショット,Tiro a Traición
+bluemic,Blue Mic,블루 마이크,ブルー マイク,Blue Mic
+greenmic,Green Mic,그린 마이크,グリーン マイク,Green Mic
+purplemic,Purple Mic,퍼플 마이크,パープル マイク,Purple Mic
+redmic,Red Mic,레드 마이크,レッド マイク,Red Mic
+whitemic,White Mic,화이트 마이크,ホワイト マイク,White Mic
+yellowmic,Yellow Mic,옐로 마이크,イエロー マイク,Yellow Mic
+blueenhance,Blue Enhance,블루 인핸스,ブルーエンハンス,Blue Enhance
+greenenhance,Green Enhance,그린 인핸스,グリーンエンハンス,Green Enhance
+purpleenhance,Purple Enhance,퍼플인핸스,パープルエンハンス,Purple Enhance
+redenhance,Red Enhance,레드인핸스,レッドエンハンス,Red Enhance
+whiteenhance,White Enhance,화이트 인핸스,ホワイトエンハンス,White Enhance
+yellowenhance,Yellow Enhance,옐로 인핸스,イエローエンハンス,Yellow Enhance
+birthdaygiftblue,Birthday Gift ~Blue~,Birthday Gift ~Blue~,Birthday Gift ~Blue~,Birthday Gift ~Blue~
+birthdaygiftgreen,Birthday Gift ~Green~,Birthday Gift ~Green~,Birthday Gift ~Green~,Birthday Gift ~Green~
+birthdaygiftpurple,Birthday Gift ~Purple~,Birthday Gift ~Purple~,Birthday Gift ~Purple~,Birthday Gift ~Purple~
+birthdaygiftred,Birthday Gift ~Red~,Birthday Gift ~Red~,Birthday Gift ~Red~,Birthday Gift ~Red~
+birthdaygiftwhite,Birthday Gift ~White~,Birthday Gift ~White~,Birthday Gift ~White~,Birthday Gift ~White~
+birthdaygiftyellow,Birthday Gift ~Yellow~,Birthday Gift ~Yellow~,Birthday Gift ~Yellow~,Birthday Gift ~Yellow~
+cardchange,Card Change,카드 체인지,カード チェンジ,Card Change
+ahoy,Ahoy!,Ahoy!,Ahoy!,Ahoy!
+shukkou,Shukkou!,Shukkou!,Shukkou!,Shukkou!
+poepoepoe,poepoepoe~,poepoepoe~,poepoepoe~,poepoepoe~
+liferesetbutton,Life Reset Button,Life Reset Button,Life Reset Button,Life Reset Button
+mascotcreation,Mascot creation,Mascot creation,マスコット創造,Mascot creation
+fubukingdom,Fubukingdom,Fubukingdom,フブキングダム,Fubukingdom
+,,,,
+nunnun,(๑╹ᆺ╹) nun nun,(๑╹ᆺ╹)눈눈,(๑╹ᆺ╹) nun nun,(๑╹ᆺ╹) nun nun
+onstage,On stage!,온 스테이지!,On stage!,¡A Escena!
+nunnunshiyo,nun nun shiyo,눈눈하자,nun nun shiyo,nun nun shiyo
+yourheartiscloudythenclear,Your heart is cloudy... then clear!,당신의 마음은... 흐린 뒤 맑음!,Your heart is cloudy... then clear!,Tu corazón está nublado...pues ¡despéjate!
+dreamlive,Dream Live,드림 라이브,Dream Live,Dream Live
+sorazsympathy,SorAZ Sympathy,SorAZ 심퍼시,SorAZ Sympathy,Simpatía SorAZ
+embodimentofhope,Embodiment of Hope,희망의 화신,Embodiment of Hope,Encarnación de la Esperanza
+keepworkinghard,Keep working hard!,열심히 해서 대단해!,Keep working hard!,Sigan Echándole Ganas
+wherenextwherenext,"Where next, where next!",그라고 그라고!,"Where next, where next!","¡Dónde sigue, dónde sigue!"
+anaimlessjourneywithyou,An aimless journey with you,너와 목적지 없는 여행,An aimless journey with you,Un viaje sin rumbo contigo
+sorazgravity,SorAZ Gravity,SorAZ 그래비티,SorAZ Gravity,SorAZ Gravity
+destinysong,Destiny Song,데스티니 송,Destiny Song,Canción del Destino
+ihadfundrawing,I had fun drawing!,그림그리기 즐거워~!,I had fun drawing!,¡Me divertí dibujando!
+brighterfuture,Brighter Future,뛰어넘고 싶은 미래,Brighter Future,Un Futuro más Brillante
+hey,Hey,헤이,Hey,Hey
+purepurepure,Pure Pure Pure~,퓨어 퓨어 퓨어~,Pure Pure Pure~,Pure Pure Pure~
+relaxtime,Relax Time,릴렉스 타임,Relax Time,Hora de Relajarse
+konkanata,Konkanata,콘카나타~,Konkanata,Konkanata
+imoffnow,I'm off now,다녀오겠습니다,I'm off now,Nos vemos
+pleasegivelotsofsupport,Please give lots of support!,잔~뜩 응원해줘!,Please give lots of support!,¡Por favor denmé todo su apoyo!
+angelstage,Angel Stage,엔젤 스테이지,Angel Stage,Escenario de Ángel
+jetblackwings,Jet Black Wings,칠흑의 날개,Jet Black Wings,Alas Color Obsidiana
+thankyouforyourcontinuedsupport,Thank you for your continued support!,언제나 응원해줘서 고마워!,Thank you for your continued support!,¡Gracias por su apoyo continuo!
+everyonetogether,Everyone together,모두 함께,Everyone together,Todos Juntos
+everyonekonsomme,Everyone! Kon-somme!,모두~ 콘소메~,Everyone! Kon-somme!,¡Todos! ¡Kon-somme!
+letsmakeitthebestdayever,Let's make it the best day ever,최고의 하루로하자,Let's make it the best day ever,Hagámoslo el mejor día de todos
+itwontstop,It won't stop,멈추지 않아,It won't stop,No parará
+survivalpower,Survival Power,서바이벌 파워,Survival Power,Poder de Supervivencia
+songoftheearth,Song of the Earth,대지의 노래,Song of the Earth,Canción de la Tierra
+nousagis,Nousagis~,노우사기들~,Nousagis~,Nousagis~
+luckyrabbit,Lucky Rabbit,행운 토끼,Lucky Rabbit,Conejo Afortunado
+missionstart,Mission Start!,미션 스타트!,Mission Start!,¡Inicia la Misión!
+thewholestageismine,The whole stage is mine,스테이지는 모두「내꺼」,The whole stage is mine,Todo el Escenario es Mío
+accesscodeid,Access Code: ID,액세스 코드: ID,Access Code: ID,Código de Acceso: ID
+illsingmybestsowatchme,I'll sing my best so watch me!,열심히 노래할 테니까 보고 있어줘!,I'll sing my best so watch me!,"Cantaré mi mejor, así que, ¡mírame!"
+powerofpromise,Power of Promise,약속의 힘,Power of Promise,Poder de Promesa
+alona,Alona!,아로~나!,Alona!,¡Alona!
+afterparty,Afterparty,애프터 파티,Afterparty,Afterparty
+akirosefantasy,Akirose Fantasy,아키로제 환상곡,Akirose Fantasy,Fantasía Akirose
+ganbarosefortoday,Ganbarose for today!,오늘도 힘내로제!,Ganbarose for today!,Ganbarose for today!
+secretkey,Secret Key,비밀의 합건,Secret Key,Llave Secreta
+konpeko,Konpeko!,콘페코!,Konpeko!,Konpeko!
+dontmissitpeko,Don't miss it peko!,놓치면 안돼 페코!,Don't miss it peko!,¡No te lo pierdas peko!
+kitraaaa,Ki-t-raaaa,키t라아아아,Ki-t-raaaa,Ki-t-raaaa
+rabbitgirlonawhitesandybeach,Rabbit girl on a white sandy beach,하얀 모래사장과 토끼 소녀,Rabbit girl on a white sandy beach,Chica conejo en una Blanca Playa
+humanrabbitalityproject,Human Rabbitality Project,전인류 토끼화 계획,Human Rabbitality Project,Human Rabbitality Project
+diamondintherough,Diamond in the rough,스타의 원석,Diamond in the rough,Diamante en Bruto
+suichanwaaaakyoumokawaii,Sui-chan Waaaa~ Kyou Mo Kawaii,스이짱은~ 오늘도 귀여워~~!!,Sui-chan Waaaa~ Kyou Mo Kawaii,Sui-chan Waaaa~ Kyou Mo Kawaii
+didiluiveyouwaiting,Did I Luive you waiting?,"모두, 맛타카네?",Did I Luive you waiting?,¿Luivas esperando?
+lureofthejetblackwings,Lure of the Jet Black Wings,칠흑의 날개로 감싸 안아주지,Lure of the Jet Black Wings,Encanto de las Alas Negras
+konluilui,Kon-luilui,콘루이루이,Kon-luilui,Kon-luilui
+otsuluilui,Otsu-luilui,오츠루이루이,Otsu-luilui,Otsu-luilui
+welcometotheparty,Welcome to the party,파티에 어서 오세요,Welcome to the party,Bienvenido a la Fiesta
+luisparty,Lui's Party,Lui's Party,Lui's Party,Lui's Party
+followmeclosely,Follow me closely!,제대로 따라와야 해!,Follow me closely!,Sígueme de Cerca
+hawkrave,Hawk Rave,호크 레이브,Hawk Rave,Hawk Rave
+soulguide,Soul Guide,소울 안내,Soul Guide,Guía Espiritual
+newcostume,New Costume,새로운 의상,New Costume,Nuevo Atuendo
+streetsnap,Street Snap,스트리트 스냅,Street Snap,Street Snap
+amomentofsunlightfilteringthroughthetrees,A moment of sunlight filtering through the trees,나무 사이로 비추는 햇빛의 한 때,A moment of sunlight filtering through the trees,Un haz de luz Filtrandose por los Árboles
+thefightingmaid,The Fighting Maid,싸우는 메이드씨,The Fighting Maid,Mucama de Combate
+shiningcomet,Shining Comet,빛나는 혜성,Shining Comet,Cometa Resplandeciente
+coldresponsekanataso,Cold response Kanataso,냉담 대응 카나타쇼,Cold response Kanataso,Respuesta fría Kanataso
+ohhi,"Oh, Hi","Oh, Hi","Oh, Hi","Oh, hi"
+goingouttogether,Going out together,함께 외출,Going out together,Saliendo Juntos
+coffeebreak,Coffee Break,커피 브레이크,Coffee Break,Coffee Break
+piecesofmemories,Pieces of Memories,추억의 조각,Pieces of Memories,Piezas de Memoria
+dontdrinkonsenwater,Don't drink onsen water,온천은 마시면 안 돼!,Don't drink onsen water,No tomes agua de Onsen
+arelaxingdayattheonsen,A relaxing day at the onsen,온천에서 편안한 하루를,A relaxing day at the onsen,Un relajante día en el Onsen
+hirys,HiRyS!,하이RyS!,HiRyS!,HiRyS!
+imaseisonephilim,I'm a seiso nephilim!,청초한 네피림이에요!,I'm a seiso nephilim!,¡Soy una Nephilim Seiso!
+araara,Ara ara,아라 아라,Ara ara,Ara ara
+mugyumugyuchat,Mugyu Mugyu Chat,무규무규 잡담,Mugyu Mugyu Chat,Mugyu Mugyu Chat
+zerogravityjump,Zero Gravity Jump!,무중력 점프!,Zero Gravity Jump!,¡Salto en Gravedad Cero!
+otsupeko,Otsupeko,오츠페코였습니다,Otsupeko,Otsupeko
+konazki,Kon-AZKi,콘아즈키~,Kon-AZKi,Kon-AZKi
+withyouinaseasidetown,With you in a seaside town,해변 거리에서 당신과,With you in a seaside town,Contigo en un pueblo a la orilla del Mar
+ivecometosuchawonderfulworld,I've come to such a wonderful world,이런 멋진 세게에 올 수 있었습니다!,I've come to such a wonderful world,He Venido a un mundo tan Maravilloso
+anewmap,A new map,새로운 지도,A new map,Un nuevo Mapa
+ladiesandgentlemenkazamairohadegozaru,"Ladies and gentlemen,\nKazama Iroha de gozaru",모두 카자마 이로하이외다~,"Ladies and gentlemen,\nKazama Iroha de gozaru","Señoras y Señores,\nKazama Iroha de gozaru"
+freshlypickledeggplant,Freshly pickled eggplant,갓 딴 가지,Freshly pickled eggplant,Berenjena recién recogida
+wouldyoulikeone,Would you like one?,하나 어떠시오?,Would you like one?,¿Cuál quieres?
+wazzup,WAZZUP!!,WAZZUP!!,WAZZUP!!,WAZZUP!!
+witnessme,WITNESS ME!!,WITNESS ME!!,WITNESS ME!!,WITNESS ME!!
+thefunbegins,The fun begins!,즐거운 시간의 시작이다!,The fun begins!,¡Comienza la diversión!
+disorder,Disorder,Disorder,Disorder,Desorden
+moonmoonmoonadaiyo,Moon Moon~ Moona Dayo!,문 문 무나야!,Moon Moon~ Moona Dayo!,Moon Moon~ Moona Dayo!
+otsumoona,Otsumoona,오츠무나,Otsumoona,Otsumoona
+lookforwardtoit,Look forward to it!,기대하고 있어줘!,Look forward to it!,¡Espérenlo con ansias!
+midnightmoon,Midnight Moon,달은 밤에,Midnight Moon,Luna de Media Noche
+moonnightdiva,Moon Night Diva,문 나이트 디바,Moon Night Diva,Diva de Luz Lunar
+kronichiwa,Kronichiwa,크로니치와,Kronichiwa,Kronichiwa
+kroyasumi,Kroyasumi,크로야스미~,Kroyasumi,Kroyasumi
+oyasumikrotime,Oyasumi Kro-Time,휴식 크로타임,Oyasumi Kro-Time,Oyasumi Kro-Time
+letsmakethisanunforgettablefes,Let's make this an unforgettable fes,잊지 못할 fes로 만들자!,Let's make this an unforgettable fes,Hagamos este fes inolvidable
+fastforward,Fast Forward,빨리 감기,Fast Forward,Adelanto
+illgiveyouallmyenergy,I'll give you all my energy,기운을 전력으로 전해드릴게요!,I'll give you all my energy,Te daré toda mi energía
+bundleupyourcheers,Bundle up your cheers,옐을 묶어서,Bundle up your cheers,Juntemos sus Aplausos
+brillianceofthewind,Brilliance of the Wind,풍화의 반짝임,Brilliance of the Wind,Brillanza del Viento
+selamatpagi,Selamat Pagi!,슬라맛파기!,Selamat Pagi!,Selamat Pagi!
+yourbelovedalien,Your beloved alien,당신의 사랑스러운 외계인,Your beloved alien,Su adorada Alien
+imlookingforwardtoit,I'm looking forward to it!,기대하고 있어!,I'm looking forward to it!,¡Lo espero con Ansias!
+relationsky,Relation Sky,릴레이션 스카이,Relation Sky,Firmamento de Vínculos
+kikkeriki,Kikkeriki!,킷케리키~!,Kikkeriki!,Kikkeriki!
+mofumofutime,Mofu mofu Time,푹신푹신 타임,Mofu mofu Time,Mofu mofu Time
+aufweidersehen,auf weidersehen!,auf Wiedersehen!,auf weidersehen!,auf weidersehen!
+iwanttoliventhingsup,I want to liven things up!,고조시키려고 합니다!,I want to liven things up!,¡Quiero aligerar el ambiente!
+phoenixswordprincess,Phoenix Sword Princess,불사조 검희,Phoenix Sword Princess,Princesa Espada Fénix
+kneel,Kneel.,무릎 꿇거라.,Kneel.,Arrodíllate
+flamecoloredguidance,Flame colored guidance,불꽃 색 인도,Flame colored guidance,Guía Color Flama
+majesticphoenix,Majestic Phoenix,마제스틱 피닉스,Majestic Phoenix,Majestuoso Fénix
+polkaoruyo,Polka Oruyo!,폴카 있어!,Polka Oruyo!,Polka Oruyo!
+ohapol,Ohapol,안녕폴,Ohapol,Ohapol
+osopol,Osopol,잘자폴,Osopol,Osopol
+sharedconciousness,Shared Conciousness,공의존,Shared Conciousness,Conciencia Compartida
+polkacircus,Polka Circus,폴카 서커스,Polka Circus,Circo Polka
+bokobokobokobo,Bokobokobokobo,보코보코보코보,Bokobokobokobo,Bokobokobokobo
+wavesswim,Waves! Swim!,바다다~! 헤엄쳐~!,Waves! Swim!,¡Olas! ¡Nadar!
+becomingacat,Becoming a cat,고양이가 될게~,Becoming a cat,Convertirse en Gato
+perayaan,Perayaan,Perayaan,Perayaan,Perayaan
+raindrops,Raindrops,레인 드롭스,Raindrops,Gotas de Lluvia
+onaeru,OnAeru,OnAeru,OnAeru,OnAeru
+rainmantra,Rain Mantra,비의 만트라,Rain Mantra,Mantra de Lluvia
+wavemantra,Wave Mantra,파도의 만트라,Wave Mantra,Mantra de Olas
+pekorabeyondthedoor,Pekora ~Beyond the door~,페코라~ 문 저편으로~,Pekora ~Beyond the door~,Pekora ~Más allá de la Puerta~
+flarebeyondthedoor,Flare ~Beyond the door~,후레아~ 문 저편으로~,Flare ~Beyond the door~,Flare  ~Más allá de la Puerta~
+noelbeyondthedoor,Noel ~Beyond the door~,노엘~ 문 저편으로~,Noel ~Beyond the door~,Noel ~Más allá de la Puerta~
+marinebeyondthedoor,Marine ~Beyond the door~,마린~ 문 저편으로~,Marine ~Beyond the door~,Marine ~Más allá de la Puerta~
+elementaryisntit,"Elementary, isn't it?",초보적인 거잖아?,"Elementary, isn't it?","Elemental, ¿no es así?"
+flowerrhapsody,flower rhapsody,flower rhapsody,flower rhapsody,flower rhapsody
+konnakiri,Konnakiri~,Konnakiri~,Konnakiri~,Konnakiri~
+shiranui,Shiranui,Shiranui,Shiranui,Shiranui
+deliciousdangos,Delicious dangos,Delicious dangos,Delicious dangos,Delicious dangos
+sleepyyo,Sleepy yo~,Sleepy yo~,Sleepy yo~,Sleepy yo~
+otsunakiri,Otsunakiri,Otsunakiri,Otsunakiri,Otsunakiri
+celebratetogether,Celebrate together,Celebrate together,Celebrate together,Celebrate together
+dontmisstheshiningme,Don't miss the shining me!!,Don't miss the shining me!!,Don't miss the shining me!!,Don't miss the shining me!!
+fancybirthday,Fancy birthday,Fancy birthday,Fancy birthday,Fancy birthday
+whatsinthepresent,What's in the present?,What's in the present?,What's in the present?,What's in the present?
+theayainayafubumi,"The ""Aya"" in AyaFubuMi","The ""Aya"" in AyaFubuMi","The ""Aya"" in AyaFubuMi","The ""Aya"" in AyaFubuMi"
+yodayo,Yo~ da yo,Yo~ da yo,Yo~ da yo,Yo~ da yo
+thefubuinayafubumi,"The ""Fubu"" in AyaFubuMi","The ""Fubu"" in AyaFubuMi","The ""Fubu"" in AyaFubuMi","The ""Fubu"" in AyaFubuMi"
+themiinayafubumi,"The ""Mi"" in AyaFubuMi","The ""Mi"" in AyaFubuMi","The ""Mi"" in AyaFubuMi","The ""Mi"" in AyaFubuMi"
+underworldschoolnurse,Underworld School Nurse,Underworld School Nurse,Underworld School Nurse,Underworld School Nurse
+mycutestudents,My cute students~,My cute students~,My cute students~,My cute students~
+pleaseeatalot,Please eat a lot <3,Please eat a lot <3,Please eat a lot <3,Please eat a lot <3
+otsukareito,Otsukareito......,Otsukareito......,Otsukareito......,Otsukareito......
+ohhhchu,ohhh (chu),ohhh (chu),ohhh (chu),ohhh (chu)
+forbiddenkiss,Forbidden Kiss,Forbidden Kiss,Forbidden Kiss,Forbidden Kiss
+daisukichu,Daisuki! Chu<3,Daisuki! Chu<3,Daisuki! Chu<3,Daisuki! Chu<3
+didmybestmakingthis,Did my best making this,Did my best making this,Did my best making this,Did my best making this
+enjoythemeal,Enjoy the meal,Enjoy the meal,Enjoy the meal,Enjoy the meal
+332211,33... 22... 11...,33... 22... 11...,33... 22... 11...,33... 22... 11...
+artname_go,Go!,Go!,Go!,Go!
+illmakeyoudrawthehelllotto,I'll make you draw the hell lotto!,I'll make you draw the hell lotto!,I'll make you draw the hell lotto!,I'll make you draw the hell lotto!
+nnaaaaaaaaa,Nnaaaaaaaaa,Nnaaaaaaaaa,Nnaaaaaaaaa,Nnaaaaaaaaa
+mogumoguokayu,Mogu mogu~ Okayu,Mogu mogu~ Okayu,Mogu mogu~ Okayu,Mogu mogu~ Okayu
+pleaseletmeintoyourhouse,Please let me into your house,Please let me into your house,Please let me into your house,Please let me into your house
+studentcat,Student Cat,Student Cat,Student Cat,Student Cat
+givemeatighthug,Give me a tight hug❤️,Give me a tight hug❤️,Give me a tight hug❤️,Give me a tight hug❤️
+eheheprank,ehehe prank,ehehe prank,ehehe prank,ehehe prank
+nekokaburi,Nekokaburi,Nekokaburi,Nekokaburi,Nekokaburi
+shaa,shaa,shaa,shaa,shaa
+sendingmyownsongwithallmymight,Sending my own song with all my might!,Sending my own song with all my might!,Sending my own song with all my might!,Sending my own song with all my might!
+themostnoblenekomataokayu,The Most Noble Nekomata Okayu,The Most Noble Nekomata Okayu,The Most Noble Nekomata Okayu,The Most Noble Nekomata Okayu
+mogmog,MOGMOG,MOGMOG,MOGMOG,MOGMOG
+okayu,Okayu~,Okayu~,Okayu~,Okayu~
+orayo,Orayo,Orayo,Orayo,Orayo
+doroboconstructionagriculturalminister,Dorobo Construction Agricultural Minister,Dorobo Construction Agricultural Minister,Dorobo Construction Agricultural Minister,Dorobo Construction Agricultural Minister
+illdefinitelyletyoueatit,I'll definitely let you eat it,I'll definitely let you eat it,I'll definitely let you eat it,I'll definitely let you eat it
+konmuscle,Konmuscle!,Konmuscle!,Konmuscle!,Konmuscle!
+ohamuscle,Ohamuscle!,Ohamuscle!,Ohamuscle!,Ohamuscle!
+otsumuscle,Otsumuscle,Otsumuscle,Otsumuscle,Otsumuscle
+burnitintoyourmemory,Burn it into your memory❤️,Burn it into your memory❤️,Burn it into your memory❤️,Burn it into your memory❤️
+afluffymeatheadedknight,"A fluffy, meatheaded knight","A fluffy, meatheaded knight","A fluffy, meatheaded knight","A fluffy, meatheaded knight"
+thirdgenerationpower,3rd Generation Power,3rd Generation Power,3rd Generation Power,3rd Generation Power
+wah,WAH!,WAH!,WAH!,WAH!
+takogramwithyou,Takogram with you,Takogram with you,Takogram with you,Takogram with you
+letshavefun,Let's have fun!!!,Let's have fun!!!,Let's have fun!!!,Let's have fun!!!
+archaicsmile,Archaic Smile,Archaic Smile,Archaic Smile,Archaic Smile
+hiyadarlings,Hiya darlings!,Hiya darlings!,Hiya darlings!,Hiya darlings!
+thatsoundsgood,That sounds good,That sounds good,That sounds good,That sounds good
+whatisanidolsong,What is an idol song,What is an idol song,What is an idol song,What is an idol song
+teaisbetterthancoffee,Tea is better than coffee,Tea is better than coffee,Tea is better than coffee,Tea is better than coffee
+loveinsong,Love in song,Love in song,Love in song,Love in song
+captainofthepirates,"Captain of the Houshou Pirates, Houshou Marine here!","Captain of the Houshou Pirates, Houshou Marine here!","Captain of the Houshou Pirates, Houshou Marine here!","Captain of the Houshou Pirates, Houshou Marine here!"
+itscaptainmarine,It's Captain Marine to you!,It's Captain Marine to you!,It's Captain Marine to you!,It's Captain Marine to you!
+senchouwhatsgoingtohappen,"Senchou, what's going to happen?","Senchou, what's going to happen?","Senchou, what's going to happen?","Senchou, what's going to happen?"
+alreadysolewd,Already so lewd❤️,Already so lewd❤️,Already so lewd❤️,Already so lewd❤️
+letssailtogether,Let's set sail together!,Let's set sail together!,Let's set sail together!,Let's set sail together!
+yosoro,Yosoro~,Yosoro~,Yosoro~,Yosoro~
+kimitachi,Kimitachi~? Senchou kawaii?,Kimitachi~? Senchou kawaii?,Kimitachi~? Senchou kawaii?,Kimitachi~? Senchou kawaii?
+bakkubakun,Bakku bakku baku~n,Bakku bakku baku~n,Bakku bakku baku~n,Bakku bakku baku~n
+areality,A reality that seems to be spat out and thrown away!,A reality that seems to be spat out and thrown away!,A reality that seems to be spat out and thrown away!,A reality that seems to be spat out and thrown away!
+onlytwoofus,Only Two of Us at the Beach,Only Two of Us at the Beach,Only Two of Us at the Beach,Only Two of Us at the Beach
+thisiswhereienjoyit,(This is where I enjoy it),(This is where I enjoy it),(This is where I enjoy it),(This is where I enjoy it)
+holoxslots,holoX Slots,holoX Slots,holoX Slots,holoX Slots
+konkonkitsune,Kon kon kitsune!,Kon kon kitsune!,Kon kon kitsune!,Kon kon kitsune!
+sweetosmanthus,Sweet osmanthus flower Fubuki,Sweet osmanthus flower Fubuki,Sweet osmanthus flower Fubuki,Sweet osmanthus flower Fubuki
+thankyoufriends,Thank You Friends❤️,Thank You Friends❤️,Thank You Friends❤️,Thank You Friends❤️
+otsukon,Otsu-kon-deshita,Otsu-kon-deshita,おつこーんでしたー,Otsu-kon-deshita
+damedesuyo,Damedesu yo!,Damedesu yo!,ダメですよっ！,Damedesu yo!
+pleaseuseyourstrength,Please use your strength,Please use your strength,力をかしてくださいね,Please use your strength
+acornucopia,A cornucopia of mascots,A cornucopia of mascots,マスコットたちの饗宴,A cornucopia of mascots
+,,,,
+airani_iofifteen,Airani Iofifteen,아이라니 이오피프틴,アイラニ・イオフィフティーン,Airani Iofifteen
+aki_rosenthal,Aki Rosenthal,아키 로젠탈,アキ・ローゼンタール,Aki Rosenthal
+amane_kanata,Amane Kanata,아마네 카나타,天音かなた,Amane Kanata
+azki,AZKi,AZKi,AZKi,AZKi
+gigi_murin,Gigi Murin,Gigi Murin,ジジ・ムリン,Gigi Murin
+hakos_baelz,Hakos Baelz,하코스 벨즈,ハコス・ベールズ,Hakos Baelz
+hakui_koyori,Hakui Koyori,하쿠이 코요리,博衣こより,Hakui Koyori
+himemori_luna,Himemori Luna,Himemori Luna,姫森ルーナ,Himemori Luna
+hoshimachi_suisei,Hoshimachi Suisei,호시마치 스이세이,星街すいせい,Hoshimachi Suisei
+houshou_marine,Houshou Marine,호쇼 마린,宝鐘マリン,Houshou Marine
+inugami_korone,Inugami Korone,Inugami Korone,戌神ころね,Inugami Korone
+irys,IRyS,IRyS,IRyS,IRyS
+kazama_iroha,Kazama Iroha,카자마 이로하,風真いろは,Kazama Iroha
+kobo_kanaeru,Kobo Kanaeru,코보 카나에루,こぼ・かなえる,Kobo Kanaeru
+kureiji_ollie,Kureiji Ollie,Kureiji Ollie,クレイジー・オリー,Kureiji Ollie
+laplus_darkness,Laplus Darknesss,Laplus Darknesss,ラプラス・ダークネス,Laplus Darknesss
+moona_hoshinova,Moona Hoshinova,무나 호시노바,ムーナ・ホシノヴァ,Moona Hoshinova
+mori_calliope,Mori Calliope,모리 칼리오페,森カリオペ,Mori Calliope
+nakiri_ayame,Nakiri Ayame,Nakiri Ayame,百鬼あやめ,Nakiri Ayame
+nanashi_mumei,Nanashi Mumei,나나시 무메이,七詩ムメイ,Nanashi Mumei
+nekomata_okayu,Nekomata Okayu,Nekomata Okayu,猫又おかゆ,Nekomata Okayu
+nerissa_ravencroft,Nerissa Ravencroft,Nerissa Ravencroft,ネリッサ・レイヴンクロフト,Nerissa Ravencroft
+ninomae_inanis,Ninomae Ina'nis,Ninomae Ina'nis,一伊那尓栖,Ninomae Ina'nis
+omaru_polka,Omaru Polka,오마루 폴카,尾丸ポルカ,Omaru Polka
+ookami_mio,Ookami Mio,Ookami Mio,大神ミオ,Ookami Mio
+oozora_subaru,Oozora Subaru,Oozora Subaru,大空スバル,Oozora Subaru
+ouro_kronii,Ouro Kronii,오로 크로니,オーロ・クロニー,Ouro Kronii
+pavolia_reine,Pavolia Reine,파볼리아 레이네,パヴォリア・レイネ,Pavolia Reine
+sakamata_chloe,Sakamata Chloe,Sakamata Chloe,沙花叉クロヱ,Sakamata Chloe
+sakura_miko,Sakura Miko,사쿠라 미코,さくらみこ,Sakura Miko
+shirakami_fubuki,Shirakami Fubuki,Shirakami Fubuki,白上フブキ,Shirakami Fubuki
+shiranui_flare,Shiranui Flare,시라누이 후레아,不知火フレア,Shiranui Flare
+shirogane_noel,Shirogane Noel,시로가네 노엘,白銀ノエル,Shirogane Noel
+shishiro_botan,Shishiro Botan,Shishiro Botan,獅白ぼたん,Shishiro Botan
+soraz,SorAZ,SorAZ,SorAZ,SorAZ
+takanashi_kiara,Takanashi Kiara,타카나시 키아라,小鳥遊キアラ,Takanashi Kiara
+takane_lui,Takane Lui,타카네 루이,鷹嶺ルイ,Takane Lui
+tokino_sora,Tokino Sora,토키노 소라,ときのそら,Tokino Sora
+usada_pekora,Usada Pekora,우사다 페코라,兎田ぺこら,Usada Pekora
+vestia_zeta,Vestia Zeta,베스티아 제타,ベスティア・ゼータ,Vestia Zeta
+watson_amelia,Watson Amelia,왓슨 아멜리아,ワトソン・アメリア,Watson Amelia
+yuzuki_choco,Yuzuki Choco,Yuzuki Choco,癒月ちょこ,Yuzuki Choco
+,,,,
+amazingpc,Amazing PC,굉장한 컴퓨터,スゴイパソコン,PC Asombrosa
+asura_rakshasa,Asura & Rakshasa,Asura & Rakshasa,羅刹＆阿修羅,Asura & Rakshasa
+ankimo,Ankimo,안키모,あん肝,Ankimo
+chocolat,Chocolat,Chocolat,しょこら,Chocolat
+chocos_omurice,Choco's Omurice,Choco's Omurice,ちょこのオムライス,Choco's Omurice
+clubemintonothingness,Club 'em into nothingness,모두 박살 내주겠어!,鈍器でぶっ叩くわよ！,Aporréalos a la Nada
+custompc,Custom PC,Custom PC,カスタムパソコン,Custom PC
+dokurokun,Dokuro-kun,Dokuro-kun,ドクロくん,Dokuro-kun
+dorobo_construction,Dorobo Construction,Dorobo Construction,泥棒建設,Dorobo Construction
+encore,Encore,앙코르,アンコール,Encore
+excitingpranktime,Exciting Prank Time,두근두근 장난 타임,わくわくいたずらタイム,Emocionante Hora de Jugar
+first_gravity,First Gravity,First Gravity,First Gravity,First Gravity
+friend,Friend,프렌드,フレンド,Amigo
+fubuchun,Fubuchun,Fubuchun,フブチュン,Fubuchun
+fubuzilla,Fubuzilla,Fubuzilla,フブラ,Fubuzilla
+gamingpc,Gaming PC,게이밍 컴퓨터,ゲーミングパソコン,PC Gamer
+ganmo,Ganmo,간모,がんも,Ganmo
+harusaki_nodoka,Harusaki Nodoka,하루사키 노도카,春先のどか,Harusaki Nodoka
+holofan_circle,Holofan Circle,홀로리스의 고리,ホロリスの輪,Círculo de Holofans
+hololiveid3rdgeneration,Hololive ID 3rd Gen,홀로라이브 인도네시아 3기생,ホロライブインドネシア3期生,Hololive ID 3ra Gen
+hololive_fantasy,HOLOLIVE FANTASY,HOLOLIVE FANTASY,HOLOLIVE FANTASY,HOLOLIVE FANTASY
+holo_sparkling_wine,Holo Sparkling Wine,Holo Sparkling Wine,ホロスパークリング,Holo Sparkling Wine
+hoshimachi_suiseis_mic,Suisei's Mic,호시마치 스이세이의 마이크,星街すいせいのマイク,Mic de Suisei
+idol_felt_pen,Idol Felt Pen,Idol Felt Pen,アイドルサインペン,Idol Felt Pen
+idolmic,Idol Mic,아이돌 마이크,アイドルマイク,Mic de Ídolo
+illleaveittoyou,I'll leave it to you,뒤는 맡길게!,あとは任せた！,¡Te lo encargo!
+inu,Inu,Inu,イヌ,Inu
+iroha_nihohetto_ayafubumi,AyaFubuMi,AyaFubuMi,いろはにほへっと あやふぶみ,AyaFubuMi
+jobz,Jobz,잡스,ジョブズ,Jobz
+kanata_construction,Kanata Construction,Kanata Construction,かなた建設,Kanata Construction
+kfp,KFP,KFP,KFP,KFP
+kotori,Kotori,Kotori,Kotori,Kotori
+manechan,Mane-chan,마네짱,マネちゃん,Mane-chan
+miteiru,Miteiru,Miteiru,ミテイル,Miteiru
+nejimakitsune,Nejimakitsune,Nejimakitsune,ネジマキツネ,Nejimakitsune
+nousagialliance,Nousagi Alliance,노우사기 동맹,野うさぎ同盟,Alianza Nousagi
+okanyan,Okanyan,Okanyan,おかにゃん,Okanyan
+onigirya,Onigirya,Onigirya,おにぎりゃー,Onigirya
+oruyanke,Oruyanke,Oruyanke,おるやんけ,Oruyanke
+penlight,Penlight,펜라이트,ペンライト,Linterna
+pioneer,Pioneer,개척자,開拓者,Pionero
+promise,Promise,Promise,Promise,Promesa
+poyoyo,Poyoyo,Poyoyo,ぽよ余,Poyoyo
+rosetai,Rosetai,로제대,ロゼ隊,Rosetai
+secret_society_holox,Secret Society holoX,Secret Society holoX,秘密結社holoX,Secret Society holoX
+shirogane_danin,Shirogane Dan'in,Shirogane Dan'in,白銀聖騎士団,Shirogane Dan'in
+standardpc,Standard PC,보통 컴퓨터,ふつうのパソコン,PC Estándar
+stone_axe,Stone Axe,돌 도끼,石の斧,Hacha de Piedra
+subachocoluna,SubaChocoLuna,SubaChocoLuna,スバちょこルーナ,SubaChocoLuna
+subpc,Sub PC,서브 컴퓨터,サブパソコン,PC Secundaria
+sukonbu,Sukonbu,Sukonbu,すこん部,Sukonbu
+thestoryofthemoonandtherabbit,Story of Moon&Rabbit,달과 토끼의 이야기,月と兎の物語,Historia de Conejo&Luna
+upao,Upao,우파오,うぱお,Upao
+zain,Zain,좌원,座員,Zain
+,,,,
+Additional Damage,Additional Damage,추가 데미지,追加ダメージ,Daño Adicional
+Damage Prevented,Damage Prevented,데미지 감소,防いだダメージ,Daño Prevenido
+Power,Power,파워,パワー,Poder
+,,,,
+(Can't lose LIFE),(Can't lose LIFE),(라이프는 줄지 않는다),(LIFEを失わない),(No puede perder VIDA)
+Incoming {SpecialStr}Damage: {Amount}{PreventStr},Incoming {SpecialStr}Damage: {Amount}{PreventStr},Incoming {SpecialStr}Damage: {Amount}{PreventStr},受ける{SpecialStr}ダメージ: {Amount}{PreventStr},Entrante {SpecialStr}Daño: {Amount}{PreventStr}
+Choose the next die result.,Choose the next die result.,다음에 던졌을 때 나올 주사위 눈을 선택하세요.,次のサイコロの結果を選んでください。,Elije el siguiente resultado del dado:
+Oshi:,Oshi:,오시:,推し:,Oshi:
+ACTION_MENU__SPECIAL,Special:,특수:,スペシャル:,Especial:
+Choose %s Cheer to Archive.,Choose %s Cheer to Archive.,아카이브로 보낼 옐을 %s장 선택하세요,%s エールをアーカイブに送ってください。,Elije %s Aplausos a Archivar
+YOUR_LIFE,your Life,라이프,あなたのライフ,Tu vida
+Place 1 {COLOR} Cheer from {SOURCE}.,Place 1 {COLOR} Cheer from {SOURCE}.,{SOURCE}에서 {COLOR} 옐 1장을 놓는다.,{SOURCE}から{COLOR}エールを1つ置いてください。,Elije 1 {COLOR} Aplauso de {SOURCE}
+Send,Send,보낸다,送信,Envía
+,,,,
+FROM_YOUR_ARCHIVE,from your Archive,아카이브에서,あなたのアーカイブから,de tu Archivo
+FROM_YOUR_ATTACHED_SUPPORT,from your attached support cards,from your attached support cards,from your attached support cards,from your attached support cards
+FROM_YOUR_CHEER_DECK,from your Cheer Deck,옐 덱에서,エールデッキから,de tu Mazo de Aplausos
+FROM_DOWNED_HOLOMEM,from downed Holomem,다운된 홀로멤에서,倒されたホロメンから,de holomem Derrotado
+FROM_HOLOMEM,from Holomem,홀로멤에서,ホロメンから,de holomem
+FROM_THIS_HOLOMEM,from this Holomem,이 홀로멤에서,このホロメンから,de este holomem
+FROM_OPPONENT_HOLOMEM,from opponent's Holomem,상대 홀로멤에서,相手のホロメンから,del holomem oponente
+FROM_LAST_REVEALED_CARDS,from the last revealed cards,from the last revealed cards,from the last revealed cards,from the last revealed cards
+REMOVE_CHEER_ACTION_WORD,Remove,제거,除去,Remueve
+any amount of,any amount of,일부,任意の量,cualquier cantidad
+all,all,전부,すべて,todos
+{ACTION} {AMOUNT} Cheer {SOURCE}.,{ACTION} {AMOUNT} Cheer {SOURCE}.,{SOURCE} 옐 {AMOUNT}장을 {ACTION},{ACTION}で{SOURCE}から{AMOUNT}エール。,{ACTION} {AMOUNT} Aplauso {SOURCE}.
+,,,,
+top,top,맨위,トップ,cima
+the bottom,the bottom,아래,ボトム,fondo
+your deck,your deck,덱,あなたのデッキ,tu Mazo
+Order these cards to place on {DIR} of {DECK},Order these cards to place on {DIR} of {DECK},이 카드들을 원하는 순서대로 {DECK} {DIR}로 되돌린다,これらのカードを{DECK}の{DIR}に置く順番を決めてください。,Ordena estas cartas a poner en {DIR} del {DECK}
+,,,,
+Choose {MIN} Holomem for:,Choose {MIN} Holomem for:,홀로멤 {MIN}명을 선택하세요,{MIN}人のホロメンを選んでください:,Elije {MIN} holomem para:
+Choose {MIN}-{MAX} Holomem for:,Choose {MIN}-{MAX} Holomem for:,홀로멤 {MIN}-{MAX}명을 선택하세요,{MIN}-{MAX}人のホロメンを選んでください:,Elije {MIN}-{MAX} holomem para:
+,,,,
+You may choose a Bloom card from hand to play on a Debut you played this turn.,You may choose a Bloom card from hand to play on a Debut you played this turn.,이번 턴에 등장한 Debut 홀로멤에도 패에서 Bloom할 수 있습니다,今ターンにプレイしたデビューに手札からブルームカードをプレイすることができます。,Puedes elegir una carta Bloom de tu mano para jugar en una carta Debut jugada este turno
+FROM_YOUR_HAND,from your Hand,패에서,あなたの手札から,de tu Mano
+FROM_YOUR_DECK,from your Deck,덱에서,あなたのデッキから,de tu Mazo
+FROM_YOUR_BACKSTAGE,from your Backstage,백 스테이지에서,あなたのバックステージから,de tus Bastidores
+FROM_YOUR_CENTER,from your Center,센터에서,あなたのセンターから,de tu Centro
+FROM_YOUR_COLLAB,from your Collab,콜라보 멤버중에서,あなたのコラボから,de tu Collab
+FROM_YOUR_HOLOPOWER,from your Holopower,홀로 파워에서,あなたのホロパワーから,de tu Holopower
+,,,,
+YOUR_ARCHIVE,your Archive,아카이브,あなたのアーカイブ,tu Archivo
+YOUR_BACKSTAGE,your Backstage,백 스테이지,あなたのバックステージ,tus Bastidores
+YOUR_BOTTOM_OF_DECK,the bottom of your Deck,the bottom of your Deck,the bottom of your Deck,the bottom of your Deck
+YOUR_CENTER,your Center,센터,あなたのセンター,tu Centro
+YOUR_CHEER_DECK,your Cheer Deck,옐 덱,あなたのエールデッキ,tu Mazo de Aplausos
+YOUR_COLLAB,your Collab,콜라보,あなたのコラボ,tu Collab
+YOUR_DECK,your Deck,덱,あなたのデッキ,tu Mazo
+YOUR_HAND,your Hand,패,あなたの手札,tu Mano
+A_HOLOMEM,a Holomem,홀로멤,ホロメン,un holomem
+YOUR_HOLOPOWER,your Holopower,홀로 파워,あなたのホロパワー,tu Holopower
+,,,,
+Archive the remaining cards,Archive the remaining cards,남은 카드는 아카이브로 보낸다,残りのカードをアーカイブに送る,Archiva las cartas restantes
+Shuffle the remaining cards,Shuffle the remaining cards,남은 카드는 셔플한다,残りのカードをシャッフルする,Barajea las cartas restantes
+Order the rest on bottom,Order the rest on bottom,남은 카드는 덱 아래로 되돌린다,残りをボトムに順番に,Ordena el resto en el fondo
+,,,,
+cards,cards,카드,カード,cartas
+card,card,카드,カード,carta
+Choose {AMOUNT} {CARD} {FROMZONE} to move to {TOZONE}{TOLIMITATION}{REMAIN}.,Choose {AMOUNT} {CARD} {FROMZONE} to move to {TOZONE}{TOLIMITATION}{REMAIN}.,{FROMZONE} {TOZONE}{TOLIMITATION}(으)로 보낼 {CARD} {AMOUNT}장을 선택하세요.{REMAIN}.,{AMOUNT}枚の{CARD}を{FROMZONE}から{TOZONE}{TOLIMITATION}に移動させてください{REMAIN}。,
+,,,,
+(no Buzz),(no Buzz),(Buzz 이외),(バズなし),(no Buzz)
+(Bloom %s),(Bloom %s),(Bloom 레벨 %s),(ブルーム %s),(Bloom %s)
+ONLY_BUZZ,Only Buzz cards,Buzz 카드만 선택 가능,バズカードのみ,Solo cartas Buzz
+ONLY_COLOR %s,Only %s,%s만 선택 가능,%sのみ,Sólo %s
+Only colors matching your %sHolomems on stage,Only colors matching your %sHolomems on stage,스테이지에 있는 당신의 %s 홀로멤만 선택 가능,ステージ上のあなたの%sホロメンに一致する色のみ,Sólo colores correspondientes a tus %sHolomems en Escenario
+ONLY_CARD %s,Only %s,%s만 선택 가능,%sのみ,Sólo %s
+ONLY_HOLOMEM,Only Holomem,홀로멤만 선택 가능,ホロメンのみ,Sólo Holomem
+ONLY_BLOOM,Only Bloom,Bloom 홀로멤만 선택 가능,ブルームのみ,Sólo Bloom
+ONLY_DEBUT,Only Debut,Debut 홀로멤만 선택 가능,デビューのみ,Sólo Debut
+ONLY_DEBUT_BLOOM,Only Debut/Bloom,Debut/Bloom 홀로멤만 선택 가능,デビュー/ブルームのみ,Sólo Debut/Bloom
+,,,,
+ONLY_HOLOMEM (%s),Only Holomem (%s),(%s) 홀로멤만 선택 가능,ホロメンのみ (%s),Sólo Holomem (%s)
+ONLY_LIMITED,Only LIMITED,LIMITED 카드만 선택 가능,LIMITEDのみ,Sólo LIMITADO
+ONLY_ITEM,Only Item,아이템 카드만 선택 가능,アイテムのみ,Sólo Objeto
+ONLY_MASCOT,Only Mascot,마스코트 카드만 선택 가능,マスコットのみ,Sólo Mascota
+ONLY_FAN,Only Fan,팬 카드만 선택 가능,ファンのみ,Sólo Fan
+ONLY_TOOL,Only Tool,툴 카드만 선택 가능,ツールのみ,Sólo Herramienta
+ONLY_EVENT,Only Event,이벤트 카드만 선택 가능,イベントのみ,Sólo Evento
+ONLY_CHEER,Only Cheer,옐 카드만 선택 가능,エールのみ,Sólo Aplauso
+Only Tag: %s,Only Tag: %s,해당 태그의 홀로멤만 선택 가능: %s,タグ: %s のみ,Sólo Etiqueta %s
+Matches Oshi Color,Matches Oshi Color,오시의 색과 같은 카드만 선택 가능,推しの色に一致する,Corresponde al color del Oshi
+,,,,
+Place Holomem,Place Holomem,홀로멤을 놓는다,ホロメンを置く,Coloca holomem
+Bloom,Bloom,Bloom,ブルーム,Bloom
+Oshi Skill,Oshi Skill,오시 스킬,推しスキル,Habilidad de Oshi
+SP Oshi Skill,SP Oshi Skill,SP 오시 스킬,SP推しスキル,Habilidad de SP Oshi
+Play Support,Play Support,서포트카드사용,サポートをプレイ,Juega Apoyo
+Baton Pass,Baton Pass,배턴 터치,バトンパス,Pase de Bastón
+Begin Performance,Begin Performance,퍼포먼스 시작,パフォーマンス開始,Iniciar Performance
+End Turn,End Turn,턴 종료,ターン終了,Terminar Turno
+,,,,
+After Die Roll (Holomem Ability):,After Die Roll (Holomem Ability):,홀로멤 효과로 주사위를 굴린 후:,ダイスロール後（ホロメン能力）：,Después de Lanzar Dado (Habilidad Holomem):
+After Die Roll:,After Die Roll:,주사위를 굴린 후:,ダイスロール後：,Después de Lanzar Dado:
+After taking damage:,After taking damage:,데미지를 받은 후:,ダメージを受けた後：,Tras tomar daño
+Art:,Art:,아츠:,アート：,Arte:
+Before Die Roll (Holomem Ability):,Before Die Roll (Holomem Ability):,홀로멤 효과로 주사위를 굴리기 전:,ダイスロール前（ホロメン能力）：,Antes de Lanzar Dado (Habilidad Holomem):
+Before Die Roll:,Before Die Roll:,주사위를 굴리기 전:,ダイスロール前：,Antes de Lanzar Dado:
+When Bloom Level increases:,When Bloom Level increases:,Bloom 레벨이 올랐을 때:,ブルームレベルが上がったとき：,Cuando el nivel de Bloom incrementa:
+When Holomem takes damage:,When Holomem takes damage:,홀로멤이 데미지를 받았을 때:,ホロメンがダメージを受けたとき：,Cuando el Holomem toma daño:
+When Holomem is downed:,When Holomem is downed:,홀로멤이 다운했을 때:,ホロメンが倒されたとき：,Cuando el Holomem es Derrotado:
+When Holomem HP restored:,When Holomem HP restored:,홀로멤이 회복했을 때:,ホロメンのHPが回復したとき：,Cuando el Holomem recupera HP:
+,,,,
+Center has tag %s:,Center has tag %s:,%s 태그를 가진 센터 홀로멤일 때:,センターにタグ%sがある：,Centro tiene etiqueta %s
+Is %s:,Is %s:,%s 홀로멤:,%sである：,Es %s:
+,,,,
+Center:,Center:,센터:,センター：,Centro:
+Gift:,Gift:,기프트:,ギフト：,Gift:
+Bloom:,Bloom:,블룸:,ブルーム：,Bloom:
+Collab:,Collab:,콜라보:,コラボ：,Collab:
+This Turn:,This Turn:,이번 턴:,このターン：,Este Turno:
+OshiIsColorString,Oshi is %s:,Oshi is %s:,Oshi is %s:,Oshi is %s:
+OshiIsMemberString,Oshi is %s:,Oshi is %s:,Oshi is %s:,Oshi is %s:
+Performer is %s:,Performer is %s:,%s 홀로멤일 때:,パフォーマーは%s：,Intérprete es %s:
+Performer is chosen card:,Performer is chosen card:,대상 홀로멤:,パフォーマーは選ばれたカード：,Intérprete es la carta electa:
+Performer has tag %s:,Performer has tag %s:,%s 태그를 가진 홀로멤일 때:,パフォーマーにタグ%sがある：,Intérprete tiene etiqueta %s:
+Played a Support card this turn:,Played a Support card this turn:,이번 턴에 서포트 카드를 사용했을 때:,このターンサポートカードをプレイした：,Jugó una carta de Apoyo este turno:
+Room on stage:,Room on stage:,스테이지가 자리가 있을 때:,ステージ上に空きスペース：,Cuarto en Escenario:
+Weak(%s):,Weak(%s):,추가 데미지 속성(%s):,弱い(%s)：,Débil(%s):
+Target has tag %s:,Target has tag %s:,%s 태그의 홀로멤이 아츠 대상이 되었을 때:,ターゲットにタグ%sがある：,Blanco tiene etiqueta %s:
+Collab position:,Collab position:,콜라보 포지션 한정:,コラボ位置：,Posición de Collab:
+Top deck card has card type %s:,Top deck card has card type %s:,Top deck card has card type %s:,Top deck card has card type %s:,Top deck card has card type %s:
+Top deck card has tag %s:,Top deck card has tag %s:,덱 맨위의 카드가 %s 태그를 가질 때:,デッキトップのカードにタグ%sがある：,Cima del Mazo tiene etiqueta %s:
+,,,,
+This Turn: %s,This Turn: %s,이번 턴: %s,このターン：%s,Este turno: %s
+Choose a Holomem. This Turn: %s,Choose a Holomem. This Turn: %s,선택한 홀로멤은 이번 턴 %s,ホロメンを選んでください。このターン：%s,Elije un Holomem. Este Turno: %s
+this Holomem,this Holomem,이 홀로멤,このホロメン,este Holomem
+Archive {Amount}{Colors} Cheer from {Location}.,Archive {Amount}{Colors} Cheer from {Location}.,{Location}의 {Colors}옐 {Amount}장을 아카이브한다.,{Location}から{Amount}{Colors}のチアをアーカイブする。,Archiva {AMOUNT}{Colors} Aplausos de {Location}
+Archive %s from hand.,Archive %s from hand.,패 %s장을 아카이브한다.,手札から%sをアーカイブする。,Archiva %s de tu mano.
+Archive {Amount}{Requirement} from hand.,Archive {Amount}{Requirement} from hand.,패 {Amount}{Requirement}장을 아카이브한다.,手札から{Amount}{Requirement}をアーカイブする。,Archiva {Amount}{Requirement} de tu mano.
+Attach card to Holomem%s.,Attach card to Holomem%s.,이 카드를 붙일 홀로멤%s을(를).,カードをホロメン%sにアタッチする。,Apila carta a Holomem%s
+the top %s,the top %s,위에서 %s장,デッキトップ%s,las %s de encima
+Look at {Look} cards of your {Location}:,Look at {Look} cards of your {Location}:,{Location}{Look}의 카드를 보고:,{Location}のカードを{Look}枚見る：,Mira las {Look} cartas de tu {Location}
+,,,,
+BACKHOLOMEM_POSITION,Back Holomem,백 홀로멤,後列ホロメン,Holomem Trasero
+CENTER_POSITION,Center,센터 홀로멤,センター,Centro
+COLLAB_POSITION,Collab,콜라보 홀로멤,コラボ,Collab
+CEN_COL_POSITION,Center or Collab,센터 또는 콜라보 홀로멤,センターまたはコラボ,Centro o Collab
+THIS_HOLOMEM_POSITION,to this Holomem,이 홀로멤,このホロメンに,a este Holomem
+ANY_HOLOMEM_POSITION,any Holomem,아무 홀로멤,任意のホロメン,a cualquier Holomem
+ATTACHED_OWNER_EFFECT_STRING,to the Holomem with this attached,to the Holomem with this attached,to the Holomem with this attached,to the Holomem with this attached
+,,,,
+CONDITION__ATTACHED_TO_HAS_TAGS,If attached to Holomem with tags {Tags}: ,If attached to Holomem with tags {Tags}: ,If attached to Holomem with tags {Tags}: ,If attached to Holomem with tags {Tags}: 
+CONDITION__ATTACHED_TO_HAS_TAGS_INVERSE,If attached to Holomem without tags {Tags}: ,If attached to Holomem without tags {Tags}: ,If attached to Holomem without tags {Tags}: ,If attached to Holomem without tags {Tags}: 
+CONDITION__HOLOMEM_IN_ARCHIVE,{Amount}{Tags} Holomem in Archive: ,{Amount}{Tags} Holomem in Archive: ,{Amount}{Tags} Holomem in Archive: ,{Amount}{Tags} Holomem in Archive: 
+CONDITION__SELF_HAS_CHEER_COLOR,Has {Amount} {Colors} Cheer: ,Has {Amount} {Colors} Cheer: ,Has {Amount} {Colors} Cheer: ,Has {Amount} {Colors} Cheer: 
+CONDITION__HAS_STACKED_HOLOMEM_AMOUNT_MIN,If this card has {Amount}+ Holomem stacked under it: ,If this card has {Amount}+ Holomem stacked under it: ,If this card has {Amount}+ Holomem stacked under it: ,If this card has {Amount}+ Holomem stacked under it: 
+CONDITION__ATTACHED_OWNER_IS_LOCATION,Attached card's owner is at {Location}: ,Attached card's owner is at {Location}: ,Attached card's owner is at {Location}: ,Attached card's owner is at {Location}: 
+CONDITION__PERFORMER_HAS_ATTACHMENT_OF_TYPE,Performer is attached with {Type}:,Performer is attached with {Type}:,Performer is attached with {Type}:,Performer is attached with {Type}:
+,,,,
+EFFECT__BLOOM_ALREADY_BLOOMED_THIS_TURN,"Make one of your {Tags}Holomem who has Bloomed this turn, Bloom again using a Holomem in your hand.","Make one of your {Tags}Holomem who has Bloomed this turn, Bloom again using a Holomem in your hand.","Make one of your {Tags}Holomem who has Bloomed this turn, Bloom again using a Holomem in your hand.","Make one of your {Tags}Holomem who has Bloomed this turn, Bloom again using a Holomem in your hand."
+EFFECT__DEAL_DAMAGE_PER_STACKED_PARTIAL, for each Holomem stacked under that Holomem, for each Holomem stacked under that Holomem, for each Holomem stacked under that Holomem, for each Holomem stacked under that Holomem
+EFFECT__DRAW_LAST_CARD_COUNT,the same amount of cards you had before,the same amount of cards you had before,the same amount of cards you had before,the same amount of cards you had before
+EFFECT__POWER_BOOST_PER_STACKED,+{Amount} Power per revealed {Limitation}card.,+{Amount} Power per revealed {Limitation}card.,+{Amount} Power per revealed {Limitation}card.,+{Amount} Power per revealed {Limitation}card.
+EFFECT__REVEAL_TOP_DECK,Reveal the top {Amount}card of your deck.,덱 {Amount}맨위를 공개한다.,デッキのトップ{Amount}カードを公開する。,Revela la {Amount}carta de encima de tu Mazo.
+EFFECT__SHUFFLE_ARCHIVE_TO_DECK,Shuffle your archive into your deck.{Limitation},Shuffle your archive into your deck.{Limitation},Shuffle your archive into your deck.{Limitation},Shuffle your archive into your deck.{Limitation}
+EFFECT_ARCHIVE_REVEALED_CARDS,Archive the revealed cards.,Archive the revealed cards.,Archive the revealed cards.,Archive the revealed cards.
+EFFECT__POWER_BOOST_PER_ALL_MASCOTS,+{Amount} Power per each Mascot attached to your Holomems.,+{Amount} Power per each Mascot attached to your Holomems.,+{Amount} Power per each Mascot attached to your Holomems.,+{Amount} Power per each Mascot attached to your Holomems.
+EFFECT__MASCOT_COUNT_LIMIT,This Holomem may have {Amount} Mascots attached,This Holomem may have {Amount} Mascots attached,This Holomem may have {Amount} Mascots attached,This Holomem may have {Amount} Mascots attached
+EFFECT__MASCOT_COUNT_REQUIREMENT_UNIQUE_NAME, with different names., with different names., with different names., with different names.
+,,,,
+TIMING__ON_COLLAB,When Holomem collabs:,When Holomem collabs:,When Holomem collabs:,When Holomem collabs:
+,,,,
+Special,Special,특수,スペシャル,Especial
+to,to, ,,a
+opponent's,opponent's,상대의,相手の,oponente
+Back Holomem,Back Holomem,백 홀로멤,後列ホロメン,Holomem Trasero
+(Can't lose life),(Can't lose life),(라이프는 줄지 않는다),（ライフを失えない）,(No puede perder VIDA)
+sum of damage on Backstage Holomems,sum of damage on Backstage Holomems,백 홀로멤 전원이 받고 있는 데미지의 합계,後列ホロメンのダメージ合計,suma del daño en Holomem Traseros
+Deal {Amount}{Special} damage{PerStacked} {Target}{PreventLife}.,Deal {Amount}{Special} damage{PerStacked} {Target}{PreventLife}.,{Target}에게 {Special} 데미지 {Amount}{PerStacked}을 준다{PreventLife}.,{Amount}{Special}{PerStacked}ダメージを{Target}に与える{PreventLife}。,Haz {Amount}{Special} daño{PerStacked} {Target}{PreventLife}
+Draw %s.,Draw %s.,%s장 드로우.,%s枚引く。,Roba %s.
+Draw until you have %s cards in hand,Draw until you have %s cards in hand,Draw until you have %s cards in hand,Draw until you have %s cards in hand,Draw until you have %s cards in hand
+Set next die result to %s.,Set next die result to %s.,다음 주사위 눈을 %s로 취급한다.,次のダイス結果を%sに設定する。,Fija el siguiente resultado del dado a %s.
++%s Power per stacked Holomem.,+%s Power per stacked Holomem.,겹쳐져 있는 홀로멤 1장당 +%s 파워.,積まれたホロメン1体ごとに+%sパワー。,+%s Poder por Holomem apilado.
++%s Power per %s played this turn.,+%s Power per %s played this turn.,+%s Power per %s played this turn.,+%s Power per %s played this turn.,+%s Power per %s played this turn.
+Repeat this Art.,Repeat this Art.,이 아츠를 다시 1번 사용한다.,このアートを繰り返す。,Repite este Arte.
+Reveal the top card of your deck.,Reveal the top card of your deck.,덱 맨위를 공개한다.,デッキのトップカードを公開する。,Revela la carta de encima de tu Mazo.
+Reroll.,Reroll.,주사위를 다시 던진다.,振り直す。,Reroll.
+Roll a die:,Roll a die:,주사위 결과:,ダイスを振る：,Lanza un dado.
+Only to this Holomem.,Only to this Holomem.,이 홀로멤만,このホロメンのみに。,Sólo a este Holomem.
+to Archive.,to Archive.,아카이브로 보낸다,アーカイブに。,al Archivo.
+From Center.,From Center.,(센터 홀로멤만 선택가능).,センターから。,del Centro.
+Only %s Cheer.,Only %s Cheer.,(%s 옐만 선택가능).,%sのチアのみ。,Sólo %s Aplausos.
+Only from %s.,Only from %s.,(%s 태그만 선택가능).,%sからのみ。,Sólo de %s.
+To attached Holomem.,To attached Holomem.,(붙어있는 홀로멤만 선택가능),アタッチされたホロメンに。,Al Holomem apilado.
+Only to Back members.,Only to Back members.,(백 홀로멤만 선택가능),後列メンバーのみに。,Sólo a Holomems Traseros.
+Only to Center.,Only to Center.,(센터 홀로멤만 선택가능),センターのみに。,Sólo al Centro.
+Only to Center or Collab.,Only to Center or Collab.,(센터/콜라보 홀로멤만 선택가능),センターまたはコラボのみに。,Sólo al Centro o Collab.
+Only to %s.,Only to %s.,(%s 카드만 선택가능),%sのみに。,Sólo a %s.
+Only to %s Holomem.,Only to %s Holomem.,(%s 홀로멤만 선택가능),%sホロメンのみに。,No a %s.
+(Not %s),(Not %s),(%s 이외),（%s以外）,(No %s)
+(only 1 each),(only 1 each),(홀로멤당 1장씩),（各1回のみ）,(sólo 1 cada uno)
+May send Collab back.,May send Collab back.,이 홀로멤을 백 포지션에 이동할 수 있다.,コラボを戻すことができる。,Puede enviar Collab Atrás.
+Send Collab back.,Send Collab back.,이 홀로멤을 백 포지션에 이동한다.,コラボを戻す。,Enviar Collab Atrás
+NO_LIMITED_CARDS,No LIMITED,No LIMITED,No LIMITED,No LIMITED
+,,,,
+GOING DOWN,GOING DOWN,다운한 상태,降りてくる,DERROTADO
+INCOMING DAMAGE,INCOMING DAMAGE,입을 데미지,受けるダメージ,DAÑO ENTRANTE
+({HoloPowerAmount} Holopower),({HoloPowerAmount} Holopower),(홀로파워 -{HoloPowerAmount}),（{HoloPowerAmount}ホロパワー）,({HoloPowerAmount} Holopower)
+Game Log,Game Log,게임 로그,ゲームログ,Historial de Partida
+LIMITED,LIMITED,LIMITED,LIMITED,LIMITADO
+TURN,TURN,TURN,ターン,TURNO
+GAME,GAME,GAME,ゲーム,JUEGO
+1/Turn,1/Turn,턴에 1번,1/ターン,1/Turn
+1/Game,1/Game,게임에 1번,1/ゲーム,1/Game
+,,,,
+Collab!,Collab!,콜라보!,コラボ！,¡Collab!
+{PLAYER} draws {AMOUNT},{PLAYER} draws {AMOUNT},{PLAYER} {AMOUNT}장 드로우,{PLAYER}が{AMOUNT}枚引く,{PLAYER} draws {AMOUNT}
+Main Step,Main Step,메인 스텝,メインステップ,Fase Principal
+Art: %s,Art: %s,아츠: %s,アート: %s,Arte %s
+Base Power: %s,Base Power: %s,기본 파워: %s,基本パワー: %s,Poder Base %s
+Playing Support Card,Playing Support Card,서포트카드사용,サポートカードをプレイ中,Jugando Carta de Apoyo
+Reset Step - Choose Center,Reset Step - Choose Center,리셋 스텝 - 센터를 교체한다,リセットステップ - センターを選択,Reiniciar Fase - Elije el Centro
+Rolled die:,Rolled die:,나온 주사위 눈:,振ったダイス:,Dado lanzado
+Shuffling Deck,Shuffling Deck,덱을 섞는다,デッキをシャッフル中,Barajeando Mazo
+(RIGGED),(RIGGED),(조작됨),（仕組まれた）,(ARREGLADO)
+Oshi Skill:,Oshi Skill:,오시 스킬:,推しスキル:,Habilidad del Oshi
+Performance Step,Performance Step,퍼포먼스 스텝,パフォーマンスステップ,Fase de Performance
+Turn Start,Turn Start,턴 시작,ターン開始,Inicio de Turno
+Turn End,Turn End,턴 종료,ターン終了,Fin de Turno
+DEAL_LIFE_DAMAGE,Deal {Amount} LIFE damage,Deal {Amount} LIFE damage,Deal {Amount} LIFE damage,Deal {Amount} LIFE damage
+,,,,
+Update Card Images,Update Card Images,카드 이미지 업데이트,カード画像を更新中,Actualizar Imágenes de Cartas
+Failed to download card pack.,Failed to download card pack.,이미지 팩 다운로드 실패,カードパックのダウンロードに失敗しました。,No se pudo descargar paquete de imágenes
+Downloading Card Pack....,Downloading Card Pack....,이미지 팩 다운로드 중...,カードパックをダウンロード中....,Descargando paquete de imágenes
+,,,,
+RAIN_SHAMANISM_FULL_TEXT,When you archive Cheer with a Blue Holomem Ability/Arts: deal 20 Special damage to any of your opponent's Holomem.,자신의 청색 홀로멤의 능력으로 옐을 아카이브했을 때 사용할 수 있다 : 상대의 홀로멤 1명에게 특수 대미지 20을 준다.,青いホロメンの能力/アーツでチアをアーカイブした時: 対戦相手のホロメンに20の特別ダメージを与える。,Cuando Archivas Aplausos por una Habilidad o Arte de un Holomem Azul: haz 20 daño especial a cualquier Holomem del oponente.
+VESTIA_027_GIFT_FULL_TEXT,"1/Turn (Collab only) When a Holomem takes damage from the opponent, you may roll a die. If odd, prevent the damage.","자신의 홀로멤이 상대에게서 데미지를 받을 때, 주사위를 1번 굴릴 수 있다: 홀수일 때, 그 데미지를 받지 않는다.",1ターンに1回（コラボのみ） 対戦相手からホロメンがダメージを受けた時、サイコロを振ることができる。奇数の場合、ダメージを防ぐ。,"1/Turno (Sólo en Collab) Cuando un Holomem recibe daño del oponente, puedes lanzar un dado. Si es impar, preven ese daño."
+PEKORA_42_ART_FULL_TEXT,Roll a die. This art gains +10 Power times the result.,"주사위를 1번 굴릴 수 있다: 나온 눈의 수 1개당, 이 아츠 +10",サイコロを振る。このアートは結果の10倍のパワーを得る。,Tira un dado. Este arte gana +10 Poder por el resultado.
+PEKORA_43_ART_FULL_TEXT,Roll 3 dice. This art gains +10 Power times total result.,"주사위를 3번 굴릴 수 있다: 나온 눈의 합계 수 1개당, 이 아츠 +10",サイコロを3つ振る。このアートは合計結果の10倍のパワーを得る。,Tira 3 dados. Este arte gana +10 Poder por el total de los resultados.
+IROHA_50_ART_FULL_TEXT,Send the top card from your Cheer Deck to a #SecretSocietyholoX Holomem not Kazama Iroha.,자신의 옐 덱의 위에서부터 1장을 자신의 카자마 이로하 이외의 #비밀 결사 holoX를 가진 홀로멤에게 보낸다.,チアデッキの一番上のカードを、和風ホロメンでない#SecretSocietyholoXホロメンに送る。,Envía la carta de encima de tu Mazo de Aplausos a un Holomem #SecretSocietyholoX diferente a Kazama Iroha
+LUI_59_ART_FULL_TEXT,You may Archive 1 card from hand to: reveal a 1st Bloom holomem (excluding Buzz holomem) from your deck and put it into your hand. Then shuffle.,자신의 패 1장을 아카이브할 수 있다: 자신의 덱에서 Buzz 이외의 1st 홀로멤 1장을 공개하고 패에 더한다. 그리고 덱을 셔플한다.,手札から1枚のカードをアーカイブして、デッキから1枚の初めてのブルームホロメン（バズホロメンを除く）を公開し、それを手札に加えることができる。その後、シャッフルする。,Puedes Archivar 1 carta de tu mano para: revela un holomem 1er Bloom (excluyendo holomem Buzz) de tu Mazo y ponlo en tu mano. Luego barajea.
+LUI_61_ART_FULL_TEXT,Archive 0-5 cards from your hand. Deal 20 special damage per to your opponent's Center or Collab.,자신의 패 0~5장을 아카이브할 수 있다 : 상대의 센터 홀로멤이나 콜라보 홀로멤 어느 쪽에 아카이브한 카드 1장 당 특수 데미지 20을 준다.,手札から0-5枚のカードをアーカイブする。対戦相手のセンターまたはコラボに対して、アーカイブした枚数ごとに20の特別ダメージを与える。,"Archiva de 0-5 cartas de tu mano. Por cada carta archivada, haz 20 daño especial al Centro o Collab oponentes."
+BAELZ_75_COLLAB_FULL_TEXT,Each player put their hand on the bottom of their deck in any order then draws that many cards.,"서로, 패 전부를 원하는 순서로 덱 아래로 되돌린다. 다음으로, 서로, 덱으로 되돌린 카드 1장 당 각각의 덱을 1장 드로우한다.",各プレイヤーは手札をデッキの一番下に好きな順番で置き、その枚数のカードを引く。,Cada jugador pone su mano al fondo de su Mazo en cualquier orden y roba la misma cantidad de cartas.
+SUISEI_81_ART_FULL_TEXT,Shining Comet: 60 (+50 vs Red)\nYou may Archive 2 Blue Cheers from this Holomem to: +60 Power per Holomem under this and you can target Backstage Holomem.,빛나는 혜성: 60 (+50 vs 적색)\n이 홀로멤의 홀로아츠 청색 옐 2장을 아카이브할 수 있다. 이 홀로멤에게 겹쳐져 있는 홀로멤 1장 당 이 아츠 +60(이 아츠는 상대의 백 홀로멤도 대상으로 할 수 있다).,シャイニングコメット: 60 (+50 vs 赤) このホロメンから2枚の青いチアをアーカイブして、このホロメンの下にいるホロメンごとに60のパワーを得ることができ、バックステージのホロメンを対象にできる。,Cometa Radiante: 60 (+50 vs Rojo)\nPuedes Archivar 2 Aplausos Azules de este Holomem para: +60 Poder por Holomem bajo este y puedes apuntar a Holomems Traseros.
+SUPPORT_110_FULL_TEXT,"Roll a die. If the result is 3 or less, Archive one of your opponent's holomems' Cheer.\nIf your Oshi is Nanashi Mumei, you may instead perform the following effect: (Once per game) Archive 2 Cheer from your opponent's Center.","주사위를 1번 굴린다: 3 이하일 때, 상대의 홀로멤의 옐 1장을 아카이브한다.◆자신의 오시 홀로멤이 나나시 무메이일 때, 능력 변경 가능 [게임에 1번] 상대의 센터 홀로멤의 옐 2장을 아카이브한다.",サイコロを振る。結果が3以下の場合、対戦相手のホロメンのチアを1枚アーカイブする。あなたの推しが七詩むめいの場合、代わりに次の効果を行うことができる: （ゲーム中1回）対戦相手のセンターから2枚のチアをアーカイブする。,"Lanza un dado. Si el resultado es 3 o menos, Archiva uno de los Aplausos del oponente.\nSi tu Oshi es Nanashi Mumei, puedes activar este efecto en vez: (Una vez por juego) Archiva 2 Aplausos del Centro oponente."
+OSHI_CHEER_01_FULL_TEXT,Can be used during your opponent's turn when one of your White Holomems takes damage: reduce that damage by 20.,상대의 턴에 자신의 백색 홀로멤이 상대에게 대미지를 받을 때 사용할 수 있다: 그 홀로멤 1명이 받는 대미지 -20.,あなたのホワイトホロメンの1枚がダメージを受けた時に対戦相手のターン中に使用可能: ダメージを20減らす。,Puede usarse durante el turno del oponente cuando uno de tus Holomems Blancos toma daño: reduce ese daño en 20.
+OSHI_CHEER_04_FULL_TEXT,When one of your Blue Holomems deals damage to your opponent's Back Holomem: deal 50 damage to that Holomem,자신의 홀로멤이 상대의 백 홀로멤에게 데미지를 주웠을 때 사용할 수 있다: 그 상대의 백 홀로멤 1명에게 특수 데미지 50을 준다.,あなたの青いホロメンが対戦相手のバックホロメンにダメージを与えた時: そのホロメンに50のダメージを与える。,Cuando uno de tus Holomems Azules hace daño a uno de los Holomems Traseros oponentes: haz 50 de daño a ese Holomem
+OSHI_STARTER_02_FULL_TEXT,When you would roll a die as part of a Holomem's Ability or Arts you may set the result.,자신의 홀로멤의 능력으로 주사위를 굴릴 때 사용할 수 있다: 주사위의 눈의 수 1개를 선언하고 다음에 나올 눈의 수를 선언한 눈으로 취급한다.,ホロメンの能力やアーツの一部としてサイコロを振る際、結果を設定することができる。,Cuando lanzas un dado como parte de una Habilidad o Arte de un Holomem puedes fijar el resultado.
+OSHI_BP1_002_FULL_TEXT,Can be used during your opponent's turn when one of your Holomems with #Promise takes damage: reduce that damage by 50.,상대의 턴에 자신의 #Promise를 가진 홀로멤이 상대에게 대미지를 받을 때 사용할 수 있다: 그 홀로멤 1명이 받는 대미지 -50.,あなたの#Promiseを持つホロメンがダメージを受けた時に対戦相手のターン中に使用可能: ダメージを50減らす。,Puede usarse en el turno oponente cuando uno de tus Holomems con #Promise recibe daño: reduce ese daño en 50.
+OSHI_BP1_004_FULL_TEXT,When your Holomem is downed on opponent's turn: Distribute all Green Cheer from that Holomem.,상대의 턴에 자신의 홀로멤이 다운했을 때 사용할 수 있다: 자신의 다운한 홀로멤 1명의 녹색 옐 전부를 자신의 다른 홀로멤에게 나눠 붙인다.,あなたのホロメンが対戦相手のターン中にダウンした時: そのホロメンからすべての緑のチアを配分する。,Cuando uno de tus Holomems Verdes es derrotado en el turno oponente: Distribuye todos los Aplausos Verdes de ese Holomem.
+OSHI_BP1_005_FULL_TEXT,When you use a Red Holomem's Ability/Arts that Archives cards from your hand: you may Archive any number them from your Holopower instead.,자신의 적색 홀로멤의 능력으로 패를 아카이브할 때 사용할 수 있다: 아카이브할 패 1장당 자신의 홀로 파워 1장을 대신 아카이브할 수 있다.,手札からカードをアーカイブする赤いホロメンの能力/アーツを使用した時: ホロパワーから任意の枚数をアーカイブすることができる。,Cuando usas una Habilidad/Arte de un holomem Rojo que Archiva cartas de tu mano: puedes Archivar el mismo número de Holopower en vez.
+OSHI_BP1_006_FULL_TEXT,When your Red Holomem is downed on the opponent's turn: lose 1 less LIFE. You may take it and all stacked Holomem into your hand.,"상대의 턴에 자신의 적색 홀로멤이 다운했을 때 사용할 수 있다: 자신의 줄어들 라이프 -1. 다시, 다운한 1명을 골라 그 홀로멤을 포함해 겹쳐져 있던 홀로멤 전부를 패로 되돌린다.",あなたの赤いホロメンが対戦相手のターン中にダウンした時: 1のライフを失う。そのホロメンとすべてのスタックされたホロメンを手札に加えることができる。,Cuando uno de tus Holomems Rojos es Derrotado en el turno oponente: pierde 1 menos de VIDA. Puedes tomarlo y todas sus cartas apiladas a tu mano.
+OSHI_BP1_007_FULL_TEXT,When this or a Blue Holomem deals damage to your opponent's Back Holomem: deal 50 damage to that Holomem,이 오시 홀로멤이나 자신의 청색 홀로멤이 상대의 백 홀로멤에게 대미지를 주었을 때 사용할 수 있다: 그 상대의 백 홀로멤 1명에게 특수 대미지 50을 준다.,このホロメンまたは青いホロメンが対戦相手のバックホロメンにダメージを与えた時: そのホロメンに50のダメージを与える。,Cuando esta o un Holomem Azul hacen daño a un holomem Trasero oponente: haz 50 daño a ese Holomem.
+OSHI_BP1_007_2_FULL_TEXT,When your Blue Holomem deals damage to your opponent's Center or Collab Holomem: deal equal special damage to one of your opponent's Back Holomem,자신의 청색 홀로멤이 상대의 센터 홀로멤이나 콜라보 홀로멤에게 대미지를 주었을 때 사용할 수 있다: 상대의 백 홀로멤 1명에게 그것과 같은 수치의 특수 대미지를 준다.,あなたの青いホロメンが対戦相手のセンターまたはコラボホロメンにダメージを与えた時: 対戦相手のバックホロメンの1つに等しい特別ダメージを与える。,"Lanza un dado. Si el resultado es 3 o menos, Archiva uno de los Aplausos de los holomems del oponente.\nSi tu Oshi es Nanashi Mumei, puedes activar el siguiente efecto en vez: (Una vez por juego) Archiva 2 Aplausos del Centro oponente."
+AYAME_09_ART_FULL_TEXT,Archive 0-3 cards from your hand. Deal 40 special damage per to your opponent's Center.,자신의 패 0~3장을 아카이브할 수 있다 : 상대 센터에 카드당 40의 특수 피해를 줍니다.,"自分の手札0～3枚をアーカイブする: 相手のセンターホロメンに,アーカイブしたカード1枚につき, 特殊ダメージ40を与える。",Archive 0-3 cards from your hand. Deal 40 special damage per to your opponent's Center.
+CHOCO_SD04_004_FULL_TEXT,You may Archive 1 card from your hand for the following effect: reveal an Event with #Food from your Deck and put it into your hand. Then shuffle your Deck.,You may Archive 1 card from your hand for the following effect: reveal an Event with #Food from your Deck and put it into your hand. Then shuffle your Deck.,You may Archive 1 card from your hand for the following effect: reveal an Event with #Food from your Deck and put it into your hand. Then shuffle your Deck.,You may Archive 1 card from your hand for the following effect: reveal an Event with #Food from your Deck and put it into your hand. Then shuffle your Deck.
+OKAYU_004_COLLAB_PARTIAL_TEXT,Then put the revealed card on the bottom of your deck.,Then put the revealed card on the bottom of your deck.,Then put the revealed card on the bottom of your deck.,Then put the revealed card on the bottom of your deck.
+CHLOE_BP02_039_FULL_TEXT,"(Once per turn) When you reveal cards with this holomem's Art ""holoX Slots"", you may put 1 of them that is a Support card into your hand instead of Archiving it.","(Once per turn) When you reveal cards with this holomem's Art ""holoX Slots"", you may put 1 of them that is a Support card into your hand instead of Archiving it.","(Once per turn) When you reveal cards with this holomem's Art ""holoX Slots"", you may put 1 of them that is a Support card into your hand instead of Archiving it.","(Once per turn) When you reveal cards with this holomem's Art ""holoX Slots"", you may put 1 of them that is a Support card into your hand instead of Archiving it."
+CHLOE_BP02_040_FULL_TEXT,"(Once per turn) When you reveal cards with this holomem's Art ""holoX Slots"", if the three revealed cards are all holomems with the same Bloom level, your opponent loses 1 LIFE.","(Once per turn) When you reveal cards with this holomem's Art ""holoX Slots"", if the three revealed cards are all holomems with the same Bloom level, your opponent loses 1 LIFE.","(Once per turn) When you reveal cards with this holomem's Art ""holoX Slots"", if the three revealed cards are all holomems with the same Bloom level, your opponent loses 1 LIFE.","(Once per turn) When you reveal cards with this holomem's Art ""holoX Slots"", if the three revealed cards are all holomems with the same Bloom level, your opponent loses 1 LIFE."
+FUBUKI_BP02_092_FULL_TEXT,"If this is attached to Shirakami Fubuki, it gains the following effect: (Once per turn) during your Main Step, you may Archive any 2 Cheers from your holomems for the following effect: the Arts of the holomem with this Mascot attached gain +50 power until the end of this turn.","If this is attached to Shirakami Fubuki, it gains the following effect: (Once per turn) during your Main Step, you may Archive any 2 Cheers from your holomems for the following effect: the Arts of the holomem with this Mascot attached gain +50 power until the end of this turn.","If this is attached to Shirakami Fubuki, it gains the following effect: (Once per turn) during your Main Step, you may Archive any 2 Cheers from your holomems for the following effect: the Arts of the holomem with this Mascot attached gain +50 power until the end of this turn.","If this is attached to Shirakami Fubuki, it gains the following effect: (Once per turn) during your Main Step, you may Archive any 2 Cheers from your holomems for the following effect: the Arts of the holomem with this Mascot attached gain +50 power until the end of this turn."
+FUBUKI_BP02_001_FULL_TEXT,"(Once per game) Can be used when any of your White holomems Downs an opponent's holomem: you may roll one dice for each 2 Mascots attached to your holomems: if you roll one or more odd numbers, your opponent loses 1 LIFE.","(Once per game) Can be used when any of your White holomems Downs an opponent's holomem: you may roll one dice for each 2 Mascots attached to your holomems: if you roll one or more odd numbers, your opponent loses 1 LIFE.",[ゲームに1回]自分の白ホロメンが相手のホロメンをダウンさせた時、自分のステージのマスコット2枚につき、サイコロを1回振れる：奇数が1回以上出たなら、相手のライフ-1。,"(Once per game) Can be used when any of your White holomems Downs an opponent's holomem: you may roll one dice for each 2 Mascots attached to your holomems: if you roll one or more odd numbers, your opponent loses 1 LIFE."
+,,,,
+Go first.,Go first.,선공하기,先行です。,Ir Primero
+Go second.,Go second.,후공하기,後攻です。,Ir Segundo
+,,,,
+even,Even,짝수,偶数,Par
+odd,Odd,홀수,奇数,Impar
+You are first player.,You are first player.,당신이 선공입니다.,あなたは先手プレイヤーです。,Juegas Primero
+You are second player.,You are second player.,당신이 후공입니다.,あなたは後手プレイヤーです。,Juegas Segundo
+,,,,
+#JP,#JP,#JP,#JP,#JP
+#Gen4,#Gen4,#4기생,#4期生,#Gen4
+#Song,#Song,#노래,#歌,#Song
+#EN,#EN,#EN,#EN,#EN
+#Promise,#Promise,#Promise,#Promise,#Promise
+#Bird,#Bird,#새,#トリ,#Ave
+#Art,#Art,#그림,#絵,#Arte
+#Gen0,#Gen0,#0기생,#0期生,#Gen0
+#ID,#ID,#ID,#ID,#ID
+#IDGen3,#IDGen3,#ID 3기생,#ID3期生,#IDGen3
+#Gen1,#Gen1,#1기생,#1期生,#Gen1
+#HalfElf,#HalfElf,#하프엘프,#ハーフエルフ,#MitadElfo
+#Alcohol,#Alcohol,#술,#お酒,#Alcohol
+#Gen3,#Gen3,#3기생,#3期生,#Gen3
+#AnimalEars,#AnimalEars,#동물귀,#ケモミミ,#OrejasAnimal
+#SecretSocietyholoX,#SecretSocietyholoX,#비밀결사 holoX,#秘密結社holoX,#SecretSocietyholoX
+#IDGen1,#IDGen1,#ID 1기생,#ID1期生,#IDGen1
+#Myth,#Myth,#Myth,#Myth,#Myth
+#Gen5,#Gen5,#5기생,#5期生,#Gen5
+#Sea,#Sea,#바다,#海,#Mar
+#Shooter,#Shooter,#Shooter,#Shooter,#Shooter
+#ShirakamiCharacter,#ShirakamiCharacter,#ShirakamiCharacter,#ShirakamiCharacter,#ShirakamiCharacter
+#Gamers,#Gamers,#Gamers,#Gamers,#Gamers
+#Cooking,#Cooking,#Cooking,#Cooking,#Cooking
+#Food,#Food,#Food,#Food,#Food
+#Gen2,#Gen2,#Gen2,#Gen2,#Gen2

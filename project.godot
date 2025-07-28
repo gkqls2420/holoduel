@@ -1,0 +1,63 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="HoloDuel"
+run/main_scene="res://scenes/main.tscn"
+config/features=PackedStringArray("4.4", "GL Compatibility")
+boot_splash/image="res://assets/icons/holoduel_icon.png"
+config/icon="res://assets/icons/holoduel_icon.png"
+
+[audio]
+
+driver/output_latency.web=90
+
+[autoload]
+
+NetworkManager="*res://globals/network_manager.gd"
+GlobalSettings="*res://globals/global_settings.gd"
+Logger="*res://globals/logger.gd"
+Enums="*res://globals/enums.gd"
+Strings="*res://globals/strings.gd"
+CardDatabase="*res://globals/card_database.gd"
+DeckValidator="*res://globals/deck_validator.gd"
+Playfab="*res://globals/playfab.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+
+[dotnet]
+
+project/assembly_name="HoloDuel"
+
+[gui]
+
+theme/custom_font="res://assets/fonts/notosansen_variation.tres"
+
+[importer_defaults]
+
+texture={
+"compress/lossy_quality": 0.4,
+"compress/mode": 1
+}
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://assets/loc/translations.en.translation", "res://assets/loc/translations.kr.translation", "res://assets/loc/translations.jp.translation", "res://assets/loc/translations.es.translation")
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true

@@ -1,0 +1,404 @@
+[gd_scene load_steps=20 format=3 uid="uid://ds6ostisut8ij"]
+
+[ext_resource type="Script" uid="uid://dwqnxxttmer0r" path="res://scenes/game/game.gd" id="1_mkj14"]
+[ext_resource type="AudioStream" uid="uid://wktc545mvcb7" path="res://assets/sounds/turnstart.wav" id="2_0ec4r"]
+[ext_resource type="PackedScene" uid="uid://cqnd85rwaunjt" path="res://scenes/misc/main_background.tscn" id="2_n6xtj"]
+[ext_resource type="PackedScene" uid="uid://nn3fa22gm0m0" path="res://scenes/game/stats_group.tscn" id="2_yswsg"]
+[ext_resource type="Texture2D" uid="uid://drsem2ah7hjbj" path="res://assets/icons/cards.png" id="3_2mv4f"]
+[ext_resource type="Texture2D" uid="uid://2jdd70qmbibk" path="res://assets/icons/x.png" id="4_h1k1l"]
+[ext_resource type="Theme" uid="uid://dcbb71xa6dfxt" path="res://themes/indicatorlabeltheme.tres" id="5_2cnxe"]
+[ext_resource type="PackedScene" uid="uid://b7di8plutlm5b" path="res://scenes/game/card_popout.tscn" id="6_vy7a0"]
+[ext_resource type="PackedScene" uid="uid://djt48j2x6telk" path="res://scenes/game/game_log.tscn" id="6_xt86y"]
+[ext_resource type="PackedScene" uid="uid://d2fspiqdcp0p1" path="res://scenes/game/card_base.tscn" id="8_13v6m"]
+[ext_resource type="PackedScene" uid="uid://wmclosx28ofb" path="res://scenes/misc/modal_dialog.tscn" id="9_avbnf"]
+[ext_resource type="PackedScene" uid="uid://b5yajeq6o3fln" path="res://scenes/game/card_zone.tscn" id="10_bk3r3"]
+[ext_resource type="PackedScene" uid="uid://db711yiboenfu" path="res://scenes/game/action_menu.tscn" id="11_cx0xb"]
+[ext_resource type="Texture2D" uid="uid://b4kw22837um2t" path="res://assets/icons/donut.png" id="12_j6jby"]
+[ext_resource type="PackedScene" uid="uid://dqeoyiig2xv07" path="res://scenes/misc/settings_window.tscn" id="13_unwuv"]
+[ext_resource type="PackedScene" uid="uid://blev8t8g4iq0m" path="res://scenes/misc/icon_button.tscn" id="14_mh1cl"]
+[ext_resource type="Texture2D" uid="uid://bh0c0vkyounat" path="res://assets/icons/gear.png" id="15_1fn36"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v0wnc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1urmv"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_mkj14")
+
+[node name="MainBackground" parent="." instance=ExtResource("2_n6xtj")]
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[node name="Background" type="ColorRect" parent="."]
+visible = false
+offset_right = 1280.0
+offset_bottom = 720.0
+color = Color(0.31802, 0.31802, 0.31802, 1)
+
+[node name="TurnStartAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_0ec4r")
+
+[node name="OpponentDeckSpawn" type="MarginContainer" parent="."]
+offset_left = 1177.0
+offset_top = 12.0
+offset_right = 1217.0
+offset_bottom = 52.0
+
+[node name="OpponentStatsGroup" parent="." instance=ExtResource("2_yswsg")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 1029.0
+offset_top = 146.0
+offset_right = 1281.0
+offset_bottom = 382.0
+grow_horizontal = 0
+scale = Vector2(0.8, 0.8)
+
+[node name="MeStatsGroup" parent="." instance=ExtResource("2_yswsg")]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1029.0
+offset_top = 340.0
+offset_right = 1281.0
+offset_bottom = 576.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.8, 0.8)
+
+[node name="MeUsernameLabel" type="Label" parent="."]
+offset_left = 915.0
+offset_top = 573.0
+offset_right = 1270.0
+offset_bottom = 601.0
+theme_override_font_sizes/font_size = 20
+text = "PlayerName"
+horizontal_alignment = 2
+
+[node name="MeClock" type="Label" parent="."]
+offset_left = 915.0
+offset_top = 542.0
+offset_right = 1270.0
+offset_bottom = 570.0
+theme_override_font_sizes/font_size = 20
+text = "00:00"
+horizontal_alignment = 2
+
+[node name="OpponentUsernameLabel" type="Label" parent="."]
+offset_left = 815.0
+offset_top = 79.0
+offset_right = 1170.0
+offset_bottom = 107.0
+theme_override_font_sizes/font_size = 20
+text = "OpponentName"
+horizontal_alignment = 2
+
+[node name="OpponentClock" type="Label" parent="."]
+offset_left = 815.0
+offset_top = 108.0
+offset_right = 1170.0
+offset_bottom = 136.0
+theme_override_font_sizes/font_size = 20
+text = "00:00"
+horizontal_alignment = 2
+
+[node name="OpponentHandIndicator" type="HBoxContainer" parent="."]
+offset_left = 1050.0
+offset_top = 20.0
+offset_right = 1171.0
+offset_bottom = 65.0
+
+[node name="Icon" type="TextureRect" parent="OpponentHandIndicator"]
+layout_mode = 2
+texture = ExtResource("3_2mv4f")
+expand_mode = 2
+
+[node name="x" type="TextureRect" parent="OpponentHandIndicator"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("4_h1k1l")
+expand_mode = 1
+
+[node name="spacing" type="MarginContainer" parent="OpponentHandIndicator"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+
+[node name="HandCount" type="Label" parent="OpponentHandIndicator"]
+layout_mode = 2
+theme = ExtResource("5_2cnxe")
+text = "0"
+
+[node name="MeHandIndicator" type="HBoxContainer" parent="."]
+offset_left = 1140.0
+offset_top = 660.0
+offset_right = 1261.0
+offset_bottom = 705.0
+
+[node name="Icon" type="TextureRect" parent="MeHandIndicator"]
+layout_mode = 2
+texture = ExtResource("3_2mv4f")
+expand_mode = 2
+
+[node name="x" type="TextureRect" parent="MeHandIndicator"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("4_h1k1l")
+expand_mode = 1
+
+[node name="spacing" type="MarginContainer" parent="MeHandIndicator"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+
+[node name="HandCount" type="Label" parent="MeHandIndicator"]
+layout_mode = 2
+theme = ExtResource("5_2cnxe")
+text = "0"
+
+[node name="MeBackstage" parent="." instance=ExtResource("10_bk3r3")]
+offset_left = 5.0
+offset_top = 365.0
+offset_right = 813.0
+offset_bottom = 1137.0
+scale = Vector2(0.45, 0.45)
+zone_name = "Backstage"
+layout_style = 3
+
+[node name="MeCenter" parent="." instance=ExtResource("10_bk3r3")]
+offset_left = 580.0
+offset_top = 340.0
+offset_right = 880.0
+offset_bottom = 758.0
+scale = Vector2(0.45, 0.45)
+zone_name = "Center"
+
+[node name="MeCollab" parent="." instance=ExtResource("10_bk3r3")]
+offset_left = 400.0
+offset_top = 340.0
+offset_right = 700.0
+offset_bottom = 758.0
+scale = Vector2(0.45, 0.45)
+zone_name = "Collab"
+
+[node name="MeOshi" parent="." instance=ExtResource("10_bk3r3")]
+offset_left = 890.0
+offset_top = 340.0
+offset_right = 1190.0
+offset_bottom = 758.0
+scale = Vector2(0.45, 0.45)
+zone_name = "Oshi"
+
+[node name="MeHand" parent="." instance=ExtResource("10_bk3r3")]
+modulate = Color(1, 1, 1, 0)
+offset_left = 610.0
+offset_top = 542.0
+offset_right = 910.0
+offset_bottom = 960.0
+scale = Vector2(0.4, 0.4)
+zone_name = "Hand"
+layout_style = 2
+
+[node name="OpponentBackstage" parent="." instance=ExtResource("10_bk3r3")]
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 813.0
+offset_bottom = 777.0
+scale = Vector2(0.45, 0.45)
+zone_name = "Backstage"
+layout_style = 3
+
+[node name="OpponentCenter" parent="." instance=ExtResource("10_bk3r3")]
+offset_left = 580.0
+offset_top = 150.0
+offset_right = 880.0
+offset_bottom = 568.0
+scale = Vector2(0.45, 0.45)
+zone_name = "Center"
+
+[node name="OpponentCollab" parent="." instance=ExtResource("10_bk3r3")]
+offset_left = 400.0
+offset_top = 150.0
+offset_right = 700.0
+offset_bottom = 568.0
+scale = Vector2(0.45, 0.45)
+zone_name = "Collab"
+
+[node name="OpponentOshi" parent="." instance=ExtResource("10_bk3r3")]
+offset_left = 890.0
+offset_top = 150.0
+offset_right = 1190.0
+offset_bottom = 568.0
+scale = Vector2(0.45, 0.45)
+zone_name = "Oshi"
+
+[node name="OpponentHand" parent="." instance=ExtResource("10_bk3r3")]
+modulate = Color(1, 1, 1, 0)
+offset_left = 593.0
+offset_top = -220.0
+offset_right = 893.0
+offset_bottom = 198.0
+scale = Vector2(0.4, 0.4)
+zone_name = "Hand"
+layout_style = 0
+
+[node name="FloatingCardZone" parent="." instance=ExtResource("10_bk3r3")]
+modulate = Color(1, 1, 1, 0)
+offset_left = 730.0
+offset_top = 260.0
+offset_right = 1030.0
+offset_bottom = 678.0
+scale = Vector2(0.45, 0.45)
+zone_name = "Playing"
+layout_style = 4
+
+[node name="AllCards" type="Node2D" parent="."]
+
+[node name="MeArchive" parent="." instance=ExtResource("10_bk3r3")]
+offset_left = 1140.0
+offset_top = 340.0
+offset_right = 1440.0
+offset_bottom = 758.0
+scale = Vector2(0.45, 0.45)
+zone_name = "Archive"
+layout_style = 0
+
+[node name="OpponentArchive" parent="." instance=ExtResource("10_bk3r3")]
+offset_left = 1140.0
+offset_top = 150.0
+offset_right = 1440.0
+offset_bottom = 568.0
+scale = Vector2(0.45, 0.45)
+zone_name = "Archive"
+layout_style = 0
+
+[node name="ThinkingSpinner" type="TextureProgressBar" parent="."]
+offset_left = 965.0
+offset_top = 10.0
+offset_right = 1029.0
+offset_bottom = 74.0
+value = 30.0
+fill_mode = 4
+texture_progress = ExtResource("12_j6jby")
+
+[node name="MeDeckSpawn" type="MarginContainer" parent="."]
+offset_left = 1171.0
+offset_top = 601.0
+offset_right = 1211.0
+offset_bottom = 641.0
+
+[node name="SettingsButton" parent="." instance=ExtResource("14_mh1cl")]
+custom_minimum_size = Vector2(48, 48)
+offset_left = 1215.0
+offset_top = 10.0
+offset_right = 1263.0
+offset_bottom = 58.0
+texture = ExtResource("15_1fn36")
+
+[node name="LogButton" type="Button" parent="."]
+offset_left = 1181.0
+offset_top = 90.0
+offset_right = 1268.0
+offset_bottom = 121.0
+text = "Game Log"
+
+[node name="DebugPlayLastEvent" type="Button" parent="."]
+offset_left = 1105.0
+offset_top = 610.0
+offset_right = 1271.0
+offset_bottom = 641.0
+text = "Debug: Replay Event"
+
+[node name="UIOverlay" type="PanelContainer" parent="."]
+visible = false
+custom_minimum_size = Vector2(1280, 720)
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_v0wnc")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UIOverlay"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UIOverlay/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+alignment = 1
+
+[node name="ActionMenu" parent="UIOverlay/VBoxContainer/HBoxContainer" instance=ExtResource("11_cx0xb")]
+layout_mode = 2
+
+[node name="GameOverContainer" type="PanelContainer" parent="UIOverlay/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_1urmv")
+
+[node name="CenterContainer" type="CenterContainer" parent="UIOverlay/VBoxContainer/GameOverContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="GameOverText" type="RichTextLabel" parent="UIOverlay/VBoxContainer/GameOverContainer/CenterContainer"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 80
+theme_override_font_sizes/bold_font_size = 60
+bbcode_enabled = true
+text = "[center][b]GAME OVER[/b]
+
+WINNER_TEXT![/center]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="GameLog" parent="." instance=ExtResource("6_xt86y")]
+visible = false
+
+[node name="ArchiveCardPopout" parent="." instance=ExtResource("6_vy7a0")]
+visible = false
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[node name="CardPopout" parent="." instance=ExtResource("6_vy7a0")]
+visible = false
+
+[node name="BigCard" parent="." instance=ExtResource("8_13v6m")]
+visible = false
+position = Vector2(1000, 280)
+scale = Vector2(1.2, 1.2)
+is_big_card = true
+
+[node name="PopupLocation" type="Node2D" parent="."]
+position = Vector2(640, 118)
+
+[node name="ModalDialog" parent="." instance=ExtResource("9_avbnf")]
+visible = false
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[node name="SaveFileDialog" type="FileDialog" parent="."]
+auto_translate_mode = 1
+initial_position = 1
+size = Vector2i(800, 400)
+use_native_dialog = true
+
+[node name="SettingsWindow" parent="." instance=ExtResource("13_unwuv")]
+visible = false
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[connection signal="zone_pressed" from="MeArchive" to="." method="_on_me_archive_zone_pressed"]
+[connection signal="zone_pressed" from="OpponentArchive" to="." method="_on_opponent_archive_zone_pressed"]
+[connection signal="pressed" from="SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="LogButton" to="." method="_on_log_button_pressed"]
+[connection signal="pressed" from="DebugPlayLastEvent" to="." method="_on_debug_play_last_event_pressed"]
+[connection signal="save_log_pressed" from="GameLog" to="." method="_on_game_log_save_log_pressed"]
+[connection signal="file_selected" from="SaveFileDialog" to="." method="_on_save_file_dialog_file_selected"]

@@ -1,0 +1,412 @@
+extends Control
+
+const MatchmakingQueueName = "main_matchmaking_normal"
+const AIQueueName = "main_matchmaking_ai"
+
+var oshi_sora = "hSD01-001"
+var oshi_azki = "hSD01-002"
+
+# Buttons
+@onready var play_ai_button = $MainButtons/PlayAIButton
+@onready var server_connect_button = $MainButtons/ServerConnectButton
+@onready var join_queue_button = $MainButtons/JoinQueueButton
+@onready var join_match_button = $MainButtons/JoinMatchButton
+@onready var leave_queue_button = $MainButtons/LeaveQueueButton
+@onready var join_custom_box = $MainButtons/JoinCustomBox
+@onready var deck_builder_button = $DeckBuilderButton
+@onready var how_to_play_button = $HowToPlayButton
+
+# Labels
+@onready var server_status = $ServerStatus/ServerStatusLabel
+@onready var client_version = $ClientVersion/ClientVersionLabel
+@onready var player_username = $PlayerUsernameLabel
+@onready var player_count_label = $PlayerCountLabel
+@onready var match_count_label = $HBoxContainer/MatchCount
+
+# Other
+@onready var server_info_list : ItemList = $ServerInfoList
+@onready var deck_selector = $DeckControls/HBoxContainer/DeckSelector
+@onready var debug_deck_selector = $DebugDeckSelector
+@onready var deck_controls = $DeckControls
+@onready var modal_dialog = $ModalDialog
+@onready var custom_room_entry = $MainButtons/JoinCustomBox/CustomRoomEditBox
+@onready var howtoplay = $Howtoplay
+@onready var match_list = $MatchList
+@onready var match_list_button = $HBoxContainer/ViewMatchListButton
+@onready var change_log = $ChangeLog
+
+@onready var deck_builder : DeckBuilder = $Deckbuilder
+
+enum MenuState {
+	MenuState_ConnectingToServer,
+	MenuState_Connected_Default,
+	MenuState_Disconnected,
+	MenuState_Queued,
+}
+
+var menu_state : MenuState = MenuState.MenuState_ConnectingToServer
+
+var match_queues : Array = []
+var loaded_deck
+var test_decks = []
+var seen_joinable_match = false
+var queued_for_ai = false
+var in_game = false
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	# 임시 디버그: Play vs AI 버튼 강제 활성화
+	await get_tree().process_frame
+	play_ai_button.disabled = false
+	print("DEBUG: Play vs AI 버튼을 강제로 활성화했습니다.")
+	
+	$DebugSpewButton.visible = OS.is_debug_build()
+	_update_buttons()
+	NetworkManager.connect("connected_to_server", _on_connected)
+	NetworkManager.connect("disconnected_from_server", _on_disconnected)
+	NetworkManager.connect("server_info", _on_server_info)
+	NetworkManager.connect("join_operation_failed", _on_join_failed)
+	GlobalSettings.setting_changed_UseWebServer.connect(_on_use_web_server_changed)
+
+	client_version.text = GlobalSettings.get_client_version()
+
+	if OS.is_debug_build():
+		test_decks = CardDatabase.get_test_decks()
+		debug_deck_selector.clear()
+		for i in range(len(test_decks)):
+			var deck = test_decks[i]
+			debug_deck_selector.add_item(deck["deck_name"], i)
+		debug_deck_selector.selected = -1
+	else:
+		debug_deck_selector.visible = false
+
+func _update_element(button, enabled_value, visibility_value):
+	if button is Button:
+		button.disabled = not enabled_value
+	button.visible = visibility_value
+
+func _update_buttons() -> void:
+	match menu_state:
+		MenuState.MenuState_ConnectingToServer:
+			_update_element(play_ai_button, false, true)
+			_update_element(server_connect_button, false, false)
+			_update_element(join_queue_button, false, true)
+			_update_element(join_match_button, false, false)
+			_update_element(leave_queue_button, false, false)
+			_update_element(deck_controls, true, true)
+			_update_element(join_custom_box, false, false)
+			_update_element(deck_builder_button, true, true)
+			_update_element(how_to_play_button, true, true)
+			_update_element(match_list_button, false, true)
+			var server_url = GlobalSettings.get_server_url()
+			var server_name = GlobalSettings.get_current_server_name()
+			server_status.text = "Connecting to server...\n" + server_name + " (" + server_url + ")"
+		MenuState.MenuState_Connected_Default:
+			_update_element(play_ai_button, true, true)
+			_update_element(server_connect_button, false, false)
+			_update_element(join_queue_button, not seen_joinable_match, not seen_joinable_match)
+			_update_element(join_match_button, seen_joinable_match, seen_joinable_match)
+			_update_element(leave_queue_button, false, false)
+			_update_element(deck_controls, true, true)
+			_update_element(join_custom_box, true, true)
+			_update_element(deck_builder_button, true, true)
+			_update_element(how_to_play_button, true, true)
+			_update_element(match_list_button, true, true)
+			var server_url = GlobalSettings.get_server_url()
+			var server_name = GlobalSettings.get_current_server_name()
+			server_status.text = "Connected to " + server_name + "\n" + server_url
+		MenuState.MenuState_Disconnected:
+			_update_element(play_ai_button, false, false)
+			_update_element(server_connect_button, true, true)
+			_update_element(join_queue_button, false, false)
+			_update_element(join_match_button, false, false)
+			_update_element(leave_queue_button, false, false)
+			_update_element(deck_controls, true, true)
+			_update_element(join_custom_box, false, false)
+			_update_element(deck_builder_button, true, true)
+			_update_element(how_to_play_button, true, true)
+			_update_element(match_list_button, false, true)
+			server_status.text = "Disconnected from server\nClick 'Connect' to retry"
+			player_username.text = "Player Name"
+		MenuState.MenuState_Queued:
+			_update_element(play_ai_button, false, false)
+			_update_element(server_connect_button, false, false)
+			_update_element(join_queue_button, false, false)
+			_update_element(join_match_button, false, false)
+			_update_element(leave_queue_button, true, true)
+			_update_element(deck_controls, false, false)
+			_update_element(join_custom_box, false, false)
+			_update_element(deck_builder_button, false, false)
+			_update_element(how_to_play_button, false, false)
+			_update_element(match_list_button, false, true)
+		_:
+			assert(false, "Unimplemented menu state")
+			pass
+
+func returned_from_game():
+	in_game = false
+	seen_joinable_match = false
+	if NetworkManager.is_server_connected():
+		menu_state = MenuState.MenuState_Connected_Default
+		_update_server_info()
+	else:
+		menu_state = MenuState.MenuState_Disconnected
+	_update_buttons()
+
+func starting_game():
+	in_game = true
+	if menu_state == MenuState.MenuState_Queued and not queued_for_ai:
+		if GlobalSettings.get_user_setting(GlobalSettings.GameSound):
+			$MatchJoinedSound.play()
+
+func settings_loaded():
+	do_new_update_actions()
+	deck_builder.load_decks()
+	load_user_decks()
+
+func load_user_decks():
+	print("DEBUG: load_user_decks 호출됨")
+	var decks = deck_builder.get_decks()
+	print("DEBUG: deck_builder.get_decks() 결과:", decks)
+	deck_selector.clear()
+	for i in range(len(decks)):
+		var deck = decks[i]
+		deck_selector.add_item(deck["deck_name"], i)
+	deck_selector.selected = deck_builder.get_current_deck_index()
+	print("DEBUG: 선택된 deck 인덱스:", deck_selector.selected)
+	loaded_deck = decks[deck_selector.selected]
+	print("DEBUG: loaded_deck 설정됨:", loaded_deck)
+	deck_selector.text = loaded_deck["deck_name"]
+
+func _on_connected():
+	print("DEBUG: 서버에 연결되었습니다!")
+	menu_state = MenuState.MenuState_Connected_Default
+	_update_buttons()
+
+func _on_disconnected():
+	print("DEBUG: 서버에서 연결이 끊어졌습니다!")
+	menu_state = MenuState.MenuState_Disconnected
+	_update_buttons()
+	server_info_list.clear()
+	server_status.text = "Disconnected from server."
+
+func _update_server_info():
+	server_info_list.clear()
+
+	player_username.text = NetworkManager.get_my_player_name()
+
+	match_queues = []
+	var players_info = NetworkManager.get_players_info()
+	player_count_label.text = str(players_info.size())
+	for player in players_info:
+		var player_name = player["username"]
+		var queue = player["queue"]
+		var game_room = player["game_room"]
+		if queue:
+			game_room = ""
+		else:
+			if game_room == "Lobby":
+				queue = "in"
+			elif game_room == "AI":
+				queue = "playing"
+			elif game_room.begins_with("Match_"):
+				if player["observing"]:
+					queue = "watching"
+				else:
+					queue = "in"
+				game_room = "Match"
+			else:
+				queue = ""
+				if player["observing"]:
+					queue = "watching"
+
+
+		server_info_list.add_item(player_name, null, false)
+		server_info_list.add_item(queue, null, false)
+		server_info_list.add_item(game_room, null, false)
+
+	for queue in NetworkManager.get_queue_info():
+		match_queues.append(queue)
+
+	# Check if a match is joinable.
+	var joinable_match = false
+	for queue in match_queues:
+		if queue["queue_name"] == MatchmakingQueueName:
+			joinable_match = queue["players_count"] > 0
+	if joinable_match and not seen_joinable_match:
+		seen_joinable_match = true
+		if not in_game and GlobalSettings.get_user_setting(GlobalSettings.GameSound):
+			$MatchAvailableSound.play()
+	if not joinable_match:
+		seen_joinable_match = false
+
+	var match_info = get_match_list_info()
+	match_count_label.text = str(len(match_info))
+	match_list.update_match_list(match_info)
+
+	_update_buttons()
+
+func _on_server_info():
+	server_info_list.clear()
+	player_count_label.text = ""
+	_update_server_info()
+
+func _on_server_connect_button_pressed() -> void:
+	menu_state = MenuState.MenuState_ConnectingToServer
+	_update_buttons()
+	# 서버 인덱스 리셋하여 처음부터 시도
+	GlobalSettings.reset_server_index()
+	NetworkManager.connect_to_server()
+
+func get_player_oshi():
+	return loaded_deck["oshi"]
+
+func get_player_deck():
+	return loaded_deck["deck"]
+
+func get_player_cheer_deck():
+	return loaded_deck["cheer_deck"]
+
+func _on_join_queue_button_pressed() -> void:
+	menu_state = MenuState.MenuState_Queued
+	queued_for_ai = false
+	seen_joinable_match = true
+	_update_buttons()
+	join_match_queue(MatchmakingQueueName)
+
+func _on_join_custom_button_pressed() -> void:
+	queued_for_ai = false
+	var desired_room : String = custom_room_entry.text
+	desired_room = desired_room.strip_edges(true, true)
+	if desired_room:
+		menu_state = MenuState.MenuState_Queued
+		_update_buttons()
+		join_match_queue(desired_room)
+
+
+func join_match_queue(queue_name):
+	print("DEBUG: join_match_queue 호출됨 - queue_name:", queue_name)
+	print("DEBUG: loaded_deck:", loaded_deck)
+	if loaded_deck == null:
+		print("DEBUG: loaded_deck이 null입니다!")
+		return
+	
+	var oshi = get_player_oshi()
+	var deck = get_player_deck()
+	var cheer_deck = get_player_cheer_deck()
+	print("DEBUG: oshi:", oshi)
+	print("DEBUG: deck 크기:", deck.size() if deck else "null")
+	print("DEBUG: cheer_deck 크기:", cheer_deck.size() if cheer_deck else "null")
+	
+	NetworkManager.join_match_queue(queue_name, oshi, deck, cheer_deck)
+
+func _on_join_failed(error_id) -> void:
+	match error_id:
+		NetworkManager.ServerError_JoinInvalidDeck:
+			modal_dialog.set_text_fields("Invalid deck", "OK", "")
+		_:
+			modal_dialog.set_text_fields("Join failed", "OK", "")
+	menu_state = MenuState.MenuState_Connected_Default
+	seen_joinable_match = false
+	_update_server_info()
+	_update_buttons()
+
+func _on_leave_queue_button_pressed() -> void:
+	queued_for_ai = false
+	menu_state = MenuState.MenuState_Connected_Default
+	_update_buttons()
+	NetworkManager.leave_match_queue()
+
+func _on_debug_spew_button_toggled(toggled_on: bool) -> void:
+	GlobalSettings.toggle_logging(toggled_on)
+
+func _on_play_ai_button_pressed() -> void:
+	print("DEBUG: Play vs AI 버튼이 눌렸습니다!")
+	
+	# 서버 연결 상태 확인
+	if not NetworkManager.is_server_connected():
+		print("DEBUG: 서버에 연결되지 않았습니다. 서버 연결을 시도합니다...")
+		NetworkManager.connect_to_server()
+		# 잠시 대기 후 다시 시도
+		await get_tree().create_timer(2.0).timeout
+		if not NetworkManager.is_server_connected():
+			print("DEBUG: 서버 연결에 실패했습니다. AI 게임을 시작할 수 없습니다.")
+			modal_dialog.set_text_fields("서버 연결 실패", "서버에 연결할 수 없습니다. 서버가 실행 중인지 확인해주세요.", "확인")
+			return
+	
+	queued_for_ai = true
+	menu_state = MenuState.MenuState_Queued
+	_update_buttons()
+	join_match_queue(AIQueueName)
+
+func _on_settings_button_pressed() -> void:
+	$SettingsWindow.show_settings()
+
+func _on_deck_selector_item_selected(index: int) -> void:
+	deck_builder.set_deck_index(index)
+	loaded_deck = deck_builder.get_decks()[index]
+
+func _on_debug_deck_selector_item_selected(index: int) -> void:
+	loaded_deck = test_decks[index]
+
+func _on_how_to_play_button_pressed() -> void:
+	howtoplay.show_help()
+
+func _on_deck_builder_button_pressed() -> void:
+	deck_builder.show_deck_builder(deck_selector.selected)
+
+func _on_deckbuilder_exit_deck_builder() -> void:
+	load_user_decks()
+
+func get_match_list_info():
+	var match_list_info = []
+	for info in NetworkManager.cached_server_info["room_info"]:
+		var room :String = info["room_name"]
+		if room.begins_with("Match"):
+			room = "Match"
+		elif room.begins_with("Custom"):
+			room = room.replace("Custom_", "")
+
+		var p1oshi = CardDatabase.get_card(info["players"][0]["oshi_id"])
+		var p2oshi = CardDatabase.get_card(info["players"][1]["oshi_id"])
+		match_list_info.append({
+			"room_name": room,
+			"player1": info["players"][0]["username"],
+			"player1_oshi": Strings.get_names(p1oshi["card_names"])[0],
+			"player2": info["players"][1]["username"],
+			"player2_oshi": Strings.get_names(p2oshi["card_names"])[0],
+		})
+	return match_list_info
+
+func _on_view_match_list_button_pressed() -> void:
+	match_list.visible = true
+
+func _on_match_list_observe_match(match_index: Variant) -> void:
+	queued_for_ai = true
+	menu_state = MenuState.MenuState_Queued
+	_update_buttons()
+	NetworkManager.observe_room(match_index)
+
+func show_change_log() -> void:
+	change_log.show_logs()
+
+func do_new_update_actions() -> void:
+	# this method is reserved for actions that needs to be done when the
+	# client version has been updated.
+	if not GlobalSettings.is_client_version_mismatch():
+		return
+
+	show_change_log()
+
+	GlobalSettings.update_user_client_version()
+
+func _on_use_web_server_changed() -> void:
+	# 서버 설정이 변경되면 현재 연결을 끊고 새로운 서버로 재연결
+	if NetworkManager.is_server_connected():
+		print("DEBUG: 서버 설정이 변경되었습니다. 재연결을 시도합니다...")
+		NetworkManager.disconnect_from_server()
+		menu_state = MenuState.MenuState_ConnectingToServer
+		_update_buttons()
+		# 잠시 대기 후 새로운 서버로 연결
+		await get_tree().create_timer(1.0).timeout
+		NetworkManager.connect_to_server()

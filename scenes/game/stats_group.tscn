@@ -1,0 +1,218 @@
+[gd_scene load_steps=11 format=3 uid="uid://nn3fa22gm0m0"]
+
+[ext_resource type="Script" uid="uid://bww2cl3gemvv2" path="res://scenes/game/stats_group.gd" id="1_2nl5y"]
+[ext_resource type="Texture2D" uid="uid://drsem2ah7hjbj" path="res://assets/icons/cards.png" id="1_egjg1"]
+[ext_resource type="Texture2D" uid="uid://2jdd70qmbibk" path="res://assets/icons/x.png" id="2_glo8x"]
+[ext_resource type="Theme" uid="uid://dcbb71xa6dfxt" path="res://themes/indicatorlabeltheme.tres" id="3_er6l1"]
+[ext_resource type="Texture2D" uid="uid://dj2jrem0ns5d8" path="res://assets/icons/deck.png" id="4_yabwa"]
+[ext_resource type="Texture2D" uid="uid://fdae7rpjwwv3" path="res://assets/icons/heart.png" id="5_y7cq5"]
+[ext_resource type="Texture2D" uid="uid://dt5gfu6i5xljk" path="res://assets/icons/battery-charging.svg" id="6_2jxq8"]
+[ext_resource type="Texture2D" uid="uid://dlqyskv1syjk6" path="res://assets/icons/discard.png" id="7_h2fck"]
+[ext_resource type="Texture2D" uid="uid://cbrksgiwkrwu2" path="res://assets/cheer_icons/any.png" id="9_01wyk"]
+[ext_resource type="Texture2D" uid="uid://63xxuqrx3q1s" path="res://assets/icons/thickx.png" id="10_1b5pq"]
+
+[node name="StatsGroup" type="GridContainer"]
+offset_right = 214.0
+offset_bottom = 143.0
+theme_override_constants/h_separation = 10
+script = ExtResource("1_2nl5y")
+
+[node name="LifeIndicator" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="LifeIndicator"]
+layout_mode = 2
+texture = ExtResource("5_y7cq5")
+expand_mode = 2
+
+[node name="x" type="TextureRect" parent="LifeIndicator"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_glo8x")
+expand_mode = 1
+
+[node name="spacing" type="MarginContainer" parent="LifeIndicator"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+
+[node name="LifeCount" type="Label" parent="LifeIndicator"]
+layout_mode = 2
+theme = ExtResource("3_er6l1")
+text = "7"
+
+[node name="HolopowerIndicator" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="HolopowerIndicator"]
+layout_mode = 2
+texture = ExtResource("6_2jxq8")
+expand_mode = 2
+
+[node name="x" type="TextureRect" parent="HolopowerIndicator"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_glo8x")
+expand_mode = 1
+
+[node name="spacing" type="MarginContainer" parent="HolopowerIndicator"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+
+[node name="HolopowerCount" type="Label" parent="HolopowerIndicator"]
+layout_mode = 2
+theme = ExtResource("3_er6l1")
+text = "7"
+
+[node name="HandIndicator" type="HBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="HandIndicator"]
+layout_mode = 2
+texture = ExtResource("1_egjg1")
+expand_mode = 2
+
+[node name="x" type="TextureRect" parent="HandIndicator"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_glo8x")
+expand_mode = 1
+
+[node name="spacing" type="MarginContainer" parent="HandIndicator"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+
+[node name="HandCount" type="Label" parent="HandIndicator"]
+layout_mode = 2
+theme = ExtResource("3_er6l1")
+text = "13"
+
+[node name="DeckIndicator" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="DeckIndicator"]
+layout_mode = 2
+texture = ExtResource("4_yabwa")
+expand_mode = 2
+
+[node name="x" type="TextureRect" parent="DeckIndicator"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_glo8x")
+expand_mode = 1
+
+[node name="spacing" type="MarginContainer" parent="DeckIndicator"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+
+[node name="DeckCount" type="Label" parent="DeckIndicator"]
+layout_mode = 2
+theme = ExtResource("3_er6l1")
+text = "34"
+
+[node name="ArchiveIndicator" type="HBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="ArchiveIndicator"]
+layout_mode = 2
+texture = ExtResource("7_h2fck")
+expand_mode = 2
+
+[node name="x" type="TextureRect" parent="ArchiveIndicator"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_glo8x")
+expand_mode = 1
+
+[node name="spacing" type="MarginContainer" parent="ArchiveIndicator"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+
+[node name="ArchiveCount" type="Label" parent="ArchiveIndicator"]
+layout_mode = 2
+theme = ExtResource("3_er6l1")
+text = "88"
+
+[node name="CheerIndicator" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="CheerIndicator"]
+layout_mode = 2
+texture = ExtResource("9_01wyk")
+expand_mode = 2
+
+[node name="x" type="TextureRect" parent="CheerIndicator"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_glo8x")
+expand_mode = 1
+
+[node name="spacing" type="MarginContainer" parent="CheerIndicator"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+
+[node name="CheerCount" type="Label" parent="CheerIndicator"]
+layout_mode = 2
+theme = ExtResource("3_er6l1")
+text = "20"
+
+[node name="LimitedIndicator" type="PanelContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LimitedIndicator"]
+layout_mode = 2
+text = "LIMITED"
+horizontal_alignment = 1
+
+[node name="XOverlay" type="TextureRect" parent="LimitedIndicator"]
+modulate = Color(1, 0, 0, 1)
+layout_mode = 2
+texture = ExtResource("10_1b5pq")
+expand_mode = 1
+
+[node name="OshiSkillIndicators" type="HBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="Turn" type="PanelContainer" parent="OshiSkillIndicators"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="OshiSkillIndicators/Turn"]
+layout_mode = 2
+text = "TURN"
+horizontal_alignment = 1
+
+[node name="TurnX" type="TextureRect" parent="OshiSkillIndicators/Turn"]
+modulate = Color(1, 0, 0, 1)
+layout_mode = 2
+texture = ExtResource("10_1b5pq")
+expand_mode = 1
+
+[node name="Game" type="PanelContainer" parent="OshiSkillIndicators"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="OshiSkillIndicators/Game"]
+layout_mode = 2
+text = "GAME"
+horizontal_alignment = 1
+
+[node name="GameX" type="TextureRect" parent="OshiSkillIndicators/Game"]
+modulate = Color(1, 0, 0, 1)
+layout_mode = 2
+texture = ExtResource("10_1b5pq")
+expand_mode = 1
