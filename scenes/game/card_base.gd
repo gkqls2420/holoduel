@@ -221,7 +221,7 @@ func _update_english_text():
 		new_info.set_text(info_data["colors"], info_data["text"])
 
 func show_target_reticle(amount):
-	targeting_amount_label.text = str(amount)
+	targeting_amount_label.text = str(int(amount))
 	targeting_indicator.visible = true
 
 func update_target_reticle(change_amount):
@@ -340,6 +340,12 @@ func _update_stats():
 
 	damage_indicator.visible = damage > 0
 	damage_label.text = str(int(damage))
+	
+	# 대미지가 있는 카드는 더 높은 z-index를 가지도록 설정
+	if damage > 0:
+		z_index = 3  # 대미지가 있는 카드는 앞에 표시 (설명 패널보다는 낮음)
+	else:
+		z_index = 0   # 기본 z-index
 
 func attach_cheer(card_id, colors : Array):
 	_cheer[card_id] = colors

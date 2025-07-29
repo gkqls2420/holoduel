@@ -21,6 +21,7 @@ bg_color = Color(0.154876, 0.154876, 0.154876, 1)
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pe41s"]
 
 [node name="CardPopout" type="CenterContainer"]
+z_index = 10
 custom_minimum_size = Vector2(1280, 720)
 offset_right = 40.0
 offset_bottom = 40.0

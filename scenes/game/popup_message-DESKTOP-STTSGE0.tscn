@@ -136,7 +136,6 @@ corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 
 [node name="PopupMessage" type="Node2D"]
-z_index = 10
 script = ExtResource("1_eol4j")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

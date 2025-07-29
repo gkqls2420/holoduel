@@ -10,6 +10,7 @@ corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 
 [node name="CardInfoPanel" type="PanelContainer"]
+z_index = 8
 offset_right = 300.0
 offset_bottom = 100.0
 mouse_filter = 2

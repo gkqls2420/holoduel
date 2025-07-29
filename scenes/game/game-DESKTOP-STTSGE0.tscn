@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://2jdd70qmbibk" path="res://assets/icons/x.png" id="4_h1k1l"]
 [ext_resource type="Theme" uid="uid://dcbb71xa6dfxt" path="res://themes/indicatorlabeltheme.tres" id="5_2cnxe"]
 [ext_resource type="PackedScene" uid="uid://b7di8plutlm5b" path="res://scenes/game/card_popout.tscn" id="6_vy7a0"]
-[ext_resource type="PackedScene" uid="uid://djt48j2x6telk" path="res://scenes/game/game_log.tscn" id="6_xt86y"]
+[ext_resource type="PackedScene" uid="uid://djt48j2x6telk" path="res://scenes/game/game_log-DESKTOP-STTSGE0.tscn" id="6_xt86y"]
 [ext_resource type="PackedScene" uid="uid://d2fspiqdcp0p1" path="res://scenes/game/card_base.tscn" id="8_13v6m"]
 [ext_resource type="PackedScene" uid="uid://wmclosx28ofb" path="res://scenes/misc/modal_dialog.tscn" id="9_avbnf"]
 [ext_resource type="PackedScene" uid="uid://b5yajeq6o3fln" path="res://scenes/game/card_zone.tscn" id="10_bk3r3"]
@@ -316,7 +316,6 @@ text = "Debug: Replay Event"
 
 [node name="UIOverlay" type="PanelContainer" parent="."]
 visible = false
-z_index = 10
 custom_minimum_size = Vector2(1280, 720)
 offset_right = 1280.0
 offset_bottom = 720.0
@@ -373,7 +372,6 @@ visible = false
 
 [node name="BigCard" parent="." instance=ExtResource("8_13v6m")]
 visible = false
-z_index = 8
 position = Vector2(1000, 280)
 scale = Vector2(1.2, 1.2)
 is_big_card = true
@@ -383,7 +381,6 @@ position = Vector2(640, 118)
 
 [node name="ModalDialog" parent="." instance=ExtResource("9_avbnf")]
 visible = false
-z_index = 10
 offset_right = 1280.0
 offset_bottom = 720.0
 

@@ -114,7 +114,7 @@ func get_incoming_damage_str(amount, special, prevent_life_loss):
 func get_performance_skill(performer_position, art_id, power):
 	var skill = get_skill_string(art_id)
 	var position_str = get_position_string(performer_position)
-	return "%s: %s (%s)" % [position_str, skill, power]
+	return "%s: %s (%s)" % [position_str, skill, int(power)]
 
 func build_mulligan_instructions(is_first_player : bool):
 	if is_first_player:
@@ -128,7 +128,7 @@ func build_use_oshi_skill_string(skill_id, cost):
 	var skill_name = get_skill_string(skill_id)
 	var cost_str = ""
 	if cost:
-		cost_str = " " + tr("({HoloPowerAmount} Holopower)").format({HoloPowerAmount = cost})
+		cost_str = " " + tr("({HoloPowerAmount} Holopower)").format({HoloPowerAmount = int(cost)})
 	return tr("Oshi:") + "[b]%s[/b]%s" % [skill_name, cost_str]
 
 func build_use_special_action_string(effect_id: String) -> String:
@@ -137,7 +137,7 @@ func build_use_special_action_string(effect_id: String) -> String:
 	return "%s [b]%s[/b]" % [tr("ACTION_MENU__SPECIAL"), effect_str]
 
 func build_archive_cheer_string(count):
-	return tr("Choose %s Cheer to Archive.") % count
+	return tr("Choose %s Cheer to Archive.") % int(count)
 
 func build_place_cheer_string(source:String, color:String):
 	var color_str = get_color_string(color).to_upper()
@@ -210,9 +210,9 @@ func build_order_cards_string(to, bottom):
 
 func build_choose_holomem_for_effect_string(effect, amount_min, amount_max):
 	if amount_min == amount_max:
-		return tr("Choose {MIN} Holomem for:").format({MIN = amount_min}) + "\n" + get_effect_text(effect)
+		return tr("Choose {MIN} Holomem for:").format({MIN = int(amount_min)}) + "\n" + get_effect_text(effect)
 	else:
-		return tr("Choose {MIN}-{MAX} Holomem for:").format({MIN = amount_min, MAX = amount_max}) + "\n" + get_effect_text(effect)
+		return tr("Choose {MIN}-{MAX} Holomem for:").format({MIN = int(amount_min), MAX = int(amount_max)}) + "\n" + get_effect_text(effect)
 
 func build_choose_cards_string(from_zone, to_zone, amount_min, amount_max,
 	remaining_cards_action, requirement_details, special_reason):
