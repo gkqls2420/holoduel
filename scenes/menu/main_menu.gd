@@ -52,6 +52,7 @@ var test_decks = []
 var seen_joinable_match = false
 var queued_for_ai = false
 var in_game = false
+var previous_use_web_server_setting = true  # 이전 설정값 저장
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -66,6 +67,7 @@ func _ready() -> void:
 	NetworkManager.connect("disconnected_from_server", _on_disconnected)
 	NetworkManager.connect("server_info", _on_server_info)
 	NetworkManager.connect("join_operation_failed", _on_join_failed)
+	previous_use_web_server_setting = GlobalSettings.get_user_setting(GlobalSettings.UseWebServer)
 	GlobalSettings.setting_changed_UseWebServer.connect(_on_use_web_server_changed)
 
 	client_version.text = GlobalSettings.get_client_version()
@@ -401,12 +403,16 @@ func do_new_update_actions() -> void:
 	GlobalSettings.update_user_client_version()
 
 func _on_use_web_server_changed() -> void:
-	# 서버 설정이 변경되면 현재 연결을 끊고 새로운 서버로 재연결
-	if NetworkManager.is_server_connected():
-		print("DEBUG: 서버 설정이 변경되었습니다. 재연결을 시도합니다...")
-		NetworkManager.disconnect_from_server()
-		menu_state = MenuState.MenuState_ConnectingToServer
-		_update_buttons()
-		# 잠시 대기 후 새로운 서버로 연결
-		await get_tree().create_timer(1.0).timeout
-		NetworkManager.connect_to_server()
+	# 실제로 설정이 변경되었을 때만 재접속
+	var current_setting = GlobalSettings.get_user_setting(GlobalSettings.UseWebServer)
+	if current_setting != previous_use_web_server_setting:
+		previous_use_web_server_setting = current_setting
+		# 서버 설정이 변경되면 현재 연결을 끊고 새로운 서버로 재연결
+		if NetworkManager.is_server_connected():
+			print("DEBUG: 서버 설정이 변경되었습니다. 재연결을 시도합니다...")
+			NetworkManager.disconnect_from_server()
+			menu_state = MenuState.MenuState_ConnectingToServer
+			_update_buttons()
+			# 잠시 대기 후 새로운 서버로 연결
+			await get_tree().create_timer(1.0).timeout
+			NetworkManager.connect_to_server()

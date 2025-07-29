@@ -19,6 +19,7 @@ signal exit_game_pressed
 
 var active_request : HTTPRequest = null
 var active_download_language_code = ""
+var is_loading_settings = false  # 설정 로딩 중인지 확인하는 플래그
 
 func _ready():
 	var index = 0
@@ -37,6 +38,7 @@ func _process(_delta: float) -> void:
 		download_percent_label.text = str(snapped((bytes_downloaded * 100.0 / total_bytes), 0.01))
 
 func load_settings():
+	is_loading_settings = true  # 설정 로딩 시작
 	game_sound.button_pressed = GlobalSettings.get_user_setting(GlobalSettings.GameSound)
 	use_en_proxies.button_pressed = GlobalSettings.get_user_setting(GlobalSettings.UseEnProxies)
 	use_web_server.button_pressed = GlobalSettings.get_user_setting(GlobalSettings.UseWebServer)
@@ -51,6 +53,7 @@ func load_settings():
 	show_overlay_info.button_pressed = overlay_pressed
 	show_panel_info.button_pressed = panel_pressed
 	$PanelContainer/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/ShowBigCard.button_pressed = big_card_pressed
+	is_loading_settings = false  # 설정 로딩 완료
 
 
 func show_settings(exit_game_visible = false):
@@ -62,7 +65,12 @@ func close_window():
 	visible = false
 
 func change_setting(value, setting_name):
-	GlobalSettings.save_user_setting(setting_name, value)
+	# 설정 로딩 중에는 시그널을 발생시키지 않음
+	if is_loading_settings:
+		GlobalSettings.user_settings[setting_name] = value
+		GlobalSettings.save_persistent_settings()
+	else:
+		GlobalSettings.save_user_setting(setting_name, value)
 
 func change_card_info_setting(value, setting_name):
 	# setting_name is a binded argument set by the signal
