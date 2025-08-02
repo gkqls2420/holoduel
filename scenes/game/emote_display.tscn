@@ -1,0 +1,50 @@
+[gd_scene load_steps=2 format=3 uid="uid://ej0262iej2y6"]
+
+[ext_resource type="Script" path="res://scenes/game/emote_display.gd" id="1_0x0x0"]
+
+[node name="EmoteDisplay" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("1_0x0x0")
+
+[node name="EmoteBubble" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -84.0
+offset_top = -42.0
+offset_right = 84.0
+offset_bottom = 42.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EmoteBubble"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="IconLabel" type="Label" parent="EmoteBubble/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "😊"
+horizontal_alignment = 1
+vertical_alignment = 1
+mouse_filter = 2
+
+[node name="TextLabel" type="Label" parent="EmoteBubble/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "감정표현"
+horizontal_alignment = 1
+vertical_alignment = 1
+mouse_filter = 2 

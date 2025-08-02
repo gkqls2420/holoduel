@@ -10,6 +10,23 @@ signal returning_from_game
 const CardBaseScene = preload("res://scenes/game/card_base.tscn")
 const PopupMessageScene = preload("res://scenes/game/popup_message.tscn")
 
+# 감정표현 데이터
+const EMOTE_TEXT: Dictionary = {
+	0: "안녕하세요.",
+	1: "감사합니다.",
+	2: "죄송합니다.",
+	3: "놀랍군요!",
+	4: "제가 이겼습니다!"
+}
+
+const EMOTE_ICON: Dictionary = {
+	0: "👋",
+	1: "🙏",
+	2: "😔",
+	3: "😲",
+	4: "🏆"
+}
+
 @onready var action_menu : ActionMenu = $UIOverlay/VBoxContainer/HBoxContainer/ActionMenu
 @onready var all_cards : Node2D = $AllCards
 
@@ -59,6 +76,10 @@ const PopupMessageScene = preload("res://scenes/game/popup_message.tscn")
 
 @onready var big_card = $BigCard
 @onready var settings_window = $SettingsWindow
+
+@onready var emote_button = $EmoteButton
+@onready var emote_popup = $EmotePopup
+@onready var emote_display = $EmoteDisplay
 
 @onready var turnstart_audio : AudioStreamPlayer2D = $TurnStartAudio
 
@@ -162,6 +183,9 @@ class PlayerState:
 	func get_cheer_deck_spawn_location() -> Vector2:
 		return _oshi_zone.global_position + (CardBase.DefaultCardScale * CardBase.DefaultCardSize * 0.5)
 
+	func get_oshi_zone_position() -> Vector2:
+		return _oshi_zone.global_position
+
 	func get_hand_placeholder_location() -> Vector2:
 		return _hand_zone.global_position
 
@@ -228,9 +252,13 @@ class PlayerState:
 		order_backstage()
 
 	func order_backstage():
-		for back_card in _backstage_zone.get_cards_in_zone():
+		var backstage_cards = _backstage_zone.get_cards_in_zone()
+		for i in range(len(backstage_cards)):
+			var back_card = backstage_cards[i]
 			# Always order them near the front because they can't show over the hand cards.
 			_game.all_cards.move_child(back_card, 0)
+			# 슬롯 번호가 앞쪽일수록 더 낮은 z-index (가려짐)
+			back_card.z_index = i * 0.1
 
 	func remove_backstage(card_id : String):
 		_backstage_zone.remove_card(card_id)
@@ -556,6 +584,8 @@ func process_game_event(event_type, event_data):
 			_on_shuffle_deck_event(event_data)
 		Enums.EventType_SpecialActionActivation:
 			_on_special_action_activation(event_data)
+		Enums.EventType_Emote:
+			_on_emote_event(event_data)
 		Enums.EventType_TurnStart:
 			_on_turn_start(event_data)
 		_:
@@ -865,7 +895,7 @@ func _on_boost_stat_event(event_data):
 	# TODO: Animation - show stat boost.
 	game_log.add_to_log(GameLog.GameLogLine.Detail, "%s+%s %s " % [
 		card_str,
-		amount,
+		int(amount),
 		skill_str
 	])
 
@@ -2262,11 +2292,11 @@ func _on_perform_art_event(event_data):
 		active_player.get_name_decorated(),
 		_get_card_definition_id(performer_id),
 		Strings.get_skill_string(art_id),
-		power,
+		int(power),
 	])
 
 	var art_str = tr("Art: %s") % [Strings.get_skill_string(art_id)]
-	var base_power_str = tr("Base Power: %s") % [power]
+	var base_power_str = tr("Base Power: %s") % [int(power)]
 	_play_popup_message(art_str + "\n" + base_power_str)
 	var performer = find_card_on_board(performer_id)
 	var target = find_card_on_board(target_id)
@@ -2482,7 +2512,7 @@ func _on_shuffle_deck_event(event_data):
 func _on_oshi_skill_activation(event_data):
 	var active_player = get_player(event_data["oshi_player_id"])
 	var skill_id = event_data["skill_id"]
-	var logline = "%s Oshi Skill [SKILL][%s][/SKILL] activated" % [
+	var logline = "%s Oshi Skill [SKILL]%s[/SKILL] activated" % [
 		active_player.get_name_decorated(),
 		Strings.get_skill_string(skill_id)
 	]
@@ -2568,7 +2598,7 @@ func _on_life_damage_dealt(event_data):
 		"%s [CARD]%s[/CARD] deals %s life damage to %s" % [
 			active_player.get_name_decorated(),
 			_get_card_definition_id(source_card_id),
-			life_lost,
+			int(life_lost),
 			target_player.get_name_decorated()
 		])
 	# Example: `Deal 1 life damage`
@@ -2590,6 +2620,32 @@ func _on_special_action_activation(event_data):
 	# #Example: `Special: Fubuzilla`
 	var popout_msg = "%s %s" % [tr("ACTION_MENU__SPECIAL"), tr(effect_id)]
 	_play_popup_message(popout_msg)
+
+func _on_emote_event(event_data):
+	print("DEBUG: _on_emote_event called with data: ", event_data)
+	var player_id = event_data["event_player_id"]
+	var emote_id = event_data["emote_id"]
+	var player = get_player(player_id)
+	
+	print("DEBUG: player_id: ", player_id, ", emote_id: ", emote_id)
+	print("DEBUG: player found: ", player != null)
+	print("DEBUG: me._player_id: ", me._player_id)
+	
+	# 자신이 보낸 감정표현인지 확인
+	var is_my_emote = (player_id == me._player_id)
+	print("DEBUG: is_my_emote: ", is_my_emote)
+	
+	# 자신이 보낸 감정표현이 아닌 경우에만 표시 (자신이 보낸 것은 이미 표시됨)
+	if not is_my_emote:
+		print("DEBUG: Showing opponent emote")
+		show_emote_display(emote_id, player_id)
+	else:
+		print("DEBUG: Skipping my own emote")
+	
+	# 게임 로그에 추가 (서버에서 받은 모든 감정표현)
+	var emote_text = EMOTE_TEXT.get(emote_id, "")
+	var logline = "[RECEIVED] %s: %s" % [player.get_name_decorated(), emote_text]
+	game_log.add_to_log(GameLog.GameLogLine.Detail, logline)
 
 #
 # Submit to server funcs
@@ -2809,6 +2865,38 @@ func _on_save_file_dialog_file_selected(path: String) -> void:
 func _on_settings_button_pressed() -> void:
 	settings_window.show_settings(true)
 
+# 감정표현 관련 메서드들
+func show_emote_popup():
+	print("DEBUG: show_emote_popup called")
+	emote_popup.show_popup()
+	# 이미 연결되어 있는지 확인하고 연결
+	if not emote_popup.emote_selected.is_connected(_on_emote_selected):
+		emote_popup.emote_selected.connect(_on_emote_selected)
+
+func hide_emote_popup():
+	print("DEBUG: hide_emote_popup called")
+	emote_popup.hide_popup()
+
+func _on_emote_selected(emote_id: int):
+	print("DEBUG: emote selected: ", emote_id)
+	
+	# 자신의 플레이어 ID 가져오기
+	var my_player_id = me._player_id
+	
+	# 자신이 보낸 감정표현 즉시 표시
+	show_emote_display(emote_id, my_player_id)
+	
+	# 게임 로그에 추가 (보낸 감정표현)
+	var emote_text = EMOTE_TEXT.get(emote_id, "")
+	var logline = "[SENT] %s: %s" % [me.get_name_decorated(), emote_text]
+	game_log.add_to_log(GameLog.GameLogLine.Detail, logline)
+	
+	# 감정표현 메시지 전송
+	NetworkManager.send_emote_message(emote_id)
+
+func show_emote_display(emote_id: int, player_id: String):
+	# 감정표현 표시
+	emote_display.show_emote(emote_id, player_id)
 
 func _on_observer_next_event_pressed() -> void:
 	_process_next_event()

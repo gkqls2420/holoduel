@@ -109,7 +109,7 @@ func get_incoming_damage_str(amount, special, prevent_life_loss):
 		special_str = "Special "
 	if prevent_life_loss:
 		prevent_str = " " + tr("(Can't lose LIFE)")
-	return tr("Incoming {SpecialStr}Damage: {Amount}{PreventStr}").format({SpecialStr = special_str, Amount = amount, PreventStr = prevent_str})
+	return tr("Incoming {SpecialStr}Damage: {Amount}{PreventStr}").format({SpecialStr = special_str, Amount = int(amount), PreventStr = prevent_str})
 
 func get_performance_skill(performer_position, art_id, power):
 	var skill = get_skill_string(art_id)
@@ -592,7 +592,7 @@ func get_effect_text(effect):
 		var limit = tr("1/Turn")
 		if effect["limit"] == "once_per_game":
 			limit = tr("1/Game")
-		text += "-%s [b]%s[/b] (%s): " % [effect["cost"], get_skill_string(effect["skill_id"]), limit]
+		text += "-%s [b]%s[/b] (%s): " % [int(effect["cost"]), get_skill_string(effect["skill_id"]), limit]
 
 	if "full_english_text" in effect:
 		# Override the text with the full text.
@@ -609,7 +609,7 @@ func get_effect_text(effect):
 	match effect_type:
 		"add_damage_taken":
 			var amount = effect["amount"]
-			text += "Increase damage by %s." % amount
+			text += "Increase damage by %s." % int(amount)
 		"add_turn_effect":
 			var turn_effect = effect["turn_effect"]
 			text += tr("This Turn: %s") % [get_effect_text(turn_effect)]
@@ -1158,7 +1158,7 @@ func build_english_card_text(definition):
 							else:
 								if amount_min > 0:
 									amount_min -= 1
-									amount_str += "at least %s" % amount_min
+									amount_str += "at least %s" % int(amount_min)
 									if amount_max >= 0:
 										amount_str += " and "
 								if amount_max >= 0:

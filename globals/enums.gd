@@ -47,6 +47,7 @@ const EventType_RevealCards = "reveal_cards"
 const EventType_RollDie = "roll_die"
 const EventType_ShuffleDeck = "shuffle_deck"
 const EventType_SpecialActionActivation = "special_action_activation"
+const EventType_Emote = "emote"
 const EventType_TurnStart = "turn_start"
 
 const DecisionEventTypes = [

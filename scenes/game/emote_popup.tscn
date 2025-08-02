@@ -1,0 +1,77 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8xvn8yqxqxqx"]
+
+[ext_resource type="Script" path="res://scenes/game/emote_popup.gd" id="1_0x0x0"]
+
+[node name="EmotePopup" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_0x0x0")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.5)
+
+[node name="PopupContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -105.0
+offset_top = -70.0
+offset_right = 105.0
+offset_bottom = 70.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="PopupContainer"]
+layout_mode = 2
+text = "감정표현 선택"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EmoteGrid" type="GridContainer" parent="PopupContainer"]
+layout_mode = 2
+columns = 3
+
+[node name="HelloButton" type="Button" parent="PopupContainer/EmoteGrid"]
+layout_mode = 2
+custom_minimum_size = Vector2(56, 42)
+text = "👋
+안녕하세요."
+
+[node name="ThanksButton" type="Button" parent="PopupContainer/EmoteGrid"]
+layout_mode = 2
+custom_minimum_size = Vector2(56, 42)
+text = "🙏
+감사합니다."
+
+[node name="SorryButton" type="Button" parent="PopupContainer/EmoteGrid"]
+layout_mode = 2
+custom_minimum_size = Vector2(56, 42)
+text = "😔
+죄송합니다."
+
+[node name="WowButton" type="Button" parent="PopupContainer/EmoteGrid"]
+layout_mode = 2
+custom_minimum_size = Vector2(56, 42)
+text = "😲
+놀랍군요!"
+
+[node name="WinButton" type="Button" parent="PopupContainer/EmoteGrid"]
+layout_mode = 2
+custom_minimum_size = Vector2(56, 42)
+text = "🏆
+제가 이겼습니다!"
+
+[node name="CancelButton" type="Button" parent="PopupContainer/EmoteGrid"]
+layout_mode = 2
+custom_minimum_size = Vector2(56, 42)
+text = "취소" 

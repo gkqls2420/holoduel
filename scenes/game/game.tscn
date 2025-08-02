@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://ds6ostisut8ij"]
+[gd_scene load_steps=23 format=3 uid="uid://ds6ostisut8ij"]
 
 [ext_resource type="Script" uid="uid://dwqnxxttmer0r" path="res://scenes/game/game.gd" id="1_mkj14"]
 [ext_resource type="AudioStream" uid="uid://wktc545mvcb7" path="res://assets/sounds/turnstart.wav" id="2_0ec4r"]
@@ -17,6 +17,9 @@
 [ext_resource type="PackedScene" uid="uid://dqeoyiig2xv07" path="res://scenes/misc/settings_window.tscn" id="13_unwuv"]
 [ext_resource type="PackedScene" uid="uid://blev8t8g4iq0m" path="res://scenes/misc/icon_button.tscn" id="14_mh1cl"]
 [ext_resource type="Texture2D" uid="uid://bh0c0vkyounat" path="res://assets/icons/gear.png" id="15_1fn36"]
+[ext_resource type="PackedScene" uid="uid://bqxvn8yqxqxqx" path="res://scenes/game/emote_button.tscn" id="16_emote"]
+[ext_resource type="PackedScene" uid="uid://c8xvn8yqxqxqx" path="res://scenes/game/emote_popup.tscn" id="17_emote_popup"]
+[ext_resource type="PackedScene" uid="uid://ej0262iej2y6" path="res://scenes/game/emote_display.tscn" id="18_emote_display"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v0wnc"]
 
@@ -193,6 +196,13 @@ offset_right = 1190.0
 offset_bottom = 758.0
 scale = Vector2(0.45, 0.45)
 zone_name = "Oshi"
+
+[node name="EmoteButton" parent="." instance=ExtResource("16_emote")]
+z_index = 7
+offset_left = 1020.0
+offset_top = 340.0
+offset_right = 1050.0
+offset_bottom = 30.0
 
 [node name="MeHand" parent="." instance=ExtResource("10_bk3r3")]
 modulate = Color(1, 1, 1, 0)
@@ -397,6 +407,18 @@ use_native_dialog = true
 visible = false
 offset_right = 1280.0
 offset_bottom = 720.0
+
+[node name="EmotePopup" parent="." instance=ExtResource("17_emote_popup")]
+offset_right = 1280.0
+offset_bottom = 720.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EmoteDisplay" parent="." instance=ExtResource("18_emote_display")]
+offset_right = 1280.0
+offset_bottom = 720.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [connection signal="zone_pressed" from="MeArchive" to="." method="_on_me_archive_zone_pressed"]
 [connection signal="zone_pressed" from="OpponentArchive" to="." method="_on_opponent_archive_zone_pressed"]

@@ -36,7 +36,13 @@ func play_message(text, fast=false):
 func play_icon_message(text, icon_type : IconMessageType, fast=false):
 	message_root.visible = false
 	icon_root.visible = true
-	number_label.text = str(int(text))
+	
+	# 숫자인 경우에만 int() 변환, 그렇지 않으면 원본 텍스트 사용
+	if text.is_valid_int():
+		number_label.text = str(int(text))
+	else:
+		number_label.text = str(text)
+	
 	damage_icon.visible = icon_type == IconMessageType.Damage
 	heart_icon.visible = icon_type == IconMessageType.Heart
 	shield_icon.visible = icon_type == IconMessageType.Shield

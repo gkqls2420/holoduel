@@ -9692,6 +9692,69 @@
             }
         ]
     },
+
+    {
+        "card_id": "hBP02-042",
+        "card_type": "holomem_debut",
+        "card_names": ["murasaki_shion"],
+        "special_deck_limit": 50,
+        "rarity": "c",
+        "colors": ["purple"],
+        "hp": 130,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#Gen2"
+        ],
+        "arts": [
+            {
+                "art_id": "doumo",
+                "costs": [
+                    { "color": "any", "amount": 1 }
+                ],
+                "power": 20
+            }
+        ]
+    },
+
+    {
+        "card_id": "hBP02-045",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": ["murasaki_shion"],
+        "rarity": "u",
+        "colors": ["purple"],
+        "hp": 130,
+        "baton_cost": 1,
+        "tags": [
+          "#JP",
+          "#Gen2"
+        ],
+        "arts": [
+          {
+            "art_id": "imthehappiest",
+            "costs": [
+              { "color": "any", "amount": 1 }
+            ],
+            "power": 40
+          }
+        ],
+        "bloom_effects": [
+          {
+            "effect_type": "choose_cards",
+            "from": "deck",
+            "look_at": 3,
+            "destination": "hand",
+            "amount_min": 0,
+            "amount_max": 1,
+            "requirement": "holomem",
+            "requirement_colors": ["blue", "purple"],
+            "reveal_chosen": true,
+            "remaining_cards_action": "order_on_bottom"
+          }
+        ]
+      },
+
     {
         "card_id": "hBP02-061",
         "card_type": "holomem_debut",
@@ -10500,7 +10563,176 @@
     },
 
     {
-        "NOTE": "BP2 CARDS START",
+        "NOTE": "BP3 CARDS START",
+
+        "card_id": "hBP03-036",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": ["takanashi_kiara"],
+        "rarity": "r",
+        "colors": ["red"],
+        "hp": 140,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Myth",
+            "#Bird"
+        ],
+        "arts": [
+            {
+                "art_id": "thewingsofsteel",
+                "costs": [
+                    { "color": "red", "amount": 1 },
+                    { "color": "any", "amount": 1 }
+                ],
+                "power": 50
+            }
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "archive",
+                "amount_min": 0,
+                "amount_max": 4,
+                "requirement": "holomem_named",
+                "requirement_names": ["takanashi_kiara"],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ]
+    },
+
+    {
+        "card_id": "hBP03-044",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": ["hoshimachi_suisei"],
+        "rarity": "r",
+        "colors": ["blue"],
+        "hp": 150,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#Gen0", 
+            "#Song"
+        ],
+        "arts": [
+            {
+                "art_id": "virtualghost",
+                "costs": [
+                    { "color": "blue", "amount": 1 },
+                    { "color": "any", "amount": 1 }
+                ],
+                "power": 40,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            { "condition": "oshi_is", "required_member_name": "hoshimachi_suisei" },
+                            { "condition": "holomem_on_stage", "location": "backstage", "required_member_name_in": ["hoshimachi_suisei"] },
+                            { "condition": "self_has_cheer_color", "amount_min": 1, "condition_colors": ["blue"] }
+                        ],
+                        "effect_type": "choice",
+                        "choice": [
+                            {
+                                "effect_type": "move_cheer_between_holomems",
+                                "amount": 1,
+                                "to_limitation": "specific_member_name",
+                                "to_limitation_name": "hoshimachi_suisei",
+                                "to_limitation_location": "backstage"
+                            },
+                            { "effect_type": "pass" }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": 4,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "holomem_named",
+                "requirement_names": ["hoshimachi_suisei"],
+                "reveal_chosen": true,
+                "remaining_cards_action": "order_on_bottom"
+            }
+        ]
+    },
+
+    {
+        "card_id": "hBP03-045",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "buzz": true,
+        "card_names": ["kobo_kanaeru"],
+        "rarity": "r",
+        "colors": ["blue"],
+        "hp": 230,
+        "baton_cost": 2,
+        "down_life_cost": 2,
+        "tags": [
+            "#ID",
+            "#IDGen3"
+        ],
+        "arts": [
+            {
+                "art_id": "full_of_energy",
+                "costs": [
+                    { "color": "blue", "amount": 1 },
+                    { "color": "any", "amount": 1 }
+                ],
+                "power": 40,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost_per_condition",
+                        "amount_per": 10,
+                        "per": "opponent_backstage_hp_reduced_count"
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [
+            {
+                "conditions": [{ "condition": "any_tag_holomem_has_cheer", "condition_tags": ["#ID"] }],
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "send_cheer",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "from": "holomem",
+                        "from_limitation": "tag_in",
+                        "from_limitation_tags": ["#ID"],
+                        "to": "archive",
+                        "ability_source": "holomem_blue",
+                        "and": [
+                            {
+                                "effect_type": "deal_damage",
+                                "special": true,
+                                "amount": 10,
+                                "repeat": 3,
+                                "target": "backstage",
+                                "opponent": true,
+                                "multiple_targets": "sequential",
+                                "prevent_life_loss": true
+                            }
+                        ]
+                    },
+                    { "effect_type": "pass" }
+                ]
+            }
+        ]
+    },
+
+    {
+        "NOTE": "BP4 CARDS START",
 
         "card_id": "hBP04-089",
         "card_type": "support",
@@ -10554,6 +10786,42 @@
                 "requirement_match_selected_holomem_color": 1,
                 "reveal_chosen": true,
                 "remaining_cards_action": "shuffle"
+            }
+        ]
+    },
+
+    {
+        "card_id": "hBP04-098",
+        "card_type": "support",
+        "colors": [],
+        "sub_type": "tool",
+        "card_names": ["blacksmith_hammer"],
+        "rarity": "u",
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "before_art",
+                "effect_type": "power_boost",
+                "amount": 10
+            },
+            {
+                "timing": "before_art",
+                "effect_type": "power_boost",
+                "amount": 10,
+                "conditions": [
+                    {
+                        "condition": "attached_to_has_tag",
+                        "required_tags": ["#IDGen3"]
+                    },
+                    {
+                        "condition": "attached_to_bloom_level",
+                        "required_bloom_levels": [1, 2]
+                    }
+                ]
             }
         ]
     },

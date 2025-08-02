@@ -113,6 +113,9 @@ func layout_zone():
 			var card = cards[i]
 			var center = zone_locations[i].global_position + card_offset
 			card.begin_move_to(center, false)
+			# 슬롯 번호가 앞쪽일수록 더 낮은 z-index (가려짐)
+			# 존마다 +0 ~ +0.4의 z-index 범위 사용
+			card.z_index = i * 0.1
 	elif layout_style == LayoutStyle.Archive:
 		var center = loc1.global_position + card_offset
 		for card in cards:
