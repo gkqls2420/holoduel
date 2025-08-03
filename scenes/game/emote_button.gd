@@ -5,9 +5,7 @@ func _ready():
 
 func _on_pressed():
 	# 감정표현 팝업을 표시
-	print("DEBUG: Emote button pressed!")
 	var main_scene = get_tree().get_current_scene()
-	print("DEBUG: Current scene: ", main_scene)
 	
 	# Main 씬에서 Game 노드 찾기
 	var game = null
@@ -16,12 +14,8 @@ func _on_pressed():
 	elif main_scene.has("game") and main_scene.game != null:
 		game = main_scene.game
 	
-	print("DEBUG: Found game: ", game)
 	if game and game.has_method("show_emote_popup"):
-		print("DEBUG: Calling show_emote_popup")
 		game.show_emote_popup()
-	else:
-		print("DEBUG: show_emote_popup method not found")
 
 func _input(event):
 	if event is InputEventKey and event.pressed:

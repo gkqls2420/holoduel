@@ -255,10 +255,23 @@ class PlayerState:
 		var backstage_cards = _backstage_zone.get_cards_in_zone()
 		for i in range(len(backstage_cards)):
 			var back_card = backstage_cards[i]
+			# 슬롯별 z-index 설정: 슬롯0=0, 슬롯1=1, 슬롯2=2, ...
+			back_card.z_index = i
+			# 디버그: z-index 출력
+			print("order_backstage: 카드 %s: 슬롯 %d, z_index = %d" % [back_card._card_id, i, back_card.z_index])
 			# Always order them near the front because they can't show over the hand cards.
 			_game.all_cards.move_child(back_card, 0)
-			# 슬롯 번호가 앞쪽일수록 더 낮은 z-index (가려짐)
-			back_card.z_index = i * 0.1
+		
+		# 백 스테이지 z-index 상태 출력
+		print_backstage_zindex_status()
+	
+	func print_backstage_zindex_status():
+		var backstage_cards = _backstage_zone.get_cards_in_zone()
+		print("=== 백 스테이지 z-index 상태 ===")
+		for i in range(len(backstage_cards)):
+			var card = backstage_cards[i]
+			print("슬롯 %d: 카드 %s, z_index = %d" % [i, card._card_id, card.z_index])
+		print("================================")
 
 	func remove_backstage(card_id : String):
 		_backstage_zone.remove_card(card_id)
@@ -286,6 +299,9 @@ class PlayerState:
 			var index = zone.remove_card(target_card_id)
 			if index != -1:
 				zone.add_card(new_card, index)
+				# 백 스테이지의 경우 z-index 갱신
+				if zone == _backstage_zone:
+					order_backstage()
 				break
 
 	func bloom(bloom_card_id, target_card_id, from_zone):
@@ -2622,25 +2638,16 @@ func _on_special_action_activation(event_data):
 	_play_popup_message(popout_msg)
 
 func _on_emote_event(event_data):
-	print("DEBUG: _on_emote_event called with data: ", event_data)
 	var player_id = event_data["event_player_id"]
 	var emote_id = event_data["emote_id"]
 	var player = get_player(player_id)
 	
-	print("DEBUG: player_id: ", player_id, ", emote_id: ", emote_id)
-	print("DEBUG: player found: ", player != null)
-	print("DEBUG: me._player_id: ", me._player_id)
-	
 	# 자신이 보낸 감정표현인지 확인
 	var is_my_emote = (player_id == me._player_id)
-	print("DEBUG: is_my_emote: ", is_my_emote)
 	
 	# 자신이 보낸 감정표현이 아닌 경우에만 표시 (자신이 보낸 것은 이미 표시됨)
 	if not is_my_emote:
-		print("DEBUG: Showing opponent emote")
 		show_emote_display(emote_id, player_id)
-	else:
-		print("DEBUG: Skipping my own emote")
 	
 	# 게임 로그에 추가 (서버에서 받은 모든 감정표현)
 	var emote_text = EMOTE_TEXT.get(emote_id, "")
@@ -2867,18 +2874,15 @@ func _on_settings_button_pressed() -> void:
 
 # 감정표현 관련 메서드들
 func show_emote_popup():
-	print("DEBUG: show_emote_popup called")
 	emote_popup.show_popup()
 	# 이미 연결되어 있는지 확인하고 연결
 	if not emote_popup.emote_selected.is_connected(_on_emote_selected):
 		emote_popup.emote_selected.connect(_on_emote_selected)
 
 func hide_emote_popup():
-	print("DEBUG: hide_emote_popup called")
 	emote_popup.hide_popup()
 
 func _on_emote_selected(emote_id: int):
-	print("DEBUG: emote selected: ", emote_id)
 	
 	# 자신의 플레이어 ID 가져오기
 	var my_player_id = me._player_id

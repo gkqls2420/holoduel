@@ -148,7 +148,6 @@ func _handle_sockets():
 					_socket = null
 
 func _handle_server_response(data):
-	print("DEBUG: _handle_server_response called with data: ", data)
 	var parser = JSON.new()
 	var result = parser.parse(data)
 	if result != OK:
@@ -157,14 +156,12 @@ func _handle_server_response(data):
 
 	var data_obj = parser.get_data()
 	var message_type = data_obj["message_type"]
-	print("DEBUG: Received message type: ", message_type)
 	match message_type:
 		ServerMessageType_ServerInfo:
 			_handle_server_info(data_obj)
 		ServerMessageType_Error:
 			_handle_server_error(data_obj)
 		ServerMessageType_GameEvent:
-			print("DEBUG: Handling game event: ", data_obj)
 			_handle_game_event(data_obj)
 		_:
 			Logger.log(Logger.LogArea_Network, "Unhandled message type: %s" % message_type)
@@ -205,12 +202,11 @@ func _handle_server_error(message):
 			pass
 
 func _handle_game_event(message):
-	print("DEBUG: _handle_game_event called with message: ", message)
 	_handle_game_event_internal(message["event_data"])
 
 func _handle_game_event_internal(event):
 	var event_type = event["event_type"]
-	print("DEBUG: _handle_game_event_internal called with event_type: ", event_type, ", event: ", event)
+	# print("DEBUG: _handle_game_event_internal called with event_type: ", event_type, ", event: ", event)
 	#Logger.log(Logger.LogArea_Network, "Game event (%s): %s" % [event_type, message["event_data"]])
 	game_event.emit(event_type, event)
 

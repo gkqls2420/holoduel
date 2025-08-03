@@ -8342,6 +8342,12 @@
                         ]
                     },
                     {
+                        "effect_type": "order_cards",
+                                "from": "deck",
+                                "destination": "deck",
+                                "amount": 3
+                    },
+                    {
                         "effect_type": "reveal_top_deck",
                         "amount": 3
                     },
@@ -8349,13 +8355,10 @@
                         "effect_type": "choice",
                         "choice": [
                             {
-                                "effect_type": "archive_revealed_cards"
+                                "effect_type": "pass"
                             },
                             {
-                                "effect_type": "order_cards",
-                                "from": "deck",
-                                "destination": "deck",
-                                "amount": 3
+                                "effect_type": "archive_revealed_cards"
                             }
                         ]
                     }
@@ -10734,6 +10737,205 @@
     {
         "NOTE": "BP4 CARDS START",
 
+        "card_id": "hBP04-014",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": ["shirakami_fubuki"],
+        "rarity": "r",
+        "colors": ["white"],
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#Gen1",
+            "#Gamers",
+            "#AnimalEars",
+            "#Art"
+        ],
+        "arts": [
+            {
+                "art_id": "myimportantperson",
+                "costs": [
+                    { "color": "white", "amount": 1 },
+                    { "color": "any", "amount": 2 }
+                ],
+                "power": 100,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "holomem_on_stage",
+                                "tag_in": ["#Gamers"],
+                                "exclude_member_name_in": ["shirakami_fubuki"]
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "green"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "archive",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 1,
+                "amount_max": 2,
+                "requirement": "mascot",
+                "requirement_tags": ["#ShirakamiCharacter"],
+                "reveal_chosen": true,
+                "remaining_cards_action": "nothing"
+            }
+        ]
+    },
+
+    {
+        "card_id": "hBP04-026",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": ["ookami_mio"],
+        "rarity": "r",
+        "colors": ["green"],
+        "hp": 190,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#Gamers",
+            "#AnimalEars",
+            "#Cooking"
+        ],
+        "arts": [
+            {
+                "art_id": "imtheonewhobelongedtofubuki",
+                "costs": [
+                    { "color": "green", "amount": 1 },
+                    { "color": "any", "amount": 2 }
+                ],
+                "power": 100,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "holomem_on_stage",
+                                "tag_in": ["#Gamers"],
+                                "exclude_member_name_in": ["ookami_mio"]
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "white"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "reveal_cheer_from_deck",
+                "from": "cheer_deck",
+                "amount": 1,
+                "requirement": "cheer",
+                "requirement_colors": ["white"],
+                "destination": "holomem",
+                "destination_requirement": "member_name",
+                "destination_member_name": "shirakami_fubuki",
+                "remaining_cards_action": "shuffle",
+                "conditions": [
+                    {
+                        "condition": "oshi_is",
+                        "required_member_name": "shirakami_fubuki"
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "card_id": "hBP04-038",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": ["houshou_marine"],
+        "rarity": "r",
+        "colors": ["red"],
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#Gen3",
+            "#Sea",
+            "#Art"
+        ],
+        "arts": [
+            {
+                "art_id": "thatssexy",
+                "costs": [
+                    { "color": "red", "amount": 1 },
+                    { "color": "any", "amount": 1 }
+                ],
+                "power": 50,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost_per_stacked",
+                        "amount": 20
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "green"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "deal_damage",
+                "special": true,
+                "amount": 10,
+                "target": "center",
+                "opponent": true
+            },
+            {
+                "effect_type": "deal_damage",
+                "special": true,
+                "amount": 10,
+                "target": "collab",
+                "opponent": true
+            }
+        ]
+    },
+
+    {
         "card_id": "hBP04-089",
         "card_type": "support",
         "sub_type": "item",
@@ -10814,7 +11016,7 @@
                 "amount": 10,
                 "conditions": [
                     {
-                        "condition": "attached_to_has_tag",
+                        "condition": "attached_to_has_tags",
                         "required_tags": ["#IDGen3"]
                     },
                     {
