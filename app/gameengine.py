@@ -167,6 +167,8 @@ class Condition:
     Condition_LifeAtMost = "life_at_most"
     Condition_MonocolorDifferentColorsOnStage = "monocolor_different_colors_on_stage"
     Condition_OpponentBackstageHpReducedCount = "opponent_backstage_hp_reduced_count"
+    Condition_OpponentBackstageTotalDamage = "opponent_backstage_total_damage"
+    Condition_BloomFromOshiSkill = "bloom_from_oshi_skill"
 
 
 class TurnEffectType:
@@ -222,6 +224,7 @@ class EventType:
     EventType_SpecialActionActivation = "special_action_activation"
     EventType_TurnStart = "turn_start"
     EventType_Emote = "emote"
+    EventType_AccumulatedDamageTargets = "accumulated_damage_targets"
 
 class GameOverReason:
     GameOverReason_NoHolomemsLeft = "no_holomems_left"
@@ -1462,6 +1465,9 @@ class GameEngine:
         self.clock_accumulation_start_time = 0
         self.match_player_info = player_infos
         self.last_chosen_holomem_id = ""
+        
+        # 블룸 출처 추적을 위한 변수
+        self.last_bloom_from_oshi_skill = False
 
         self.take_damage_state : TakeDamageState = None
         self.performance_artstatboosts = ArtStatBoosts()
@@ -2962,22 +2968,22 @@ class GameEngine:
                 amount = condition["amount"]
                 return len(effect_player.life) <= amount
             case Condition.Condition_MonocolorDifferentColorsOnStage:
-                # Check if stage has at least one monocolor holomem and at least 2 different colors
+                # Check if stage has at least 2 monocolor holomems with different colors
                 holomems = effect_player.get_holomem_on_stage()
-                if len(holomems) < 2:
+                
+                # Filter to only monocolor (single color) holomems
+                monocolor_holomems = [h for h in holomems if len(h["colors"]) == 1]
+                
+                # Need at least 2 monocolor holomems
+                if len(monocolor_holomems) < 2:
                     return False
                 
-                # Check if there's at least one monocolor holomem
-                has_monocolor = any(len(holomem["colors"]) == 1 for holomem in holomems)
-                if not has_monocolor:
-                    return False
+                # Check if monocolor holomems have at least 2 different colors
+                monocolor_colors = set()
+                for holomem in monocolor_holomems:
+                    monocolor_colors.update(holomem["colors"])
                 
-                # Check if there are at least 2 different colors among all holomems
-                all_colors = set()
-                for holomem in holomems:
-                    all_colors.update(holomem["colors"])
-                
-                return len(all_colors) >= 2
+                return len(monocolor_colors) >= 2
             case Condition.Condition_OpponentBackstageHpReducedCount:
                 # 상대방 백스테이지에서 HP가 감소된 홀로멤이 있는지 확인 (boolean 반환)
                 opponent_player = self.other_player(effect_player.player_id)
@@ -2986,6 +2992,17 @@ class GameEngine:
                     if damage > 0:
                         return True
                 return False
+            case Condition.Condition_OpponentBackstageTotalDamage:
+                # 상대방 백스테이지 홀로멤 전원의 총 데미지가 amount_min 이상인지 확인
+                opponent_player = self.other_player(effect_player.player_id)
+                total_damage = 0
+                for holomem in opponent_player.backstage:
+                    total_damage += holomem.get("damage", 0)
+                amount_min = condition.get("amount_min", 0)
+                return total_damage >= amount_min
+            case Condition.Condition_BloomFromOshiSkill:
+                # SP 오시 스킬로 블룸했는지 확인
+                return self.last_bloom_from_oshi_skill
             case _:
                 raise NotImplementedError(f"Unimplemented condition: {condition['condition']}")
         return False
@@ -3553,8 +3570,10 @@ class GameEngine:
                         same_names = []
                         for card_id in self.last_chosen_cards:
                             card = self.find_card(card_id)
-                            same_names += card["card_names"]
-                        cards_can_choose = [card for card in cards_can_choose if any(name in card["card_names"] for name in same_names)]
+                            if card and "card_names" in card:
+                                same_names += card["card_names"]
+                        if same_names:
+                            cards_can_choose = [card for card in cards_can_choose if any(name in card.get("card_names", []) for name in same_names)]
 
                     # two_tone_color_pc: Filter to only monocolor holomems
                     if requirement_monocolor_only:
@@ -3687,6 +3706,14 @@ class GameEngine:
                                 special,
                                 prevent_life_loss
                             )
+                elif multiple_targets == "accumulated":
+                    # 누적 대미지 처리: 3번 선택 후 합산하여 한번에 대미지 적용
+                    repeat_count = effect.get("repeat", 1)
+                    allow_pass = effect.get("allow_pass", False)
+                    self.handle_accumulated_damage_selection(
+                        effect_player_id, effect, target_cards, repeat_count, 
+                        target_player, source_player, amount, special, prevent_life_loss, allow_pass
+                    )
                 elif len(target_cards) == targets_allowed:
                     target_cards.reverse()
                     for i in range(targets_allowed):
@@ -4162,6 +4189,9 @@ class GameEngine:
                             case "tag_in":
                                 limitation_tags = effect.get("limitation_tags", [])
                                 holomems = [holomem for holomem in holomems if any(color in holomem["tags"] for color in limitation_tags)]
+                            case "name_in":
+                                limitation_names = effect.get("limitation_names", [])
+                                holomems = [holomem for holomem in holomems if any(name in holomem["card_names"] for name in limitation_names)]
                         target_options = ids_from_cards(holomems)
                     case "self":
                         target_options = [effect["source_card_id"]]
@@ -5263,6 +5293,10 @@ class GameEngine:
         player = self.get_player(player_id)
         card_id = action_data["card_id"]
         target_id = action_data["target_id"]
+        
+        # 일반적인 블룸은 SP 오시 스킬이 아님
+        self.last_bloom_from_oshi_skill = False
+        
         player.bloom(card_id, target_id, continuation)
 
         return True
@@ -5956,6 +5990,13 @@ class GameEngine:
             return
         effect_player = self.get_player(performing_player_id)
         bloom_card_id = decision_info_copy["bloom_card_id"]
+        
+        # 블룸 출처 설정 (SP 오시 스킬로부터 온 경우)
+        if "effect" in decision_info_copy and decision_info_copy["effect"].get("effect_type") == "bloom_from_archive":
+            self.last_bloom_from_oshi_skill = True
+        else:
+            self.last_bloom_from_oshi_skill = False
+            
         effect_player.bloom(bloom_card_id, card_ids[0], continuation)
 
     def handle_return_holomem_to_debut(self, decision_info_copy, performing_player_id:str, card_ids:List[str], continuation):
@@ -6188,14 +6229,17 @@ class GameEngine:
         return True
 
     def handle_emote(self, player_id: str, emote_id: int):
-        """감정표현 이벤트 생성"""
+        """감정표현 이벤트 생성 - 모든 플레이어에게 동일한 이벤트 전송"""
         emote_event = {
             "event_type": EventType.EventType_Emote,
-            "event_player_id": player_id,
+            "event_player_id": player_id,  # 감정표현을 보낸 플레이어 ID
             "emote_id": emote_id,
             "timestamp": time.time() * 1000
         }
-        self.broadcast_event(emote_event)
+        # broadcast_event는 각 플레이어별로 이벤트를 생성하므로 사용하지 않음
+        # send_emote_events가 모든 플레이어에게 전송하므로 이벤트는 한 번만 추가
+        self.latest_events.append(emote_event)
+        self.latest_observer_events.append(emote_event)
 
     def handle_power_boost(self, amount: int, source_card_id: str):
         if amount != 0:
@@ -6314,3 +6358,151 @@ class GameEngine:
         else:
             # All repeats done
             self.continue_resolving_effects()
+
+    def handle_accumulated_damage_selection(self, effect_player_id, effect, target_cards, repeat_count, 
+                                            target_player, source_player, amount, special, prevent_life_loss, allow_pass):
+        """누적 대미지 선택 시작: repeat_count번 선택 후 합산하여 대미지 적용"""
+        # 선택된 타겟을 저장할 리스트 초기화
+        self.handle_accumulated_damage_target(
+            effect_player_id, effect, target_cards, repeat_count, 
+            target_player, source_player, amount, special, prevent_life_loss, allow_pass,
+            current_selection=1, selected_targets=[]
+        )
+
+    def handle_accumulated_damage_target(self, effect_player_id, effect, target_cards, repeat_count,
+                                         target_player, source_player, amount, special, prevent_life_loss, allow_pass,
+                                         current_selection, selected_targets):
+        """누적 대미지: 각 선택 처리"""
+        # 대미지가 이미 HP를 초과한 카드는 제외
+        available_targets = [card for card in target_cards if card["damage"] < target_player.get_card_hp(card)]
+        
+        if len(available_targets) == 0 or current_selection > repeat_count:
+            # 타겟이 없거나 모든 선택 완료 - 대미지 적용 단계로
+            self.handle_accumulated_damage_apply(
+                effect_player_id, effect, target_player, source_player, 
+                amount, special, prevent_life_loss, selected_targets
+            )
+            return
+
+        target_options = ids_from_cards(available_targets)
+        amount_min = 0 if allow_pass else 1
+        amount_max = 1
+        
+        decision_event = {
+            "event_type": EventType.EventType_Decision_ChooseHolomemForEffect,
+            "desired_response": GameAction.EffectResolution_ChooseCardsForEffect,
+            "effect_player_id": effect_player_id,
+            "cards_can_choose": target_options,
+            "amount_min": amount_min,
+            "amount_max": amount_max,
+            "effect": effect,
+            "accumulated_selection": current_selection,
+            "accumulated_total": repeat_count,
+        }
+        self.broadcast_event(decision_event)
+        self.set_decision({
+            "decision_type": DecisionType.DecisionEffect_ChooseCardsForEffect,
+            "decision_player": effect_player_id,
+            "all_card_seen": target_options,
+            "cards_can_choose": target_options,
+            "amount_min": amount_min,
+            "amount_max": amount_max,
+            "effect_resolution": self.handle_accumulated_damage_target_selection,
+            "effect": effect,
+            "source_card_id": effect["source_card_id"],
+            "target_player": target_player,
+            "source_player": source_player,
+            "target_cards": target_cards,
+            "repeat_count": repeat_count,
+            "current_selection": current_selection,
+            "selected_targets": selected_targets,
+            "amount": amount,
+            "special": special,
+            "prevent_life_loss": prevent_life_loss,
+            "allow_pass": allow_pass,
+            "continuation": self.continue_resolving_effects,
+        })
+
+    def handle_accumulated_damage_target_selection(self, decision_info_copy, performing_player_id: str, card_ids: List[str], continuation):
+        """누적 대미지: 선택 결과 처리"""
+        effect = decision_info_copy["effect"]
+        source_player = decision_info_copy["source_player"]
+        target_player = decision_info_copy["target_player"]
+        current_selection = decision_info_copy["current_selection"]
+        repeat_count = decision_info_copy["repeat_count"]
+        target_cards = decision_info_copy["target_cards"]
+        selected_targets = decision_info_copy["selected_targets"].copy()
+        amount = decision_info_copy["amount"]
+        special = decision_info_copy["special"]
+        prevent_life_loss = decision_info_copy["prevent_life_loss"]
+        allow_pass = decision_info_copy["allow_pass"]
+
+        # 선택된 카드 추가 (pass한 경우 빈 리스트)
+        for card_id in card_ids:
+            selected_targets.append(card_id)
+
+        # 다음 선택으로 진행 또는 대미지 적용
+        if current_selection < repeat_count:
+            self.handle_accumulated_damage_target(
+                performing_player_id, effect, target_cards, repeat_count,
+                target_player, source_player, amount, special, prevent_life_loss, allow_pass,
+                current_selection + 1, selected_targets
+            )
+        else:
+            # 모든 선택 완료 - 대미지 적용
+            self.handle_accumulated_damage_apply(
+                performing_player_id, effect, target_player, source_player,
+                amount, special, prevent_life_loss, selected_targets
+            )
+
+    def handle_accumulated_damage_apply(self, effect_player_id, effect, target_player, source_player,
+                                        amount, special, prevent_life_loss, selected_targets):
+        """누적 대미지: 선택 결과 집계 및 대미지 적용"""
+        if len(selected_targets) == 0:
+            # 선택된 타겟이 없으면 종료
+            self.continue_resolving_effects()
+            return
+
+        # 타겟별 선택 횟수 집계
+        target_counts = {}
+        for card_id in selected_targets:
+            target_counts[card_id] = target_counts.get(card_id, 0) + 1
+
+        # 타겟별 총 대미지 계산 및 이벤트 데이터 구성
+        damage_targets = []
+        for card_id, count in target_counts.items():
+            total_damage = amount * count
+            target_card, _, _ = target_player.find_card(card_id)
+            if target_card:
+                damage_targets.append({
+                    "card_id": card_id,
+                    "definition_id": target_card.get("card_id", card_id),
+                    "count": count,
+                    "total_damage": total_damage,
+                })
+
+        # 선택 결과 공개 이벤트 브로드캐스트
+        accumulated_event = {
+            "event_type": EventType.EventType_AccumulatedDamageTargets,
+            "effect_player_id": effect_player_id,
+            "target_player_id": target_player.player_id,
+            "damage_targets": damage_targets,
+            "base_damage": amount,
+        }
+        self.broadcast_event(accumulated_event)
+
+        # 각 타겟에게 합산된 대미지 적용
+        for target_info in damage_targets:
+            target_card, _, _ = target_player.find_card(target_info["card_id"])
+            if target_card:
+                self.add_deal_damage_internal_effect(
+                    source_player,
+                    target_player,
+                    effect["source_card_id"],
+                    target_card,
+                    target_info["total_damage"],
+                    special,
+                    prevent_life_loss
+                )
+
+        self.continue_resolving_effects()
