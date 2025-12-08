@@ -10877,7 +10877,7 @@
         "colors": [],
         "sub_type": "event",
         "card_names": ["totsumachi"],
-        "rarity": "c",
+        "rarity": "U",
         "limited": true,
         "play_conditions": [
             { "condition": "my_life_less_than_opponent" }
