@@ -10871,6 +10871,26 @@
             }
         ]
     },
+    {
+        "card_id": "hBP03-088",
+        "card_type": "support",
+        "colors": [],
+        "sub_type": "event",
+        "card_names": ["totsumachi"],
+        "rarity": "c",
+        "limited": true,
+        "play_conditions": [
+            { "condition": "my_life_less_than_opponent" }
+        ],
+        "effects": [
+            {
+                "conditions": [{ "condition": "opponent_has_no_collab" }],
+                "effect_type": "opponent_move_back_to_collab"
+            }
+        ],
+
+        "NOTE": "BP3 CARDS END"
+    },
 
     
     {
@@ -12118,7 +12138,6 @@
         "card_id": "hBP05-047",
         "card_type": "holomem_debut",
         "card_names": ["kobo_kanaeru"],
-        "special_deck_limit": 50,
         "rarity": "c",
         "colors": ["blue"],
         "hp": 110,
@@ -12278,6 +12297,42 @@
                         ]
                     }
                 ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP05-074",
+        "card_type": "support",
+        "colors": [],
+        "sub_type": "item",
+        "card_names": ["friendlypc"],
+        "rarity": "c",
+        "limited": false,
+        "play_conditions": [
+            { "condition": "stage_has_space" }
+        ],
+        "effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "backstage",
+                "amount_min": 1,
+                "amount_max": 2,
+                "requirement": "holomem_debut_unlimited",
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle",
+                "after_choose_effect": {
+                    "conditions": [{ "condition": "chosen_card_count", "amount_min": 2 }],
+                    "effect_type": "choose_cards",
+                    "from": "hand",
+                    "look_at": -1,
+                    "destination": "bottom_of_deck",
+                    "amount_min": 1,
+                    "amount_max": 1,
+                    "reveal_chosen": false,
+                    "remaining_cards_action": "nothing"
+                }
             }
         ]
     },

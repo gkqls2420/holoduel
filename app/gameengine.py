@@ -103,6 +103,7 @@ class EffectType:
     EffectType_ShuffleHandToDeck = "shuffle_hand_to_deck"
     EffectType_SpendHolopower = "spend_holopower"
     EffectType_SwitchCenterWithBack = "switch_center_with_back"
+    EffectType_OpponentMoveBackToCollab = "opponent_move_back_to_collab"
 
 class Condition:
     Condition_AnyTagHolomemHasCheer = "any_tag_holomem_has_cheer"
@@ -119,6 +120,7 @@ class Condition:
     Condition_CenterHasAnyTag = "center_has_any_tag"
     Condition_CheerInPlay = "cheer_in_play"
     Condition_ChosenCardHasTag = "chosen_card_has_tag"
+    Condition_ChosenCardCount = "chosen_card_count"
     Condition_CollabWith = "collab_with"
     Condition_CurrentHolopower = "current_holopower"
     Condition_DamageAbilityIsColor = "damage_ability_is_color"
@@ -169,6 +171,8 @@ class Condition:
     Condition_OpponentBackstageHpReducedCount = "opponent_backstage_hp_reduced_count"
     Condition_OpponentBackstageTotalDamage = "opponent_backstage_total_damage"
     Condition_BloomFromOshiSkill = "bloom_from_oshi_skill"
+    Condition_MyLifeLessThanOpponent = "my_life_less_than_opponent"
+    Condition_OpponentHasNoCollab = "opponent_has_no_collab"
 
 
 class TurnEffectType:
@@ -190,6 +194,7 @@ class EventType:
     EventType_Decision_PerformanceStep = "decision_performance_step"
     EventType_Decision_SendCheer = "decision_send_cheer"
     EventType_Decision_SwapHolomemToCenter = "decision_choose_holomem_swap_to_center"
+    EventType_Decision_MoveBackToCollab = "decision_move_back_to_collab"
     EventType_DownedHolomem_Before = "downed_holomem_before"
     EventType_DownedHolomem = "downed_holomem"
     EventType_Draw = "draw"
@@ -2726,6 +2731,9 @@ class GameEngine:
                 chosen_card = self.find_card(chosen_card_id)
                 valid_tags = condition["condition_tags"]
                 return any(tag in chosen_card["tags"] for tag in valid_tags)
+            case Condition.Condition_ChosenCardCount:
+                amount_min = condition.get("amount_min", 0)
+                return len(self.last_chosen_cards) >= amount_min
             case Condition.Condition_CollabWith:
                 required_member_name = condition["required_member_name"]
                 holomems = effect_player.get_holomem_on_stage(only_performers=True)
@@ -3003,6 +3011,14 @@ class GameEngine:
             case Condition.Condition_BloomFromOshiSkill:
                 # SP 오시 스킬로 블룸했는지 확인
                 return self.last_bloom_from_oshi_skill
+            case Condition.Condition_MyLifeLessThanOpponent:
+                # 자신의 라이프가 상대보다 적은지 확인
+                opponent = self.other_player(effect_player.player_id)
+                return len(effect_player.life) < len(opponent.life)
+            case Condition.Condition_OpponentHasNoCollab:
+                # 상대 콜라보 홀로멤이 없는지 확인
+                opponent = self.other_player(effect_player.player_id)
+                return len(opponent.collab) == 0
             case _:
                 raise NotImplementedError(f"Unimplemented condition: {condition['condition']}")
         return False
@@ -3526,6 +3542,10 @@ class GameEngine:
                             cards_can_choose = [card for card in cards_can_choose if card["card_type"] == "holomem_bloom"]
                         case "holomem_debut":
                             cards_can_choose = [card for card in cards_can_choose if card["card_type"] == "holomem_debut"]
+                        case "holomem_debut_unlimited":
+                            # Only include debut cards with special_deck_limit: 50 (extra/unlimited cards)
+                            cards_can_choose = [card for card in cards_can_choose 
+                                if card["card_type"] == "holomem_debut" and card.get("special_deck_limit", 4) == 50]
                         case "holomem_debut_or_bloom":
                             cards_can_choose = [card for card in cards_can_choose if card["card_type"] in ["holomem_bloom", "holomem_debut"]]
                         case "holomem_named":
@@ -4812,6 +4832,40 @@ class GameEngine:
                         "effect_resolution": self.handle_holomem_swap,
                         "continuation": self.continue_resolving_effects,
                     })
+            case EffectType.EffectType_OpponentMoveBackToCollab:
+                # 상대가 자신의 백스테이지 홀로멤 1명을 콜라보 포지션으로 이동 (콜라보로 취급하지 않음)
+                opponent = self.other_player(effect_player_id)
+                # 상대 콜라보가 이미 있으면 효과 없음
+                if len(opponent.collab) > 0:
+                    pass
+                else:
+                    available_backstage_ids = [card["game_card_id"] for card in opponent.backstage]
+                    if len(available_backstage_ids) == 0:
+                        # 백스테이지에 홀로멤이 없으면 효과 없음
+                        pass
+                    elif len(available_backstage_ids) == 1:
+                        # 백스테이지에 1명만 있으면 자동으로 이동
+                        self.move_back_to_collab_without_effect(opponent, available_backstage_ids[0])
+                    else:
+                        # 상대가 선택
+                        decision_event = {
+                            "event_type": EventType.EventType_Decision_MoveBackToCollab,
+                            "desired_response": GameAction.EffectResolution_ChooseCardsForEffect,
+                            "effect_player_id": opponent.player_id,
+                            "cards_can_choose": available_backstage_ids,
+                        }
+                        self.broadcast_event(decision_event)
+                        self.set_decision({
+                            "decision_type": DecisionType.DecisionEffect_ChooseCardsForEffect,
+                            "decision_player": opponent.player_id,
+                            "all_card_seen": available_backstage_ids,
+                            "cards_can_choose": available_backstage_ids,
+                            "amount_min": 1,
+                            "amount_max": 1,
+                            "effect_resolution": self.handle_move_back_to_collab,
+                            "continuation": self.continue_resolving_effects,
+                        })
+                        passed_on_continuation = True
             case _:
                 raise NotImplementedError(f"Unimplemented effect type: {effect['effect_type']}")
 
@@ -5786,6 +5840,31 @@ class GameEngine:
         owner_id = get_owner_id_from_card_id(card_id)
         owner = self.get_player(owner_id)
         owner.swap_center_with_back(card_id)
+
+        continuation()
+
+    def move_back_to_collab_without_effect(self, player: PlayerState, card_id: str):
+        """백스테이지 홀로멤을 콜라보 포지션으로 이동 (콜라보 효과 발동 없이)"""
+        card, _, _ = player.find_and_remove_card(card_id)
+        player.collab.append(card)
+        # 콜라보로 취급하지 않으므로 collabed_this_turn 설정하지 않음
+        # 홀로파워 생성하지 않음
+        # 콜라보 효과 발동하지 않음
+        
+        move_event = {
+            "event_type": EventType.EventType_MoveCard,
+            "moving_player_id": player.player_id,
+            "from_zone": "backstage",
+            "to_zone": "collab",
+            "card_id": card_id,
+        }
+        self.broadcast_event(move_event)
+
+    def handle_move_back_to_collab(self, decision_info_copy, performing_player_id:str, card_ids:List[str], continuation):
+        card_id = card_ids[0]
+        owner_id = get_owner_id_from_card_id(card_id)
+        owner = self.get_player(owner_id)
+        self.move_back_to_collab_without_effect(owner, card_id)
 
         continuation()
 
