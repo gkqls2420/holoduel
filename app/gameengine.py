@@ -173,6 +173,7 @@ class Condition:
     Condition_BloomFromOshiSkill = "bloom_from_oshi_skill"
     Condition_MyLifeLessThanOpponent = "my_life_less_than_opponent"
     Condition_OpponentHasNoCollab = "opponent_has_no_collab"
+    Condition_MyHolomemDownedLastOpponentTurn = "my_holomem_downed_last_opponent_turn"
 
 
 class TurnEffectType:
@@ -433,6 +434,8 @@ class PlayerState:
         self.performance_attacked_this_turn = False
         self.last_revealed_cards = []
         self.last_die_roll_results = []
+        self.holomem_downed_this_turn = False
+        self.holomem_downed_last_opponent_turn = False
 
         # Set up Oshi.
         self.oshi_id = player_info["oshi_id"]
@@ -1035,6 +1038,7 @@ class PlayerState:
         self.effects_used_this_turn = []
         self.card_effects_used_this_turn = []
         self.last_revealed_cards = []
+        self.holomem_downed_this_turn = False
         for card in self.get_holomem_on_stage():
             card["used_art_this_turn"] = False
             card["played_this_turn"] = False
@@ -1472,7 +1476,7 @@ class GameEngine:
         self.last_chosen_holomem_id = ""
         
         # 블룸 출처 추적을 위한 변수
-        self.last_bloom_from_oshi_skill = False
+        self.last_bloom_source_skill_id = ""
 
         self.take_damage_state : TakeDamageState = None
         self.performance_artstatboosts = ArtStatBoosts()
@@ -2099,6 +2103,11 @@ class GameEngine:
         active_player = self.get_player(self.active_player_id)
         active_player.on_my_turn_end()
         other_player = self.other_player(self.active_player_id)
+        
+        # 다음 턴 플레이어의 "직전 상대 턴에 다운됐는지" 플래그 설정
+        other_player.holomem_downed_last_opponent_turn = other_player.holomem_downed_this_turn
+        active_player.holomem_downed_last_opponent_turn = False
+        
         active_player.clear_every_turn_effects()
         other_player.clear_every_turn_effects()
 
@@ -2496,6 +2505,9 @@ class GameEngine:
         life_lost = 0
         archived_ids = []
         hand_ids = []
+        
+        # 홀로멤이 다운됐음을 추적 (직전 상대 턴에 다운됐는지 체크용)
+        target_player.holomem_downed_this_turn = True
 
         # Move all attached and stacked cards and the card itself to the archive.
         if self.remove_downed_holomems_to_hand:
@@ -2827,12 +2839,22 @@ class GameEngine:
                             if any(tag in holomem["tags"] for tag in tags):
                                 return True
                 else:
-                    # No specific member needed, but still check tags.
+                    # No specific member needed, but still check tags and bloom levels.
+                    filtered_holomems = holomems
                     if "tag_in" in condition:
                         tags = condition["tag_in"]
-                        for holomem in holomems:
-                            if any(tag in holomem["tags"] for tag in tags):
-                                return True
+                        filtered_holomems = [h for h in filtered_holomems if any(tag in h["tags"] for tag in tags)]
+                    if "required_bloom_levels" in condition:
+                        required_bloom_levels = condition["required_bloom_levels"]
+                        filtered_holomems = [h for h in filtered_holomems if h.get("bloom_level", -1) in required_bloom_levels]
+                    
+                    # Check amount_min if specified
+                    if "amount_min" in condition:
+                        amount_min = condition["amount_min"]
+                        return len(filtered_holomems) >= amount_min
+                    else:
+                        # Original behavior: return True if any holomem matches
+                        return len(filtered_holomems) > 0
                 return False
             case Condition.Condition_LastDieRolls:
                 match condition.get("roll_results"):
@@ -3012,8 +3034,11 @@ class GameEngine:
                 amount_min = condition.get("amount_min", 0)
                 return total_damage >= amount_min
             case Condition.Condition_BloomFromOshiSkill:
-                # SP 오시 스킬로 블룸했는지 확인
-                return self.last_bloom_from_oshi_skill
+                # 오시 스킬로 블룸했는지 확인 (특정 스킬 ID 지정 가능)
+                required_skill_id = condition.get("skill_id", "")
+                if required_skill_id:
+                    return self.last_bloom_source_skill_id == required_skill_id
+                return self.last_bloom_source_skill_id != ""
             case Condition.Condition_MyLifeLessThanOpponent:
                 # 자신의 라이프가 상대보다 적은지 확인
                 opponent = self.other_player(effect_player.player_id)
@@ -3022,6 +3047,9 @@ class GameEngine:
                 # 상대 콜라보 홀로멤이 없는지 확인
                 opponent = self.other_player(effect_player.player_id)
                 return len(opponent.collab) == 0
+            case Condition.Condition_MyHolomemDownedLastOpponentTurn:
+                # 직전 상대의 턴에 자신의 홀로멤이 다운됐었는지 확인
+                return effect_player.holomem_downed_last_opponent_turn
             case _:
                 raise NotImplementedError(f"Unimplemented condition: {condition['condition']}")
         return False
@@ -4133,6 +4161,8 @@ class GameEngine:
                         holomems = [h for h in holomems if h["game_card_id"] != effect["source_card_id"]]
                 if "has_tag" in effect:
                     holomems = [holomem for holomem in holomems if effect["has_tag"] in holomem["tags"]]
+                if "bloom_level" in effect:
+                    holomems = [h for h in holomems if h.get("bloom_level", -1) == effect["bloom_level"]]
                 total = per_amount * min(len(holomems), effect.get("limit", 99))
                 self.handle_power_boost(total, effect["source_card_id"])
             case EffectType.EffectType_PowerBoostPerRevealedCard:
@@ -5353,8 +5383,8 @@ class GameEngine:
         card_id = action_data["card_id"]
         target_id = action_data["target_id"]
         
-        # 일반적인 블룸은 SP 오시 스킬이 아님
-        self.last_bloom_from_oshi_skill = False
+        # 일반적인 블룸은 오시 스킬로부터 온 것이 아님
+        self.last_bloom_source_skill_id = ""
         
         player.bloom(card_id, target_id, continuation)
 
@@ -6075,11 +6105,11 @@ class GameEngine:
         effect_player = self.get_player(performing_player_id)
         bloom_card_id = decision_info_copy["bloom_card_id"]
         
-        # 블룸 출처 설정 (SP 오시 스킬로부터 온 경우)
-        if "effect" in decision_info_copy and decision_info_copy["effect"].get("effect_type") == "bloom_from_archive":
-            self.last_bloom_from_oshi_skill = True
+        # 블룸 출처 설정 (오시 스킬로부터 온 경우 스킬 ID 저장)
+        if "effect" in decision_info_copy:
+            self.last_bloom_source_skill_id = decision_info_copy["effect"].get("source_skill_id", "")
         else:
-            self.last_bloom_from_oshi_skill = False
+            self.last_bloom_source_skill_id = ""
             
         effect_player.bloom(bloom_card_id, card_ids[0], continuation)
 

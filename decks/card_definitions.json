@@ -8466,6 +8466,7 @@
                     },
                     {
                         "effect_type": "bloom_from_archive",
+                        "source_skill_id": "ollieiscomingbacktolife",
                         "target_condition": "bloomable_this_turn",
                         "target_location": "stage",
                         "optional": true
@@ -9959,6 +9960,83 @@
     },
 
     {
+        "card_id": "hBP02-053",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": ["kureiji_ollie"],
+        "rarity": "rr",
+        "colors": ["purple"],
+        "hp": 190,
+        "baton_cost": 2,
+        "tags": ["#ID", "#IDGen2", "#language"],
+        "arts": [
+            {
+                "art_id": "calculatedtactics",
+                "costs": [
+                    { "color": "purple", "amount": 1 },
+                    { "color": "any", "amount": 2 }
+                ],
+                "power": 100,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "blue"
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 40,
+                        "conditions": [
+                            {
+                                "condition": "holomem_on_stage",
+                                "tag_in": ["#IDGen2"],
+                                "required_bloom_levels": [2],
+                                "amount_min": 2
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choice",
+                "conditions": [
+                    { "condition": "can_archive_from_hand", "amount_min": 2, "condition_source": "holomem_none" }
+                ],
+                "choice": [
+                    {
+                        "effect_type": "archive_from_hand",
+                        "ability_source": "holomem_none",
+                        "amount": 2,
+                        "and": [
+                            {
+                                "effect_type": "add_turn_effect_for_holomem",
+                                "limitation": "name_in",
+                                "limitation_names": ["kureiji_ollie"],
+                                "turn_effect": {
+                                    "timing": "before_art",
+                                    "conditions": [{ "condition": "performer_is_specific_id", "required_id": "REPLACED_BY_EFFECT" }],
+                                    "effect_type": "power_boost",
+                                    "amount": 40
+                                }
+                            }
+                        ]
+                    },
+                    { "effect_type": "pass" }
+                ]
+            }
+        ]
+    },
+
+    {
         "card_id": "hBP02-062",
         "card_type": "holomem_bloom",
         "bloom_level": 1,
@@ -10693,6 +10771,37 @@
         ]
     },
     {
+        "card_id": "hBP02-097",
+        "card_type": "support",
+        "sub_type": "mascot",
+        "colors": [],
+        "card_names": ["udin"],
+        "rarity": "c",
+        "effects": [{ "effect_type": "attach_card_to_holomem" }],
+        "attached_effects": [
+            {
+                "timing": "before_art",
+                "effect_type": "power_boost",
+                "amount": 10
+            },
+            {
+                "timing": "on_bloom",
+                "conditions": [
+                    { "condition": "attached_to", "required_member_name": "kureiji_ollie" }
+                ],
+                "effect_type": "draw",
+                "amount": 1,
+                "and": [
+                    {
+                        "effect_type": "archive_from_hand",
+                        "ability_source": "holomem_none",
+                        "amount": 1
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP02-099",
         "card_type": "support",
         "sub_type": "fan",
@@ -11175,9 +11284,11 @@
                 "art_effects": [
                     {
                         "timing": "before_art",
-                        "effect_type": "power_boost_per_condition",
-                        "amount_per": 20,
-                        "per": "self_stage_idgen2_count"
+                        "effect_type": "power_boost_per_holomem",
+                        "has_tag": "#IDGen2",
+                        "bloom_level": 2,
+                        "exclude": "self",
+                        "amount": 20
                     },
                     {
                         "timing": "before_art",
@@ -11203,9 +11314,31 @@
                 "hit_all_targets": false,
                 "conditions": [
                     {
-                        "condition": "bloom_from_oshi_skill"
+                        "condition": "bloom_from_oshi_skill",
+                        "skill_id": "ollieiscomingbacktolife"
                     }
                 ]
+            }
+        ]
+    },
+
+    {
+        "card_id": "hBP04-073",
+        "card_type": "holomem_debut",
+        "card_names": ["anya_melfissa"],
+        "special_deck_limit": 50,
+        "rarity": "c",
+        "colors": ["yellow"],
+        "hp": 100,
+        "baton_cost": 1,
+        "tags": ["#ID", "#IDGen2", "#language"],
+        "arts": [
+            {
+                "art_id": "ohayo",
+                "costs": [
+                    { "color": "yellow", "amount": 1 }
+                ],
+                "power": 30
             }
         ]
     },
@@ -12393,6 +12526,29 @@
                     "reveal_chosen": false,
                     "remaining_cards_action": "nothing"
                 }
+            }
+        ]
+    },
+    {
+        "card_id": "hBP05-079",
+        "card_type": "support",
+        "colors": [],
+        "sub_type": "event",
+        "card_names": ["miorehaji"],
+        "rarity": "U",
+        "limited": true,
+        "effects": [
+            {"effect_type": "draw", "amount": 2},
+            {
+                "conditions": [
+                    { "condition": "my_holomem_downed_last_opponent_turn" },
+                    { "condition": "my_life_less_than_opponent" }
+                ],
+                "effect_type": "send_cheer",
+                "amount_min": 1,
+                "amount_max": 1,
+                "from": "archive",
+                "to": "holomem"
             }
         ]
     },
