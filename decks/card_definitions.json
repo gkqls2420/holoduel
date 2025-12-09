@@ -7361,7 +7361,7 @@
                 "from": "deck",
                 "look_at": -1,
                 "destination": "backstage",
-                "amount_min": 1,
+                "amount_min": 0,
                 "amount_max": 1,
                 "requirement": "holomem_debut",
                 "reveal_chosen": true,
@@ -9920,6 +9920,45 @@
     },
 
     {
+        "card_id": "hBP02-052",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": ["kureiji_ollie"],
+        "rarity": "r",
+        "colors": ["purple"],
+        "hp": 120,
+        "baton_cost": 1,
+        "tags": ["#ID", "#IDGen2", "#language"],
+        "arts": [
+            {
+                "art_id": "inthenameofJusticei",
+                "costs": [
+                    { "color": "any", "amount": 2 }
+                ],
+                "power": 40,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 20,
+                        "conditions": [{ 
+                            "condition": "self_has_cheer_color", 
+                            "condition_colors": ["white", "green", "blue", "red", "yellow"], 
+                            "amount_min": 1 
+                        }]
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "draw",
+                "amount": 1
+            }
+        ]
+    },
+
+    {
         "card_id": "hBP02-062",
         "card_type": "holomem_bloom",
         "bloom_level": 1,
@@ -12338,7 +12377,7 @@
                 "from": "deck",
                 "look_at": -1,
                 "destination": "backstage",
-                "amount_min": 1,
+                "amount_min": 0,
                 "amount_max": 2,
                 "requirement": "holomem_debut_unlimited",
                 "reveal_chosen": true,

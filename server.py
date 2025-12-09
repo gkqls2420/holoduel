@@ -89,7 +89,7 @@ async def root():
 async def websocket_info():
     """WebSocket 연결 정보를 제공하는 엔드포인트"""
     return {
-        "websocket_url": "wss://web-production-db70.up.railway.app/ws",
+        "websocket_url": "wss://holoduel-production.up.railway.app/ws",
         "protocol": "websocket",
         "cors_enabled": True
     }
