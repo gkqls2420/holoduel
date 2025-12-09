@@ -10887,6 +10887,27 @@
                 "conditions": [{ "condition": "opponent_has_no_collab" }],
                 "effect_type": "opponent_move_back_to_collab"
             }
+        ]
+    },
+    {
+        "card_id": "hBP03-090",
+        "card_type": "support",
+        "sub_type": "event",
+        "colors": [],
+        "card_names": ["hololive_ieru_kana"],
+        "rarity": "u",
+        "effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": 4,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 4,
+                "requirement": "holomem_debut",
+                "reveal_chosen": true,
+                "remaining_cards_action": "order_on_bottom"
+            }
         ],
 
         "NOTE": "BP3 CARDS END"
@@ -12353,7 +12374,8 @@
                 "destination": "hand",
                 "amount_min": 0,
                 "amount_max": 1,
-                "requirement": "holomem_debut",
+                "requirement": "holomem_bloom",
+                "requirement_bloom_levels": [1],
                 "reveal_chosen": true,
                 "remaining_cards_action": "order_on_bottom"
             }

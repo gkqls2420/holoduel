@@ -2656,12 +2656,15 @@ class GameEngine:
                 return False
             case Condition.Condition_AttachedToHasTags:
                 inverse = condition.get("inverse", False) # XOR the result to get the inverse
+                required_bloom_levels = condition.get("required_bloom_levels", [])
                 source_card = self.find_card(source_card_id)
                 owner_player = self.get_player(source_card["owner_id"])
                 holomems = owner_player.get_holomem_on_stage()
                 for holomem in holomems:
                     if source_card_id in ids_from_cards(holomem["attached_support"]):
-                        return (len(set(holomem["tags"]) & set(condition["required_tags"])) > 0) ^ inverse
+                        has_tag = len(set(holomem["tags"]) & set(condition["required_tags"])) > 0
+                        bloom_ok = not required_bloom_levels or holomem.get("bloom_level", -1) in required_bloom_levels
+                        return (has_tag and bloom_ok) ^ inverse
                 return False ^ inverse
             case Condition.Condition_AttachedOwnerIsLocation:
                 required_location = condition["condition_location"]
@@ -3702,9 +3705,11 @@ class GameEngine:
                         targets_allowed = len(target_cards)
                     elif str(multiple_targets) == "sequential":
                         targets_allowed = 1  # sequential의 경우 정수로 설정
+                    elif str(multiple_targets) == "accumulated":
+                        targets_allowed = 1  # accumulated의 경우 한 번에 1개씩 선택
                     else:
                         targets_allowed = multiple_targets
-                if targets_allowed > len(target_cards):
+                if isinstance(targets_allowed, int) and targets_allowed > len(target_cards):
                     targets_allowed = len(target_cards)
 
                 # Filter out any target cards that already have damage over their hp.
