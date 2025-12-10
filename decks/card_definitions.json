@@ -3270,7 +3270,6 @@
         "card_id": "hBP01-010",
         "card_type": "holomem_debut",
         "card_names": ["amane_kanata"],
-        "special_deck_limit": 1,
         "rarity": "u",
         "colors": ["white"],
         "hp": 60,
@@ -11123,7 +11122,6 @@
                 "destination": "hand",
                 "amount_min": 1,
                 "amount_max": 2,
-                "requirement": "mascot",
                 "requirement_tags": ["#ShirakamiCharacter"],
                 "reveal_chosen": true,
                 "remaining_cards_action": "nothing"
@@ -11183,14 +11181,17 @@
         ],
         "bloom_effects": [
             {
-                "effect_type": "reveal_cheer_from_deck",
+                "effect_type": "choose_cards",
                 "from": "cheer_deck",
-                "amount": 1,
-                "requirement": "cheer",
-                "requirement_colors": ["white"],
+                "look_at": -1,
                 "destination": "holomem",
-                "destination_requirement": "member_name",
-                "destination_member_name": "shirakami_fubuki",
+                "to_limitation": "specific_member_name",
+                "to_limitation_name": "shirakami_fubuki",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "color_in",
+                "requirement_colors": ["white"],
+                "reveal_chosen": true,
                 "remaining_cards_action": "shuffle",
                 "conditions": [
                     {
@@ -11430,7 +11431,170 @@
                     }
                 ]
             }
+        ],
+
+        "NOTE": "BP4 CARDS END"
+    },
+
+    {
+        "NOTE": "BP5 CARDS START",
+
+        "card_id": "hBP05-068",
+        "card_type": "holomem_debut",
+        "card_names": ["shirakami_fubuki"],
+        "rarity": "c",
+        "colors": ["yellow"],
+        "hp": 110,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#Gen1",
+            "#Gamers",
+            "#AnimalEars",
+            "#Art"
+        ],
+        "arts": [
+            {
+                "art_id": "snackgamebest",
+                "costs": [{ "color": "any", "amount": 1 }],
+                "power": 20
+            }
+        ],
+        "collab_effects": [
+            {
+                "conditions": [{ "condition": "has_attachment_of_type", "condition_type": "mascot" }],
+                "effect_type": "reveal_top_deck",
+                "amount": 1,
+                "and": [
+                    {
+                        "effect_type": "choice",
+                        "choice": [
+                            { "effect_type": "pass" },
+                            {
+                                "effect_type": "order_cards",
+                                "from": "deck",
+                                "destination": "deck",
+                                "bottom": true,
+                                "amount": 1
+                            }
+                        ]
+                    }
+                ]
+            }
         ]
+    },
+    {
+        "card_id": "hBP05-069",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": ["shirakami_fubuki"],
+        "rarity": "U",
+        "colors": ["yellow"],
+        "hp": 160,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#Gen1",
+            "#Gamers",
+            "#AnimalEars",
+            "#Art"
+        ],
+        "arts": [
+            {
+                "art_id": "manteniragu",
+                "costs": [{ "color": "any", "amount": 2 }],
+                "power": 40,
+                "art_effects": [
+                    {
+                        "effect_type": "send_cheer",
+                        "amount_min": 0,
+                        "amount_max": 1,
+                        "from": "cheer_deck",
+                        "to": "this_holomem"
+                    }
+                ]
+            }
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_take_damage",
+                "effect_type": "reduce_damage",
+                "conditions": [
+                    { "condition": "this_card_is_backstage" },
+                    { "condition": "damage_source_is_opponent" }
+                ],
+                "amount": "all"
+            }
+        ]
+    },
+    {
+        "card_id": "hBP05-070",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": ["shirakami_fubuki"],
+        "rarity": "rr",
+        "colors": ["yellow"],
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#Gen1",
+            "#Gamers",
+            "#AnimalEars",
+            "#Art"
+        ],
+        "arts": [
+            {
+                "art_id": "fubuki_cafe_welcome",
+                "costs": [{ "color": "any", "amount": 2 }],
+                "power": 60,
+                "power_bonus": [{ "color": "blue", "amount": 50 }],
+                "art_effects": [
+                    {
+                        "effect_type": "choose_cards",
+                        "from": "archive",
+                        "look_at": -1,
+                        "destination": "holomem",
+                        "attach_each_separately": true,
+                        "amount_min": 0,
+                        "amount_max": -1,
+                        "requirement": "support",
+                        "requirement_sub_types": ["mascot", "fan"],
+                        "requirement_tags": ["#ShirakamiCharacter"],
+                        "remaining_cards_action": "nothing"
+                    }
+                ]
+            },
+            {
+                "art_id": "king_and_cafe_owner",
+                "costs": [{ "color": "any", "amount": 4 }],
+                "power": 100,
+                "power_bonus": [{ "color": "blue", "amount": 50 }],
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 100,
+                        "conditions": [
+                            {
+                                "condition": "or",
+                                "or_conditions": [
+                                    { "condition": "oshi_is", "required_member_name": "shirakami_fubuki" },
+                                    { "condition": "oshi_is_color", "condition_colors": ["yellow"] }
+                                ]
+                            },
+                            {
+                                "condition": "stage_has_attachments_of_types_count",
+                                "condition_types": ["tool", "mascot", "fan"],
+                                "amount_min": 4
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+
+        "NOTE": "BP5 CARDS END"
     },
 
     {
@@ -12573,6 +12737,154 @@
                 "requirement_bloom_levels": [1],
                 "reveal_chosen": true,
                 "remaining_cards_action": "order_on_bottom"
+            }
+        ]
+    },
+
+    {
+        "NOTE": "hSD08 CARDS START",
+
+        "card_id": "hSD08-003",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": ["amane_kanata"],
+        "rarity": "r",
+        "colors": ["white"],
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": ["#JP", "#Gen4", "#Song"],
+        "arts": [
+            {
+                "art_id": "minnano_super_darling",
+                "costs": [
+                    { "color": "white", "amount": 1 },
+                    { "color": "any", "amount": 2 }
+                ],
+                "power": 100,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [{ "condition": "target_color", "color_requirement": "green" }]
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost_per_holomem",
+                        "has_tag": "#Summer",
+                        "amount": 10
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "holomem_debut",
+                "requirement_tags": ["#Gen4"],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ]
+    },
+    {
+        "card_id": "hSD08-004",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": ["amane_kanata"],
+        "rarity": "rr",
+        "colors": ["white"],
+        "hp": 180,
+        "baton_cost": 2,
+        "tags": ["#JP", "#Gen4", "#Song"],
+        "arts": [
+            {
+                "art_id": "kimino_senaka",
+                "costs": [
+                    { "color": "white", "amount": 1 },
+                    { "color": "any", "amount": 2 }
+                ],
+                "power": 120,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [{ "condition": "target_color", "color_requirement": "red" }]
+                    }
+                ],
+                "on_kill_effects": [
+                    {
+                        "conditions": [
+                            { "condition": "effect_card_id_not_used_this_turn" }
+                        ],
+                        "effect_type": "deal_damage",
+                        "special": true,
+                        "amount": 40,
+                        "target": "holomem",
+                        "opponent": true,
+                        "limitation": "bloom_level",
+                        "limitation_bloom_level": 2,
+                        "and": [{ "effect_type": "record_effect_card_id_used_this_turn" }]
+                    }
+                ]
+            }
+        ],
+        "gift_effects": [
+            {
+                "timing": "before_art",
+                "effect_type": "power_boost",
+                "amount": 40,
+                "conditions": [
+                    { "condition": "this_card_is_center" },
+                    { "condition": "performer_is_collab" },
+                    { "condition": "performer_is_debut" },
+                    { "condition": "performer_has_any_tag", "condition_tags": ["#Gen4"] }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hSD08-007",
+        "card_type": "holomem_debut",
+        "card_names": ["tsunomaki_watame"],
+        "rarity": "c",
+        "colors": ["yellow"],
+        "hp": 100,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#Gen4",
+            "#AnimalEars",
+            "#Song",
+            "#Summer"
+        ],
+        "arts": [
+            {
+                "art_id": "cottoncandyyummy",
+                "costs": [
+                    { "color": "any", "amount": 1 }
+                ],
+                "power": 10
+            }
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "send_cheer",
+                "amount_min": 0,
+                "amount_max": 1,
+                "from": "archive",
+                "to": "holomem",
+                "to_limitation": "tag_and_bloom_level",
+                "to_limitation_tags": ["#Gen4"],
+                "to_limitation_bloom_level": 2,
+
+                "NOTE": "hSD08 CARDS END"
             }
         ]
     },

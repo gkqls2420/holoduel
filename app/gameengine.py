@@ -162,6 +162,7 @@ class Condition:
     Condition_TargetIsNotBackstage = "target_is_not_backstage"
     Condition_ThisCardIsCenter = "this_card_is_center"
     Condition_ThisCardIsCollab = "this_card_is_collab"
+    Condition_ThisCardIsBackstage = "this_card_is_backstage"
     Condition_ThisCardIsPerforming = "this_card_is_performing"
     Condition_TopDeckCardHasAnyCardType = "top_deck_has_any_card_type"
     Condition_TopDeckCardHasAnyTag = "top_deck_card_has_any_tag"
@@ -174,6 +175,8 @@ class Condition:
     Condition_MyLifeLessThanOpponent = "my_life_less_than_opponent"
     Condition_OpponentHasNoCollab = "opponent_has_no_collab"
     Condition_MyHolomemDownedLastOpponentTurn = "my_holomem_downed_last_opponent_turn"
+    Condition_Or = "or"
+    Condition_StageHasAttachmentsOfTypesCount = "stage_has_attachments_of_types_count"
 
 
 class TurnEffectType:
@@ -2641,6 +2644,12 @@ class GameEngine:
         return True
     def is_condition_met(self, effect_player: PlayerState, source_card_id, condition):
         match condition["condition"]:
+            case Condition.Condition_Or:
+                or_conditions = condition.get("or_conditions", [])
+                for or_cond in or_conditions:
+                    if self.is_condition_met(effect_player, source_card_id, or_cond):
+                        return True
+                return False
             case Condition.Condition_AnyTagHolomemHasCheer:
                 valid_tags = condition["condition_tags"]
                 for card in effect_player.get_holomem_on_stage():
@@ -2953,6 +2962,14 @@ class GameEngine:
                 return False
             case Condition.Condition_StageHasSpace:
                 return len(effect_player.get_holomem_on_stage()) < MAX_MEMBERS_ON_STAGE
+            case Condition.Condition_StageHasAttachmentsOfTypesCount:
+                condition_types = condition.get("condition_types", [])
+                amount_min = condition.get("amount_min", 1)
+                holomems = effect_player.get_holomem_on_stage()
+                total_count = 0
+                for sub_type in condition_types:
+                    total_count += len(get_cards_of_sub_type_from_holomems(sub_type, holomems))
+                return total_count >= amount_min
             case Condition.Condition_TargetColor:
                 color_requirement = condition["color_requirement"]
                 return color_requirement in self.performance_target_card["colors"]
@@ -2974,6 +2991,8 @@ class GameEngine:
                 if len(effect_player.collab) == 0:
                     return False
                 return effect_player.collab[0]["game_card_id"] == source_card_id
+            case Condition.Condition_ThisCardIsBackstage:
+                return source_card_id in ids_from_cards(effect_player.backstage)
             case Condition.Condition_ThisCardIsPerforming:
                 return self.performance_performer_card and (self.performance_performer_card["game_card_id"] == source_card_id)
             case Condition.Condition_TopDeckCardHasAnyCardType:
@@ -3673,6 +3692,8 @@ class GameEngine:
                     "to_limitation": effect.get("to_limitation", ""),
                     "to_limitation_colors": effect.get("to_limitation_colors", []),
                     "to_limitation_tags": effect.get("to_limitation_tags", []),
+                    "to_limitation_name": effect.get("to_limitation_name", ""),
+                    "attach_each_separately": effect.get("attach_each_separately", False),
                     "amount_min": amount_min,
                     "amount_max": amount_max,
                     "reveal_chosen": reveal_chosen,
@@ -3722,6 +3743,14 @@ class GameEngine:
                             target_cards = [self.after_damage_state.target_card]
                     case "holomem":
                         target_cards = target_player.get_holomem_on_stage()
+                        # Apply limitation if specified
+                        limitation = effect.get("limitation", None)
+                        if limitation:
+                            limitation_bloom_level = effect.get("limitation_bloom_level", 0)
+                            if limitation == "bloom_level":
+                                target_cards = [card for card in target_cards if 
+                                    card["card_type"] == "holomem_bloom" and 
+                                    card.get("bloom_level", 0) == limitation_bloom_level]
                     case "self":
                         target_cards = [source_holomem_card]
                     case _:
@@ -4569,6 +4598,13 @@ class GameEngine:
                                     to_limitation_card_type = effect.get("to_limitation_card_type", "")
                                     holomems = effect_player.get_holomem_on_stage()
                                     to_options = [card for card in holomems if to_limitation_card_type == card["card_type"]]
+                                case "tag_and_bloom_level":
+                                    to_limitation_bloom_level = effect.get("to_limitation_bloom_level", 0)
+                                    holomems = effect_player.get_holomem_on_stage()
+                                    to_options = [card for card in holomems if 
+                                        card["card_type"] == "holomem_bloom" and 
+                                        card.get("bloom_level", 0) == to_limitation_bloom_level and
+                                        any(tag in card["tags"] for tag in to_limitation_tags)]
                                 case _:
                                     raise NotImplementedError(f"Unimplemented to limitation: {to_limitation}")
                         else:
@@ -6172,19 +6208,42 @@ class GameEngine:
             to_limitation = decision_info_copy.get("to_limitation", "")
             to_limitation_colors = decision_info_copy.get("to_limitation_colors", [])
             to_limitation_tags = decision_info_copy.get("to_limitation_tags", [])
-            # In this case, the user has to pick a target holomem.
-            # Assume this is only a single card.
-            attach_effect = {
-                "effect_type": EffectType.EffectType_AttachCardToHolomem,
-                "source_card_id": card_ids[0],
-                "to_limitation": to_limitation,
-                "to_limitation_colors": to_limitation_colors,
-                "to_limitation_tags": to_limitation_tags,
-                "continuation": lambda :
-                    # Finish the cleanup of the remaining cards.
-                    self.choose_cards_cleanup_remaining(performing_player_id, remaining_card_ids, remaining_cards_action, from_zone, from_zone, continuation),
-            }
-            self.do_effect(player, attach_effect)
+            to_limitation_name = decision_info_copy.get("to_limitation_name", "")
+            attach_each_separately = decision_info_copy.get("attach_each_separately", False)
+
+            if attach_each_separately and len(card_ids) > 1:
+                # Attach each card separately to potentially different holomems
+                def attach_cards_sequentially(remaining_cards_to_attach):
+                    if len(remaining_cards_to_attach) == 0:
+                        self.choose_cards_cleanup_remaining(performing_player_id, remaining_card_ids, remaining_cards_action, from_zone, from_zone, continuation)
+                        return
+                    current_card_id = remaining_cards_to_attach[0]
+                    next_cards = remaining_cards_to_attach[1:]
+                    attach_effect = {
+                        "effect_type": EffectType.EffectType_AttachCardToHolomem,
+                        "source_card_id": current_card_id,
+                        "to_limitation": to_limitation,
+                        "to_limitation_colors": to_limitation_colors,
+                        "to_limitation_tags": to_limitation_tags,
+                        "to_limitation_name": to_limitation_name,
+                        "continuation": lambda nc=next_cards: attach_cards_sequentially(nc),
+                    }
+                    self.do_effect(player, attach_effect)
+                attach_cards_sequentially(card_ids)
+            else:
+                # Original behavior: attach single card
+                attach_effect = {
+                    "effect_type": EffectType.EffectType_AttachCardToHolomem,
+                    "source_card_id": card_ids[0],
+                    "to_limitation": to_limitation,
+                    "to_limitation_colors": to_limitation_colors,
+                    "to_limitation_tags": to_limitation_tags,
+                    "to_limitation_name": to_limitation_name,
+                    "continuation": lambda :
+                        # Finish the cleanup of the remaining cards.
+                        self.choose_cards_cleanup_remaining(performing_player_id, remaining_card_ids, remaining_cards_action, from_zone, from_zone, continuation),
+                }
+                self.do_effect(player, attach_effect)
         elif from_zone == "stage" and to_zone == "stage":
             # Special handling for stage selection (two_tone_color_pc)
             # Store the selected stage holomems for later use in deck searches
