@@ -3454,6 +3454,10 @@ class GameEngine:
                     case "specific_member_name":
                         holomem_targets = [holomem for holomem in holomem_targets \
                             if to_limitation_name in holomem["card_names"]]
+                    case "member_name_in":
+                        to_limitation_names = effect.get("to_limitation_names", [])
+                        holomem_targets = [holomem for holomem in holomem_targets \
+                            if any(name in holomem["card_names"] for name in to_limitation_names)]
                     case "tag_in":
                         holomem_targets = [holomem for holomem in holomem_targets \
                             if any(tag in holomem["tags"] for tag in to_limitation_tags)]
@@ -4774,6 +4778,10 @@ class GameEngine:
                                     to_limitation_name = effect.get("to_limitation_name", "")
                                     holomems = effect_player.get_holomem_on_stage()
                                     to_options = [card for card in holomems if to_limitation_name in card["card_names"]]
+                                case "member_name_in":
+                                    to_limitation_names = effect.get("to_limitation_names", [])
+                                    holomems = effect_player.get_holomem_on_stage()
+                                    to_options = [card for card in holomems if any(name in card["card_names"] for name in to_limitation_names)]
                                 case "tag_in":
                                     to_options = [card for card in effect_player.get_holomem_on_stage() if any(tag in card["tags"] for tag in to_limitation_tags)]
                                 case "card_type":

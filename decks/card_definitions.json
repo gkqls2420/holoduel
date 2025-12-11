@@ -11332,6 +11332,40 @@
             }
         ]
     },
+    {
+        "card_id": "hBP04-027",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": ["pavolia_reine"],
+        "rarity": "r",
+        "colors": ["green"],
+        "hp": 130,
+        "baton_cost": 1,
+        "tags": [
+            "#ID",
+            "#IDGen2",
+            "#Bird",
+            "#Art"
+        ],
+        "arts": [
+            {
+                "art_id": "terima_kasih",
+                "costs": [{ "color": "green", "amount": 1 }],
+                "power": 30
+            }
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "send_cheer",
+                "amount_min": 1,
+                "amount_max": 1,
+                "from": "cheer_deck",
+                "to": "holomem",
+                "to_limitation": "member_name_in",
+                "to_limitation_names": ["kureiji_ollie", "anya_melfissa"]
+            }
+        ]
+    },
 
     {
         "card_id": "hBP04-038",
