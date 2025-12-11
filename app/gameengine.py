@@ -3298,6 +3298,15 @@ class GameEngine:
 
                 def archive_cheer_continuation():
                     amount = self.archive_count_required
+                    # Handle "all" amount - calculate actual cheer count for this holomem
+                    if str(amount) == "all":
+                        from_zone = effect["from"]
+                        if from_zone == "self":
+                            src_card, _, _ = effect_player.find_card(effect["source_card_id"])
+                            amount = len(src_card["attached_cheer"]) if src_card else 0
+                        else:
+                            # For "holomem" from_zone, count all cheer on all holomems
+                            amount = sum(len(h["attached_cheer"]) for h in effect_player.get_holomem_on_stage())
                     from_zone = effect["from"]
                     required_colors = effect.get("required_colors", [])
                     target_holomems = []
