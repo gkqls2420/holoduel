@@ -79,17 +79,22 @@ class EffectType:
     EffectType_PowerBoostPerStacked = "power_boost_per_stacked"
     EffectType_PowerBoostPerPlayedSupport = "power_boost_per_played_support"
     EffectType_PowerBoostPerCondition = "power_boost_per_condition"
+    EffectType_PowerBoostPerAttachmentNameOnStage = "power_boost_per_attachment_name_on_stage"
     EffectType_RecordEffectCardIdUsedThisTurn = "record_effect_card_id_used_this_turn"
     EffectType_RecordLastDieResult = "record_last_die_result"
     EffectType_RecordUsedOncePerGameEffect = "record_used_once_per_game_effect"
     EffectType_RecordUsedOncePerTurnEffect = "record_used_once_per_turn_effect"
+    EffectType_ChooseStackedToHand = "choose_stacked_to_hand"
+    EffectType_ChooseStackedToHand_Internal = "choose_stacked_to_hand_INTERNAL"
     EffectType_RecoverDownedHolomemCards = "recover_downed_holomem_cards"
+    EffectType_ReduceArtCost = "reduce_art_cost"
     EffectType_ReduceDamage = "reduce_damage"
     EffectType_ReduceRequiredArchiveCount = "reduce_required_archive_count"
     EffectType_RepeatArt = "repeat_art"
     EffectType_RestoreHp = "restore_hp"
     EffectType_RestoreHp_Internal = "restore_hp_INTERNAL"
     EffectType_ReturnHolomemToDebut = "return_holomem_to_debut"
+    EffectType_ReturnThisAttachmentToHand = "return_this_attachment_to_hand"
     EffectType_RevealTopDeck = "reveal_top_deck"
     EffectType_RerollDie = "reroll_die"
     EffectType_RollDie = "roll_die"
@@ -109,6 +114,7 @@ class Condition:
     Condition_AnyTagHolomemHasCheer = "any_tag_holomem_has_cheer"
     Condition_AttachedTo = "attached_to"
     Condition_AttachedToHasTags = "attached_to_has_tags"
+    Condition_AttachedToIsCardType = "attached_to_is_card_type"
     Condition_AttachedOwnerIsLocation = "attached_owner_is_location"
     Condition_AttachedOwnerIsPerforming = "attached_owner_is_performing"
     Condition_BloomTargetIsDebut = "bloom_target_is_debut"
@@ -126,9 +132,12 @@ class Condition:
     Condition_DamageAbilityIsColor = "damage_ability_is_color"
     Condition_DamagedHolomemIsBackstage = "damaged_holomem_is_backstage"
     Condition_DamagedHolomemIsCenterOrCollab = "damaged_holomem_is_center_or_collab"
+    Condition_DamageTargetIsCenterOrCollab = "damage_target_is_center_or_collab"
     Condition_DamageSourceIsOpponent = "damage_source_is_opponent"
+    Condition_DamageIsSpecial = "damage_is_special"
     Condition_DownedCardBelongsToOpponent = "downed_card_belongs_to_opponent"
     Condition_DownedCardIsColor = "downed_card_is_color"
+    Condition_DownedCardIsThis = "downed_card_is_this"
     Condition_EffectCardIdNotUsedThisTurn = "effect_card_id_not_used_this_turn"
     Condition_HasAttachmentOfType = "has_attachment_of_type"
     Condition_HasAttachmentOfTypesAny = "has_attachment_of_types_any"
@@ -161,6 +170,7 @@ class Condition:
     Condition_TargetIsBackstage = "target_is_backstage"
     Condition_TargetIsNotBackstage = "target_is_not_backstage"
     Condition_ThisCardIsCenter = "this_card_is_center"
+    Condition_ThisCardIsCenterOrCollab = "this_card_is_center_or_collab"
     Condition_ThisCardIsCollab = "this_card_is_collab"
     Condition_ThisCardIsBackstage = "this_card_is_backstage"
     Condition_ThisCardIsPerforming = "this_card_is_performing"
@@ -260,6 +270,7 @@ class TakeDamageState:
         self.source_player = None
         self.source_card = None
         self.target_card = None
+        self.target_card_zone = ""
         self.special = False
         self.prevent_life_loss = False
         self.art_info = {}
@@ -600,7 +611,54 @@ class PlayerState:
             elif "yellow" in attached_cheer_card["colors"]:
                 yellow_cheer += 1
 
-        cheer_costs = art["costs"]
+        # Calculate cost reductions from reduce_art_cost effects
+        cost_reductions = {"white": 0, "green": 0, "blue": 0, "red": 0, "purple": 0, "yellow": 0}
+        reduce_cost_effects = self.get_effects_at_timing("on_art_cost_check", card, "")
+        for effect in reduce_cost_effects:
+            if effect["effect_type"] == EffectType.EffectType_ReduceArtCost:
+                if not self.engine.are_conditions_met(self, effect["source_card_id"], effect.get("conditions", [])):
+                    continue
+                # Check target limitations
+                target_limitation = effect.get("target_limitation", "")
+                if target_limitation == "center":
+                    if card not in self.center:
+                        continue
+                elif target_limitation == "collab":
+                    if card not in self.collab:
+                        continue
+                elif target_limitation == "center_or_collab":
+                    if card not in self.center and card not in self.collab:
+                        continue
+                # Check target member name
+                target_member_name = effect.get("target_member_name", "")
+                if target_member_name and target_member_name not in card.get("card_names", []):
+                    continue
+                # Check target has attachment
+                target_has_attachment_name = effect.get("target_has_attachment_name", "")
+                if target_has_attachment_name:
+                    has_attachment = False
+                    for attached in card.get("attached_support", []):
+                        if target_has_attachment_name in attached.get("card_names", []):
+                            has_attachment = True
+                            break
+                    if not has_attachment:
+                        continue
+                # Apply cost reduction
+                reduction_color = effect.get("color", "")
+                reduction_amount = effect.get("amount", 0)
+                if reduction_color in cost_reductions:
+                    cost_reductions[reduction_color] += reduction_amount
+
+        # Apply cost reductions to create effective costs
+        cheer_costs = []
+        for cost in art["costs"]:
+            new_cost = dict(cost)
+            color = cost["color"]
+            if color in cost_reductions and cost_reductions[color] > 0:
+                reduction = min(cost_reductions[color], cost["amount"])
+                new_cost["amount"] = cost["amount"] - reduction
+                cost_reductions[color] -= reduction
+            cheer_costs.append(new_cost)
         any_cost = 0
         # First go through all the costs and subtract any from the color counts.
         for cost in cheer_costs:
@@ -1283,7 +1341,9 @@ class PlayerState:
                 }
                 self.engine.broadcast_event(move_attached_event)
 
-    def archive_holomem_from_play(self, card_id):
+    def archive_holomem_from_play(self, card_id, stacked_cards_to_hand_ids=None):
+        if stacked_cards_to_hand_ids is None:
+            stacked_cards_to_hand_ids = []
         card, _, zone_name = self.find_and_remove_card(card_id)
         attached_cheer = card["attached_cheer"]
         attached_support = card["attached_support"]
@@ -1294,13 +1354,31 @@ class PlayerState:
         card["attached_support"] = []
         card["stacked_cards"] = []
 
-        to_archive = attached_cheer + attached_support + stacked_cards
+        to_archive = attached_cheer + attached_support
+        to_hand = []
+        hand_ids = []
+
+        # Separate stacked cards: some go to hand, rest to archive
+        for stacked_card in stacked_cards:
+            if stacked_card["game_card_id"] in stacked_cards_to_hand_ids:
+                to_hand.append(stacked_card)
+            else:
+                to_archive.append(stacked_card)
+
+        # Check if the downed card itself should go to hand
+        if card_id in stacked_cards_to_hand_ids:
+            to_hand.append(card)
+        else:
+            self.archive.insert(0, card)
 
         for extra_card in to_archive:
             self.archive.insert(0, extra_card)
-        self.archive.insert(0, card)
+        for hand_card in to_hand:
+            self.hand.append(hand_card)
+            self.reset_card_stats(hand_card)
 
-        return ids_from_cards(to_archive)
+        hand_ids = ids_from_cards(to_hand)
+        return ids_from_cards(to_archive), hand_ids
 
     def return_holomem_to_hand(self, card_id, include_stacked_holomem = False):
         returning_card, _, zone_name = self.find_and_remove_card(card_id)
@@ -1342,15 +1420,18 @@ class PlayerState:
 
     def set_holomem_hp(self, card_id, target_hp):
         card, _, _ = self.find_card(card_id)
-        if card["damage"] < self.get_card_hp(card) - target_hp:
-            previous_damage = card["damage"]
-            card["damage"] = self.get_card_hp(card) - target_hp
+        # TODO: 추후 "HP 변화 불가" 효과 체크 로직 추가 예정
+        previous_damage = card["damage"]
+        new_damage = self.get_card_hp(card) - target_hp
+        if previous_damage != new_damage:
+            card["damage"] = new_damage
             modify_hp_event = {
                 "event_type": EventType.EventType_ModifyHP,
                 "target_player_id": self.player_id,
                 "card_id": card_id,
-                "damage_done": card["damage"] - previous_damage,
-                "new_damage": card["damage"],
+                "damage_done": new_damage - previous_damage,
+                "new_damage": new_damage,
+                "current_hp": target_hp,
             }
             self.engine.broadcast_event(modify_hp_event)
 
@@ -1468,6 +1549,7 @@ class GameEngine:
         self.last_die_value = 0
         self.archive_count_required = 0
         self.remove_downed_holomems_to_hand = False
+        self.stacked_cards_to_hand_ids = []
         self.after_damage_state : AfterDamageState = None
         self.last_chosen_cards = []
         self.stage_selected_holomems = []
@@ -2386,6 +2468,7 @@ class GameEngine:
         self.take_damage_state.source_player = dealing_player
         self.take_damage_state.source_card = dealing_card
         self.take_damage_state.target_card = target_card
+        self.take_damage_state.target_card_zone = target_player.get_holomem_zone(target_card)
         self.take_damage_state.art_info = art_info
         on_damage_effects = target_player.get_effects_at_timing("on_take_damage", target_card)
         self.begin_resolving_effects(on_damage_effects, lambda :
@@ -2516,8 +2599,11 @@ class GameEngine:
         if self.remove_downed_holomems_to_hand:
             archived_ids, hand_ids = target_player.return_holomem_to_hand(target_card["game_card_id"], include_stacked_holomem=True)
             self.remove_downed_holomems_to_hand = False
+        elif len(self.stacked_cards_to_hand_ids) > 0:
+            archived_ids, hand_ids = target_player.archive_holomem_from_play(target_card["game_card_id"], self.stacked_cards_to_hand_ids)
+            self.stacked_cards_to_hand_ids = []
         else:
-            archived_ids = target_player.archive_holomem_from_play(target_card["game_card_id"])
+            archived_ids, hand_ids = target_player.archive_holomem_from_play(target_card["game_card_id"])
         life_lost = 1
         if "down_life_cost" in target_card:
             life_lost = target_card["down_life_cost"]
@@ -2687,6 +2773,16 @@ class GameEngine:
                         bloom_ok = not required_bloom_levels or holomem.get("bloom_level", -1) in required_bloom_levels
                         return (has_tag and bloom_ok) ^ inverse
                 return False ^ inverse
+            case Condition.Condition_AttachedToIsCardType:
+                condition_card_types = condition["condition_card_types"]
+                source_card = self.find_card(source_card_id)
+                owner_player = self.get_player(source_card["owner_id"])
+                holomems = owner_player.get_holomem_on_stage()
+                for holomem in holomems:
+                    if source_card_id in ids_from_cards(holomem["attached_support"]):
+                        if holomem["card_type"] in condition_card_types:
+                            return True
+                return False
             case Condition.Condition_AttachedOwnerIsLocation:
                 required_location = condition["condition_location"]
                 holomems = effect_player.get_holomems_with_attachment(source_card_id)
@@ -2776,8 +2872,12 @@ class GameEngine:
                 return self.after_damage_state.target_card_zone == "backstage"
             case Condition.Condition_DamagedHolomemIsCenterOrCollab:
                 return self.after_damage_state.target_card_zone in ["center", "collab"]
+            case Condition.Condition_DamageTargetIsCenterOrCollab:
+                return self.take_damage_state.target_card_zone in ["center", "collab"]
             case Condition.Condition_DamageSourceIsOpponent:
                 return self.take_damage_state.source_player.player_id != effect_player.player_id
+            case Condition.Condition_DamageIsSpecial:
+                return self.take_damage_state.special
             case Condition.Condition_DownedCardBelongsToOpponent:
                 source_card = self.find_card(source_card_id)
                 owner_player = self.get_player(source_card["owner_id"])
@@ -2786,6 +2886,12 @@ class GameEngine:
                 downed_card = self.down_holomem_state.holomem_card
                 condition_color = condition["condition_color"]
                 return condition_color in downed_card["colors"]
+            case Condition.Condition_DownedCardIsThis:
+                # Check if the downed card is the source card (the card with this effect)
+                if self.down_holomem_state and self.down_holomem_state.holomem_card:
+                    downed_card = self.down_holomem_state.holomem_card
+                    return source_card_id == downed_card["game_card_id"]
+                return False
             case Condition.Condition_EffectCardIdNotUsedThisTurn:
                 return not effect_player.has_used_card_effect_this_turn(source_card_id)
             case Condition.Condition_HasAttachedCard:
@@ -2987,6 +3093,10 @@ class GameEngine:
                 if len(effect_player.center) == 0:
                     return False
                 return effect_player.center[0]["game_card_id"] == source_card_id
+            case Condition.Condition_ThisCardIsCenterOrCollab:
+                in_center = len(effect_player.center) > 0 and effect_player.center[0]["game_card_id"] == source_card_id
+                in_collab = len(effect_player.collab) > 0 and effect_player.collab[0]["game_card_id"] == source_card_id
+                return in_center or in_collab
             case Condition.Condition_ThisCardIsCollab:
                 if len(effect_player.collab) == 0:
                     return False
@@ -3317,6 +3427,9 @@ class GameEngine:
             case EffectType.EffectType_ArchiveThisAttachment:
                 attachment_id = effect["source_card_id"]
                 effect_player.archive_attached_cards([attachment_id])
+            case EffectType.EffectType_ReturnThisAttachmentToHand:
+                attachment_id = effect["source_card_id"]
+                effect_player.move_card(attachment_id, "hand")
             case EffectType.EffectType_ArchiveTopStackedHolomem:
                 card, _, _ = effect_player.find_card(effect["source_card_id"])
                 if len(card["stacked_cards"]) > 0:
@@ -3664,6 +3777,14 @@ class GameEngine:
 
                 if len(cards_can_choose) < amount_max:
                     amount_max = len(cards_can_choose)
+
+                # Limit amount based on available stage space for backstage destination
+                if destination == "backstage":
+                    available_space = MAX_MEMBERS_ON_STAGE - len(effect_player.get_holomem_on_stage())
+                    if amount_max > available_space:
+                        amount_max = available_space
+                    if amount_min > available_space:
+                        amount_min = available_space
 
                 choose_event = {
                     "event_type": EventType.EventType_Decision_ChooseCards,
@@ -4142,6 +4263,17 @@ class GameEngine:
                 mascots = get_cards_of_sub_type_from_holomems("mascot", effect_player.get_holomem_on_stage())
                 total = per_amount * len(mascots)
                 self.handle_power_boost(total, effect["source_card_id"])
+            case EffectType.EffectType_PowerBoostPerAttachmentNameOnStage:
+                per_amount = effect["amount"]
+                attachment_name = effect["attachment_name"]
+                holomems = effect_player.get_holomem_on_stage()
+                count = 0
+                for holomem in holomems:
+                    for attachment in holomem["attached_support"]:
+                        if attachment_name in attachment.get("card_names", []):
+                            count += 1
+                total = per_amount * count
+                self.handle_power_boost(total, effect["source_card_id"])
             case EffectType.EffectType_PowerBoostPerArchivedHolomem:
                 per_amount = effect["amount"]
                 holomems_in_archive = [card for card in effect_player.archive if is_card_holomem(card)]
@@ -4233,6 +4365,56 @@ class GameEngine:
                 effect_player.record_effect_used_this_game(effect["effect_id"])
             case EffectType.EffectType_RecordUsedOncePerTurnEffect:
                 effect_player.record_effect_used_this_turn(effect["effect_id"])
+            case EffectType.EffectType_ChooseStackedToHand:
+                # Choose from stacked cards (including self) of the downed holomem
+                amount_min = effect.get("amount_min", 1)
+                amount_max = effect.get("amount_max", 1)
+                include_self = effect.get("include_self", True)
+                
+                if self.down_holomem_state and self.down_holomem_state.holomem_card:
+                    downed_card = self.down_holomem_state.holomem_card
+                    stacked_cards = downed_card.get("stacked_cards", [])
+                    stacked_holomems = [card for card in stacked_cards if is_card_holomem(card)]
+                    
+                    cards_to_choose_from = stacked_holomems.copy()
+                    if include_self:
+                        cards_to_choose_from.append(downed_card)
+                    
+                    if len(cards_to_choose_from) > 0:
+                        # Create a decision for the player to choose
+                        card_ids_to_choose = ids_from_cards(cards_to_choose_from)
+                        from_zone = "downed_holomem_stacked"
+                        
+                        choose_event = {
+                            "event_type": EventType.EventType_Decision_ChooseCards,
+                            "desired_response": GameAction.EffectResolution_ChooseCardsForEffect,
+                            "effect_player_id": effect_player.player_id,
+                            "all_card_seen": card_ids_to_choose,
+                            "cards_can_choose": card_ids_to_choose,
+                            "from_zone": from_zone,
+                            "to_zone": "hand",
+                            "amount_min": amount_min,
+                            "amount_max": amount_max,
+                            "reveal_chosen": False,
+                            "remaining_cards_action": "nothing",
+                        }
+                        self.broadcast_event(choose_event)
+                        self.set_decision({
+                            "decision_type": DecisionType.DecisionEffect_ChooseCardsForEffect,
+                            "decision_player": effect_player.player_id,
+                            "all_card_seen": card_ids_to_choose,
+                            "cards_can_choose": card_ids_to_choose,
+                            "from_zone": from_zone,
+                            "to_zone": "hand",
+                            "amount_min": amount_min,
+                            "amount_max": amount_max,
+                            "reveal_chosen": False,
+                            "remaining_cards_action": "nothing",
+                            "source_card_id": effect["source_card_id"],
+                            "effect_resolution": self.handle_choose_stacked_to_hand_result,
+                            "continuation": self.continue_resolving_effects,
+                        })
+                        passed_on_continuation = True
             case EffectType.EffectType_RecoverDownedHolomemCards:
                 self.remove_downed_holomems_to_hand = True
             case EffectType.EffectType_ReduceDamage:
@@ -4605,6 +4787,12 @@ class GameEngine:
                                         card["card_type"] == "holomem_bloom" and 
                                         card.get("bloom_level", 0) == to_limitation_bloom_level and
                                         any(tag in card["tags"] for tag in to_limitation_tags)]
+                                case "has_attachment_of_name":
+                                    to_limitation_attachment_name = effect.get("to_limitation_attachment_name", "")
+                                    holomems = effect_player.get_holomem_on_stage()
+                                    to_options = [card for card in holomems
+                                        if any(to_limitation_attachment_name in attached["card_names"]
+                                            for attached in card["attached_support"])]
                                 case _:
                                     raise NotImplementedError(f"Unimplemented to limitation: {to_limitation}")
                         else:
@@ -5952,6 +6140,11 @@ class GameEngine:
         }
         self.broadcast_event(event)
 
+        continuation()
+
+    def handle_choose_stacked_to_hand_result(self, decision_info_copy, performing_player_id:str, card_ids:List[str], continuation):
+        # Store the chosen card IDs to be sent to hand when the holomem is processed as downed
+        self.stacked_cards_to_hand_ids = card_ids
         continuation()
 
     def handle_deal_damage_to_holomem(self, decision_info_copy, performing_player_id:str, card_ids:List[str], continuation):

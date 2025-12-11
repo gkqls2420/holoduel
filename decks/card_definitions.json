@@ -9890,6 +9890,36 @@
     },
 
     {
+        "card_id": "hBP02-049",
+        "card_type": "holomem_debut",
+        "card_names": ["kureiji_ollie"],
+        "rarity": "u",
+        "colors": ["purple"],
+        "hp": 60,
+        "baton_cost": 1,
+        "tags": ["#ID", "#IDGen2", "#language"],
+        "arts": [
+            {
+                "art_id": "otsukureiji",
+                "costs": [{ "color": "any", "amount": 1 }],
+                "power": 20
+            }
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "draw",
+                "amount": 1,
+                "and": [
+                    {
+                        "effect_type": "archive_from_hand",
+                        "amount": 1
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
         "card_id": "hBP02-050",
         "card_type": "holomem_bloom",
         "bloom_level": 1,
@@ -11055,6 +11085,35 @@
                 "reveal_chosen": true,
                 "remaining_cards_action": "order_on_bottom"
             }
+        ]
+    },
+    {
+        "card_id": "hBP03-095",
+        "card_type": "support",
+        "sub_type": "tool",
+        "card_names": ["holocap"],
+        "rarity": "u",
+        "colors": [],
+        "effects": [{ "effect_type": "attach_card_to_holomem" }],
+        "attached_effects": [
+            {
+                "timing": "check_hp",
+                "effect_type": "bonus_hp",
+                "amount": 30,
+                "conditions": [
+                    { "condition": "attached_to_is_card_type", "condition_card_types": ["holomem_debut", "holomem_spot"] }
+                ]
+            },
+            {
+                "timing": "on_take_damage",
+                "effect_type": "reduce_damage",
+                "amount": "all",
+                "conditions": [
+                    { "condition": "attached_to_is_card_type", "condition_card_types": ["holomem_debut", "holomem_spot"] },
+                    { "condition": "damage_is_special" },
+                    { "condition": "damage_source_is_opponent" }
+                ]
+            }
         ],
 
         "NOTE": "BP3 CARDS END"
@@ -11064,6 +11123,77 @@
     {
         "NOTE": "BP4 CARDS START",
 
+        "card_id": "hBP04-007",
+        "card_type": "oshi",
+        "card_names": ["anya_melfissa"],
+        "colors": ["yellow"],
+        "rarity": "osr",
+        "life": 5,
+        "actions": [
+            {
+                "skill_id": "mystical_ritual",
+                "cost": 2,
+                "limit": "once_per_turn",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_turn",
+                        "skill_id": "mystical_ritual",
+                        "pre_effects": [
+                            { "effect_type": "spend_holopower", "amount": 2 },
+                            { "effect_type": "record_used_once_per_turn_effect", "effect_id": "mystical_ritual" }
+                        ]
+                    },
+                    {
+                        "effect_type": "choose_cards",
+                        "from": "deck",
+                        "look_at": -1,
+                        "destination": "holomem",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "requirement": "specific_card",
+                        "requirement_id": "hBP04-099",
+                        "reveal_chosen": true,
+                        "remaining_cards_action": "shuffle"
+                    }
+                ]
+            },
+            {
+                "skill_id": "thinking_about_life",
+                "cost": 2,
+                "limit": "once_per_game",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_game",
+                        "skill_id": "thinking_about_life",
+                        "pre_effects": [
+                            { "effect_type": "spend_holopower", "amount": 2 },
+                            { "effect_type": "record_used_once_per_game_effect", "effect_id": "thinking_about_life" }
+                        ]
+                    },
+                    {
+                        "effect_type": "send_cheer",
+                        "amount_min": 1,
+                        "amount_max": "all",
+                        "from": "archive",
+                        "from_limitation": "color_in",
+                        "from_limitation_colors": ["yellow"],
+                        "to": "holomem",
+                        "to_limitation": "has_attachment_of_name",
+                        "to_limitation_attachment_name": "ancient_weapon",
+                        "multi_to": true,
+                        "limit_one_per_member": true
+                    }
+                ]
+            }
+        ],
+        "effects": []
+    },
+
+    {
         "card_id": "hBP04-014",
         "card_type": "holomem_bloom",
         "bloom_level": 2,
@@ -11345,6 +11475,175 @@
     },
 
     {
+        "card_id": "hBP04-074",
+        "card_type": "holomem_debut",
+        "card_names": ["anya_melfissa"],
+        "rarity": "u",
+        "colors": ["yellow"],
+        "hp": 120,
+        "baton_cost": 1,
+        "tags": ["#ID", "#IDGen2", "#language"],
+        "arts": [
+            {
+                "art_id": "wanna_sit_next_to_me",
+                "costs": [{ "color": "yellow", "amount": 1 }],
+                "power": 20
+            }
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_take_damage",
+                "effect_type": "reduce_damage",
+                "amount": 10,
+                "conditions": [
+                    { "condition": "this_card_is_center" },
+                    { "condition": "damage_target_is_center_or_collab" }
+                ]
+            }
+        ]
+    },
+
+    {
+        "card_id": "hBP04-075",
+        "card_type": "holomem_bloom",
+        "card_names": ["anya_melfissa"],
+        "bloom_level": 1,
+        "rarity": "c",
+        "colors": ["yellow"],
+        "hp": 180,
+        "baton_cost": 2,
+        "tags": ["#ID", "#IDGen2", "#language"],
+        "arts": [
+            {
+                "art_id": "devil_invitation",
+                "costs": [{ "color": "yellow", "amount": 1 }],
+                "power": 30
+            },
+            {
+                "art_id": "devil_whisper",
+                "costs": [
+                    { "color": "yellow", "amount": 1 },
+                    { "color": "any", "amount": 1 }
+                ],
+                "power": 50
+            }
+        ]
+    },
+
+    {
+        "card_id": "hBP04-076",
+        "card_type": "holomem_bloom",
+        "card_names": ["anya_melfissa"],
+        "bloom_level": 1,
+        "rarity": "u",
+        "colors": ["yellow"],
+        "hp": 150,
+        "baton_cost": 1,
+        "tags": ["#ID", "#IDGen2", "#language"],
+        "arts": [
+            {
+                "art_id": "cheering_yoroshiku",
+                "costs": [{ "color": "any", "amount": 1 }],
+                "power": 30
+            }
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "archive",
+                "look_at": -1,
+                "destination": "holomem",
+                "to_limitation": "specific_member_name",
+                "to_limitation_name": "anya_melfissa",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "specific_card",
+                "requirement_id": "hBP04-099",
+                "remaining_cards_action": "nothing"
+            }
+        ]
+    },
+
+    {
+        "card_id": "hBP04-077",
+        "card_type": "holomem_bloom",
+        "card_names": ["anya_melfissa"],
+        "bloom_level": 1,
+        "rarity": "r",
+        "colors": ["yellow"],
+        "hp": 180,
+        "baton_cost": 2,
+        "tags": ["#ID", "#IDGen2", "#language"],
+        "arts": [
+            {
+                "art_id": "yellow_rose",
+                "costs": [
+                    { "color": "yellow", "amount": 1 },
+                    { "color": "any", "amount": 1 }
+                ],
+                "power": 50
+            }
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_down",
+                "conditions": [
+                    { "condition": "opponent_turn" },
+                    { "condition": "downed_card_is_this" }
+                ],
+                "effect_type": "choose_stacked_to_hand",
+                "amount_min": 1,
+                "amount_max": 1,
+                "include_self": true
+            }
+        ]
+    },
+
+    {
+        "card_id": "hBP04-078",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": ["anya_melfissa"],
+        "rarity": "rr",
+        "colors": ["yellow"],
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": ["#ID", "#IDGen2", "#language"],
+        "arts": [
+            {
+                "art_id": "dungeon_adventure",
+                "costs": [
+                    { "color": "yellow", "amount": 2 },
+                    { "color": "any", "amount": 2 }
+                ],
+                "power": 160,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [{ "condition": "target_color", "color_requirement": "red" }]
+                    }
+                ]
+            }
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_art_cost_check",
+                "effect_type": "reduce_art_cost",
+                "color": "yellow",
+                "amount": 1,
+                "target_limitation": "center",
+                "target_member_name": "anya_melfissa",
+                "target_has_attachment_name": "ancient_weapon",
+                "conditions": [
+                    { "condition": "this_card_is_center_or_collab" }
+                ]
+            }
+        ]
+    },
+
+    {
         "card_id": "hBP04-089",
         "card_type": "support",
         "sub_type": "item",
@@ -11431,6 +11730,40 @@
                     }
                 ]
             }
+        ]
+    },
+    {
+        "card_id": "hBP04-099",
+        "card_type": "support",
+        "sub_type": "tool",
+        "colors": [],
+        "card_names": ["ancient_weapon"],
+        "rarity": "u",
+        "effects": [{ "effect_type": "attach_card_to_holomem" }],
+        "attached_effects": [
+            {
+                "timing": "on_down",
+                "conditions": [{ "condition": "opponent_turn" }],
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "archive_from_hand",
+                        "amount": 1,
+                        "and": [{ "effect_type": "return_this_attachment_to_hand" }]
+                    },
+                    { "effect_type": "pass" }
+                ]
+            },
+            {
+                "timing": "before_art",
+                "conditions": [
+                    { "condition": "attached_to", "required_member_name": "anya_melfissa", "required_bloom_levels": [1, 2] },
+                    { "condition": "attached_owner_is_performing" }
+                ],
+                "effect_type": "power_boost_per_attachment_name_on_stage",
+                "attachment_name": "ancient_weapon",
+                "amount": 10
+            }
         ],
 
         "NOTE": "BP4 CARDS END"
@@ -11439,6 +11772,54 @@
     {
         "NOTE": "BP5 CARDS START",
 
+        "card_id": "hBP05-013",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": ["tokino_sora"],
+        "rarity": "r",
+        "colors": ["white"],
+        "hp": 210,
+        "baton_cost": 2,
+        "tags": ["#JP", "#Gen0", "#Song"],
+        "arts": [
+            {
+                "art_id": "7thanniversaryei",
+                "costs": [{ "color": "any", "amount": 2 }],
+                "power": 90,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [{ "condition": "target_color", "color_requirement": "red" }]
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [],
+        "collab_effects": [],
+        "gift_effects": [
+            {
+                "timing": "before_art",
+                "effect_type": "power_boost",
+                "amount": 30,
+                "conditions": [
+                    { "condition": "this_card_is_center" },
+                    { "condition": "performer_has_any_tag", "condition_tags": ["#Gen0"] }
+                ]
+            },
+            {
+                "timing": "before_art",
+                "effect_type": "power_boost",
+                "amount": 30,
+                "conditions": [
+                    { "condition": "this_card_is_collab" },
+                    { "condition": "performer_has_any_tag", "condition_tags": ["#Gen0"] }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP05-068",
         "card_type": "holomem_debut",
         "card_names": ["shirakami_fubuki"],
