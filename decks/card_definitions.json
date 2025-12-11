@@ -2834,7 +2834,7 @@
                         "amount_min": 1,
                         "amount_max": 1,
                         "requirement": "specific_card",
-                        "requirement_id": "hBP01-114",
+                        "requirement_card_name": "stone_axe",
                         "reveal_chosen": true,
                         "remaining_cards_action": "shuffle"
                     }
@@ -5851,7 +5851,7 @@
             {
                 "art_id": "sharedconciousness",
                 "art_requirement": "has_attached",
-                "art_requirement_attached_id": "hBP01-126",
+                "art_requirement_attached_name": "zain",
                 "costs": [
                     { "color": "red", "amount": 1 },
                     { "color": "any", "amount": 1 }
@@ -5919,7 +5919,7 @@
                 "amount_min": 0,
                 "amount_max": 1,
                 "requirement": "specific_card",
-                "requirement_id": "hBP01-126",
+                "requirement_card_name": "zain",
                 "reveal_chosen": true,
                 "remaining_cards_action": "nothing"
             }
@@ -9014,7 +9014,7 @@
                 "amount_min": 1,
                 "amount_max": 1,
                 "requirement": "specific_card",
-                "requirement_id": "hBP02-094",
+                "requirement_card_name": "tatang",
                 "reveal_chosen": true,
                 "remaining_cards_action": "shuffle"
             }
@@ -10883,6 +10883,69 @@
     {
         "NOTE": "BP3 CARDS START",
 
+        "card_id": "hBP03-022",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "buzz": true,
+        "card_names": ["aki_rosenthal"],
+        "rarity": "r",
+        "colors": ["green"],
+        "hp": 250,
+        "baton_cost": 2,
+        "tags": ["#JP", "#Gen1", "#HalfElf", "#Alcohol"],
+        "arts": [
+            {
+                "art_id": "passionate_belly_dancer",
+                "costs": [{ "color": "green", "amount": 2 }],
+                "power": 50,
+                "art_effects": [
+                    {
+                        "timing": "after_art",
+                        "conditions": [
+                            { "condition": "oshi_is", "required_member_name": "aki_rosenthal" }
+                        ],
+                        "effect_type": "restore_hp",
+                        "target": "holomem",
+                        "limitation": "has_attachment_of_type",
+                        "limitation_type": "tool",
+                        "amount": 10,
+                        "hit_all_targets": true
+                    }
+                ]
+            }
+        ],
+        "gift_effects": [
+            {
+                "full_english_text": "AKI_BP03_022_GIFT_FULL_TEXT",
+                "timing": "on_opponent_performance_step_start",
+                "conditions": [
+                    {
+                        "condition": "or",
+                        "or_conditions": [
+                            { "condition": "this_card_is_center" },
+                            { "condition": "this_card_is_collab" }
+                        ]
+                    }
+                ],
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "block_life_loss_by_effect"
+                    },
+                    { "effect_type": "pass" }
+                ]
+            },
+            {
+                "full_english_text": "AKI_BP03_022_EXTRA_FULL_TEXT",
+                "timing": "on_down",
+                "conditions": [{ "condition": "downed_card_is_this" }],
+                "effect_type": "deal_life_damage",
+                "amount": 2,
+                "opponent": false
+            }
+        ]
+    },
+    {
         "card_id": "hBP03-036",
         "card_type": "holomem_bloom",
         "bloom_level": 1,
@@ -11153,7 +11216,7 @@
                         "amount_min": 1,
                         "amount_max": 1,
                         "requirement": "specific_card",
-                        "requirement_id": "hBP04-099",
+                        "requirement_card_name": "ancient_weapon",
                         "reveal_chosen": true,
                         "remaining_cards_action": "shuffle"
                     }
@@ -11592,7 +11655,7 @@
                 "amount_min": 0,
                 "amount_max": 1,
                 "requirement": "specific_card",
-                "requirement_id": "hBP04-099",
+                "requirement_card_name": "ancient_weapon",
                 "remaining_cards_action": "nothing"
             }
         ]
@@ -11850,6 +11913,135 @@
                 "conditions": [
                     { "condition": "this_card_is_collab" },
                     { "condition": "performer_has_any_tag", "condition_tags": ["#Gen0"] }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP05-025",
+        "card_type": "holomem_debut",
+        "card_names": ["aki_rosenthal"],
+        "rarity": "c",
+        "colors": ["green"],
+        "hp": 120,
+        "baton_cost": 1,
+        "tags": ["#JP", "#Gen1", "#HalfElf", "#Alcohol"],
+        "arts": [
+            {
+                "art_id": "letsstartnewjourney",
+                "costs": [{ "color": "any", "amount": 1 }],
+                "power": 20
+            }
+        ]
+    },
+    {
+        "card_id": "hBP05-026",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": ["aki_rosenthal"],
+        "rarity": "u",
+        "colors": ["green"],
+        "hp": 180,
+        "baton_cost": 1,
+        "tags": ["#JP", "#Gen1", "#HalfElf", "#Alcohol"],
+        "arts": [
+            {
+                "art_id": "twilight_moment",
+                "costs": [
+                    { "color": "green", "amount": 1 },
+                    { "color": "any", "amount": 1 }
+                ],
+                "power": 50
+            }
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "archive",
+                "look_at": -1,
+                "destination": "holomem",
+                "to_limitation": "specific_member_name",
+                "to_limitation_name": "aki_rosenthal",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "specific_card",
+                "requirement_card_name": "stone_axe",
+                "remaining_cards_action": "nothing"
+            }
+        ]
+    },
+    {
+        "card_id": "hBP05-027",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": ["aki_rosenthal"],
+        "rarity": "rr",
+        "colors": ["green"],
+        "hp": 210,
+        "baton_cost": 2,
+        "tags": ["#JP", "#Gen1", "#HalfElf", "#Alcohol"],
+        "arts": [
+            {
+                "art_id": "one_for_all",
+                "costs": [
+                    { "color": "green", "amount": 1 },
+                    { "color": "any", "amount": 2 }
+                ],
+                "power": 130,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [{ "condition": "target_color", "color_requirement": "blue" }]
+                    }
+                ],
+                "on_kill_effects": [
+                    {
+                        "effect_type": "draw",
+                        "amount": 1,
+                        "and": [
+                            {
+                                "conditions": [{ "condition": "oshi_is", "required_member_name": "aki_rosenthal" }],
+                                "effect_type": "restore_hp",
+                                "target": "holomem",
+                                "amount": 20,
+                                "hit_all_targets": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choice",
+                "conditions": [{ "condition": "has_attachment_of_type", "condition_type": "tool" }],
+                "choice": [
+                    {
+                        "effect_type": "choose_cards",
+                        "from": "self_attached_support",
+                        "look_at": -1,
+                        "destination": "archive",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "requirement_sub_types": ["tool"],
+                        "remaining_cards_action": "nothing",
+                        "and": [
+                            {
+                                "effect_type": "choose_cards",
+                                "from": "deck",
+                                "look_at": -1,
+                                "destination": "hand",
+                                "amount_min": 1,
+                                "amount_max": 1,
+                                "requirement": "holomem_or_tool",
+                                "reveal_chosen": true,
+                                "remaining_cards_action": "shuffle"
+                            }
+                        ]
+                    },
+                    { "effect_type": "pass" }
                 ]
             }
         ]
@@ -13267,6 +13459,58 @@
                 "remaining_cards_action": "order_on_bottom"
             }
         ]
+    },
+    {
+        "card_id": "hBP05-082",
+        "card_type": "support",
+        "colors": [],
+        "sub_type": "tool",
+        "card_names": ["aki_rosenthal_axe", "stone_axe"],
+        "rarity": "u",
+        "play_conditions": [
+            {
+                "condition": "or",
+                "or_conditions": [
+                    { "condition": "cards_in_hand", "amount_min": 1 },
+                    { "condition": "stage_has_attachment_of_name", "attachment_name": "stone_axe" }
+                ]
+            }
+        ],
+        "effects": [
+            {
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "archive_from_hand",
+                        "amount": 1,
+                        "conditions": [{ "condition": "cards_in_hand", "amount_min": 1 }]
+                    },
+                    {
+                        "effect_type": "archive_attachment_from_stage_by_name",
+                        "attachment_name": "stone_axe",
+                        "conditions": [{ "condition": "stage_has_attachment_of_name", "attachment_name": "stone_axe" }]
+                    }
+                ]
+            },
+            { "effect_type": "attach_card_to_holomem" }
+        ],
+        "attached_effects": [
+            {
+                "timing": "before_art",
+                "effect_type": "power_boost",
+                "amount": 10
+            },
+            {
+                "timing": "before_art",
+                "effect_type": "power_boost",
+                "amount": 40,
+                "conditions": [
+                    { "condition": "attached_to", "required_member_name": "aki_rosenthal", "required_bloom_levels": [1, 2] }
+                ]
+            }
+        ],
+
+        "NOTE": "BP5 CARDS END"
     },
 
     {

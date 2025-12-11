@@ -45,6 +45,7 @@ class EffectType:
     EffectType_BloomDebutPlayedThisTurnTo1st = "bloom_debut_played_this_turn_to_1st"
     EffectType_BloomFromArchive = "bloom_from_archive"
     EffectType_BlockOpponentMovement = "block_opponent_movement"
+    EffectType_BlockLifeLossByEffect = "block_life_loss_by_effect"
     EffectType_BonusHp = "bonus_hp"
     EffectType_Choice = "choice"
     EffectType_ChooseCards = "choose_cards"
@@ -109,6 +110,7 @@ class EffectType:
     EffectType_SpendHolopower = "spend_holopower"
     EffectType_SwitchCenterWithBack = "switch_center_with_back"
     EffectType_OpponentMoveBackToCollab = "opponent_move_back_to_collab"
+    EffectType_ArchiveAttachmentFromStageByName = "archive_attachment_from_stage_by_name"
 
 class Condition:
     Condition_AnyTagHolomemHasCheer = "any_tag_holomem_has_cheer"
@@ -187,6 +189,7 @@ class Condition:
     Condition_MyHolomemDownedLastOpponentTurn = "my_holomem_downed_last_opponent_turn"
     Condition_Or = "or"
     Condition_StageHasAttachmentsOfTypesCount = "stage_has_attachments_of_types_count"
+    Condition_StageHasAttachmentOfName = "stage_has_attachment_of_name"
 
 
 class TurnEffectType:
@@ -450,6 +453,7 @@ class PlayerState:
         self.last_die_roll_results = []
         self.holomem_downed_this_turn = False
         self.holomem_downed_last_opponent_turn = False
+        self.block_life_loss_by_effect_this_turn = False
 
         # Set up Oshi.
         self.oshi_id = player_info["oshi_id"]
@@ -692,9 +696,13 @@ class PlayerState:
         if "art_requirement" in art:
             match art["art_requirement"]:
                 case "has_attached":
-                    required_definition_id = art["art_requirement_attached_id"]
+                    required_definition_id = art.get("art_requirement_attached_id", "")
+                    required_card_name = art.get("art_requirement_attached_name", "")
                     for attached in card["attached_support"]:
-                        if attached["card_id"] == required_definition_id:
+                        if required_definition_id and attached["card_id"] == required_definition_id:
+                            passed_requirement = True
+                            break
+                        elif required_card_name and required_card_name in attached.get("card_names", []):
                             passed_requirement = True
                             break
         else:
@@ -1100,6 +1108,7 @@ class PlayerState:
         self.card_effects_used_this_turn = []
         self.last_revealed_cards = []
         self.holomem_downed_this_turn = False
+        self.block_life_loss_by_effect_this_turn = False
         for card in self.get_holomem_on_stage():
             card["used_art_this_turn"] = False
             card["played_this_turn"] = False
@@ -2310,6 +2319,20 @@ class GameEngine:
                 "active_player": self.active_player_id,
             }
             self.broadcast_event(start_event)
+
+            # Trigger opponent's on_opponent_performance_step_start gift effects
+            opponent_player = self.other_player(self.active_player_id)
+            opponent_effects = []
+            for holomem in opponent_player.get_holomem_on_stage():
+                if "gift_effects" in holomem:
+                    gift_effects = filter_effects_at_timing(holomem["gift_effects"], "on_opponent_performance_step_start")
+                    add_ids_to_effects(gift_effects, opponent_player.player_id, holomem["game_card_id"])
+                    opponent_effects.extend(gift_effects)
+
+            if opponent_effects:
+                self.begin_resolving_effects(opponent_effects, self.continue_performance_step)
+                return
+
         self.continue_performance_step()
 
     def continue_performance_step(self):
@@ -2423,6 +2446,12 @@ class GameEngine:
             continuation()
 
     def deal_life_damage(self, target_player: PlayerState, dealing_card, damage: int, continuation):
+        # Check if life loss by effect is blocked for this turn
+        if target_player.block_life_loss_by_effect_this_turn:
+            # Life damage by effect is blocked, skip the damage
+            continuation()
+            return
+
         game_over = False
         game_over_reason = ""
         life_to_distribute = []
@@ -3076,6 +3105,14 @@ class GameEngine:
                 for sub_type in condition_types:
                     total_count += len(get_cards_of_sub_type_from_holomems(sub_type, holomems))
                 return total_count >= amount_min
+            case Condition.Condition_StageHasAttachmentOfName:
+                attachment_name = condition.get("attachment_name", "")
+                holomems = effect_player.get_holomem_on_stage()
+                for holomem in holomems:
+                    for attached in holomem.get("attached_support", []):
+                        if attachment_name in attached.get("card_names", []):
+                            return True
+                return False
             case Condition.Condition_TargetColor:
                 color_requirement = condition["color_requirement"]
                 return color_requirement in self.performance_target_card["colors"]
@@ -3436,6 +3473,17 @@ class GameEngine:
             case EffectType.EffectType_ArchiveThisAttachment:
                 attachment_id = effect["source_card_id"]
                 effect_player.archive_attached_cards([attachment_id])
+            case EffectType.EffectType_ArchiveAttachmentFromStageByName:
+                attachment_name = effect.get("attachment_name", "")
+                holomems = effect_player.get_holomem_on_stage()
+                for holomem in holomems:
+                    for attached in holomem.get("attached_support", []):
+                        if attachment_name in attached.get("card_names", []):
+                            effect_player.archive_attached_cards([attached["game_card_id"]])
+                            break
+                    else:
+                        continue
+                    break
             case EffectType.EffectType_ReturnThisAttachmentToHand:
                 attachment_id = effect["source_card_id"]
                 effect_player.move_card(attachment_id, "hand")
@@ -3600,6 +3648,8 @@ class GameEngine:
             case EffectType.EffectType_BlockOpponentMovement:
                 other_player = self.other_player(effect_player_id)
                 other_player.block_movement_for_turn = True
+            case EffectType.EffectType_BlockLifeLossByEffect:
+                effect_player.block_life_loss_by_effect_this_turn = True
             case EffectType.EffectType_Choice:
                 choice = deepcopy(effect["choice"])
                 if self.take_damage_state:
@@ -3632,6 +3682,7 @@ class GameEngine:
                 requirement_names = effect.get("requirement_names", [])
                 requirement_tags = effect.get("requirement_tags", [])
                 requirement_id = effect.get("requirement_id", "")
+                requirement_card_name = effect.get("requirement_card_name", "")
                 requirement_match_oshi_color = effect.get("requirement_match_oshi_color", False)
                 requirement_only_holomems_with_any_tag = effect.get("requirement_only_holomems_with_any_tag", False)
                 requirement_colors = effect.get("requirement_colors", [])
@@ -3652,6 +3703,7 @@ class GameEngine:
                     "requirement_names": requirement_names,
                     "requirement_tags": requirement_tags,
                     "requirement_id": requirement_id,
+                    "requirement_card_name": requirement_card_name,
                     "requirement_match_oshi_color": requirement_match_oshi_color,
                     "requirement_only_holomems_with_any_tag": requirement_only_holomems_with_any_tag,
                     "requirement_colors": requirement_colors,
@@ -3683,6 +3735,10 @@ class GameEngine:
                         cards_to_choose_from = effect_player.get_holomem_on_stage()
                     case "stacked_holomem":
                         cards_to_choose_from = effect_player.get_holomem_under(effect["source_card_id"])
+                    case "self_attached_support":
+                        source_card = self.find_card(effect["source_card_id"])
+                        if source_card and "attached_support" in source_card:
+                            cards_to_choose_from = source_card["attached_support"]
 
                 # If look_at is -1, look at all cards.
                 if look_at == -1:
@@ -3732,10 +3788,18 @@ class GameEngine:
                             # only include cards that are limited
                             cards_can_choose = [card for card in cards_can_choose if is_card_limited(card)]
                         case "specific_card":
-                            cards_can_choose = [card for card in cards_can_choose if card["card_id"] == requirement_id]
+                            if requirement_id:
+                                cards_can_choose = [card for card in cards_can_choose if card["card_id"] == requirement_id]
+                            elif requirement_card_name:
+                                cards_can_choose = [card for card in cards_can_choose 
+                                    if "card_names" in card and requirement_card_name in card["card_names"]]
                         case "support":
                             # Only include cards that are supports.
                             cards_can_choose = [card for card in cards_can_choose if card["card_type"] == "support"]
+                        case "holomem_or_tool":
+                            # Only include cards that are holomem or tool (support sub_type).
+                            cards_can_choose = [card for card in cards_can_choose 
+                                if is_card_holomem(card) or card.get("sub_type") == "tool"]
 
                     # Exclude LIMITED if asked.
                     if requirement_block_limited:
@@ -4471,6 +4535,12 @@ class GameEngine:
                             case "name_in":
                                 limitation_names = effect.get("limitation_names", [])
                                 holomems = [holomem for holomem in holomems if any(name in holomem["card_names"] for name in limitation_names)]
+                            case "has_attachment_of_type":
+                                limitation_type = effect.get("limitation_type", "")
+                                holomems = [holomem for holomem in holomems if any(
+                                    attachment.get("sub_type", "") == limitation_type 
+                                    for attachment in holomem.get("attached_support", [])
+                                )]
                         target_options = ids_from_cards(holomems)
                     case "self":
                         target_options = [effect["source_card_id"]]
