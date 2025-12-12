@@ -8,9 +8,10 @@ from tests.helpers import *
 class Test_hBP05_037(unittest.TestCase):
     """
     Test hBP05-037 Hoshimachi Suisei (2nd Bloom, Red)
-    - Arts 1: Non-Limit Boost (cost: 4 any, power: 50 + 50 boost)
+    - Arts 1: Non-Limit Boost (cost: 2 any, power: 50 + 50 boost)
         - If red AND blue cheer attached -> send 0~2 cheer from archive to this holomem
-        - If only red OR only blue cheer attached -> send 0~1 cheer from archive to this holomem
+        - If only red cheer attached (no blue) -> send 0~1 cheer from archive to this holomem
+        - If only blue cheer attached (no red) -> send 0~1 cheer from archive to this holomem
     - Arts 2: Shout in Crisis (cost: 4 any, power: 220 + 50 boost)
         - Archive all cheer from this holomem
     """
