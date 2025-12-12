@@ -11008,7 +11008,7 @@
                 "power": 50,
                 "art_effects": [
                     {
-                        "timing": "after_art",
+                        "timing": "after_deal_damage",
                         "conditions": [
                             { "condition": "oshi_is", "required_member_name": "aki_rosenthal" }
                         ],
@@ -12748,7 +12748,7 @@
                 "power": 30,
                 "art_effects": [
                     {
-                        "timing": "after_art",
+                        "timing": "after_deal_damage",
                         "conditions": [
                             {
                                 "condition": "holomem_on_stage",
@@ -12770,7 +12770,7 @@
                 "power": 30,
                 "art_effects": [
                     {
-                        "timing": "after_art",
+                        "timing": "after_deal_damage",
                         "conditions": [
                             { "condition": "oshi_is_color", "condition_colors": ["white"] }
                         ],
@@ -12843,7 +12843,7 @@
         ],
         "gift_effects": [
             {
-                "timing": "after_art",
+                "timing": "after_deal_damage",
                 "conditions": [
                     { "condition": "this_card_is_performing" },
                     { "condition": "die_rolled_this_art" },
@@ -12853,7 +12853,7 @@
                 "amount": 1
             },
             {
-                "timing": "after_art",
+                "timing": "after_deal_damage",
                 "conditions": [
                     { "condition": "this_card_is_performing" },
                     { "condition": "die_rolled_this_art" },
@@ -13132,7 +13132,7 @@
                 "power": 20,
                 "art_effects": [
                     {
-                        "timing": "after_art",
+                        "timing": "after_deal_damage",
                         "effect_type": "deal_damage",
                         "special": true,
                         "amount": 10,
@@ -13313,7 +13313,7 @@
                         "conditions": [{ "condition": "target_is_backstage" }]
                     },
                     {
-                        "timing": "after_art",
+                        "timing": "after_deal_damage",
                         "effect_type": "deal_damage",
                         "special": true,
                         "amount": 20,
@@ -13321,7 +13321,7 @@
                         "opponent": true
                     },
                     {
-                        "timing": "after_art",
+                        "timing": "after_deal_damage",
                         "effect_type": "choice",
                         "choice": [
                             {
