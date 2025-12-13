@@ -2519,8 +2519,14 @@ class GameEngine:
 
     def deal_damage(self, dealing_player : PlayerState, target_player : PlayerState, dealing_card, target_card, damage, special, prevent_life_loss, art_info, continuation):
         if target_card["damage"] >= target_player.get_card_hp(target_card):
-            # Already dead somehow!
-            # Just call the continuation, you don't get to kill them twice.
+            # Damage already at or past HP threshold
+            # Check if the card is still on stage - if so, trigger death processing
+            if target_card in target_player.get_holomem_on_stage():
+                # Card should be dead but wasn't processed - trigger death now
+                self.begin_down_holomem(dealing_player, target_player, dealing_card, target_card, art_info, lambda:
+                    self.complete_deal_damage(dealing_player, target_player, dealing_card, target_card, 0, special, prevent_life_loss, True, art_info, continuation))
+                return
+            # Already processed (in archive), just call continuation
             continuation()
             return
 
