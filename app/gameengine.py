@@ -11,6 +11,7 @@ UNKNOWN_CARD_ID = "HIDDEN"
 UNLIMITED_SIZE = 9999
 STARTING_HAND_SIZE = 7
 MAX_MEMBERS_ON_STAGE = 6
+MAX_FORCED_MULLIGANS = 6
 
 class GamePhase:
     Initializing = "Initializing"
@@ -243,6 +244,9 @@ class EventType:
     EventType_InitialPlacementBegin = "initial_placement_begin"
     EventType_InitialPlacementPlaced = "initial_placement_placed"
     EventType_InitialPlacementReveal = "initial_placement_reveal"
+    EventType_ReturnCardsBegin = "return_cards_begin"
+    EventType_BackstagePlacementBegin = "backstage_placement_begin"
+    EventType_BackstagePlacementPlaced = "backstage_placement_placed"
     EventType_LifeDamageDealt = "life_damage_dealt"
     EventType_MainStepStart = "main_step_start"
     EventType_ModifyHP = "modify_hp"
@@ -330,6 +334,15 @@ class GameAction:
     InitialPlacement = "initial_placement"
     InitialPlacementActionFields = {
         "center_holomem_card_id": str,
+    }
+
+    ReturnCards = "return_cards"
+    ReturnCardsActionFields = {
+        "card_ids": List[str],
+    }
+
+    BackstagePlacement = "backstage_placement"
+    BackstagePlacementActionFields = {
         "backstage_holomem_card_ids": List[str],
     }
 
@@ -446,6 +459,7 @@ class PlayerState:
         self.mulligan_completed = False
         self.mulligan_hand_valid = False
         self.mulligan_count = 0
+        self.forced_mulligan_count = 0
         self.initial_placement_completed = False
         self.life = []
         self.hand = []
@@ -546,19 +560,12 @@ class PlayerState:
         }
         self.engine.broadcast_event(draw_event)
 
-    def mulligan(self):
+    def mulligan(self, forced=False):
         self.mulligan_count += 1
-
-        # Move cards from hand to deck.
         self.shuffle_hand_to_deck()
-
-        # Draw new hand, don't ever let them draw 0 and lose.
-        draw_amount = STARTING_HAND_SIZE - (self.mulligan_count - 1)
-        if draw_amount == 0:
-            # Game over already!
-            self.engine.end_game(self.player_id, GameOverReason.GameOverReason_MulliganToZero)
-        else:
-            self.draw(draw_amount)
+        if forced:
+            self.forced_mulligan_count += 1
+        self.draw(STARTING_HAND_SIZE)
 
     def shuffle_hand_to_deck(self):
         while len(self.hand) > 0:
@@ -1455,7 +1462,7 @@ class PlayerState:
         # TODO: 추후 "HP 변화 불가" 효과 체크 로직 추가 예정
         previous_damage = card["damage"]
         new_damage = self.get_card_hp(card) - target_hp
-        if previous_damage != new_damage:
+        if new_damage > previous_damage:
             card["damage"] = new_damage
             modify_hp_event = {
                 "event_type": EventType.EventType_ModifyHP,
@@ -1857,6 +1864,43 @@ class GameEngine:
     def send_initial_placement_event(self):
         active_player = self.get_player(self.active_player_id)
         debut_options = []
+        for card in active_player.hand:
+            if card["card_type"] == "holomem_debut":
+                debut_options.append(card["game_card_id"])
+
+        decision_event = {
+            "event_type": EventType.EventType_InitialPlacementBegin,
+            "desired_response": GameAction.InitialPlacement,
+            "active_player": self.active_player_id,
+            "debut_options": debut_options,
+            "hidden_info_player": self.active_player_id,
+            "hidden_info_fields": ["debut_options"],
+            "hidden_info_erase": ["debut_options"],
+        }
+        self.broadcast_event(decision_event)
+
+    def begin_return_cards(self):
+        active_player = self.get_player(self.active_player_id)
+        if active_player.forced_mulligan_count == 0:
+            self.begin_backstage_placement()
+            return
+
+        hand_card_ids = ids_from_cards(active_player.hand)
+        decision_event = {
+            "event_type": EventType.EventType_ReturnCardsBegin,
+            "desired_response": GameAction.ReturnCards,
+            "active_player": self.active_player_id,
+            "return_count": active_player.forced_mulligan_count,
+            "hand_card_ids": hand_card_ids,
+            "hidden_info_player": self.active_player_id,
+            "hidden_info_fields": ["hand_card_ids"],
+            "hidden_info_erase": ["hand_card_ids"],
+        }
+        self.broadcast_event(decision_event)
+
+    def begin_backstage_placement(self):
+        active_player = self.get_player(self.active_player_id)
+        debut_options = []
         spot_options = []
         for card in active_player.hand:
             if card["card_type"] == "holomem_debut":
@@ -1865,8 +1909,8 @@ class GameEngine:
                 spot_options.append(card["game_card_id"])
 
         decision_event = {
-            "event_type": EventType.EventType_InitialPlacementBegin,
-            "desired_response": GameAction.InitialPlacement,
+            "event_type": EventType.EventType_BackstagePlacementBegin,
+            "desired_response": GameAction.BackstagePlacement,
             "active_player": self.active_player_id,
             "debut_options": debut_options,
             "spot_options": spot_options,
@@ -1906,7 +1950,6 @@ class GameEngine:
             self.active_player_id = self.first_turn_player_id
             self.begin_player_turn(switch_active_player=False)
         else:
-            # Tell the active player we're waiting on them to place cards.
             self.send_initial_placement_event()
 
     def begin_player_turn(self, switch_active_player : bool):
@@ -2748,7 +2791,7 @@ class GameEngine:
                     cleanup_event = {
                         "event_type": EventType.EventType_MoveCard,
                         "moving_player_id": owner.player_id,
-                        "from_zone": "floating",
+                        "from": "floating",
                         "to_zone": "archive",
                         "zone_card_id": "",
                         "card_id": cleanup_card["game_card_id"],
@@ -3342,13 +3385,14 @@ class GameEngine:
                 
                 return len(monocolor_colors) >= 2
             case Condition.Condition_OpponentBackstageHpReducedCount:
-                # 상대방 백스테이지에서 HP가 감소된 홀로멤이 있는지 확인 (boolean 반환)
                 opponent_player = self.other_player(effect_player.player_id)
+                reduced_count = 0
                 for holomem in opponent_player.backstage:
                     damage = holomem.get("damage", 0)
                     if damage > 0:
-                        return True
-                return False
+                        reduced_count += 1
+                amount_min = condition.get("amount_min", 1)
+                return reduced_count >= amount_min
             case Condition.Condition_OpponentBackstageTotalDamage:
                 # 상대방 백스테이지 홀로멤 전원의 총 데미지가 amount_min 이상인지 확인
                 opponent_player = self.other_player(effect_player.player_id)
@@ -5525,21 +5569,23 @@ class GameEngine:
                 "event_type": EventType.EventType_MulliganReveal,
                 "active_player": player.player_id,
                 "revealed_card_ids": revealed_card_ids,
+                "forced_mulligan_count": player.forced_mulligan_count + 1,
+                "max_forced_mulligans": MAX_FORCED_MULLIGANS,
             }
             self.broadcast_event(mulligan_reveal_event)
 
-        # Do the mulligan reshuffle/drawing.
-        player.mulligan()
+        player.mulligan(forced=forced)
 
     def process_forced_mulligans(self):
-        # If the player has no debut holomems, they must mulligan.
         for player in self.player_states:
             while not player.mulligan_hand_valid and not self.is_game_over():
-                # If the player has a debut holomem, they are done.
                 if any(card["card_type"] == "holomem_debut" for card in player.hand):
                     player.mulligan_hand_valid = True
                 else:
-                    self.perform_mulligan(player, forced=True)
+                    if player.forced_mulligan_count >= MAX_FORCED_MULLIGANS:
+                        self.end_game(player.player_id, GameOverReason.GameOverReason_MulliganToZero)
+                    else:
+                        self.perform_mulligan(player, forced=True)
 
 
     def make_error_event(self, player_id:str, error_id:str, error_message:str):
@@ -5584,6 +5630,10 @@ class GameEngine:
                     handled = self.handle_mulligan(player_id, action_data)
                 case GameAction.InitialPlacement:
                     handled = self.handle_initial_placement(player_id, action_data)
+                case GameAction.ReturnCards:
+                    handled = self.handle_return_cards(player_id, action_data)
+                case GameAction.BackstagePlacement:
+                    handled = self.handle_backstage_placement(player_id, action_data)
                 case GameAction.ChooseNewCenter:
                     handled = self.handle_choose_new_center(player_id, action_data)
                 case GameAction.PlaceCheer:
@@ -5680,27 +5730,14 @@ class GameEngine:
 
         player_state = self.get_player(player_id)
         center_holomem_card_id = action_data["center_holomem_card_id"]
-        backstage_holomem_card_ids = action_data["backstage_holomem_card_ids"]
-        chosen_card_ids = [center_holomem_card_id] + backstage_holomem_card_ids
 
-        if len(backstage_holomem_card_ids) > MAX_MEMBERS_ON_STAGE - 1:
-            self.send_event(self.make_error_event(player_id, "invalid_backstage", "Too many cards for initial placement."))
-            return False
-
-        # These cards must be in hand and unique.
-        if not player_state.are_cards_in_hand(chosen_card_ids) or len(set(chosen_card_ids)) != len(chosen_card_ids):
+        if not player_state.are_cards_in_hand([center_holomem_card_id]):
             self.send_event(self.make_error_event(player_id, "invalid_cards", "Invalid cards for initial placement."))
             return False
 
-        # The center must be a debut holomem and the backstage must be debut.
         center_card = player_state.get_card_from_hand(center_holomem_card_id)
         if center_card["card_type"] != "holomem_debut":
             self.send_event(self.make_error_event(player_id, "invalid_center", "Invalid center card for initial placement."))
-            return False
-
-        backstage_cards = [player_state.get_card_from_hand(card_id) for card_id in backstage_holomem_card_ids]
-        if any(card["card_type"] != "holomem_debut" and card["card_type"] != "holomem_spot" for card in backstage_cards):
-            self.send_event(self.make_error_event(player_id, "invalid_backstage", "Invalid backstage cards for initial placement."))
             return False
 
         return True
@@ -5711,26 +5748,124 @@ class GameEngine:
 
         player_state = self.get_player(player_id)
         center_holomem_card_id = action_data["center_holomem_card_id"]
+
+        player_state.move_card(center_holomem_card_id, "center", no_events=True)
+
+        placement_event = {
+            "event_type": EventType.EventType_InitialPlacementPlaced,
+            "hidden_info_player": player_id,
+            "hidden_info_fields": ["center_card_id"],
+            "active_player": player_id,
+            "center_card_id": center_holomem_card_id,
+            "hand_count": len(player_state.hand),
+        }
+        self.broadcast_event(placement_event)
+
+        self.begin_return_cards()
+
+        return True
+
+    def validate_return_cards(self, player_id:str, action_data: dict):
+        if self.phase != GamePhase.InitialPlacement:
+            self.send_event(self.make_error_event(player_id, "invalid_phase", "Invalid phase for return cards."))
+            return False
+
+        if player_id != self.active_player_id:
+            self.send_event(self.make_error_event(player_id, "invalid_player", "Not your turn to return cards."))
+            return False
+
+        if not self.validate_action_fields(action_data, GameAction.ReturnCardsActionFields):
+            self.send_event(self.make_error_event(player_id, "invalid_action", "Invalid return cards action."))
+            return False
+
+        player_state = self.get_player(player_id)
+        card_ids = action_data["card_ids"]
+
+        if len(card_ids) != player_state.forced_mulligan_count:
+            self.send_event(self.make_error_event(player_id, "invalid_count", "Must return exactly %d cards." % player_state.forced_mulligan_count))
+            return False
+
+        if len(set(card_ids)) != len(card_ids):
+            self.send_event(self.make_error_event(player_id, "invalid_cards", "Duplicate cards in return list."))
+            return False
+
+        if not player_state.are_cards_in_hand(card_ids):
+            self.send_event(self.make_error_event(player_id, "invalid_cards", "Cards not in hand."))
+            return False
+
+        return True
+
+    def handle_return_cards(self, player_id:str, action_data:dict):
+        if not self.validate_return_cards(player_id, action_data):
+            return False
+
+        player_state = self.get_player(player_id)
+        card_ids = action_data["card_ids"]
+
+        for card_id in card_ids:
+            player_state.move_card(card_id, "deck", add_to_bottom=True, hidden_info=True)
+
+        self.begin_backstage_placement()
+
+        return True
+
+    def validate_backstage_placement(self, player_id:str, action_data: dict):
+        if self.phase != GamePhase.InitialPlacement:
+            self.send_event(self.make_error_event(player_id, "invalid_phase", "Invalid phase for backstage placement."))
+            return False
+
+        if player_id != self.active_player_id:
+            self.send_event(self.make_error_event(player_id, "invalid_player", "Not your turn to place cards."))
+            return False
+
+        if not self.validate_action_fields(action_data, GameAction.BackstagePlacementActionFields):
+            self.send_event(self.make_error_event(player_id, "invalid_action", "Invalid backstage placement action."))
+            return False
+
+        player_state = self.get_player(player_id)
         backstage_holomem_card_ids = action_data["backstage_holomem_card_ids"]
 
-        # Move the cards from the player's hand to the center and backstage.
-        player_state.move_card(center_holomem_card_id, "center", no_events=True)
+        if len(backstage_holomem_card_ids) > MAX_MEMBERS_ON_STAGE - 1:
+            self.send_event(self.make_error_event(player_id, "invalid_backstage", "Too many cards for backstage."))
+            return False
+
+        if len(set(backstage_holomem_card_ids)) != len(backstage_holomem_card_ids):
+            self.send_event(self.make_error_event(player_id, "invalid_cards", "Duplicate cards in backstage list."))
+            return False
+
+        if len(backstage_holomem_card_ids) > 0:
+            if not player_state.are_cards_in_hand(backstage_holomem_card_ids):
+                self.send_event(self.make_error_event(player_id, "invalid_cards", "Cards not in hand."))
+                return False
+
+            backstage_cards = [player_state.get_card_from_hand(card_id) for card_id in backstage_holomem_card_ids]
+            if any(card["card_type"] != "holomem_debut" and card["card_type"] != "holomem_spot" for card in backstage_cards):
+                self.send_event(self.make_error_event(player_id, "invalid_backstage", "Invalid backstage cards for placement."))
+                return False
+
+        return True
+
+    def handle_backstage_placement(self, player_id:str, action_data:dict):
+        if not self.validate_backstage_placement(player_id, action_data):
+            return False
+
+        player_state = self.get_player(player_id)
+        backstage_holomem_card_ids = action_data["backstage_holomem_card_ids"]
+
         for card_id in backstage_holomem_card_ids:
             player_state.move_card(card_id, "backstage", no_events=True)
 
         player_state.initial_placement_completed = True
 
-        # Broadcast the event.
-        placement_event = {
-            "event_type": EventType.EventType_InitialPlacementPlaced,
+        backstage_event = {
+            "event_type": EventType.EventType_BackstagePlacementPlaced,
             "hidden_info_player": player_id,
-            "hidden_info_fields": ["center_card_id", "backstage_card_ids"],
+            "hidden_info_fields": ["backstage_card_ids"],
             "active_player": player_id,
-            "center_card_id": center_holomem_card_id,
             "backstage_card_ids": backstage_holomem_card_ids,
             "hand_count": len(player_state.hand),
         }
-        self.broadcast_event(placement_event)
+        self.broadcast_event(backstage_event)
 
         self.continue_initial_placement()
 
@@ -6424,7 +6559,7 @@ class GameEngine:
         move_event = {
             "event_type": EventType.EventType_MoveCard,
             "moving_player_id": player.player_id,
-            "from_zone": "backstage",
+            "from": "backstage",
             "to_zone": "collab",
             "card_id": card_id,
         }
@@ -6911,12 +7046,13 @@ class GameEngine:
         """감정표현 이벤트 생성 - 모든 플레이어에게 동일한 이벤트 전송"""
         emote_event = {
             "event_type": EventType.EventType_Emote,
-            "event_player_id": player_id,  # 감정표현을 보낸 플레이어 ID
+            "event_player_id": player_id,
             "emote_id": emote_id,
-            "timestamp": time.time() * 1000
+            "timestamp": time.time() * 1000,
+            "event_number": len(self.all_events),
+            "last_game_message_number": len(self.all_game_messages) - 1,
         }
-        # broadcast_event는 각 플레이어별로 이벤트를 생성하므로 사용하지 않음
-        # send_emote_events가 모든 플레이어에게 전송하므로 이벤트는 한 번만 추가
+        self.all_events.append(emote_event)
         self.latest_events.append(emote_event)
         self.latest_observer_events.append(emote_event)
 

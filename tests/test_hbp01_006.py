@@ -64,7 +64,7 @@ class Test_hbp01_006(unittest.TestCase):
         self.assertEqual(len(events), 4)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "archive",
+            "from": "archive",
             "to_zone": "hand",
             "card_id": retrieve_card["game_card_id"]
         })

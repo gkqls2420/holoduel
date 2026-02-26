@@ -84,7 +84,7 @@ class Test_hSD02_006(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "archive", "card_id": archived_card_id }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "archive", "card_id": archived_card_id }),
       (EventType.EventType_DamageDealt, { "damage": 20, "special": True, "target_id": p2.center[0]["game_card_id"] }),
       (EventType.EventType_Decision_MainStep, {})
     ])
@@ -130,7 +130,7 @@ class Test_hSD02_006(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "archive", "card_id": archived_card_id }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "archive", "card_id": archived_card_id }),
       (EventType.EventType_Decision_ChooseHolomemForEffect, { "cards_can_choose": ids_from_cards(p2.center + p2.collab) }),
       (EventType.EventType_DamageDealt, { "damage": 20, "special": True, "target_id": p2_collab_card_id }),
       (EventType.EventType_Decision_MainStep, {})

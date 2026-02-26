@@ -61,7 +61,7 @@ echo.
 
 REM Push 실행
 echo 6. GitHub에 push 중...
-git push origin main
+git push origin HEAD
 if %errorlevel% neq 0 (
     echo ❌ Push 실패
     echo.

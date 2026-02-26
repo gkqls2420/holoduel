@@ -76,7 +76,7 @@ class Test_hSD02_011(unittest.TestCase):
       (EventType.EventType_Collab, {}),
       (EventType.EventType_Decision_Choice, {}),
       (EventType.EventType_Decision_ChooseCards, {}),
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "archive", "card_id": card_to_archive }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "archive", "card_id": card_to_archive }),
       (EventType.EventType_Decision_SendCheer, { "from_zone": "cheer_deck", "to_zone": "holomem", "to_options": debut_cards })
     ])
 
@@ -180,7 +180,7 @@ class Test_hSD02_011(unittest.TestCase):
       (EventType.EventType_Collab, {}),
       (EventType.EventType_Decision_Choice, {}),
       (EventType.EventType_Decision_ChooseCards, {}),
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "archive", "card_id": card_to_archive }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "archive", "card_id": card_to_archive }),
       (EventType.EventType_Decision_MainStep, {}) # archived a card but no effect since no cheer to distribute
     ])
 
@@ -217,7 +217,7 @@ class Test_hSD02_011(unittest.TestCase):
       (EventType.EventType_Collab, {}),
       (EventType.EventType_Decision_Choice, {}),
       (EventType.EventType_Decision_ChooseCards, {}),
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "archive", "card_id": card_to_archive }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "archive", "card_id": card_to_archive }),
       (EventType.EventType_Decision_MainStep, {}) # no effect since no targets
     ])
 
@@ -254,7 +254,7 @@ class Test_hSD02_011(unittest.TestCase):
       (EventType.EventType_Collab, {}),
       (EventType.EventType_Decision_Choice, {}),
       (EventType.EventType_Decision_ChooseCards, { "cards_can_choose": [hand_card_id] }),
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "archive", "card_id": hand_card_id }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "archive", "card_id": hand_card_id }),
       (EventType.EventType_MoveAttachedCard, { "from_holomem_id": "cheer_deck", "to_holomem_id": center_card_id }),
       (EventType.EventType_Decision_MainStep, {})
     ])

@@ -183,20 +183,22 @@ def initialize_game_to_third_turn(self : unittest.TestCase, p1deck = None, p2dec
     center = hand[0]
     back = hand[1:6]
 
-    # Put out all 6 units
     self.engine.handle_game_message(self.player1, GameAction.InitialPlacement, {
         "center_holomem_card_id": center,
-        "backstage_holomem_card_ids":back,
+    })
+    self.engine.handle_game_message(self.player1, GameAction.BackstagePlacement, {
+        "backstage_holomem_card_ids": back,
     })
 
     hand = ids_from_cards(player2.hand)
     center = hand[0]
     back = hand[1:6]
 
-    # Put out all 6 units
     self.engine.handle_game_message(self.player2, GameAction.InitialPlacement, {
         "center_holomem_card_id": center,
-        "backstage_holomem_card_ids":back,
+    })
+    self.engine.handle_game_message(self.player2, GameAction.BackstagePlacement, {
+        "backstage_holomem_card_ids": back,
     })
 
     events = do_cheer_step_on_card(self, player1.center[0])
@@ -234,7 +236,7 @@ def do_bloom(self : unittest.TestCase, player : PlayerState, card_id, target_id)
         "bloom_player_id": player.player_id,
         "bloom_card_id": card_id,
         "target_card_id": target_id,
-        "bloom_from_zone": "hand",
+        "bloom_from": "hand",
     })
     self.assertTrue(target_id not in ids_from_cards(zone))
     self.assertTrue(card_id in ids_from_cards(zone))

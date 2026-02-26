@@ -7,7 +7,7 @@ git add .
 git commit -m "Update server files - %date% %time%"
 
 REM GitHub에 push
-git push origin main
+git push origin HEAD
 
 echo.
 echo Push 완료!

@@ -89,7 +89,7 @@ class Test_hSD03_004(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck", "card_id": top_deck_id }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck", "card_id": top_deck_id }),
       (EventType.EventType_Decision_MainStep, {})
     ])
 
@@ -131,7 +131,7 @@ class Test_hSD03_004(unittest.TestCase):
       (EventType.EventType_RevealCards, { "card_ids": [top_deck_id] }),
       (EventType.EventType_MoveAttachedCard, { "from_holomem_id": "cheer_deck", "to_holomem_id": collab_card_id, "attached_id": top_cheer_id }),
       (EventType.EventType_Decision_OrderCards, {}),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck", "card_id": top_deck_id }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck", "card_id": top_deck_id }),
       (EventType.EventType_Decision_MainStep, {})
     ])
 
@@ -171,7 +171,7 @@ class Test_hSD03_004(unittest.TestCase):
       (EventType.EventType_Decision_Choice, {}),
       (EventType.EventType_RevealCards, { "card_ids": [top_deck_id] }),
       (EventType.EventType_Decision_OrderCards, {}),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck", "card_id": top_deck_id }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck", "card_id": top_deck_id }),
       (EventType.EventType_Decision_MainStep, {})
     ])
 
@@ -241,7 +241,7 @@ class Test_hSD03_004(unittest.TestCase):
       (EventType.EventType_Decision_Choice, {}),
       (EventType.EventType_RevealCards, { "card_ids": [top_deck_id] }),
       (EventType.EventType_Decision_OrderCards, {}),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck", "card_id": top_deck_id }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck", "card_id": top_deck_id }),
       (EventType.EventType_Decision_MainStep, {})
     ])
 

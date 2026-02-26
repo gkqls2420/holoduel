@@ -47,7 +47,7 @@ class TestResetStep(unittest.TestCase):
         self.assertEqual(len(events), 6)
         validate_event(self, events[1], EventType.EventType_MoveCard, self.player2, {
             "moving_player_id": self.player2,
-            "from_zone": "backstage",
+            "from": "backstage",
             "to_zone": "center",
             "card_id": chosen_center,
         })
@@ -95,7 +95,7 @@ class TestResetStep(unittest.TestCase):
         self.assertEqual(len(events), 6)
         validate_event(self, events[1], EventType.EventType_MoveCard, self.player2, {
             "moving_player_id": self.player2,
-            "from_zone": "backstage",
+            "from": "backstage",
             "to_zone": "center",
             "card_id": chosen_center,
         })
@@ -148,7 +148,7 @@ class TestResetStep(unittest.TestCase):
         self.assertEqual(len(events), 6)
         validate_event(self, events[1], EventType.EventType_MoveCard, self.player2, {
             "moving_player_id": self.player2,
-            "from_zone": "backstage",
+            "from": "backstage",
             "to_zone": "center",
             "card_id": chosen_center,
         })
@@ -195,7 +195,7 @@ class TestResetStep(unittest.TestCase):
         self.assertEqual(len(events), 12)
         validate_event(self, events[1], EventType.EventType_MoveCard, self.player2, {
             "moving_player_id": self.player1,
-            "from_zone": "backstage",
+            "from": "backstage",
             "to_zone": "center",
             "card_id": chosen_center,
         })

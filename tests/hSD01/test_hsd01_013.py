@@ -208,7 +208,7 @@ class Test_hSD01_013(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "holomem" }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "holomem" }),
       (EventType.EventType_Decision_MainStep, {})
     ])
     self.assertEqual(len(center_card["attached_support"]), 1)
@@ -224,6 +224,6 @@ class Test_hSD01_013(unittest.TestCase):
     validate_consecutive_events(self, self.player1, events, [
       (EventType.EventType_Bloom, { "bloom_card_id": bloom_card_id }),
       # fan card is removed because card now no longer is a valid card
-      (EventType.EventType_MoveCard, { "from_zone": bloom_card_id, "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": bloom_card_id, "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {})
     ])

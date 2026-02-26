@@ -64,9 +64,9 @@ class Test_hBP02_040(unittest.TestCase):
 
       (EventType.EventType_MoveAttachedCard, { "from_holomem_id": "life", "to_holomem_id": p2.center[0]["game_card_id"] }),
       (EventType.EventType_BoostStat, { "amount": 20 * 3 }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
       (EventType.EventType_DamageDealt, { "damage": 100 + 50 + 20 * 3 }),
       *end_turn_events()
     ])
@@ -110,8 +110,8 @@ class Test_hBP02_040(unittest.TestCase):
 
       (EventType.EventType_RevealCards, {}),
       (EventType.EventType_BoostStat, { "amount": 20 * 2 }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
       (EventType.EventType_DamageDealt, { "damage": 100 + 50 + 20 * 2 }),
       (EventType.EventType_DownedHolomem_Before, {}),
       (EventType.EventType_DownedHolomem, {}),
@@ -155,9 +155,9 @@ class Test_hBP02_040(unittest.TestCase):
 
       (EventType.EventType_RevealCards, {}),
       (EventType.EventType_BoostStat, { "amount": 20 * 3 }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
       (EventType.EventType_DamageDealt, { "damage": 100 + 50 + 20 * 3 }),
       (EventType.EventType_DownedHolomem_Before, {}),
       (EventType.EventType_DownedHolomem, {}),
@@ -241,9 +241,9 @@ class Test_hBP02_040(unittest.TestCase):
 
       (EventType.EventType_RevealCards, {}),
       (EventType.EventType_BoostStat, { "amount": 20 * 2 }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
       (EventType.EventType_DamageDealt, { "damage": 100 + 50 + 20 * 2 }),
       (EventType.EventType_DownedHolomem_Before, {}),
       (EventType.EventType_DownedHolomem, {}),
@@ -301,9 +301,9 @@ class Test_hBP02_040(unittest.TestCase):
 
       (EventType.EventType_MoveAttachedCard, { "from_holomem_id": "life", "to_holomem_id": p2.center[0]["game_card_id"] }),
       (EventType.EventType_BoostStat, { "amount": 20 * 3 }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
       (EventType.EventType_DamageDealt, { "damage": 100 + 50 + 20 * 3 }),
       (EventType.EventType_Decision_PerformanceStep, {})
     ])
@@ -331,9 +331,9 @@ class Test_hBP02_040(unittest.TestCase):
 
       (EventType.EventType_MoveAttachedCard, { "from_holomem_id": "life", "to_holomem_id": p2.center[0]["game_card_id"] }),
       (EventType.EventType_BoostStat, { "amount": 20 * 3 }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
       (EventType.EventType_DamageDealt, { "damage": 100 + 50 + 20 * 3 }),
       *end_turn_events()
     ])

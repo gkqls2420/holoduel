@@ -39,7 +39,7 @@ class Test_hBP02_094(unittest.TestCase):
         validate_consecutive_events(self, self.player1, events, [
             (EventType.EventType_PlaySupportCard, { "card_id": mascot_card_id }),
             (EventType.EventType_Decision_ChooseHolomemForEffect, {}),
-            (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "holomem", "zone_card_id": center_card_id }),
+            (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "holomem", "zone_card_id": center_card_id }),
             (EventType.EventType_Decision_MainStep, {})
         ])
 
@@ -69,7 +69,7 @@ class Test_hBP02_094(unittest.TestCase):
         validate_consecutive_events(self, self.player1, events, [
             (EventType.EventType_PlaySupportCard, { "card_id": mascot_card_id }),
             (EventType.EventType_Decision_ChooseHolomemForEffect, {}),
-            (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "holomem", "zone_card_id": center_card_id }),
+            (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "holomem", "zone_card_id": center_card_id }),
             (EventType.EventType_Decision_MainStep, {})
         ])
 
@@ -104,7 +104,7 @@ class Test_hBP02_094(unittest.TestCase):
         validate_consecutive_events(self, self.player1, events, [
             (EventType.EventType_PlaySupportCard, { "card_id": mascot_card_id }),
             (EventType.EventType_Decision_ChooseHolomemForEffect, {}),
-            (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "holomem", "zone_card_id": center_card_id }),
+            (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "holomem", "zone_card_id": center_card_id }),
             (EventType.EventType_Decision_MainStep, {})
         ])
 
@@ -153,7 +153,7 @@ class Test_hBP02_094(unittest.TestCase):
         validate_consecutive_events(self, self.player1, events, [
             (EventType.EventType_PlaySupportCard, { "card_id": mascot_card_id }),
             (EventType.EventType_Decision_ChooseHolomemForEffect, {}),
-            (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "holomem", "zone_card_id": center_card_id }),
+            (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "holomem", "zone_card_id": center_card_id }),
             (EventType.EventType_Decision_MainStep, {})
         ])
 

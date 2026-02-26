@@ -16,6 +16,7 @@ from app.gameengine import GamePhase
 from app.gameroom import GameRoom
 from app.card_database import CardDatabase
 from app.dbaccess import download_and_extract_game_package
+from app.aiplayer import get_ai_deck_names
 import logging
 from dotenv import load_dotenv
 
@@ -214,6 +215,7 @@ async def websocket_endpoint(websocket: WebSocket):
                                 deck=message.deck,
                                 cheer_deck=message.cheer_deck
                             )
+                            player.ai_deck_name = getattr(message, "ai_deck_name", "random")
                             match = matchmaking.add_player_to_queue(
                                 player=player,
                                 queue_name=message.queue_name,
@@ -258,6 +260,15 @@ async def websocket_endpoint(websocket: WebSocket):
                 else:
                     logger.warning(f"Player {player.get_username()} - {player.player_id} tried to send emote but not in a game room")
                     await send_error_message(websocket, "not_in_room", f"ERROR: Not in a game room to send emote.")
+
+            elif isinstance(message, message_types.RequestAIDeckListMessage):
+                deck_names = get_ai_deck_names()
+                response = {
+                    "message_type": "ai_deck_list",
+                    "deck_list": deck_names,
+                }
+                await websocket.send_json(response)
+
             else:
                 await send_error_message(websocket, "invalid_game_message", f"ERROR: Invalid message: {data}")
 

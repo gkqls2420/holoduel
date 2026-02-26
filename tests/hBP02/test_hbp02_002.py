@@ -56,8 +56,8 @@ class Test_hBP02_002(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-        (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-        (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+        (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+        (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
         (EventType.EventType_OshiSkillActivation, { "skill_id": "halu" }),
         (EventType.EventType_Decision_ChooseCards, {
             "from_zone": "holomem",
@@ -67,7 +67,7 @@ class Test_hBP02_002(unittest.TestCase):
         }),
         (EventType.EventType_MoveCard, { 
             "moving_player_id": self.player1,
-            "from_zone": center_card_id,
+            "from": center_card_id,
             "to_zone": "archive",
             "card_id": g1["game_card_id"],
         }),
@@ -77,7 +77,7 @@ class Test_hBP02_002(unittest.TestCase):
         (EventType.EventType_Decision_ChooseHolomemForEffect, {}),
         (EventType.EventType_MoveCard, {
             "moving_player_id": self.player1,
-            "from_zone": "cheer_deck",
+            "from": "cheer_deck",
             "to_zone": "holomem",
             "zone_card_id": backstage_card_id,
             "card_id": topcheer_id,
@@ -117,8 +117,8 @@ class Test_hBP02_002(unittest.TestCase):
     # Oshi Skill Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-        (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-        (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+        (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+        (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
         (EventType.EventType_OshiSkillActivation, { "skill_id": "acolorfulfeast" }),
         (EventType.EventType_AddTurnEffect, { "effect_player_id": self.player1, }),
         (EventType.EventType_AddTurnEffect, { "effect_player_id": self.player1, }),
@@ -175,8 +175,8 @@ class Test_hBP02_002(unittest.TestCase):
     # Oshi Skill Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-        (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-        (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+        (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+        (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
         (EventType.EventType_OshiSkillActivation, { "skill_id": "acolorfulfeast" }),
         (EventType.EventType_AddTurnEffect, { "effect_player_id": self.player1, }),
         (EventType.EventType_AddTurnEffect, { "effect_player_id": self.player1, }),

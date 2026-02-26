@@ -44,8 +44,8 @@ class Test_hBD24_001(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "oshi_player_id": self.player1 }),
       (EventType.EventType_Decision_ChooseHolomemForEffect, {})
     ])
@@ -99,8 +99,8 @@ class Test_hBD24_001(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "oshi_player_id": self.player1 }),
       (EventType.EventType_Decision_ChooseCards, { "cards_can_choose": greens_in_deck })
     ])
@@ -111,7 +111,7 @@ class Test_hBD24_001(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "hand", "card_id": card_chosen }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "hand", "card_id": card_chosen }),
       (EventType.EventType_ShuffleDeck, {}),
       (EventType.EventType_Decision_MainStep, {})
     ])
@@ -228,8 +228,8 @@ class Test_hBD24_001(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "oshi_player_id": self.player1 }),
       (EventType.EventType_Decision_MainStep, {}) # No prompt to choose which holomem to boost
     ])

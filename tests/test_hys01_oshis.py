@@ -258,7 +258,7 @@ class Test_hys01_oshis(unittest.TestCase):
         self.assertEqual(len(events), 4)
         validate_event(self, events[0], EventType.EventType_MoveCard, player1.player_id, {
             "card_id": expect2["game_card_id"],
-            "from_zone": "archive",
+            "from": "archive",
             "to_zone": "hand",
         })
         reset_mainstep(self)

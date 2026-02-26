@@ -210,6 +210,77 @@ def get_default_ai_deck():
 DefaultAIDeck = load_ai_deck(AI_DECK_NAME)
 
 
+def _get_ai_pool_paths():
+    """ai_pool 폴더의 가능한 경로들을 반환합니다."""
+    return [
+        os.path.join(os.path.dirname(__file__), "..", "decks", "ai_pool"),
+        os.path.join(os.getcwd(), "decks", "ai_pool"),
+    ]
+
+def load_ai_deck_pool():
+    """내장 덱 + decks/ai_pool/ 폴더의 모든 덱을 합산하여 {이름: 덱데이터} dict로 반환합니다."""
+    pool = {}
+
+    for name, deck_data in get_builtin_decks().items():
+        pool[name] = deck_data
+
+    for pool_dir in _get_ai_pool_paths():
+        if not os.path.isdir(pool_dir):
+            continue
+        for filename in os.listdir(pool_dir):
+            if not filename.endswith(".json"):
+                continue
+            deck_key = filename[:-5]
+            if deck_key in pool:
+                continue
+            filepath = os.path.join(pool_dir, filename)
+            try:
+                with open(filepath, "r", encoding="utf-8") as f:
+                    deck_data = json.load(f)
+                if "cheerDeck" in deck_data:
+                    deck_data = convert_holodelta_to_simple_format(deck_data)
+                pool[deck_key] = deck_data
+                logger.info(f"AI pool: loaded deck '{deck_key}' from {filepath}")
+            except Exception as e:
+                logger.error(f"AI pool: failed to load {filepath}: {e}")
+        break
+
+    if not pool:
+        logger.warning("AI pool is empty, falling back to DefaultAIDeck")
+        pool["default"] = DefaultAIDeck
+
+    return pool
+
+def get_ai_deck_names():
+    """풀 내 모든 덱의 {key, deck_id} 리스트를 반환합니다 (클라이언트 전송용)."""
+    pool = load_ai_deck_pool()
+    result = []
+    for key, deck_data in pool.items():
+        result.append({
+            "deck_name": key,
+            "deck_id": deck_data.get("deck_id", key),
+        })
+    return result
+
+def get_random_ai_deck():
+    """풀에서 무작위로 덱 하나를 반환합니다."""
+    pool = load_ai_deck_pool()
+    chosen_key = random.choice(list(pool.keys()))
+    logger.info(f"Random AI deck selected: {chosen_key}")
+    return pool[chosen_key]
+
+def get_ai_deck_by_name(name):
+    """이름으로 특정 덱을 반환합니다. 없으면 랜덤 폴백."""
+    if name == "random":
+        return get_random_ai_deck()
+    pool = load_ai_deck_pool()
+    if name in pool:
+        logger.info(f"AI deck selected by name: {name}")
+        return pool[name]
+    logger.warning(f"AI deck '{name}' not found in pool, falling back to random")
+    return get_random_ai_deck()
+
+
 class AIPlayer:
 
     def __init__(self, player_id: str):
@@ -250,6 +321,9 @@ class AIPlayer:
             EventType.EventType_InitialPlacementBegin: self._handle_initial_placement_begin,
             EventType.EventType_InitialPlacementPlaced: self._handle_event_ignore,
             EventType.EventType_InitialPlacementReveal: self._handle_event_ignore,
+            EventType.EventType_ReturnCardsBegin: self._handle_return_cards_begin,
+            EventType.EventType_BackstagePlacementBegin: self._handle_backstage_placement_begin,
+            EventType.EventType_BackstagePlacementPlaced: self._handle_event_ignore,
             EventType.EventType_MainStepStart: self._handle_event_ignore,
             EventType.EventType_ModifyHP: self._handle_event_ignore,
             EventType.EventType_MoveCard: self._handle_event_ignore,
@@ -600,21 +674,49 @@ class AIPlayer:
 
     def _handle_initial_placement_begin(self, event):
         if self.player_id != event["active_player"]:
-            # Skip events that aren't meant for me to act.
+            return False, None, None
+
+        debut_options = event["debut_options"]
+        center = debut_options[0]
+
+        return True, event["desired_response"], {
+            "center_holomem_card_id": center,
+        }
+
+    def _handle_return_cards_begin(self, event):
+        if self.player_id != event["active_player"]:
+            return False, None, None
+
+        return_count = event["return_count"]
+        hand_card_ids = event["hand_card_ids"]
+
+        # Prefer returning non-debut/non-spot cards first.
+        non_holomem_ids = []
+        holomem_ids = []
+        player_state = self.engine.get_player(self.player_id)
+        for card_id in hand_card_ids:
+            card, _, _ = player_state.find_card(card_id)
+            if card and card["card_type"] not in ["holomem_debut", "holomem_spot"]:
+                non_holomem_ids.append(card_id)
+            else:
+                holomem_ids.append(card_id)
+
+        chosen = (non_holomem_ids + holomem_ids)[:return_count]
+
+        return True, event["desired_response"], {
+            "card_ids": chosen,
+        }
+
+    def _handle_backstage_placement_begin(self, event):
+        if self.player_id != event["active_player"]:
             return False, None, None
 
         debut_options = event["debut_options"]
         spot_options = event["spot_options"]
 
-        center = debut_options[0]
-        backstage = []
-        if len(debut_options) > 1:
-            backstage = debut_options[1:] + spot_options
-        # backstage has a max of 5, so only take 5
-        backstage = backstage[:5]
+        backstage = (debut_options + spot_options)[:5]
 
         return True, event["desired_response"], {
-            "center_holomem_card_id": center,
             "backstage_holomem_card_ids": backstage,
         }
 

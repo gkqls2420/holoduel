@@ -191,7 +191,7 @@ class Test_hBP02_022(unittest.TestCase):
         validate_consecutive_events(self, self.player1, events, [
         (EventType.EventType_Bloom, { "bloom_card_id": bloom_card_id }),
         (EventType.EventType_Decision_ChooseCards, { "cards_can_choose": tantan_cards_id }),
-        (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "hand", "card_id": chosen_card_id }),
+        (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "hand", "card_id": chosen_card_id }),
         (EventType.EventType_ShuffleDeck, {}),
         (EventType.EventType_Decision_MainStep, {})
         ])

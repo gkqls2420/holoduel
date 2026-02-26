@@ -59,7 +59,7 @@ class Test_hbp02_Support(unittest.TestCase):
         })
         validate_event(self, events[6], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "archive",
             "card_id": test_card["game_card_id"],
         })
@@ -122,7 +122,7 @@ class Test_hbp02_Support(unittest.TestCase):
         })
         validate_event(self, events[8], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "archive",
             "card_id": test_card["game_card_id"],
         })
@@ -193,13 +193,13 @@ class Test_hbp02_Support(unittest.TestCase):
         self.assertEqual(len(events), 8)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "deck",
+            "from": "deck",
             "to_zone": "hand",
             "card_id": cards_can_choose[5]
         })
         validate_event(self, events[4], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "archive",
             "card_id": test_card["game_card_id"],
         })

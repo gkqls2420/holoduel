@@ -77,7 +77,7 @@ class Test_hSD03_010(unittest.TestCase):
     validate_consecutive_events(self, self.player1, events, [
       (EventType.EventType_Collab, {}),
       (EventType.EventType_Decision_ChooseCards, { "cards_can_choose": fans_and_mascots_ids }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "hand", "card_id": card_chosen }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "hand", "card_id": card_chosen }),
       (EventType.EventType_ShuffleDeck, {}),
       (EventType.EventType_Decision_MainStep, {})
     ])

@@ -107,12 +107,12 @@ class Test_hbp01_002(unittest.TestCase):
         self.assertEqual(len(events), 22)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "archive",
         })
         validate_event(self, events[2], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "archive",
         })
         validate_event(self, events[4], EventType.EventType_OshiSkillActivation, self.player1, {
@@ -170,12 +170,12 @@ class Test_hbp01_002(unittest.TestCase):
         self.assertEqual(len(events), 12)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "archive",
         })
         validate_event(self, events[2], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "archive",
         })
         validate_event(self, events[4], EventType.EventType_OshiSkillActivation, self.player1, {

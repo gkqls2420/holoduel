@@ -40,14 +40,14 @@ class Test_hBP02_004(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "skill_id": "poepoepoe" }),
       (EventType.EventType_RevealCards, {}),
       (EventType.EventType_Decision_Choice, {}),
 
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {})
     ])
 
@@ -78,16 +78,16 @@ class Test_hBP02_004(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "skill_id": "poepoepoe" }),
       (EventType.EventType_RevealCards, {}),
       (EventType.EventType_Decision_Choice, {}),
 
       (EventType.EventType_Decision_OrderCards, {}),
 
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
       (EventType.EventType_Decision_MainStep, {})
     ])
 
@@ -174,13 +174,13 @@ class Test_hBP02_004(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "skill_id": "liferesetbutton" }),
-      *[(EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "deck" }) for _ in range(hand_count)],
+      *[(EventType.EventType_MoveCard, { "from": "hand", "to_zone": "deck" }) for _ in range(hand_count)],
       (EventType.EventType_ShuffleDeck, {}),
-      *[(EventType.EventType_MoveCard, { "from_zone": "archive", "to_zone": "deck" }) for _ in range(archive_holomem_count)],
+      *[(EventType.EventType_MoveCard, { "from": "archive", "to_zone": "deck" }) for _ in range(archive_holomem_count)],
       (EventType.EventType_ShuffleDeck, {}),
       (EventType.EventType_Draw, { "hand_count": hand_count, "deck_count": deck_count + archive_holomem_count }),
       (EventType.EventType_Decision_MainStep, {})

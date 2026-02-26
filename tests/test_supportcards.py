@@ -55,7 +55,7 @@ class TestSupportCards(unittest.TestCase):
         })
         validate_event(self, events[4], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "archive",
             "card_id": playfirst,
         })
@@ -115,7 +115,7 @@ class TestSupportCards(unittest.TestCase):
         })
         validate_event(self, events[2], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "hand",
+            "from": "hand",
             "to_zone": "deck",
             "card_id": extracard["game_card_id"],
         })
@@ -127,7 +127,7 @@ class TestSupportCards(unittest.TestCase):
         })
         validate_event(self, events[8], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "archive",
             "card_id": playfirst,
         })
@@ -188,7 +188,7 @@ class TestSupportCards(unittest.TestCase):
         validate_event(self, events[0], EventType.EventType_Decision_OrderCards, self.player1, {
             "effect_player_id": self.player1,
             "card_ids": all_cards_seen,
-            "from_zone": "deck",
+            "from": "deck",
             "to_zone": "deck",
             "bottom": True,
         })
@@ -211,7 +211,7 @@ class TestSupportCards(unittest.TestCase):
         self.assertEqual(player1.deck[-1]["game_card_id"], cards_in_order[4])
         validate_event(self, events[10], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "archive",
             "card_id": play1,
         })
@@ -258,13 +258,13 @@ class TestSupportCards(unittest.TestCase):
         # Even player 2 can see.
         validate_event(self, events[1], EventType.EventType_MoveCard, self.player2, {
             "moving_player_id": self.player1,
-            "from_zone": "deck",
+            "from": "deck",
             "to_zone": "hand",
             "card_id": choice2,
         })
         validate_event(self, events[2], EventType.EventType_Decision_OrderCards, self.player1, {
             "effect_player_id": self.player1,
-            "from_zone": "deck",
+            "from": "deck",
             "to_zone": "deck",
             "bottom": True,
         })
@@ -286,7 +286,7 @@ class TestSupportCards(unittest.TestCase):
         self.assertEqual(player1.deck[-1]["game_card_id"], cards_in_order[3])
         validate_event(self, events[8], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "archive",
             "card_id": play2,
         })
@@ -356,7 +356,7 @@ class TestSupportCards(unittest.TestCase):
         self.assertEqual(len(events), 8)
         validate_event(self, events[1], EventType.EventType_MoveCard, self.player2, {
             "moving_player_id": self.player1,
-            "from_zone": "deck",
+            "from": "deck",
             "to_zone": "hand",
             "card_id": chosen_card,
         })
@@ -365,7 +365,7 @@ class TestSupportCards(unittest.TestCase):
         })
         validate_event(self, events[4], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "archive",
             "card_id": play1,
         })
@@ -416,7 +416,7 @@ class TestSupportCards(unittest.TestCase):
         })
         validate_event(self, events[4], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "archive",
             "card_id": play1,
         })
@@ -472,7 +472,7 @@ class TestSupportCards(unittest.TestCase):
         })
         validate_event(self, events[2], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "archive",
             "card_id": play2,
         })
@@ -540,25 +540,25 @@ class TestSupportCards(unittest.TestCase):
         # Even player 2 can see.
         validate_event(self, events[1], EventType.EventType_MoveCard, self.player2, {
             "moving_player_id": self.player1,
-            "from_zone": "deck",
+            "from": "deck",
             "to_zone": "hand",
             "card_id": available_to_choose[0],
         })
         validate_event(self, events[3], EventType.EventType_MoveCard, self.player2, {
             "moving_player_id": self.player1,
-            "from_zone": "deck",
+            "from": "deck",
             "to_zone": "hand",
             "card_id": available_to_choose[1],
         })
         validate_event(self, events[5], EventType.EventType_MoveCard, self.player2, {
             "moving_player_id": self.player1,
-            "from_zone": "deck",
+            "from": "deck",
             "to_zone": "hand",
             "card_id": available_to_choose[2],
         })
         validate_event(self, events[6], EventType.EventType_Decision_OrderCards, self.player1, {
             "effect_player_id": self.player1,
-            "from_zone": "deck",
+            "from": "deck",
             "to_zone": "deck",
             "bottom": True,
         })
@@ -572,7 +572,7 @@ class TestSupportCards(unittest.TestCase):
         self.assertEqual(player1.deck[-1]["game_card_id"], cards_in_order[0])
         validate_event(self, events[2], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "archive",
             "card_id": play1,
         })
@@ -632,31 +632,31 @@ class TestSupportCards(unittest.TestCase):
         # Even player 2 can see.
         validate_event(self, events[1], EventType.EventType_MoveCard, self.player2, {
             "moving_player_id": self.player1,
-            "from_zone": "deck",
+            "from": "deck",
             "to_zone": "hand",
             "card_id": available_to_choose[0],
         })
         validate_event(self, events[3], EventType.EventType_MoveCard, self.player2, {
             "moving_player_id": self.player1,
-            "from_zone": "deck",
+            "from": "deck",
             "to_zone": "hand",
             "card_id": available_to_choose[1],
         })
         validate_event(self, events[5], EventType.EventType_MoveCard, self.player2, {
             "moving_player_id": self.player1,
-            "from_zone": "deck",
+            "from": "deck",
             "to_zone": "hand",
             "card_id": available_to_choose[2],
         })
         validate_event(self, events[7], EventType.EventType_MoveCard, self.player2, {
             "moving_player_id": self.player1,
-            "from_zone": "deck",
+            "from": "deck",
             "to_zone": "hand",
             "card_id": available_to_choose[3],
         })
         validate_event(self, events[8], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "archive",
             "card_id": play2,
         })

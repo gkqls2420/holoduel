@@ -45,7 +45,7 @@ class Test_hSD01_007(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "hand" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "hand" }),
       (EventType.EventType_Decision_ChooseCards, { "from_zone": "hand" })
     ])
 
@@ -54,7 +54,7 @@ class Test_hSD01_007(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "holopower" }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "holopower" }),
       (EventType.EventType_Decision_MainStep, {})
     ])
     self.assertEqual(len(p1.holopower), 1)

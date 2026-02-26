@@ -41,7 +41,7 @@ class Test_hSD01_001(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, {}),
       (EventType.EventType_Decision_MainStep, {})
     ])
@@ -81,8 +81,8 @@ class Test_hSD01_001(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player2, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, {}),
       (EventType.EventType_Decision_SwapHolomemToCenter, {})
     ])
@@ -116,8 +116,8 @@ class Test_hSD01_001(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player2, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, {}),
       (EventType.EventType_AddTurnEffect, {}),
       (EventType.EventType_Decision_MainStep, {})

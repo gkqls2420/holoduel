@@ -44,8 +44,8 @@ class Test_hSD03_001(unittest.TestCase):
     events = use_oshi_action(self, "bluemic")
 
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, {}),
       (EventType.EventType_AddTurnEffect, {}),
       (EventType.EventType_Decision_MainStep, {})
@@ -200,7 +200,7 @@ class Test_hSD03_001(unittest.TestCase):
       (EventType.EventType_Decision_ChooseHolomemForEffect, {}),
       (EventType.EventType_DamageDealt, { "damage": 10, "special": True, "target_id": chosen_card_id }),
       (EventType.EventType_Decision_Choice, {}),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, {}),
       (EventType.EventType_DamageDealt, { "damage": 50, "special": True, "target_id": chosen_card_id }),
       (EventType.EventType_DownedHolomem_Before, {}),

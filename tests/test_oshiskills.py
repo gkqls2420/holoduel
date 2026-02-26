@@ -100,7 +100,7 @@ class TestOshiSkills(unittest.TestCase):
         self.assertEqual(len(events), 6)
         validate_event(self, events[1], EventType.EventType_MoveCard, self.player2, {
             "moving_player_id": self.player2,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "archive",
             "card_id": top_holopower['game_card_id'],
         })
@@ -176,13 +176,13 @@ class TestOshiSkills(unittest.TestCase):
         self.assertEqual(len(events), 8)
         validate_event(self, events[1], EventType.EventType_MoveCard, self.player2, {
             "moving_player_id": self.player2,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "archive",
             "card_id": top_holopower['game_card_id'],
         })
         validate_event(self, events[3], EventType.EventType_MoveCard, self.player2, {
             "moving_player_id": self.player2,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "archive",
             "card_id": top2_holopower['game_card_id'],
         })
@@ -214,14 +214,14 @@ class TestOshiSkills(unittest.TestCase):
         self.assertEqual(len(events), 8)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "center",
+            "from": "center",
             "to_zone": "backstage",
             "zone_card_id": "",
             "card_id": current_center
         })
         validate_event(self, events[2], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "backstage",
+            "from": "backstage",
             "to_zone": "center",
             "zone_card_id": "",
             "card_id": chosen_swap
@@ -311,19 +311,19 @@ class TestOshiSkills(unittest.TestCase):
         self.assertEqual(len(events), 10)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "archive",
             "card_id": top_holopower['game_card_id'],
         })
         validate_event(self, events[2], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "archive",
             "card_id": top2_holopower['game_card_id'],
         })
         validate_event(self, events[4], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "archive",
             "card_id": top3_holopower['game_card_id'],
         })
@@ -410,19 +410,19 @@ class TestOshiSkills(unittest.TestCase):
         self.assertEqual(len(events), 10)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "archive",
             "card_id": expected_holopower[0]["game_card_id"]
         })
         validate_event(self, events[2], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "archive",
             "card_id": expected_holopower[1]["game_card_id"]
         })
         validate_event(self, events[4], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "archive",
             "card_id": expected_holopower[2]["game_card_id"]
         })
@@ -491,7 +491,7 @@ class TestOshiSkills(unittest.TestCase):
         self.assertEqual(len(events), 4)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "collab",
+            "from": "collab",
             "to_zone": "backstage",
             "card_id": azki_card["game_card_id"],
         })
@@ -543,19 +543,19 @@ class TestOshiSkills(unittest.TestCase):
         # Events - holopower moved * 3, oshi skill activation, force result pick
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "archive",
             "card_id": expected_holopower[0]["game_card_id"]
         })
         validate_event(self, events[2], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "archive",
             "card_id": expected_holopower[1]["game_card_id"]
         })
         validate_event(self, events[4], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "archive",
             "card_id": expected_holopower[2]["game_card_id"]
         })
@@ -670,19 +670,19 @@ class TestOshiSkills(unittest.TestCase):
         self.assertEqual(len(events), 10)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "archive",
             "card_id": expected_holopower[0]["game_card_id"]
         })
         validate_event(self, events[2], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "archive",
             "card_id": expected_holopower[1]["game_card_id"]
         })
         validate_event(self, events[4], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "archive",
             "card_id": expected_holopower[2]["game_card_id"]
         })

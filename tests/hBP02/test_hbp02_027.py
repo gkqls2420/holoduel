@@ -66,7 +66,7 @@ class Test_hBP02_027(unittest.TestCase):
             (EventType.EventType_BoostStat, { "amount": 20 }),
             (EventType.EventType_MoveCard, {
                 "moving_player_id": self.player1,
-                "from_zone": "deck",
+                "from": "deck",
                 "to_zone": "archive",
                 "card_id": supportcard["game_card_id"]
             }),
@@ -120,7 +120,7 @@ class Test_hBP02_027(unittest.TestCase):
             (EventType.EventType_BoostStat, { "amount": 50 }),
             (EventType.EventType_MoveCard, {
                 "moving_player_id": self.player1,
-                "from_zone": "deck",
+                "from": "deck",
                 "to_zone": "archive",
                 "card_id": supportcard["game_card_id"]
             }),

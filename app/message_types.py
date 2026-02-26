@@ -44,9 +44,14 @@ class JoinMatchmakingQueueMessage(Message):
     oshi_id: str
     deck: Dict[str, int]
     cheer_deck: Dict[str, int]
+    ai_deck_name: str = "random"
 
 @dataclass
 class LeaveMatchmakingQueueMessage(Message):
+    pass
+
+@dataclass
+class RequestAIDeckListMessage(Message):
     pass
 
 @dataclass
@@ -83,5 +88,7 @@ def parse_message(json_data: str) -> Message:
             return ObserverGetEventsMessage(**data)
         case "emote":
             return EmoteMessage(**data)
+        case "request_ai_deck_list":
+            return RequestAIDeckListMessage(**data)
         case _:
             raise ValueError(f"Unknown message type: {json_data}")

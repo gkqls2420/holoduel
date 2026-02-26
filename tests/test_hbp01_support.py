@@ -60,7 +60,7 @@ class Test_hbp01_Support(unittest.TestCase):
         self.assertEqual(len(events), 4)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "holomem",
             "card_id": test_card['game_card_id'],
         })
@@ -182,7 +182,7 @@ class Test_hbp01_Support(unittest.TestCase):
         self.assertEqual(len(events), 4)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "holomem",
             "card_id": test_card['game_card_id'],
         })
@@ -464,7 +464,7 @@ class Test_hbp01_Support(unittest.TestCase):
         self.assertEqual(len(events), 4)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "holomem",
             "card_id": test_card['game_card_id'],
         })
@@ -601,7 +601,7 @@ class Test_hbp01_Support(unittest.TestCase):
         self.assertEqual(len(events), 4)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "holomem",
             "card_id": test_card['game_card_id'],
         })
@@ -703,19 +703,19 @@ class Test_hbp01_Support(unittest.TestCase):
         # Even player 2 can see.
         validate_event(self, events[1], EventType.EventType_MoveCard, self.player2, {
             "moving_player_id": self.player1,
-            "from_zone": "deck",
+            "from": "deck",
             "to_zone": "hand",
             "card_id": available_to_choose[0],
         })
         validate_event(self, events[3], EventType.EventType_MoveCard, self.player2, {
             "moving_player_id": self.player1,
-            "from_zone": "deck",
+            "from": "deck",
             "to_zone": "hand",
             "card_id": available_to_choose[1],
         })
         validate_event(self, events[4], EventType.EventType_Decision_OrderCards, self.player1, {
             "effect_player_id": self.player1,
-            "from_zone": "deck",
+            "from": "deck",
             "to_zone": "deck",
             "bottom": True,
         })
@@ -728,7 +728,7 @@ class Test_hbp01_Support(unittest.TestCase):
         self.assertEqual(len(events), 8)
         validate_event(self, events[4], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "archive",
             "card_id": play1["game_card_id"],
         })
@@ -760,7 +760,7 @@ class Test_hbp01_Support(unittest.TestCase):
             "limited": True,
         })
         validate_event(self, events[2], EventType.EventType_MoveCard, self.player1, {
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "archive",
         })
         validate_event(self, events[4], EventType.EventType_Decision_ChooseCards, self.player1, {
@@ -813,7 +813,7 @@ class Test_hbp01_Support(unittest.TestCase):
             "effect_player_id": self.player1,
             "from_zone": "deck",
             "to_zone": "backstage",
-            "amount_min": 1,
+            "amount_min": 0,
             "amount_max": 1,
             "reveal_chosen": True,
             "remaining_cards_action": "shuffle",
@@ -830,13 +830,13 @@ class Test_hbp01_Support(unittest.TestCase):
         self.assertEqual(len(events), 8)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "deck",
+            "from": "deck",
             "to_zone": "backstage",
             "card_id": cards_can_choose[5]
         })
         validate_event(self, events[4], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "archive",
             "card_id": test_card["game_card_id"],
         })
@@ -870,7 +870,7 @@ class Test_hbp01_Support(unittest.TestCase):
             "effect_player_id": self.player1,
             "from_zone": "deck",
             "to_zone": "backstage",
-            "amount_min": 1,
+            "amount_min": 0,
             "amount_max": 1,
             "reveal_chosen": True,
             "remaining_cards_action": "shuffle",
@@ -887,13 +887,13 @@ class Test_hbp01_Support(unittest.TestCase):
         self.assertEqual(len(events), 8)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "deck",
+            "from": "deck",
             "to_zone": "backstage",
             "card_id": cards_can_choose[5]
         })
         validate_event(self, events[4], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "archive",
             "card_id": test_card["game_card_id"],
         })
@@ -931,7 +931,7 @@ class Test_hbp01_Support(unittest.TestCase):
             "effect_player_id": self.player1,
             "from_zone": "deck",
             "to_zone": "backstage",
-            "amount_min": 1,
+            "amount_min": 0,
             "amount_max": 1,
             "reveal_chosen": True,
             "remaining_cards_action": "shuffle",
@@ -948,13 +948,13 @@ class Test_hbp01_Support(unittest.TestCase):
         self.assertEqual(len(events), 8)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "deck",
+            "from": "deck",
             "to_zone": "backstage",
             "card_id": cards_can_choose[5]
         })
         validate_event(self, events[4], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "archive",
             "card_id": test_card["game_card_id"],
         })
@@ -1005,7 +1005,7 @@ class Test_hbp01_Support(unittest.TestCase):
         self.assertEqual(len(events), 4)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "archive",
             "card_id": test_card["game_card_id"],
         })
@@ -1060,7 +1060,7 @@ class Test_hbp01_Support(unittest.TestCase):
         self.assertEqual(len(events), 6)
         validate_event(self, events[2], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "archive",
             "card_id": test_card["game_card_id"],
         })
@@ -1094,7 +1094,7 @@ class Test_hbp01_Support(unittest.TestCase):
             "limited": True,
         })
         validate_event(self, events[2], EventType.EventType_MoveCard, self.player1, {
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "archive",
         })
         validate_event(self, events[4], EventType.EventType_Decision_ChooseCards, self.player1, {
@@ -1127,13 +1127,13 @@ class Test_hbp01_Support(unittest.TestCase):
         self.assertEqual(len(events), 6)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "cheer_deck",
+            "from": "cheer_deck",
             "to_zone": "holomem",
             "card_id": cards_can_choose[1]
         })
         validate_event(self, events[2], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "archive",
             "card_id": test_card["game_card_id"],
         })
@@ -1213,7 +1213,7 @@ class Test_hbp01_Support(unittest.TestCase):
         # Discard
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "archive",
             "card_id": test_card["game_card_id"],
         })
@@ -1261,26 +1261,26 @@ class Test_hbp01_Support(unittest.TestCase):
         # Move card x 3
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "archive",
+            "from": "archive",
             "to_zone": "cheer_deck",
             "card_id": cards_can_choose[0],
         })
         validate_event(self, events[2], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "archive",
+            "from": "archive",
             "to_zone": "cheer_deck",
             "card_id": cards_can_choose[1],
         })
         validate_event(self, events[4], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "archive",
+            "from": "archive",
             "to_zone": "cheer_deck",
             "card_id": cards_can_choose[2],
         })
         # Discard
         validate_event(self, events[6], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "archive",
             "card_id": test_card["game_card_id"],
         })
@@ -1696,7 +1696,7 @@ class Test_hbp01_Support(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom_card["game_card_id"],
             "target_card_id": test_card["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         validate_event(self, events[2], EventType.EventType_Decision_ChooseHolomemForEffect, self.player1, {
             "effect_player_id": self.player1,
@@ -2202,7 +2202,7 @@ class Test_hbp01_Support(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom1["game_card_id"],
             "target_card_id": p1center["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         validate_event(self, events[2], EventType.EventType_Draw, self.player1, {
         })
@@ -2221,7 +2221,7 @@ class Test_hbp01_Support(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom1again["game_card_id"],
             "target_card_id": bloom1["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         self.assertEqual(len(player1.hand), 6) # Went down 1 card
 
@@ -2238,7 +2238,7 @@ class Test_hbp01_Support(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom2["game_card_id"],
             "target_card_id": bloom1again["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         validate_event(self, events[2], EventType.EventType_Draw, self.player1, {
         })
@@ -2257,7 +2257,7 @@ class Test_hbp01_Support(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom2again["game_card_id"],
             "target_card_id": bloom2["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         self.assertEqual(len(player1.hand), 5) # dropped a card again
         reset_mainstep(self)
@@ -2305,7 +2305,7 @@ class Test_hbp01_Support(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom1["game_card_id"],
             "target_card_id": p1center["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         validate_event(self, events[2], EventType.EventType_Decision_Choice, self.player1, {})
         choices = events[2]["choice"]
@@ -2762,7 +2762,7 @@ class Test_hbp01_Support(unittest.TestCase):
         validate_event(self, events[0], EventType.EventType_Bloom, self.player1, {})
         validate_event(self, events[2], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": bloom_card["game_card_id"],
+            "from": bloom_card["game_card_id"],
             "to_zone": "archive",
             "card_id": test_card['game_card_id'],
         })
@@ -2817,7 +2817,7 @@ class Test_hbp01_Support(unittest.TestCase):
         self.assertEqual(len(events), 4)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "holomem",
             "zone_card_id": p1center["game_card_id"],
             "card_id": test_card['game_card_id'],
@@ -2866,7 +2866,7 @@ class Test_hbp01_Support(unittest.TestCase):
         self.assertEqual(len(events), 4)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "holomem",
             "zone_card_id": p1center["game_card_id"],
             "card_id": test_card['game_card_id'],
@@ -2887,7 +2887,7 @@ class Test_hbp01_Support(unittest.TestCase):
         self.assertEqual(len(events), 6)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "hand",
+            "from": "hand",
             "to_zone": "archive",
             "card_id": cards_can_choose[0],
         })

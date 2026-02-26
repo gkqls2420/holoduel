@@ -47,7 +47,7 @@ class Test_Attach_Support_Limit(unittest.TestCase):
       (EventType.EventType_PlaySupportCard, { "card_id": mascot_card_id }),
       (EventType.EventType_Decision_ChooseHolomemForEffect, { "cards_can_choose": valid_target_ids }),
 
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "holomem", "zone_card_id": center_card_id, "card_id": mascot_card_id }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "holomem", "zone_card_id": center_card_id, "card_id": mascot_card_id }),
       (EventType.EventType_Decision_MainStep, {})
     ])
     self.assertCountEqual(ids_from_cards(center_card["attached_support"]), [mascot_card_id])
@@ -107,7 +107,7 @@ class Test_Attach_Support_Limit(unittest.TestCase):
       (EventType.EventType_PlaySupportCard, { "card_id": mascot_card_id }),
       (EventType.EventType_Decision_ChooseHolomemForEffect, { "cards_can_choose": valid_target_ids }),
 
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "holomem", "zone_card_id": center_card_id, "card_id": mascot_card_id }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "holomem", "zone_card_id": center_card_id, "card_id": mascot_card_id }),
       (EventType.EventType_Decision_MainStep, {})
     ])
     self.assertCountEqual(ids_from_cards(center_card["attached_support"]), [mascot_card_id])
@@ -145,7 +145,7 @@ class Test_Attach_Support_Limit(unittest.TestCase):
       (EventType.EventType_Decision_ChooseCards, { "cards_can_choose": valid_target_ids }),
 
       (EventType.EventType_Decision_ChooseHolomemForEffect, {}),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "holomem", "zone_card_id": bloom_card_id, "card_id": chosen_card_id }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "holomem", "zone_card_id": bloom_card_id, "card_id": chosen_card_id }),
       (EventType.EventType_ShuffleDeck, {}),
       (EventType.EventType_Decision_MainStep, {})
     ])

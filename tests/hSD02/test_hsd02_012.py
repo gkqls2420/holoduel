@@ -53,12 +53,12 @@ class Test_hSD02_012(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "hand" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "hand" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "hand" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "hand" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "hand" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "hand" }),
       (EventType.EventType_Decision_OrderCards, {}),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }), # back to bottom of deck
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive", "card_id": support_card_id }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }), # back to bottom of deck
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive", "card_id": support_card_id }),
       (EventType.EventType_Decision_MainStep, {})
     ])
 
@@ -90,11 +90,11 @@ class Test_hSD02_012(unittest.TestCase):
       (EventType.EventType_PlaySupportCard, {}),
       (EventType.EventType_Decision_ChooseCards, { "cards_can_choose": [], "all_card_seen": shuffled_cards }),
       (EventType.EventType_Decision_OrderCards, {}),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {})
     ])
 

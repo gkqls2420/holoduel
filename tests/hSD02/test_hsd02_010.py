@@ -81,7 +81,7 @@ class Test_hSD02_010(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "archive", "to_zone": "hand", "card_id": mascot_card_id }),
+      (EventType.EventType_MoveCard, { "from": "archive", "to_zone": "hand", "card_id": mascot_card_id }),
       (EventType.EventType_Decision_MainStep, {})
     ])
 

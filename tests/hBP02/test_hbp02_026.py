@@ -107,7 +107,7 @@ class Test_hBP02_026(unittest.TestCase):
         validate_consecutive_events(self, self.player1, events, [
             (EventType.EventType_MoveCard, {
                 "moving_player_id": self.player1,
-                "from_zone": "cheer_deck",
+                "from": "cheer_deck",
                 "to_zone": "holomem",
                 "zone_card_id": backstage_card_id,
                 "card_id": g1["game_card_id"],

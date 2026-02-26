@@ -74,8 +74,8 @@ class Test_hBP02_092(unittest.TestCase):
       (EventType.EventType_SpecialActionActivation, { "effect_id": "fubuzilla" }),
       (EventType.EventType_Decision_ChooseCards, { "cards_can_choose": cheer_ids }),
 
-      (EventType.EventType_MoveCard, { "from_zone": center_card_id, "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": center_card_id, "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": center_card_id, "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": center_card_id, "to_zone": "archive" }),
       (EventType.EventType_AddTurnEffect, {}),
       (EventType.EventType_Decision_MainStep, {})
     ])
@@ -134,8 +134,8 @@ class Test_hBP02_092(unittest.TestCase):
       (EventType.EventType_SpecialActionActivation, { "effect_id": "fubuzilla" }),
       (EventType.EventType_Decision_ChooseCards, { "cards_can_choose": cheer_ids }),
 
-      (EventType.EventType_MoveCard, { "from_zone": p1.backstage[0]["game_card_id"], "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": p1.backstage[1]["game_card_id"], "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": p1.backstage[0]["game_card_id"], "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": p1.backstage[1]["game_card_id"], "to_zone": "archive" }),
       (EventType.EventType_AddTurnEffect, {}),
       (EventType.EventType_Decision_MainStep, {})
     ])

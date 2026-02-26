@@ -93,9 +93,9 @@ class Test_hSD02_009(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "archive" }),
       (EventType.EventType_DamageDealt, { "damage": 40 * 3, "special": True }),
       (EventType.EventType_DownedHolomem_Before, {}), # downed immediately because the previous damage alone exceeeded the opp. hp
       (EventType.EventType_DownedHolomem, {}),
@@ -144,7 +144,7 @@ class Test_hSD02_009(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "archive" }),
       (EventType.EventType_DamageDealt, { "damage": 40, "special": True }),
       (EventType.EventType_DamageDealt, { "damage": 40 }),
       (EventType.EventType_DownedHolomem_Before, {}),
@@ -200,9 +200,9 @@ class Test_hSD02_009(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "archive" }),
       (EventType.EventType_DamageDealt, { "damage": 40 * 3, "special": True }),
       (EventType.EventType_DownedHolomem_Before, {}),
       (EventType.EventType_DownedHolomem, {}),

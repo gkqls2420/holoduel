@@ -125,7 +125,7 @@ class Test_hSD01_004(unittest.TestCase):
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
       (EventType.EventType_Decision_ChooseCards, { "from_zone": "hand" }),
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "archive" }),
       (EventType.EventType_BoostStat, { "amount": art_boost, "source_card_id": p1.center[0]["game_card_id"] }),
       (EventType.EventType_DamageDealt, { "damage": collab_boost + center_art + art_boost }),
       (EventType.EventType_DownedHolomem_Before, {}),

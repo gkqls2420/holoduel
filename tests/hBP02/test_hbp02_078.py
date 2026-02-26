@@ -48,11 +48,11 @@ class Test_hBP02_078(unittest.TestCase):
       (EventType.EventType_PlaySupportCard, { "card_id": event_card_id }),
       (EventType.EventType_Decision_ChooseCards, { "cards_can_choose": kanaken_card_ids }),
 
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "hand" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "hand" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "hand" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "hand" }),
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "hand" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "hand" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "hand" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "hand" }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {})
     ])
 
@@ -87,11 +87,11 @@ class Test_hBP02_078(unittest.TestCase):
 
       (EventType.EventType_Decision_OrderCards, {}),
 
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {})
     ])
 
@@ -131,11 +131,11 @@ class Test_hBP02_078(unittest.TestCase):
 
       (EventType.EventType_Decision_OrderCards, {}),
 
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {})
     ])
 
@@ -190,10 +190,10 @@ class Test_hBP02_078(unittest.TestCase):
 
       (EventType.EventType_Decision_OrderCards, {}),
 
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {})
     ])

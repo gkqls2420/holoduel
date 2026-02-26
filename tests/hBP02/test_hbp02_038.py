@@ -80,11 +80,11 @@ class Test_hBP02_038(unittest.TestCase):
 
       (EventType.EventType_Decision_ChooseHolomemForEffect, { "cards_can_choose": ids_from_cards(p1.center + p1.backstage) }),
 
-      (EventType.EventType_MoveCard, { "from_zone": "cheer_deck", "to_zone": "holomem", "zone_card_id": bloom_card_id, "card_id": chosen_cheer_id }),
+      (EventType.EventType_MoveCard, { "from": "cheer_deck", "to_zone": "holomem", "zone_card_id": bloom_card_id, "card_id": chosen_cheer_id }),
       (EventType.EventType_Decision_OrderCards, {}),
 
-      (EventType.EventType_MoveCard, { "from_zone": "cheer_deck", "to_zone": "cheer_deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "cheer_deck", "to_zone": "cheer_deck" }),
+      (EventType.EventType_MoveCard, { "from": "cheer_deck", "to_zone": "cheer_deck" }),
+      (EventType.EventType_MoveCard, { "from": "cheer_deck", "to_zone": "cheer_deck" }),
       (EventType.EventType_Decision_MainStep, {})
     ])
 

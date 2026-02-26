@@ -258,7 +258,7 @@ class Test_hBP02_096(unittest.TestCase):
       (EventType.EventType_PlaySupportCard, { "card_id": mascot_card_id }),
       (EventType.EventType_Decision_ChooseHolomemForEffect, { "cards_can_choose": valid_target_ids }),
 
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "holomem", "zone_card_id": chosen_card_id, "card_id": mascot_card_id }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "holomem", "zone_card_id": chosen_card_id, "card_id": mascot_card_id }),
       (EventType.EventType_Decision_MainStep, {})
     ])
 

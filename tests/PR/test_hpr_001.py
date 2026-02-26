@@ -67,7 +67,7 @@ class Test_hPR_001(unittest.TestCase):
     validate_consecutive_events(self, self.player1, events, [
       (EventType.EventType_Decision_ChooseHolomemForEffect, { "cards_can_choose": ids_from_cards(p1.backstage) }),
       (EventType.EventType_MoveCard, {
-        "from_zone": "cheer_deck",
+        "from": "cheer_deck",
         "to_zone": "holomem",
         "zone_card_id": chosen_target,
         "card_id": chosen_cheer
@@ -103,8 +103,8 @@ class Test_hPR_001(unittest.TestCase):
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
       (EventType.EventType_MoveAttachedCard, { "from_holomem_id": center_card_id, "to_holomem_id": "archive", "attached_id": cheer_1 }),
-      (EventType.EventType_MoveCard, { "from_zone": "center", "to_zone": "backstage", "card_id": center_card_id }),
-      (EventType.EventType_MoveCard, { "from_zone": "backstage", "to_zone": "center" }),
+      (EventType.EventType_MoveCard, { "from": "center", "to_zone": "backstage", "card_id": center_card_id }),
+      (EventType.EventType_MoveCard, { "from": "backstage", "to_zone": "center" }),
       (EventType.EventType_Decision_MainStep, {})
     ])
 

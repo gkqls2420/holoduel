@@ -123,7 +123,7 @@ class Test_hSD01_009(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "collab", "to_zone": "backstage" }),
+      (EventType.EventType_MoveCard, { "from": "collab", "to_zone": "backstage" }),
       (EventType.EventType_Decision_MainStep, {})
     ])
     self.assertEqual(len(p1.backstage), 5)
@@ -167,7 +167,7 @@ class Test_hSD01_009(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "collab", "to_zone": "backstage" }),
+      (EventType.EventType_MoveCard, { "from": "collab", "to_zone": "backstage" }),
       (EventType.EventType_Decision_MainStep, {})
     ])
     self.assertEqual(len(p1.backstage), 5)

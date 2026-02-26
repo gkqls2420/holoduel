@@ -226,13 +226,13 @@ class Test_hbp01_holomems(unittest.TestCase):
         self.assertEqual(len(events), 6)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "center",
+            "from": "center",
             "to_zone": "backstage",
             "card_id": test_card["game_card_id"],
         })
         validate_event(self, events[2], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "backstage",
+            "from": "backstage",
             "to_zone": "center",
             "card_id": passto["game_card_id"],
         })
@@ -271,7 +271,7 @@ class Test_hbp01_holomems(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom_card["game_card_id"],
             "target_card_id": test_card["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         events = pick_choice(self, self.player1, 0)
         #events - roll die, main step.
@@ -316,7 +316,7 @@ class Test_hbp01_holomems(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom_card["game_card_id"],
             "target_card_id": test_card["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         events = pick_choice(self, self.player1, 0)
         #events roll die, choose cards
@@ -382,7 +382,7 @@ class Test_hbp01_holomems(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom_card["game_card_id"],
             "target_card_id": test_card["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         events = pick_choice(self, self.player1, 0)
         # Events - roll die, choose cards
@@ -430,7 +430,7 @@ class Test_hbp01_holomems(unittest.TestCase):
         self.assertEqual(len(events), 6)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "deck",
+            "from": "deck",
             "to_zone": "holomem",
             "zone_card_id": player1.center[0]["game_card_id"],
             "card_id": chosen_card_id,
@@ -470,7 +470,7 @@ class Test_hbp01_holomems(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom_card["game_card_id"],
             "target_card_id": test_card["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         validate_event(self, events[2], EventType.EventType_DamageDealt, self.player1, {
             "damage": 30,
@@ -517,7 +517,7 @@ class Test_hbp01_holomems(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom_card["game_card_id"],
             "target_card_id": test_card["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         validate_event(self, events[2], EventType.EventType_DamageDealt, self.player1, {
             "damage": 30,
@@ -571,7 +571,7 @@ class Test_hbp01_holomems(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom_card["game_card_id"],
             "target_card_id": test_card["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         validate_event(self, events[2], EventType.EventType_Decision_MainStep, self.player1, { "active_player": self.player1 })
         self.assertEqual(len(player2.life), 5)
@@ -967,7 +967,7 @@ class Test_hbp01_holomems(unittest.TestCase):
         self.assertEqual(len(events), 4)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "floating",
+            "from": "floating",
             "to_zone": "holomem",
             "zone_card_id": player1.center[0]["game_card_id"],
             "card_id": support["game_card_id"],
@@ -1278,7 +1278,7 @@ class Test_hbp01_holomems(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom_card["game_card_id"],
             "target_card_id": start_card["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         validate_event(self, events[2], EventType.EventType_Decision_ChooseCards, self.player1, {
             "effect_player_id": self.player1,
@@ -1796,7 +1796,7 @@ class Test_hbp01_holomems(unittest.TestCase):
         self.assertEqual(len(events), 6)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "hand",
             "card_id": chosen_card_id,
         })
@@ -1858,7 +1858,7 @@ class Test_hbp01_holomems(unittest.TestCase):
         self.assertEqual(len(events), 4)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "hand",
             "card_id": chosen_card_id,
         })
@@ -1965,7 +1965,7 @@ class Test_hbp01_holomems(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom_card["game_card_id"],
             "target_card_id": bloom_from["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         validate_event(self, events[2], EventType.EventType_Decision_ChooseCards, self.player1, {
             "effect_player_id": self.player1,
@@ -1995,7 +1995,7 @@ class Test_hbp01_holomems(unittest.TestCase):
         self.assertEqual(len(events), 4)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "archive",
+            "from": "archive",
             "to_zone": "holomem",
             "zone_card_id": player1.center[0]["game_card_id"],
             "card_id": axe["game_card_id"],
@@ -2116,7 +2116,7 @@ class Test_hbp01_holomems(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom_card["game_card_id"],
             "target_card_id": bloom_from["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         validate_event(self, events[2], EventType.EventType_Decision_SendCheer, self.player1, {
             "effect_player_id": self.player1,
@@ -2176,7 +2176,7 @@ class Test_hbp01_holomems(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom_card["game_card_id"],
             "target_card_id": bloom_from["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         validate_event(self, events[2], EventType.EventType_Decision_SendCheer, self.player1, {
             "effect_player_id": self.player1,
@@ -2381,7 +2381,7 @@ class Test_hbp01_holomems(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom_card["game_card_id"],
             "target_card_id": test_card["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         validate_event(self, events[2], EventType.EventType_RestoreHP, self.player1, {
             "target_player_id": self.player1,
@@ -2439,7 +2439,7 @@ class Test_hbp01_holomems(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom_card["game_card_id"],
             "target_card_id": test_card["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         validate_event(self, events[2], EventType.EventType_RestoreHP, self.player1, {
             "target_player_id": self.player1,
@@ -2511,7 +2511,7 @@ class Test_hbp01_holomems(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom_card["game_card_id"],
             "target_card_id": test_card["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         validate_event(self, events[2], EventType.EventType_Decision_SendCheer, self.player1, {
             "effect_player_id": self.player1,
@@ -3180,13 +3180,13 @@ class Test_hbp01_holomems(unittest.TestCase):
         self.assertEqual(len(events), 14)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "archive",
+            "from": "archive",
             "to_zone": "deck",
             "card_id": cards_can_choose[0],
         })
         validate_event(self, events[2], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "archive",
+            "from": "archive",
             "to_zone": "deck",
             "card_id": cards_can_choose[1],
         })
@@ -3452,7 +3452,7 @@ class Test_hbp01_holomems(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom_card["game_card_id"],
             "target_card_id": test_card["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         validate_event(self, events[2], EventType.EventType_Decision_ChooseCards, self.player1, {
             "from_zone": "archive",
@@ -3468,7 +3468,7 @@ class Test_hbp01_holomems(unittest.TestCase):
         # Events - move card to hand, main step
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "archive",
+            "from": "archive",
             "to_zone": "hand",
             "zone_card_id": "",
             "card_id": archived_card["game_card_id"],
@@ -3511,7 +3511,7 @@ class Test_hbp01_holomems(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom_card["game_card_id"],
             "target_card_id": test_card["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         validate_event(self, events[2], EventType.EventType_Decision_ChooseCards, self.player1, {
             "from_zone": "archive",
@@ -3527,7 +3527,7 @@ class Test_hbp01_holomems(unittest.TestCase):
         # Events - move card to hand, deal damage to collab, main step
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "archive",
+            "from": "archive",
             "to_zone": "hand",
             "zone_card_id": "",
             "card_id": archived_card["game_card_id"],
@@ -3569,7 +3569,7 @@ class Test_hbp01_holomems(unittest.TestCase):
         })
         validate_event(self, events[2], EventType.EventType_Decision_OrderCards, self.player1, {
             "effect_player_id": self.player1,
-            "from_zone": "hand",
+            "from": "hand",
             "to_zone": "deck",
             "bottom": True,
         })
@@ -3584,21 +3584,21 @@ class Test_hbp01_holomems(unittest.TestCase):
         self.assertEqual(len(events), 10)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "hand",
+            "from": "hand",
             "to_zone": "deck",
             "zone_card_id": "",
             "card_id": card_ids[0],
         })
         validate_event(self, events[2], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "hand",
+            "from": "hand",
             "to_zone": "deck",
             "zone_card_id": "",
             "card_id": card_ids[1],
         })
         validate_event(self, events[4], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "hand",
+            "from": "hand",
             "to_zone": "deck",
             "zone_card_id": "",
             "card_id": card_ids[2],
@@ -3611,7 +3611,7 @@ class Test_hbp01_holomems(unittest.TestCase):
         p1newhand_ids = ids_from_cards(player1.hand)
         validate_event(self, events[8], EventType.EventType_Decision_OrderCards, self.player1, {
             "effect_player_id": self.player2,
-            "from_zone": "hand",
+            "from": "hand",
             "to_zone": "deck",
             "bottom": True,
         })
@@ -3629,14 +3629,14 @@ class Test_hbp01_holomems(unittest.TestCase):
         self.assertEqual(len(events), 8)
         validate_event(self, events[1], EventType.EventType_MoveCard, self.player2, {
             "moving_player_id": self.player2,
-            "from_zone": "hand",
+            "from": "hand",
             "to_zone": "deck",
             "zone_card_id": "",
             "card_id": card_ids[0],
         })
         validate_event(self, events[3], EventType.EventType_MoveCard, self.player2, {
             "moving_player_id": self.player2,
-            "from_zone": "hand",
+            "from": "hand",
             "to_zone": "deck",
             "zone_card_id": "",
             "card_id": card_ids[1],
@@ -3680,7 +3680,7 @@ class Test_hbp01_holomems(unittest.TestCase):
         })
         validate_event(self, events[2], EventType.EventType_Decision_OrderCards, self.player1, {
             "effect_player_id": self.player1,
-            "from_zone": "hand",
+            "from": "hand",
             "to_zone": "deck",
             "bottom": True,
         })
@@ -3695,21 +3695,21 @@ class Test_hbp01_holomems(unittest.TestCase):
         self.assertEqual(len(events), 10)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "hand",
+            "from": "hand",
             "to_zone": "deck",
             "zone_card_id": "",
             "card_id": card_ids[0],
         })
         validate_event(self, events[2], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "hand",
+            "from": "hand",
             "to_zone": "deck",
             "zone_card_id": "",
             "card_id": card_ids[1],
         })
         validate_event(self, events[4], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "hand",
+            "from": "hand",
             "to_zone": "deck",
             "zone_card_id": "",
             "card_id": card_ids[2],
@@ -4014,7 +4014,7 @@ class Test_hbp01_holomems(unittest.TestCase):
         # Events - move cheer, draw 2, main step
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": test_card["game_card_id"],
+            "from": test_card["game_card_id"],
             "to_zone": "archive",
             "zone_card_id": "",
             "card_id": b2["game_card_id"],
@@ -4054,7 +4054,7 @@ class Test_hbp01_holomems(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom_card["game_card_id"],
             "target_card_id": test_card["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         validate_event(self, events[2], EventType.EventType_Decision_ChooseHolomemForEffect, self.player1, {
             "effect_player_id": self.player1,
@@ -4602,7 +4602,7 @@ class Test_hbp01_holomems(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom_card["game_card_id"],
             "target_card_id": p1center["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         actions = reset_mainstep(self)
 
@@ -4644,7 +4644,7 @@ class Test_hbp01_holomems(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom_card["game_card_id"],
             "target_card_id": p1center["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         validate_event(self, events[2], EventType.EventType_Decision_Choice, self.player1, {})
         events = pick_choice(self, self.player1, 0)
@@ -4724,7 +4724,7 @@ class Test_hbp01_holomems(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom_card["game_card_id"],
             "target_card_id": p1center["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         validate_event(self, events[2], EventType.EventType_Decision_Choice, self.player1, {})
         events = pick_choice(self, self.player1, 0)
@@ -4834,7 +4834,7 @@ class Test_hbp01_holomems(unittest.TestCase):
         # Move cheer first
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": test_card["game_card_id"],
+            "from": test_card["game_card_id"],
             "to_zone": "archive",
             "zone_card_id": "",
             "card_id": r1["game_card_id"],
@@ -4926,14 +4926,14 @@ class Test_hbp01_holomems(unittest.TestCase):
         # Move cheer first
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": test_card["game_card_id"],
+            "from": test_card["game_card_id"],
             "to_zone": "archive",
             "zone_card_id": "",
             "card_id": r1["game_card_id"],
         })
         validate_event(self, events[2], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": test_card["game_card_id"],
+            "from": test_card["game_card_id"],
             "to_zone": "archive",
             "zone_card_id": "",
             "card_id": b1["game_card_id"],
@@ -4981,7 +4981,7 @@ class Test_hbp01_holomems(unittest.TestCase):
             "bloom_player_id": self.player1,
             "bloom_card_id": bloom_card["game_card_id"],
             "target_card_id": test_card["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         validate_event(self, events[2], EventType.EventType_Decision_ChooseCards, self.player1, {
             "from_zone": "cheer_deck",
@@ -5008,7 +5008,7 @@ class Test_hbp01_holomems(unittest.TestCase):
         self.assertEqual(len(events), 4)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "cheer_deck",
+            "from": "cheer_deck",
             "to_zone": "holomem",
             "zone_card_id": player1.backstage[2]["game_card_id"],
             "card_id": chosen_cheer,
@@ -5078,7 +5078,7 @@ class Test_hbp01_holomems(unittest.TestCase):
         self.assertEqual(len(events), 4)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": test_card["game_card_id"],
+            "from": test_card["game_card_id"],
             "to_zone": "archive",
             "card_id": b1["game_card_id"],
         })
@@ -5362,7 +5362,7 @@ class Test_hbp01_holomems(unittest.TestCase):
         self.assertEqual(len(events), 4)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "cheer_deck",
+            "from": "cheer_deck",
             "to_zone": "holomem",
             "zone_card_id": testcard2["game_card_id"],
             "card_id": b1["game_card_id"],
@@ -5445,7 +5445,7 @@ class Test_hbp01_holomems(unittest.TestCase):
             "bloom_player_id": self.player2,
             "bloom_card_id": p2debut["game_card_id"],
             "target_card_id": bloom3["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         validate_event(self, events[12], EventType.EventType_MoveCard, self.player1, {
             "card_id": bloom3["game_card_id"], })
@@ -5555,7 +5555,7 @@ class Test_hbp01_holomems(unittest.TestCase):
         self.assertEqual(len(events), 6)
         validate_event(self, events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "deck",
+            "from": "deck",
             "to_zone": "hand",
             "card_id": cards_can_choose[0],
         })

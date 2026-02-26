@@ -61,9 +61,9 @@ class Test_hBP02_039(unittest.TestCase):
       (EventType.EventType_BoostStat, { "amount": 20 * len_holomem_in_top_three }),
       (EventType.EventType_Decision_ChooseCards, {}),
 
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "hand", "card_id": support_card_id }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "hand", "card_id": support_card_id }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
       (EventType.EventType_DamageDealt, { "damage": 20 + 20 * len_holomem_in_top_three }),
       (EventType.EventType_DownedHolomem_Before, {}),
       (EventType.EventType_DownedHolomem, {}),
@@ -147,9 +147,9 @@ class Test_hBP02_039(unittest.TestCase):
       (EventType.EventType_RevealCards, {}),
       (EventType.EventType_Decision_ChooseCards, {}),
 
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "hand", "card_id": support_card_id }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "hand", "card_id": support_card_id }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
       (EventType.EventType_DamageDealt, { "damage": 20 }),
       *end_turn_events()
     ])
@@ -197,9 +197,9 @@ class Test_hBP02_039(unittest.TestCase):
       (EventType.EventType_BoostStat, { "amount": 20 * len_holomem_in_top_three }),
       (EventType.EventType_Decision_ChooseCards, {}),
 
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
       (EventType.EventType_DamageDealt, { "damage": 20 + 20 * len_holomem_in_top_three }),
       (EventType.EventType_DownedHolomem_Before, {}),
       (EventType.EventType_DownedHolomem, {}),
@@ -259,9 +259,9 @@ class Test_hBP02_039(unittest.TestCase):
       (EventType.EventType_BoostStat, { "amount": 20 * 2 }),
       (EventType.EventType_Decision_ChooseCards, {}),
       
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "hand", "card_id": support_1_card_id }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "hand", "card_id": support_1_card_id }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
       (EventType.EventType_DamageDealt, { "damage": 20 + 20 * 2 }),
       (EventType.EventType_Decision_PerformanceStep, {})
     ])
@@ -285,9 +285,9 @@ class Test_hBP02_039(unittest.TestCase):
       (EventType.EventType_BoostStat, { "amount": 20 * 2 }),
       (EventType.EventType_Decision_ChooseCards, {}),
       
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "hand", "card_id": support_2_card_id }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "hand", "card_id": support_2_card_id }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "archive" }),
       (EventType.EventType_DamageDealt, { "damage": 20 + 20 * 2 }),
       *end_turn_events()
     ])

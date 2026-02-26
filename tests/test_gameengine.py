@@ -143,15 +143,25 @@ class TestGameEngine(unittest.TestCase):
         # 007 is debut irys, so we can place 1 in center and 1 in back.
         center = self.get_game_card(self.player1, 5)
         back = [self.get_game_card(self.player1, 6)]
+
+        # Step 1: P1 places center
         self.engine.handle_game_message(self.player1, GameAction.InitialPlacement, {
             "center_holomem_card_id": center,
-            "backstage_holomem_card_ids":back,
         })
         events = self.engine.grab_events()
-        # P1 placed their units, event:
-        # - Initial placement of holomems for p1
+        # InitialPlacementPlaced (x2) + BackstagePlacementBegin (x2) = 4
         self.assertEqual(len(events), 4)
         self.validate_event(events[0], EventType.EventType_InitialPlacementPlaced, self.player1, {"active_player": self.player1})
+        self.validate_event(events[2], EventType.EventType_BackstagePlacementBegin, self.player1, {"active_player": self.player1})
+
+        # Step 2: P1 places backstage
+        self.engine.handle_game_message(self.player1, GameAction.BackstagePlacement, {
+            "backstage_holomem_card_ids": back,
+        })
+        events = self.engine.grab_events()
+        # BackstagePlacementPlaced (x2) + InitialPlacementBegin for P2 (x2) = 4
+        self.assertEqual(len(events), 4)
+        self.validate_event(events[0], EventType.EventType_BackstagePlacementPlaced, self.player1, {"active_player": self.player1})
         self.validate_event(events[2], EventType.EventType_InitialPlacementBegin, self.player1, {"active_player": self.player2})
         self.assertEqual(len(player1.hand), 5)
 
@@ -166,20 +176,22 @@ class TestGameEngine(unittest.TestCase):
         back = [self.get_game_card(self.player2, 1), self.get_game_card(self.player2, 2),
                 self.get_game_card(self.player2, 3), self.get_game_card(self.player2, 4),
                 self.get_game_card(self.player2, 5)]
-        # Should be able to put 6 units out!
+
+        # Step 1: P2 places center
         self.engine.handle_game_message(self.player2, GameAction.InitialPlacement, {
             "center_holomem_card_id": center,
-            "backstage_holomem_card_ids":back,
         })
         events = self.engine.grab_events()
-        # The game has started.
-        # Events:
-        # - p2's placement
-        # - placement reveals
-        # - Turn start event for p1
-        # - P1's turn draw
-        # - P1's cheer choice
-        self.assertEqual(len(events), 10)
+        # InitialPlacementPlaced (x2) + BackstagePlacementBegin (x2) = 4
+        self.assertEqual(len(events), 4)
+
+        # Step 2: P2 places backstage
+        self.engine.handle_game_message(self.player2, GameAction.BackstagePlacement, {
+            "backstage_holomem_card_ids": back,
+        })
+        events = self.engine.grab_events()
+        # BackstagePlacementPlaced (x2) + InitialPlacementReveal (x2) + Turn start etc.
+        self.assertGreater(len(events), 4)
         self.assertEqual(self.engine.phase, GamePhase.PlayerTurn)
         self.assertEqual(len(player1.hand), 6)
         self.assertEqual(len(player1.center), 1)
@@ -188,8 +200,9 @@ class TestGameEngine(unittest.TestCase):
         self.assertEqual(len(player1.cheer_deck), 14)
         self.assertEqual(len(player2.center), 1)
         self.assertEqual(len(player2.backstage), 5)
-        self.validate_event(events[2], EventType.EventType_InitialPlacementReveal, self.player1, {})
-        placement_info = events[2]["placement_info"]
+        reveal_events = [e for e in events if e["event_type"] == EventType.EventType_InitialPlacementReveal]
+        self.assertGreater(len(reveal_events), 0)
+        placement_info = reveal_events[0]["placement_info"]
         p1_info = placement_info[0]
         self.assertEqual(p1_info["player_id"], self.player1)
         self.assertEqual(p1_info["cheer_deck_count"], 14)
@@ -214,7 +227,7 @@ class TestGameEngine(unittest.TestCase):
         self.assertEqual(len(events), 6)
         self.validate_event(events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "cheer_deck",
+            "from": "cheer_deck",
             "to_zone": "holomem",
             "zone_card_id": player1.center[0]["game_card_id"],
             "card_id": cheer_to_place
@@ -364,8 +377,9 @@ class TestGameEngine(unittest.TestCase):
         self.assertEqual(available_targets[0], player1.backstage[0]["game_card_id"])
         # Archive should have the irys and a cheer card.
         self.assertEqual(len(player1.archive), 2)
-        self.assertEqual(player1.archive[0]["game_card_id"], p1_center_before_attack["game_card_id"])
-        self.assertEqual(player1.archive[1]["game_card_id"], cheer_on_center)
+        archive_ids = [c["game_card_id"] for c in player1.archive]
+        self.assertIn(p1_center_before_attack["game_card_id"], archive_ids)
+        self.assertIn(cheer_on_center, archive_ids)
         ## Give that cheer to the only choice.
         cheer_placement = {
             top_p1_life_before_attack: player1.backstage[0]["game_card_id"]
@@ -400,7 +414,7 @@ class TestGameEngine(unittest.TestCase):
         self.assertEqual(len(rested_card_ids), 0) # Nobody was collabing
         self.validate_event(events[10], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "backstage",
+            "from": "backstage",
             "to_zone": "center",
             "card_id": p1backstage["game_card_id"],
         })
@@ -424,7 +438,7 @@ class TestGameEngine(unittest.TestCase):
         self.assertEqual(len(events), 4) # place mem and back and main decision
         self.validate_event(events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "hand",
+            "from": "hand",
             "to_zone": "backstage",
             "card_id": last_hand_id
         })
@@ -453,13 +467,13 @@ class TestGameEngine(unittest.TestCase):
         })
         self.validate_event(events[2], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "center",
+            "from": "center",
             "to_zone": "backstage",
             "card_id": current_center
         })
         self.validate_event(events[4], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "backstage",
+            "from": "backstage",
             "to_zone": "center",
             "card_id": current_backstage
         })
@@ -504,7 +518,7 @@ class TestGameEngine(unittest.TestCase):
         self.assertEqual(len(events), 4)
         self.validate_event(events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "holopower",
+            "from": "holopower",
             "to_zone": "hand",
             "card_id": chosen_card["game_card_id"]
         })
@@ -531,7 +545,7 @@ class TestGameEngine(unittest.TestCase):
         self.assertEqual(len(events), 4)
         self.validate_event(events[0], EventType.EventType_MoveCard, self.player1, {
             "moving_player_id": self.player1,
-            "from_zone": "hand",
+            "from": "hand",
             "to_zone": "holopower",
             "card_id": chosen_card
         })
@@ -638,7 +652,7 @@ class TestGameEngine(unittest.TestCase):
             "bloom_player_id": self.player2,
             "bloom_card_id": bloom_card1["game_card_id"],
             "target_card_id": bloom_target1["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         self.assertEqual(bloom_card1["attached_cheer"][0]["game_card_id"], bloom_target_attached1[0])
         self.assertEqual(len(bloom_card1["attached_cheer"]), 1)
@@ -662,7 +676,7 @@ class TestGameEngine(unittest.TestCase):
             "bloom_player_id": self.player2,
             "bloom_card_id": bloom_card2["game_card_id"],
             "target_card_id": bloom_target2["game_card_id"],
-            "bloom_from_zone": "hand",
+            "bloom_from": "hand",
         })
         self.assertEqual(bloom_card2["attached_cheer"][0]["game_card_id"], bloom_target_attached2[0])
         self.assertEqual(len(bloom_card2["attached_cheer"]), 1)

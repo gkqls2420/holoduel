@@ -39,8 +39,8 @@ class Test_hSD02_001(unittest.TestCase):
     # Events
     events = use_oshi_action(self, "redmic")
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "skill_id": "redmic" }),
       (EventType.EventType_AddTurnEffect, {}),
       (EventType.EventType_Decision_MainStep, {})
@@ -81,8 +81,8 @@ class Test_hSD02_001(unittest.TestCase):
     # Events
     events = use_oshi_action(self, "redmic")
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "skill_id": "redmic" }),
       (EventType.EventType_AddTurnEffect, {}),
       (EventType.EventType_Decision_MainStep, {})
@@ -125,8 +125,8 @@ class Test_hSD02_001(unittest.TestCase):
     # Events
     events = use_oshi_action(self, "redmic")
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "skill_id": "redmic" }),
       (EventType.EventType_AddTurnEffect, {}),
       (EventType.EventType_Decision_MainStep, {})
@@ -170,8 +170,8 @@ class Test_hSD02_001(unittest.TestCase):
     # Events
     events = use_oshi_action(self, "redmic")
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "skill_id": "redmic" }),
       (EventType.EventType_AddTurnEffect, {}),
       (EventType.EventType_Decision_MainStep, {})
@@ -254,7 +254,7 @@ class Test_hSD02_001(unittest.TestCase):
     # Events
     events = use_oshi_action(self, "comeonagain")
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "skill_id": "comeonagain" }),
       (EventType.EventType_Decision_ChooseCards, { "cards_can_choose": red_cards_in_archive })
     ])
@@ -264,7 +264,7 @@ class Test_hSD02_001(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "archive", "to_zone": "hand", "card_id": red_card_chosen }),
+      (EventType.EventType_MoveCard, { "from": "archive", "to_zone": "hand", "card_id": red_card_chosen }),
       (EventType.EventType_Decision_MainStep, {})
     ])
 
@@ -292,7 +292,7 @@ class Test_hSD02_001(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "skill_id": "comeonagain" }),
       (EventType.EventType_Decision_ChooseCards, { "cards_can_choose": [] }), # no cards to choose from
       (EventType.EventType_Decision_MainStep, {})
@@ -319,7 +319,7 @@ class Test_hSD02_001(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "skill_id": "comeonagain" }),
       (EventType.EventType_Decision_ChooseCards, { "cards_can_choose": [] }), # no cards to choose from
       (EventType.EventType_Decision_MainStep, {})

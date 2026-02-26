@@ -32,7 +32,7 @@ class Test_hSD04(unittest.TestCase):
     self.assertEqual(len(p1.hand), 3)
     events = use_oshi_action(self, "cardchange")
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "skill_id": "cardchange" }),
       (EventType.EventType_Draw, {}),
       (EventType.EventType_Decision_ChooseCards, {})
@@ -44,7 +44,7 @@ class Test_hSD04(unittest.TestCase):
     })
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {})
     ])
     self.assertEqual(len(p1.hand), 4)
@@ -139,7 +139,7 @@ class Test_hSD04(unittest.TestCase):
     })
     events = engine.grab_events()
     events = validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "archive" }),
       (EventType.EventType_Decision_ChooseCards, {})
     ])
     self.assertEqual(p1.archive[0]["game_card_id"], chosen_card)
@@ -192,7 +192,7 @@ class Test_hSD04(unittest.TestCase):
     })
     events = engine.grab_events()
     events = validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "archive" }),
       (EventType.EventType_Decision_ChooseCards, {})
     ])
     self.assertEqual(p1.archive[0]["game_card_id"], chosen_card)
@@ -205,7 +205,7 @@ class Test_hSD04(unittest.TestCase):
     })
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "hand", }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "hand", }),
       (EventType.EventType_ShuffleDeck, {}),
       (EventType.EventType_Decision_MainStep, {})
     ])
@@ -431,7 +431,7 @@ class Test_hSD04(unittest.TestCase):
     })
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "archive", "to_zone": "hand" }),
+      (EventType.EventType_MoveCard, { "from": "archive", "to_zone": "hand" }),
       (EventType.EventType_Decision_MainStep, {}),
     ])
     self.assertEqual(p1.hand[-1]["game_card_id"], nonlimited["game_card_id"])
@@ -487,7 +487,7 @@ class Test_hSD04(unittest.TestCase):
     })
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "archive", "to_zone": "hand" }),
+      (EventType.EventType_MoveCard, { "from": "archive", "to_zone": "hand" }),
       (EventType.EventType_BoostStat, { "stat": "power", "amount": 20 }),
       (EventType.EventType_DamageDealt, { "damage": 80 }),
       (EventType.EventType_DownedHolomem_Before, {}),
@@ -649,7 +649,7 @@ class Test_hSD04(unittest.TestCase):
     })
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {}),
     ])
     # Waste the event card just to play it.
@@ -666,7 +666,7 @@ class Test_hSD04(unittest.TestCase):
     })
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {}),
     ])
 
@@ -685,7 +685,7 @@ class Test_hSD04(unittest.TestCase):
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
       (EventType.EventType_AddTurnEffect, { }),
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {}),
     ])
 
@@ -697,7 +697,7 @@ class Test_hSD04(unittest.TestCase):
     validate_consecutive_events(self, self.player1, events, [
       (EventType.EventType_PlaySupportCard, { "card_id": nonevent["game_card_id"] }),
       (EventType.EventType_Draw, {}),
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {}),
     ])
 
@@ -771,7 +771,7 @@ class Test_hSD04(unittest.TestCase):
     })
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {}),
     ])
     # Waste the event card just to play it.
@@ -788,7 +788,7 @@ class Test_hSD04(unittest.TestCase):
     })
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {}),
     ])
 
@@ -807,7 +807,7 @@ class Test_hSD04(unittest.TestCase):
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
       (EventType.EventType_AddTurnEffect, { }),
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {}),
     ])
 
@@ -819,7 +819,7 @@ class Test_hSD04(unittest.TestCase):
     validate_consecutive_events(self, self.player1, events, [
       (EventType.EventType_PlaySupportCard, { "card_id": nonevent["game_card_id"] }),
       (EventType.EventType_Draw, {}),
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {}),
     ])
 
@@ -996,7 +996,7 @@ class Test_hSD04(unittest.TestCase):
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
       (EventType.EventType_RestoreHP, { "healed_amount": 20, "new_damage": 0 }),
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {}),
     ])
 
@@ -1014,7 +1014,7 @@ class Test_hSD04(unittest.TestCase):
     })
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {}),
     ])
 
@@ -1080,7 +1080,7 @@ class Test_hSD04(unittest.TestCase):
     validate_consecutive_events(self, self.player1, events, [
       (EventType.EventType_RestoreHP, { "healed_amount": 20, "new_damage": 0 }),
       (EventType.EventType_AddTurnEffect, {  }),
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {}),
     ])
 
@@ -1099,7 +1099,7 @@ class Test_hSD04(unittest.TestCase):
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
       (EventType.EventType_AddTurnEffect, {  }),
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {}),
     ])
 
@@ -1170,7 +1170,7 @@ class Test_hSD04(unittest.TestCase):
     validate_consecutive_events(self, self.player1, events, [
       (EventType.EventType_RestoreHP, { "healed_amount": 20, "new_damage": 0 }),
       (EventType.EventType_AddTurnEffect, {  }),
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {}),
     ])
 
@@ -1189,7 +1189,7 @@ class Test_hSD04(unittest.TestCase):
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
       (EventType.EventType_AddTurnEffect, {  }),
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {}),
     ])
 

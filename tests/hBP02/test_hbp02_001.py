@@ -48,12 +48,12 @@ class Test_hBP02_001(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "skill_id": "mascotcreation" }),
       (EventType.EventType_Decision_ChooseCards, { "cards_can_choose": valid_target_ids }),
 
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "hand", "card_id": chosen_card_id }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "hand", "card_id": chosen_card_id }),
       (EventType.EventType_ShuffleDeck, {}),
       (EventType.EventType_Decision_MainStep, {})
     ])
@@ -80,8 +80,8 @@ class Test_hBP02_001(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "skill_id": "mascotcreation" }),
       (EventType.EventType_Decision_ChooseCards, { "cards_can_choose": [] }),
 
@@ -161,8 +161,8 @@ class Test_hBP02_001(unittest.TestCase):
       
       (EventType.EventType_Decision_Choice, {}),
 
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "skill_id": "fubukingdom" }),
       (EventType.EventType_RollDie, {}),
       (EventType.EventType_LifeDamageDealt, { "life_lost": 1, "target_player": self.player2, "source_card_id": p1.oshi_card["game_card_id"] }),
@@ -206,8 +206,8 @@ class Test_hBP02_001(unittest.TestCase):
       
       (EventType.EventType_Decision_Choice, {}),
 
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "skill_id": "fubukingdom" }),
       (EventType.EventType_RollDie, { "die_result": 6 }), # first one misses
       (EventType.EventType_RollDie, { "die_result": 3 }), # second is good
@@ -254,8 +254,8 @@ class Test_hBP02_001(unittest.TestCase):
       
       (EventType.EventType_Decision_Choice, {}),
 
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "skill_id": "fubukingdom" }),
       (EventType.EventType_RollDie, { "die_result": 6 }), # first one misses
       (EventType.EventType_RollDie, { "die_result": 3 }), # second is good
@@ -300,8 +300,8 @@ class Test_hBP02_001(unittest.TestCase):
       
       (EventType.EventType_Decision_Choice, {}),
 
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "skill_id": "fubukingdom" }),
       (EventType.EventType_DownedHolomem, {}),
       (EventType.EventType_Decision_SendCheer, {})

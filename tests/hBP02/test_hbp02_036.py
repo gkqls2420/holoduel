@@ -79,11 +79,11 @@ class Test_hBP02_036(unittest.TestCase):
       (EventType.EventType_Collab, { "collab_card_id": collab_card_id }),
       (EventType.EventType_Decision_ChooseCards, { "cards_can_choose": top_three_ids[:-1] }),
 
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "hand", "card_id": chosen_card_id }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "hand", "card_id": chosen_card_id }),
       (EventType.EventType_Decision_OrderCards, {}),
 
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
       (EventType.EventType_Decision_MainStep, {})
     ])
 
@@ -117,9 +117,9 @@ class Test_hBP02_036(unittest.TestCase):
 
       (EventType.EventType_Decision_OrderCards, {}),
 
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
       (EventType.EventType_Decision_MainStep, {})
     ])
 
@@ -154,9 +154,9 @@ class Test_hBP02_036(unittest.TestCase):
 
       (EventType.EventType_Decision_OrderCards, {}),
 
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "deck" }),
       (EventType.EventType_Decision_MainStep, {})
     ])
 

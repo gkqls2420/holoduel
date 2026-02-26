@@ -214,7 +214,7 @@ class Test_hBP02_023(unittest.TestCase):
             (EventType.EventType_Decision_ChooseHolomemForEffect, {}),
             (EventType.EventType_MoveCard, {
                 "moving_player_id": self.player1,
-                "from_zone": "cheer_deck",
+                "from": "cheer_deck",
                 "to_zone": "holomem",
                 "zone_card_id": backstage_card_id,
                 "card_id": topcheer_id,

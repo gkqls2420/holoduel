@@ -144,7 +144,7 @@ class Test_hBP02_033(unittest.TestCase):
 
       (EventType.EventType_Decision_ChooseCards, { "cards_can_choose": [archive_card_id, archive_2_card_id] }),
 
-      (EventType.EventType_MoveCard, { "from_zone": "archive", "to_zone": "hand", "card_id": archive_card_id }),
+      (EventType.EventType_MoveCard, { "from": "archive", "to_zone": "hand", "card_id": archive_card_id }),
       (EventType.EventType_DamageDealt, { "damage": 50, "special": True, "target_id": p2.center[0]["game_card_id"] }),
       (EventType.EventType_Decision_MainStep, {})
     ])

@@ -45,7 +45,7 @@ class Test_hSD01_020(unittest.TestCase):
     validate_consecutive_events(self, self.player1, events, [
       (EventType.EventType_PlaySupportCard, {}),
       (EventType.EventType_RollDie, {}),
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive" }),
       (EventType.EventType_Decision_MainStep, {}) # dice roll failed as expected
     ])
 

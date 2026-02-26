@@ -96,7 +96,7 @@ class Test_hSD02_008(unittest.TestCase):
     # Event
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "archive", "card_id": card_to_archive }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "archive", "card_id": card_to_archive }),
       (EventType.EventType_DamageDealt, { "damage": 50, "special": True, "target_id": p2_center_card_id }),
       (EventType.EventType_DamageDealt, { "damage": 50, "target_id": p2_center_card_id }),
       (EventType.EventType_DownedHolomem_Before, {}),
@@ -149,7 +149,7 @@ class Test_hSD02_008(unittest.TestCase):
     # Event
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "archive", "card_id": card_to_archive }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "archive", "card_id": card_to_archive }),
       (EventType.EventType_Decision_ChooseHolomemForEffect, { "cards_can_choose": effect_targets }),
       (EventType.EventType_DamageDealt, { "damage": 50, "special": True, "target_id": p2_collab_card_id }),
       (EventType.EventType_DamageDealt, { "damage": 50, "target_id": p2_center_card_id }),

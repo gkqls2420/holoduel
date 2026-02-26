@@ -332,8 +332,8 @@ class Test_hSD03_003(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self ,self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "skill_id": "comet" }),
       (EventType.EventType_DamageDealt, { "damage": 50, "special": True, "target_id": p2_back_card_id }),
       (EventType.EventType_DownedHolomem_Before, {}),
@@ -381,8 +381,8 @@ class Test_hSD03_003(unittest.TestCase):
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "skill_id": "shootingstar" }),
       (EventType.EventType_DamageDealt, { "damage": 10, "special": True, "target_id": p2_back_card_id }),
       (EventType.EventType_DamageDealt, { "damage": 10, "special": True, "target_id": p2_back_card_id }),
@@ -424,15 +424,15 @@ class Test_hSD03_003(unittest.TestCase):
       (EventType.EventType_Collab, {}),
       (EventType.EventType_DamageDealt, { "damage": 10, "special": True, "target_id": p2_center_card_id }),
       (EventType.EventType_Decision_Choice, {}),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "skill_id": "shootingstar" }),
       (EventType.EventType_DamageDealt, { "damage": 10, "special": True, "target_id": p2_back_card_id }), # same damage as center
       (EventType.EventType_Decision_Choice, {}),
       (EventType.EventType_DamageDealt, { "damage": 10, "special": True, "target_id": p2_back_card_id }),
       (EventType.EventType_Decision_Choice, {}),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
-      (EventType.EventType_MoveCard, { "from_zone": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "archive" }),
       (EventType.EventType_OshiSkillActivation, { "skill_id": "comet" }),
       (EventType.EventType_DamageDealt, { "damage": 50, "special": True, "target_id": p2_back_card_id }),
       (EventType.EventType_DownedHolomem_Before, {}),

@@ -46,12 +46,12 @@ class Test_hBP02_076(unittest.TestCase):
       (EventType.EventType_PlaySupportCard, {}),
       (EventType.EventType_Decision_ChooseCards, {}),
 
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "deck", "card_id": debut_card_id }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "deck", "card_id": debut_card_id }),
       (EventType.EventType_Decision_ChooseCards, { "cards_can_choose": [bloom_card_id] }),
 
-      (EventType.EventType_MoveCard, { "from_zone": "deck", "to_zone": "hand", "card_id": bloom_card_id }),
+      (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "hand", "card_id": bloom_card_id }),
       (EventType.EventType_ShuffleDeck, {}),
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive", "card_id": item_card_id }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive", "card_id": item_card_id }),
       (EventType.EventType_Decision_MainStep, {})
     ])
 
@@ -100,10 +100,10 @@ class Test_hBP02_076(unittest.TestCase):
       (EventType.EventType_PlaySupportCard, {}),
       (EventType.EventType_Decision_ChooseCards, {}),
 
-      (EventType.EventType_MoveCard, { "from_zone": "hand", "to_zone": "deck", "card_id": debut_card_id }),
+      (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "deck", "card_id": debut_card_id }),
       (EventType.EventType_Decision_ChooseCards, { "cards_can_choose": [] }),
 
       (EventType.EventType_ShuffleDeck, {}),
-      (EventType.EventType_MoveCard, { "from_zone": "floating", "to_zone": "archive", "card_id": item_card_id }),
+      (EventType.EventType_MoveCard, { "from": "floating", "to_zone": "archive", "card_id": item_card_id }),
       (EventType.EventType_Decision_MainStep, {})
     ])

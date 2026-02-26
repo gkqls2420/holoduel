@@ -226,7 +226,7 @@ class Test_hBP02_012(unittest.TestCase):
 
       (EventType.EventType_Decision_ChooseHolomemForEffect, {}),
 
-      (EventType.EventType_MoveCard, { "from_zone": bloom_card_id, "to_zone": "holomem", "zone_card_id": target_card_id, "card_id": mascot_card_id }),
+      (EventType.EventType_MoveCard, { "from": bloom_card_id, "to_zone": "holomem", "zone_card_id": target_card_id, "card_id": mascot_card_id }),
       (EventType.EventType_Decision_MainStep, {})
     ])
     self.assertEqual(len(bloom_card["attached_support"]), 0)
@@ -294,7 +294,7 @@ class Test_hBP02_012(unittest.TestCase):
 
       (EventType.EventType_Decision_ChooseHolomemForEffect, { "cards_can_choose": valid_target_ids }),
 
-      (EventType.EventType_MoveCard, { "from_zone": bloom_card_id, "to_zone": "holomem", "zone_card_id": target_card_id, "card_id": mascot_card_id }),
+      (EventType.EventType_MoveCard, { "from": bloom_card_id, "to_zone": "holomem", "zone_card_id": target_card_id, "card_id": mascot_card_id }),
       (EventType.EventType_Decision_MainStep, {})
     ])
     self.assertEqual(len(bloom_card["attached_support"]), 0)
