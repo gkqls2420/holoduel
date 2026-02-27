@@ -690,18 +690,7 @@ class AIPlayer:
         return_count = event["return_count"]
         hand_card_ids = event["hand_card_ids"]
 
-        # Prefer returning non-debut/non-spot cards first.
-        non_holomem_ids = []
-        holomem_ids = []
-        player_state = self.engine.get_player(self.player_id)
-        for card_id in hand_card_ids:
-            card, _, _ = player_state.find_card(card_id)
-            if card and card["card_type"] not in ["holomem_debut", "holomem_spot"]:
-                non_holomem_ids.append(card_id)
-            else:
-                holomem_ids.append(card_id)
-
-        chosen = (non_holomem_ids + holomem_ids)[:return_count]
+        chosen = random.sample(hand_card_ids, min(return_count, len(hand_card_ids)))
 
         return True, event["desired_response"], {
             "card_ids": chosen,
