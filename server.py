@@ -216,6 +216,21 @@ async def websocket_endpoint(websocket: WebSocket):
                                 cheer_deck=message.cheer_deck
                             )
                             player.ai_deck_name = getattr(message, "ai_deck_name", "random")
+                            player.ai_custom_deck = None
+                            ai_oshi_id = getattr(message, "ai_oshi_id", "")
+                            ai_deck_data = getattr(message, "ai_deck", None)
+                            ai_cheer_data = getattr(message, "ai_cheer_deck", None)
+                            if ai_oshi_id and ai_deck_data and ai_cheer_data:
+                                if card_db.validate_deck(ai_oshi_id, ai_deck_data, ai_cheer_data):
+                                    player.ai_custom_deck = {
+                                        "deck_id": "custom",
+                                        "oshi_id": ai_oshi_id,
+                                        "deck": ai_deck_data,
+                                        "cheer_deck": ai_cheer_data
+                                    }
+                                    logger.info(f"Player {player.get_username()} using custom AI deck (oshi: {ai_oshi_id})")
+                                else:
+                                    logger.warning(f"Player {player.get_username()} sent invalid custom AI deck, falling back to server deck")
                             match = matchmaking.add_player_to_queue(
                                 player=player,
                                 queue_name=message.queue_name,

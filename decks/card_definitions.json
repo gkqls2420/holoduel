@@ -12649,6 +12649,140 @@
         ]
     },
     {
+        "card_id": "hBP04-001",
+        "card_type": "oshi",
+        "card_names": [
+            "hakui_koyori"
+        ],
+        "colors": [
+            "white"
+        ],
+        "rarity": "osr",
+        "life": 5,
+        "actions": [
+            {
+                "skill_id": "koyori_jikken_chuu",
+                "cost": 2,
+                "limit": "once_per_turn",
+                "action_conditions": [
+                    {
+                        "condition": "holomem_on_stage",
+                        "required_member_name_in": [
+                            "hakui_koyori"
+                        ]
+                    }
+                ],
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_turn",
+                        "skill_id": "koyori_jikken_chuu",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_turn_effect",
+                                "effect_id": "koyori_jikken_chuu"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "add_turn_effect_for_holomem",
+                        "limitation": "name_in",
+                        "limitation_names": [
+                            "hakui_koyori"
+                        ],
+                        "limitation_attachment_tags": [
+                            "#KoyoLab"
+                        ],
+                        "source_from_chosen": true,
+                        "turn_effect": {
+                            "timing": "before_art",
+                            "conditions": [
+                                {
+                                    "condition": "performer_is_specific_id",
+                                    "required_id": "REPLACED_BY_EFFECT"
+                                }
+                            ],
+                            "effect_type": "power_boost",
+                            "amount": 30
+                        }
+                    }
+                ]
+            }
+        ],
+        "effects": [
+            {
+                "full_english_text": "OSHI_BP04_001_FULL_TEXT",
+                "oshi_effect": "true",
+                "skill_id": "joshu_kun_umoishii",
+                "cost": 2,
+                "limit": "once_per_game",
+                "conditions": [
+                    {
+                        "condition": "not_used_once_per_game_effect",
+                        "condition_effect_id": "joshu_kun_umoishii"
+                    },
+                    {
+                        "condition": "holopower_at_least",
+                        "amount": 2
+                    },
+                    {
+                        "condition": "opponent_turn"
+                    },
+                    {
+                        "condition": "damage_source_is_opponent"
+                    },
+                    {
+                        "condition": "target_is_member_name",
+                        "condition_names": [
+                            "hakui_koyori"
+                        ]
+                    },
+                    {
+                        "condition": "target_has_attached_card",
+                        "required_card_name": "koyoris_assistantkun"
+                    }
+                ],
+                "timing": "on_take_damage",
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "oshi_effect": "true",
+                        "limit": "once_per_game",
+                        "skill_id": "joshu_kun_umoishii",
+                        "cost": 2,
+                        "effect_type": "reduce_damage",
+                        "amount": 100,
+                        "pre_effects": [
+                            {
+                                "effect_type": "oshi_activation",
+                                "limit": "once_per_game",
+                                "skill_id": "joshu_kun_umoishii",
+                                "pre_effects": [
+                                    {
+                                        "effect_type": "spend_holopower",
+                                        "amount": 2
+                                    },
+                                    {
+                                        "effect_type": "record_used_once_per_game_effect",
+                                        "effect_id": "joshu_kun_umoishii"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "pass"
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP04-004",
         "card_type": "oshi",
         "card_names": [
@@ -12971,6 +13105,335 @@
             }
         ],
         "effects": []
+    },
+    {
+        "card_id": "hBP04-008",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "hakui_koyori"
+        ],
+        "special_deck_limit": 50,
+        "rarity": "c",
+        "colors": [
+            "white"
+        ],
+        "hp": 100,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX",
+            "#AnimalEars"
+        ],
+        "arts": [
+            {
+                "art_id": "konkoyo",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-009",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "hakui_koyori"
+        ],
+        "rarity": "u",
+        "colors": [
+            "white"
+        ],
+        "hp": 100,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX",
+            "#AnimalEars"
+        ],
+        "arts": [
+            {
+                "art_id": "childreninendlessreincarnation",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 20,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "choose_cards",
+                        "from": "deck",
+                        "look_at": 3,
+                        "destination": "hand",
+                        "amount_min": 0,
+                        "amount_max": 1,
+                        "requirement": "holomem_debut_or_support_with_tags",
+                        "requirement_debut_tags": [
+                            "#SecretSocietyholoX"
+                        ],
+                        "requirement_support_tags": [
+                            "#KoyoLab"
+                        ],
+                        "reveal_chosen": true,
+                        "remaining_cards_action": "shuffle"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-010",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "hakui_koyori"
+        ],
+        "rarity": "c",
+        "colors": [
+            "white"
+        ],
+        "hp": 160,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX",
+            "#AnimalEars"
+        ],
+        "arts": [
+            {
+                "art_id": "koyoris_assistantkun_seems_tired",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 40
+            },
+            {
+                "art_id": "wanna_sleep_with_koyo",
+                "costs": [
+                    {
+                        "color": "white",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 60
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-011",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "hakui_koyori"
+        ],
+        "rarity": "u",
+        "colors": [
+            "white"
+        ],
+        "hp": 140,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX",
+            "#AnimalEars"
+        ],
+        "arts": [
+            {
+                "art_id": "assistantkun_watch_me",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "choose_cards",
+                        "from": "archive",
+                        "look_at": -1,
+                        "destination": "holomem",
+                        "to_limitation": "specific_member_name",
+                        "to_limitation_name": "hakui_koyori",
+                        "to_exclude_performer": true,
+                        "amount_min": 0,
+                        "amount_max": 1,
+                        "requirement": "specific_card",
+                        "requirement_card_name": "koyoris_assistantkun",
+                        "remaining_cards_action": "nothing"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-012",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "hakui_koyori"
+        ],
+        "rarity": "r",
+        "colors": [
+            "white"
+        ],
+        "hp": 140,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX",
+            "#AnimalEars"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 1,
+                "amount_max": 1,
+                "requirement": "support",
+                "requirement_tags": [
+                    "#KoyoLab"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "assistantkun_and_koyo_forever",
+                "costs": [
+                    {
+                        "color": "white",
+                        "amount": 1
+                    }
+                ],
+                "power": 30,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "has_attached_card",
+                                "required_card_name": "koyoris_assistantkun"
+                            }
+                        ],
+                        "effect_type": "draw",
+                        "amount": 1
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-013",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "hakui_koyori"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "white"
+        ],
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX",
+            "#AnimalEars"
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_kill",
+                "conditions": [
+                    {
+                        "condition": "this_card_is_performing"
+                    }
+                ],
+                "effect_type": "generate_holopower",
+                "amount": 1,
+                "and": [
+                    {
+                        "effect_type": "choose_cards",
+                        "from": "holopower",
+                        "look_at": -1,
+                        "destination": "hand",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "reveal_chosen": true,
+                        "remaining_cards_action": "shuffle"
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "kakusei_no_koyori",
+                "costs": [
+                    {
+                        "color": "white",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 160,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "green"
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "has_attachment_with_any_tag",
+                                "condition_tags": [
+                                    "#KoyoLab"
+                                ]
+                            }
+                        ],
+                        "effect_type": "choose_cards",
+                        "from": "deck",
+                        "look_at": -1,
+                        "destination": "hand",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "requirement": "support",
+                        "requirement_tags": [
+                            "#KoyoLab"
+                        ],
+                        "reveal_chosen": true,
+                        "remaining_cards_action": "shuffle"
+                    }
+                ]
+            }
+        ]
     },
     {
         "card_id": "hBP04-014",
@@ -13996,6 +14459,61 @@
         ]
     },
     {
+        "card_id": "hBP04-097",
+        "card_type": "support",
+        "sub_type": "tool",
+        "colors": [],
+        "tags": [
+            "#KoyoLab"
+        ],
+        "card_names": [
+            "green_test_tube"
+        ],
+        "rarity": "u",
+        "attached_effects": [
+            {
+                "timing": "before_art",
+                "effect_type": "power_boost",
+                "amount": 10
+            }
+        ],
+        "special_actions": [
+            {
+                "effect_id": "green_test_tube_activate",
+                "conditions": [
+                    {
+                        "condition": "attached_to",
+                        "required_member_name": "hakui_koyori",
+                        "required_bloom_levels": [
+                            1,
+                            2
+                        ]
+                    },
+                    {
+                        "condition": "attached_owner_has_cheer",
+                        "amount_min": 1
+                    }
+                ],
+                "effects": [
+                    {
+                        "effect_type": "archive_cheer_from_holomem",
+                        "from": "attached_owner",
+                        "amount": 1,
+                        "ability_source": "support_card",
+                        "and": [
+                            {
+                                "effect_type": "activate_holomem",
+                                "requirement_tags": [
+                                    "#SecretSocietyholoX"
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP04-098",
         "card_type": "support",
         "colors": [],
@@ -14095,6 +14613,51 @@
         ]
     },
     {
+        "card_id": "hBP04-100",
+        "card_type": "support",
+        "sub_type": "mascot",
+        "card_names": [
+            "kokoro"
+        ],
+        "rarity": "c",
+        "colors": [],
+        "tags": [
+            "#KoyoLab"
+        ],
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "check_hp",
+                "effect_type": "bonus_hp",
+                "amount": 20
+            },
+            {
+                "timing": "on_collab",
+                "conditions": [
+                    {
+                        "condition": "attached_to",
+                        "required_member_name": "hakui_koyori"
+                    }
+                ],
+                "effect_type": "add_turn_effect",
+                "turn_effect": {
+                    "timing": "before_art",
+                    "conditions": [
+                        {
+                            "condition": "attached_owner_is_performing"
+                        }
+                    ],
+                    "effect_type": "power_boost",
+                    "amount": 10
+                }
+            }
+        ]
+    },
+    {
         "card_id": "hBP04-104",
         "card_type": "support",
         "sub_type": "mascot",
@@ -14128,6 +14691,51 @@
                 ],
                 "effect_type": "power_boost",
                 "amount": 20
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-105",
+        "card_type": "support",
+        "sub_type": "fan",
+        "card_names": [
+            "koyoris_assistantkun"
+        ],
+        "rarity": "u",
+        "colors": [],
+        "tags": [
+            "#KoyoLab"
+        ],
+        "play_conditions": [
+            {
+                "condition": "holomem_on_stage",
+                "required_member_name_in": [
+                    "hakui_koyori"
+                ]
+            }
+        ],
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem",
+                "to_limitation": "specific_member_name",
+                "to_limitation_name": "hakui_koyori"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "on_attach",
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "move_cheer_between_holomems",
+                        "amount": 1,
+                        "to_limitation": "specific_member_name",
+                        "to_limitation_name": "hakui_koyori"
+                    },
+                    {
+                        "effect_type": "pass"
+                    }
+                ]
             }
         ]
     },
@@ -15720,13 +16328,18 @@
                     }
                 ],
                 "power": 60,
-                "power_bonus": [
-                    {
-                        "color": "blue",
-                        "amount": 50
-                    }
-                ],
                 "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "blue"
+                            }
+                        ]
+                    },
                     {
                         "effect_type": "choose_cards",
                         "from": "archive",
@@ -15756,13 +16369,18 @@
                     }
                 ],
                 "power": 100,
-                "power_bonus": [
-                    {
-                        "color": "blue",
-                        "amount": 50
-                    }
-                ],
                 "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "blue"
+                            }
+                        ]
+                    },
                     {
                         "timing": "before_art",
                         "effect_type": "power_boost",
@@ -16270,6 +16888,246 @@
                             1,
                             2
                         ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-084",
+        "card_type": "holomem_spot",
+        "bloom_blocked": true,
+        "card_names": [
+            "ai_koyori"
+        ],
+        "rarity": "u",
+        "colors": [
+            "none"
+        ],
+        "hp": 150,
+        "baton_cost": 0,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX",
+            "#AnimalEars"
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_baton_to_back",
+                "effect_type": "add_turn_effect_for_holomem",
+                "limitation": "name_in",
+                "limitation_names": [
+                    "hakui_koyori"
+                ],
+                "source_from_chosen": true,
+                "turn_effect": {
+                    "timing": "before_art",
+                    "conditions": [
+                        {
+                            "condition": "performer_is_specific_id",
+                            "required_id": "REPLACED_BY_EFFECT"
+                        }
+                    ],
+                    "effect_type": "power_boost",
+                    "amount": 20
+                }
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "happy_leaf",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-021",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "hakui_koyori"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "white"
+        ],
+        "hp": 190,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX",
+            "#AnimalEars"
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "add_turn_effect_for_holomem",
+                "limitation": "has_tag",
+                "limitation_tags": [
+                    "#SecretSocietyholoX"
+                ],
+                "source_from_chosen": true,
+                "turn_effect": {
+                    "timing": "before_art",
+                    "conditions": [
+                        {
+                            "condition": "performer_is_specific_id",
+                            "required_id": "REPLACED_BY_EFFECT"
+                        }
+                    ],
+                    "effect_type": "power_boost",
+                    "amount": 30,
+                    "and": [
+                        {
+                            "conditions": [
+                                {
+                                    "condition": "has_attachment_with_any_tag",
+                                    "condition_tags": [
+                                        "#KoyoLab"
+                                    ]
+                                }
+                            ],
+                            "effect_type": "power_boost",
+                            "amount": 20
+                        }
+                    ]
+                }
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "seishun_no_1page",
+                "costs": [
+                    {
+                        "color": "white",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 90,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "red"
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "choose_cards",
+                        "from": "archive",
+                        "look_at": -1,
+                        "destination": "bottom_of_deck",
+                        "amount_min": 0,
+                        "amount_max": 1,
+                        "requirement": "support",
+                        "requirement_tags": [
+                            "#KoyoLab"
+                        ],
+                        "remaining_cards_action": "nothing",
+                        "after_choose_effect": {
+                            "effect_type": "power_boost",
+                            "amount": 40
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-092",
+        "card_type": "support",
+        "sub_type": "event",
+        "colors": [],
+        "card_names": [
+            "mayonnaise_chucchu"
+        ],
+        "rarity": "c",
+        "effects": [
+            {
+                "effect_type": "add_turn_effect_for_holomem",
+                "limitation": "name_in",
+                "limitation_names": [
+                    "hakui_koyori"
+                ],
+                "source_from_chosen": true,
+                "turn_effect": {
+                    "timing": "before_art",
+                    "conditions": [
+                        {
+                            "condition": "performer_is_specific_id",
+                            "required_id": "REPLACED_BY_EFFECT"
+                        }
+                    ],
+                    "effect_type": "power_boost",
+                    "amount": 30
+                }
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-093",
+        "card_type": "support",
+        "sub_type": "event",
+        "colors": [],
+        "card_names": [
+            "yamada_rui_54sei"
+        ],
+        "rarity": "u",
+        "limited": true,
+        "play_conditions": [
+            {
+                "condition": "stage_all_members_have_tag",
+                "required_tags": [
+                    "#SecretSocietyholoX"
+                ]
+            }
+        ],
+        "effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 2,
+                "requirement": "holomem",
+                "requirement_tags": [
+                    "#SecretSocietyholoX"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            },
+            {
+                "conditions": [
+                    {
+                        "condition": "self_stage_cheer_less_than_opponent"
+                    }
+                ],
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "send_cheer",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "from": "cheer_deck",
+                        "to": "holomem"
+                    },
+                    {
+                        "effect_type": "pass"
                     }
                 ]
             }
@@ -19913,6 +20771,54 @@
                 "effect_type": "restore_hp",
                 "target": "attached_owner",
                 "amount": 20
+            }
+        ]
+    },
+    {
+        "card_id": "hSD06-008",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "hakui_koyori"
+        ],
+        "rarity": "u",
+        "colors": [
+            "white"
+        ],
+        "hp": 70,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX",
+            "#AnimalEars"
+        ],
+        "arts": [
+            {
+                "art_id": "doya",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 10
+            }
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "draw",
+                "conditions": [
+                    {
+                        "condition": "center_has_any_tag",
+                        "condition_tags": [
+                            "#SecretSocietyholoX"
+                        ]
+                    },
+                    {
+                        "condition": "cards_in_hand",
+                        "amount_max": 5
+                    }
+                ],
+                "amount": 1
             }
         ]
     },

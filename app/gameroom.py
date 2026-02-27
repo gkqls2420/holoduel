@@ -51,8 +51,12 @@ class GameRoom:
         if self.is_ai_game():
             logger.info(f"AI GAME: Creating AI player for game {self.room_id}")
             self.ai_player = AIPlayer(player_id="aiplayer" + self.players[0].player_id)
-            ai_deck_name = getattr(self.players[0], "ai_deck_name", "random")
-            ai_deck = get_ai_deck_by_name(ai_deck_name)
+            ai_custom_deck = getattr(self.players[0], "ai_custom_deck", None)
+            if ai_custom_deck:
+                ai_deck = ai_custom_deck
+            else:
+                ai_deck_name = getattr(self.players[0], "ai_deck_name", "random")
+                ai_deck = get_ai_deck_by_name(ai_deck_name)
             self.ai_player.set_deck(ai_deck)
             player_info.append(self.ai_player.get_player_game_info())
             logger.info(f"AI GAME: AI player created with ID {self.ai_player.player_id}, deck: {ai_deck.get('deck_id', 'unknown')}")

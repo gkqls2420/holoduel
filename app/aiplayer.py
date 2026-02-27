@@ -318,6 +318,7 @@ class AIPlayer:
             EventType.EventType_GameOver: self._handle_event_ignore,
             EventType.EventType_GameStartInfo: self._handle_event_ignore,
             EventType.EventType_GenerateHolopower: self._handle_event_ignore,
+            EventType.EventType_OshiReveal: self._handle_event_ignore,
             EventType.EventType_InitialPlacementBegin: self._handle_initial_placement_begin,
             EventType.EventType_InitialPlacementPlaced: self._handle_event_ignore,
             EventType.EventType_InitialPlacementReveal: self._handle_event_ignore,

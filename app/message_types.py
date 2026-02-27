@@ -1,5 +1,5 @@
-from dataclasses import dataclass, asdict
-from typing import Any, Dict, List
+from dataclasses import dataclass, asdict, field
+from typing import Any, Dict, List, Optional
 import json
 
 @dataclass
@@ -45,6 +45,9 @@ class JoinMatchmakingQueueMessage(Message):
     deck: Dict[str, int]
     cheer_deck: Dict[str, int]
     ai_deck_name: str = "random"
+    ai_oshi_id: str = ""
+    ai_deck: Optional[Dict[str, int]] = None
+    ai_cheer_deck: Optional[Dict[str, int]] = None
 
 @dataclass
 class LeaveMatchmakingQueueMessage(Message):

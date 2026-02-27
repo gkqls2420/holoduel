@@ -38,6 +38,7 @@ class Player:
         self.deck = []
         self.cheer_deck = []
         self.ai_deck_name = "random"
+        self.ai_custom_deck = None
 
     def save_deck_info(self, oshi_id: str, deck: Dict[str, int], cheer_deck: Dict[str, int]):
         self.oshi_id = oshi_id
