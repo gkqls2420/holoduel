@@ -44,7 +44,8 @@ class EffectType:
     EffectType_AttachCardToHolomem = "attach_card_to_holomem"
     EffectType_AttachCardToHolomem_Internal = "attach_card_to_holomem_internal"
     EffectType_BloomAlreadyBloomedThisTurn = "bloom_already_bloomed_this_turn"
-    EffectType_BloomDebutPlayedThisTurnTo1st = "bloom_debut_played_this_turn_to_1st"
+    EffectType_BloomFromSpecial = "bloom_from_special"
+    EffectType_BloomFromStacked = "bloom_from_stacked"
     EffectType_BloomFromArchive = "bloom_from_archive"
     EffectType_BlockOpponentMovement = "block_opponent_movement"
     EffectType_BlockLifeLossByEffect = "block_life_loss_by_effect"
@@ -113,6 +114,7 @@ class EffectType:
     EffectType_ShuffleHandToDeck = "shuffle_hand_to_deck"
     EffectType_SpendHolopower = "spend_holopower"
     EffectType_SwitchCenterWithBack = "switch_center_with_back"
+    EffectType_TakeExtraTurn = "take_extra_turn"
     EffectType_OpponentMoveBackToCollab = "opponent_move_back_to_collab"
     EffectType_ArchiveAttachmentFromStageByName = "archive_attachment_from_stage_by_name"
 
@@ -161,6 +163,7 @@ class Condition:
     Condition_HolopowerAtLeast = "holopower_at_least"
     Condition_NotUsedOncePerGameEffect = "not_used_once_per_game_effect"
     Condition_NotUsedOncePerTurnEffect = "not_used_once_per_turn_effect"
+    Condition_UsedOncePerGameEffect = "used_once_per_game_effect"
     Condition_OpponentTurn = "opponent_turn"
     Condition_OshiIs = "oshi_is"
     Condition_OshiIsColor = "oshi_is_color"
@@ -215,6 +218,7 @@ class Condition:
     Condition_LastDieSumIsOdd = "last_die_sum_is_odd"
     Condition_LastDieSumIsEven = "last_die_sum_is_even"
     Condition_DieRolledThisArt = "die_rolled_this_art"
+    Condition_HasRestingHolomem = "has_resting_holomem"
 
 
 class TurnEffectType:
@@ -496,6 +500,7 @@ class PlayerState:
         self.holomem_downed_this_turn = False
         self.holomem_downed_last_opponent_turn = False
         self.block_life_loss_by_effect_this_turn = False
+        self.extra_turn_pending = False
 
         # Set up Oshi.
         self.oshi_id = player_info["oshi_id"]
@@ -549,12 +554,16 @@ class PlayerState:
         # Remove them from the cheer deck.
         self.cheer_deck = self.cheer_deck[self.oshi_card["life"]:]
 
-    def draw(self, amount: int):
-        # Draw from the top starting at 0.
+    def draw(self, amount: int, from_bottom: bool = False):
         amount = min(amount, len(self.deck))
-        drawn_cards = self.deck[:amount]
+        if from_bottom:
+            drawn_cards = self.deck[-amount:]
+            drawn_cards.reverse()
+            self.deck = self.deck[:-amount]
+        else:
+            drawn_cards = self.deck[:amount]
+            self.deck = self.deck[amount:]
         self.hand += drawn_cards
-        self.deck = self.deck[amount:]
 
         draw_event = {
             "event_type": EventType.EventType_Draw,
@@ -564,6 +573,7 @@ class PlayerState:
             "drawn_card_ids": ids_from_cards(drawn_cards),
             "deck_count": len(self.deck),
             "hand_count": len(self.hand),
+            "from_bottom": from_bottom,
         }
         self.engine.broadcast_event(draw_event)
 
@@ -985,12 +995,6 @@ class PlayerState:
                     holomems.append(stacked_card)
         return holomems
 
-    def get_debuts_played_this_turn(self, location):
-        holomems = []
-        match location:
-            case "backstage":
-                holomems = self.backstage
-        return [holomem for holomem in holomems if holomem["card_type"] == "holomem_debut" and holomem["played_this_turn"]]
 
     def get_holomems_with_attachment(self, attachment_id):
         for card in self.get_holomem_on_stage():
@@ -2297,6 +2301,10 @@ class GameEngine:
 
     def end_player_turn(self):
         active_player = self.get_player(self.active_player_id)
+        is_extra_turn = active_player.extra_turn_pending
+        if is_extra_turn:
+            active_player.extra_turn_pending = False
+
         active_player.on_my_turn_end()
         other_player = self.other_player(self.active_player_id)
         
@@ -2311,7 +2319,8 @@ class GameEngine:
         self.game_first_turn = False
 
         ending_player_id = self.active_player_id
-        next_turn_player_id = self.other_player(self.active_player_id).player_id
+        switch_player = not is_extra_turn
+        next_turn_player_id = self.other_player(self.active_player_id).player_id if switch_player else self.active_player_id
 
         end_turn_event = {
             "event_type": EventType.EventType_EndTurn,
@@ -2321,7 +2330,7 @@ class GameEngine:
         self.broadcast_event(end_turn_event)
 
         self.reset_step_replace_center(lambda :
-            self.begin_player_turn(switch_active_player=True)
+            self.begin_player_turn(switch_active_player=switch_player)
         )
 
     def send_performance_step_actions(self):
@@ -2422,6 +2431,14 @@ class GameEngine:
             }
             self.broadcast_event(start_event)
 
+            # Trigger active player's on_performance_step_start gift effects
+            active_effects = []
+            for holomem in active_player.get_holomem_on_stage():
+                if "gift_effects" in holomem:
+                    gift_effects = filter_effects_at_timing(holomem["gift_effects"], "on_performance_step_start")
+                    add_ids_to_effects(gift_effects, active_player.player_id, holomem["game_card_id"])
+                    active_effects.extend(gift_effects)
+
             # Trigger opponent's on_opponent_performance_step_start gift effects
             opponent_player = self.other_player(self.active_player_id)
             opponent_effects = []
@@ -2431,7 +2448,16 @@ class GameEngine:
                     add_ids_to_effects(gift_effects, opponent_player.player_id, holomem["game_card_id"])
                     opponent_effects.extend(gift_effects)
 
-            if opponent_effects:
+            def after_active_effects():
+                if opponent_effects:
+                    self.begin_resolving_effects(opponent_effects, self.continue_performance_step)
+                else:
+                    self.continue_performance_step()
+
+            if active_effects:
+                self.begin_resolving_effects(active_effects, after_active_effects)
+                return
+            elif opponent_effects:
                 self.begin_resolving_effects(opponent_effects, self.continue_performance_step)
                 return
 
@@ -3214,6 +3240,9 @@ class GameEngine:
             case Condition.Condition_NotUsedOncePerGameEffect:
                 condition_effect_id = condition["condition_effect_id"]
                 return not effect_player.has_used_once_per_game_effect(condition_effect_id)
+            case Condition.Condition_UsedOncePerGameEffect:
+                condition_effect_id = condition["condition_effect_id"]
+                return effect_player.has_used_once_per_game_effect(condition_effect_id)
             case Condition.Condition_NotUsedOncePerTurnEffect:
                 condition_effect_id = condition["condition_effect_id"]
                 return not effect_player.has_used_once_per_turn_effect(condition_effect_id)
@@ -3463,6 +3492,13 @@ class GameEngine:
             case Condition.Condition_MyHolomemDownedLastOpponentTurn:
                 # 직전 상대의 턴에 자신의 홀로멤이 다운됐었는지 확인
                 return effect_player.holomem_downed_last_opponent_turn
+            case Condition.Condition_HasRestingHolomem:
+                requirement_tags = condition.get("requirement_tags", [])
+                for holomem in effect_player.get_holomem_on_stage():
+                    if is_card_resting(holomem):
+                        if not requirement_tags or any(tag in holomem.get("tags", []) for tag in requirement_tags):
+                            return True
+                return False
             case _:
                 raise NotImplementedError(f"Unimplemented condition: {condition['condition']}")
         return False
@@ -3799,6 +3835,10 @@ class GameEngine:
                     case "backstage_and_tag_in":
                         holomem_targets = [holomem for holomem in effect_player.backstage \
                             if any(tag in holomem["tags"] for tag in to_limitation_tags)]
+                    case "source_card":
+                        attach_to_card_id = effect.get("attach_to_card_id", "")
+                        if attach_to_card_id:
+                            holomem_targets = [h for h in holomem_targets if h["game_card_id"] == attach_to_card_id]
 
                 exclude_card_id = effect.get("exclude_card_id", "")
                 if exclude_card_id:
@@ -3896,14 +3936,34 @@ class GameEngine:
                         "effect_resolution": self.handle_chose_bloom_now_choose_target,
                         "continuation": self.continue_resolving_effects
                     })
-            case EffectType.EffectType_BloomDebutPlayedThisTurnTo1st:
-                location = effect["location"]
-                debuts = effect_player.get_debuts_played_this_turn(location)
+            case EffectType.EffectType_BloomFromSpecial:
+                target_location = effect.get("target_location", "backstage")
+                bloom_level = effect.get("bloom_level", 1)
+                target_played_this_turn = effect.get("target_played_this_turn", False)
+                target_card_type = effect.get("target_card_type", None)
+                target_names = effect.get("target_names", None)
+
+                targets = []
+                match target_location:
+                    case "backstage":
+                        targets = list(effect_player.backstage)
+                    case "center":
+                        targets = list(effect_player.center)
+                    case "stage":
+                        targets = effect_player.get_holomem_on_stage()
+
+                if target_played_this_turn:
+                    targets = [h for h in targets if h.get("played_this_turn", False)]
+                if target_card_type:
+                    targets = [h for h in targets if h["card_type"] == target_card_type]
+                if target_names:
+                    targets = [h for h in targets if any(n in h.get("card_names", []) for n in target_names)]
+
                 valid_blooms_in_hand = []
                 for card in effect_player.hand:
-                    if card["card_type"] == "holomem_bloom" and card["bloom_level"] == 1:
-                        for debut in debuts:
-                            if effect_player.can_bloom_with_card(debut, card):
+                    if card["card_type"] == "holomem_bloom" and card["bloom_level"] == bloom_level:
+                        for target in targets:
+                            if effect_player.can_bloom_with_card(target, card):
                                 valid_blooms_in_hand.append(card)
                                 break
                 if len(valid_blooms_in_hand) > 0:
@@ -3917,7 +3977,7 @@ class GameEngine:
                         "to_zone": "holomem",
                         "amount_min": 0,
                         "amount_max": 1,
-                        "special_reason": "bloom_debut_played_this_turn",
+                        "special_reason": "bloom_from_special",
                         "reveal_chosen": True,
                         "remaining_cards_action": "nothing",
                     }
@@ -3929,7 +3989,7 @@ class GameEngine:
                         "cards_can_choose": ids_from_cards(valid_blooms_in_hand),
                         "amount_min": 0,
                         "amount_max": 1,
-                        "target_cards": debuts,
+                        "target_cards": targets,
                         "effect": effect,
                         "effect_resolution": self.handle_chose_bloom_now_choose_target,
                         "continuation": self.continue_resolving_effects,
@@ -4445,7 +4505,8 @@ class GameEngine:
                     target_player = effect_player
                     if effect.get("opponent", False):
                         target_player = self.other_player(effect_player_id)
-                    target_player.draw(amount)
+                    from_bottom = effect.get("from_bottom", False)
+                    target_player.draw(amount, from_bottom=from_bottom)
             case EffectType.EffectType_ForceDieResult:
                 die_result = effect["die_result"]
                 effect_player.set_next_die_roll = die_result
@@ -4545,10 +4606,13 @@ class GameEngine:
                     case "specific_member_name":
                         to_limitation_name = effect.get("to_limitation_name", "")
                         available_targets = [holomem for holomem in available_targets if to_limitation_name in holomem["card_names"]]
+                if effect.get("to_exclude_source", False):
+                    source_card_id = effect.get("source_card_id", "")
+                    available_targets = [h for h in available_targets if h["game_card_id"] != source_card_id]
                 available_targets = ids_from_cards(available_targets)
                 cheer_on_each_mem = effect_player.get_cheer_on_each_holomem()
 
-                has_to_limitation = to_limitation != ""
+                has_to_limitation = to_limitation != "" or effect.get("to_exclude_source", False)
                 if (has_to_limitation and len(available_targets) >= 1
                     or not has_to_limitation and len(available_targets) > 1) and len(available_cheer) > 0:
                     decision_event = {
@@ -5229,6 +5293,8 @@ class GameEngine:
                             to_options = effect_player.get_holomem_on_stage()
                         if to_limitation_exclude_name:
                             to_options = [card for card in to_options if to_limitation_exclude_name not in card["card_names"]]
+                        if effect.get("to_limitation_buzz_only", False):
+                            to_options = [card for card in to_options if card.get("buzz", False)]
 
                         # Remove any to_options where the holomem is downed.
                         if self.down_holomem_state:
@@ -5484,6 +5550,59 @@ class GameEngine:
                         "continuation": self.continue_resolving_effects,
                     })
 
+            case EffectType.EffectType_BloomFromStacked:
+                target_member_names = effect.get("target_member_names", [])
+                is_optional = effect.get("optional", False)
+                source_card, _, _ = effect_player.find_card(effect["source_card_id"])
+
+                stacked_holomems = []
+                if source_card:
+                    stacked_holomems = [c for c in source_card["stacked_cards"] if is_card_holomem(c) and c["card_type"] == "holomem_bloom"]
+
+                target_holomems = effect_player.get_holomem_on_stage()
+                target_holomems = [h for h in target_holomems if h["game_card_id"] != effect["source_card_id"]]
+                if target_member_names:
+                    target_holomems = [h for h in target_holomems if any(name in h["card_names"] for name in target_member_names)]
+                target_holomems = [h for h in target_holomems if not h.get("played_this_turn", False)]
+                target_holomems = [h for h in target_holomems if not h.get("bloomed_this_turn", False)]
+
+                bloom_candidates = []
+                for stacked_card in stacked_holomems:
+                    can_bloom_with_any = False
+                    for holomem in target_holomems:
+                        if effect_player.can_bloom_with_card(holomem, stacked_card):
+                            can_bloom_with_any = True
+                            break
+                    if can_bloom_with_any:
+                        bloom_candidates.append(stacked_card)
+
+                if len(target_holomems) == 0 or len(bloom_candidates) == 0:
+                    pass
+                else:
+                    amount_min = 0 if is_optional else 1
+                    decision_event = {
+                        "event_type": EventType.EventType_Decision_ChooseCards,
+                        "desired_response": GameAction.EffectResolution_ChooseCardsForEffect,
+                        "effect_player_id": effect_player_id,
+                        "all_card_seen": ids_from_cards(bloom_candidates),
+                        "cards_can_choose": ids_from_cards(bloom_candidates),
+                        "amount_min": amount_min,
+                        "amount_max": 1,
+                        "effect": effect,
+                    }
+                    self.broadcast_event(decision_event)
+                    self.set_decision({
+                        "decision_type": DecisionType.DecisionEffect_ChooseCardsForEffect,
+                        "decision_player": effect_player_id,
+                        "all_card_seen": ids_from_cards(bloom_candidates),
+                        "cards_can_choose": ids_from_cards(bloom_candidates),
+                        "amount_min": amount_min,
+                        "amount_max": 1,
+                        "effect": effect,
+                        "effect_resolution": self.handle_chose_bloom_now_choose_target,
+                        "continuation": self.continue_resolving_effects,
+                    })
+
             case EffectType.EffectType_SwitchCenterWithBack:
                 target_player = effect_player
                 swap_opponent_cards = "opponent" in effect and effect["opponent"]
@@ -5594,6 +5713,8 @@ class GameEngine:
                         "continuation": self.continue_resolving_effects,
                     })
                     passed_on_continuation = True
+            case EffectType.EffectType_TakeExtraTurn:
+                effect_player.extra_turn_pending = True
             case _:
                 raise NotImplementedError(f"Unimplemented effect type: {effect['effect_type']}")
 
@@ -6882,6 +7003,51 @@ class GameEngine:
                 "effect_resolution": self.handle_bloom_into_target,
                 "continuation": continuation,
             })
+        elif effect["effect_type"] == "bloom_from_stacked":
+            source_card, _, _ = effect_player.find_card(effect["source_card_id"])
+            chosen_card = None
+            if source_card:
+                for card in source_card["stacked_cards"]:
+                    if card["game_card_id"] == card_ids[0]:
+                        chosen_card = card
+                        break
+
+            if not chosen_card:
+                continuation()
+                return
+
+            target_member_names = effect.get("target_member_names", [])
+            target_holomems = effect_player.get_holomem_on_stage()
+            target_holomems = [h for h in target_holomems if h["game_card_id"] != effect["source_card_id"]]
+            if target_member_names:
+                target_holomems = [h for h in target_holomems if any(name in h["card_names"] for name in target_member_names)]
+            target_holomems = [h for h in target_holomems if not h.get("played_this_turn", False)]
+            target_holomems = [h for h in target_holomems if not h.get("bloomed_this_turn", False)]
+
+            valid_targets = []
+            for card in target_holomems:
+                if effect_player.can_bloom_with_card(card, chosen_card):
+                    valid_targets.append(card)
+
+            decision_event = {
+                "event_type": EventType.EventType_Decision_ChooseHolomemForEffect,
+                "desired_response": GameAction.EffectResolution_ChooseCardsForEffect,
+                "effect_player_id": effect_player.player_id,
+                "cards_can_choose": ids_from_cards(valid_targets),
+                "effect": effect,
+            }
+            self.broadcast_event(decision_event)
+            self.set_decision({
+                "decision_type": DecisionType.DecisionEffect_ChooseCardsForEffect,
+                "decision_player": performing_player_id,
+                "all_card_seen": ids_from_cards(valid_targets),
+                "cards_can_choose": ids_from_cards(valid_targets),
+                "amount_min": 0,
+                "amount_max": 1,
+                "bloom_card_id": card_ids[0],
+                "effect_resolution": self.handle_bloom_into_target,
+                "continuation": continuation,
+            })
         else:
             # Original logic for hand-based bloom
             chosen_card = effect_player.get_card_from_hand(card_ids[0])
@@ -7010,6 +7176,7 @@ class GameEngine:
                         "to_limitation_tags": to_limitation_tags,
                         "to_limitation_name": to_limitation_name,
                         "exclude_card_id": exclude_card_id,
+                        "attach_to_card_id": source_card_id,
                         "continuation": lambda nc=next_cards: attach_cards_sequentially(nc),
                     }
                     self.do_effect(player, attach_effect)
@@ -7024,6 +7191,7 @@ class GameEngine:
                     "to_limitation_tags": to_limitation_tags,
                     "to_limitation_name": to_limitation_name,
                     "exclude_card_id": exclude_card_id,
+                    "attach_to_card_id": source_card_id,
                     "continuation": lambda :
                         # Finish the cleanup of the remaining cards.
                         self.choose_cards_cleanup_remaining(performing_player_id, remaining_card_ids, remaining_cards_action, from_zone, from_zone, continuation),

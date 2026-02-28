@@ -6873,8 +6873,11 @@
                     },
                     {
                         "timing": "before_art",
-                        "effect_type": "bloom_debut_played_this_turn_to_1st",
-                        "location": "backstage"
+                        "effect_type": "bloom_from_special",
+                        "target_location": "backstage",
+                        "target_played_this_turn": true,
+                        "target_card_type": "holomem_debut",
+                        "bloom_level": 1
                     }
                 ]
             }
@@ -14470,6 +14473,11 @@
             "green_test_tube"
         ],
         "rarity": "u",
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem"
+            }
+        ],
         "attached_effects": [
             {
                 "timing": "before_art",
@@ -14492,6 +14500,12 @@
                     {
                         "condition": "attached_owner_has_cheer",
                         "amount_min": 1
+                    },
+                    {
+                        "condition": "has_resting_holomem",
+                        "requirement_tags": [
+                            "#SecretSocietyholoX"
+                        ]
                     }
                 ],
                 "effects": [
@@ -17134,6 +17148,526 @@
         ]
     },
     {
+        "card_id": "hBP07-005",
+        "card_type": "oshi",
+        "card_names": [
+            "ouro_kronii"
+        ],
+        "colors": [
+            "blue"
+        ],
+        "rarity": "osr",
+        "life": 5,
+        "actions": [
+            {
+                "skill_id": "ontheringofoblivion",
+                "cost": 2,
+                "limit": "once_per_turn",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_turn",
+                        "skill_id": "ontheringofoblivion",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_turn_effect",
+                                "effect_id": "ontheringofoblivion"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "draw",
+                        "amount": 2,
+                        "from_bottom": true
+                    },
+                    {
+                        "effect_type": "archive_from_hand",
+                        "amount": 1
+                    }
+                ]
+            },
+            {
+                "skill_id": "prisonoftime",
+                "cost": 4,
+                "limit": "once_per_game",
+                "action_conditions": [
+                    {
+                        "condition": "holomem_on_stage",
+                        "location": "center",
+                        "required_member_name_in": [
+                            "ouro_kronii"
+                        ]
+                    },
+                    {
+                        "condition": "holomem_on_stage",
+                        "location": "center",
+                        "required_bloom_levels": [
+                            2
+                        ]
+                    }
+                ],
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_game",
+                        "skill_id": "prisonoftime",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 4
+                            },
+                            {
+                                "effect_type": "record_used_once_per_game_effect",
+                                "effect_id": "prisonoftime"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "take_extra_turn"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-050",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "ouro_kronii"
+        ],
+        "colors": [
+            "blue"
+        ],
+        "rarity": "c",
+        "hp": 130,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Promise"
+        ],
+        "arts": [
+            {
+                "art_id": "goldenlure",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 10
+            }
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "bloom_from_special",
+                "target_location": "center",
+                "target_names": [
+                    "ouro_kronii"
+                ],
+                "bloom_level": 1,
+                "conditions": [
+                    {
+                        "condition": "is_going_second_and_first_turn"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-051",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "ouro_kronii"
+        ],
+        "colors": [
+            "blue"
+        ],
+        "rarity": "u",
+        "hp": 130,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Promise"
+        ],
+        "arts": [
+            {
+                "art_id": "checkthisoutyo",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "move_cheer_between_holomems",
+                        "amount": 1,
+                        "to_limitation": "tag_in",
+                        "to_limitation_tags": [
+                            "#Promise"
+                        ],
+                        "to_exclude_source": true
+                    },
+                    {
+                        "effect_type": "pass"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-052",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "ouro_kronii"
+        ],
+        "colors": [
+            "blue"
+        ],
+        "rarity": "c",
+        "hp": 160,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Promise"
+        ],
+        "arts": [
+            {
+                "art_id": "mynewcatchphrase",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 10,
+                        "conditions": [
+                            {
+                                "condition": "holomem_on_stage",
+                                "tag_in": [
+                                    "#Promise"
+                                ],
+                                "exclude_member_name_in": [
+                                    "ouro_kronii"
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "archive",
+                "look_at": -1,
+                "destination": "holomem",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "support",
+                "requirement_sub_types": [
+                    "mascot"
+                ],
+                "to_limitation": "source_card",
+                "reveal_chosen": true,
+                "remaining_cards_action": "nothing"
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-053",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "ouro_kronii"
+        ],
+        "rarity": "c",
+        "colors": [
+            "blue"
+        ],
+        "hp": 150,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Promise"
+        ],
+        "arts": [
+            {
+                "art_id": "everlastingflower",
+                "costs": [
+                    {
+                        "color": "blue",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 50,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "send_cheer",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "from": "cheer_deck",
+                        "to": "holomem",
+                        "to_limitation": "tag_in",
+                        "to_limitation_tags": [
+                            "#Promise"
+                        ]
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "add_turn_effect_for_holomem",
+                "limitation": "has_tag",
+                "limitation_tags": [
+                    "#Promise"
+                ],
+                "source_from_chosen": true,
+                "turn_effect": {
+                    "timing": "before_art",
+                    "conditions": [
+                        {
+                            "condition": "performer_is_specific_id",
+                            "required_id": "REPLACED_BY_EFFECT"
+                        }
+                    ],
+                    "effect_type": "power_boost",
+                    "amount": 20
+                }
+            }
+        ],
+        "collab_effects": []
+    },
+    {
+        "card_id": "hBP07-054",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "ouro_kronii"
+        ],
+        "rarity": "r",
+        "colors": [
+            "blue"
+        ],
+        "buzz": true,
+        "hp": 250,
+        "baton_cost": 2,
+        "down_life_cost": 2,
+        "tags": [
+            "#EN",
+            "#Promise"
+        ],
+        "arts": [
+            {
+                "art_id": "imprettyshyuwu",
+                "costs": [
+                    {
+                        "color": "blue",
+                        "amount": 1
+                    }
+                ],
+                "power": 50,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "send_cheer",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "from": "cheer_deck",
+                        "to": "holomem",
+                        "to_limitation": "tag_in",
+                        "to_limitation_tags": [
+                            "#Promise"
+                        ],
+                        "to_limitation_buzz_only": true
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [],
+        "collab_effects": []
+    },
+    {
+        "card_id": "hBP07-055",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "ouro_kronii"
+        ],
+        "colors": [
+            "blue"
+        ],
+        "rarity": "u",
+        "hp": 190,
+        "baton_cost": 2,
+        "tags": [
+            "#EN",
+            "#Promise"
+        ],
+        "arts": [
+            {
+                "art_id": "lifegoeson",
+                "costs": [
+                    {
+                        "color": "blue",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 90,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "white"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "add_turn_effect_for_holomem",
+                "limitation": "has_tag",
+                "limitation_tags": [
+                    "#Promise"
+                ],
+                "source_from_chosen": true,
+                "turn_effect": {
+                    "timing": "before_art",
+                    "conditions": [
+                        {
+                            "condition": "performer_is_specific_id",
+                            "required_id": "REPLACED_BY_EFFECT"
+                        }
+                    ],
+                    "effect_type": "power_boost",
+                    "amount": 50
+                }
+            }
+        ],
+        "collab_effects": []
+    },
+    {
+        "card_id": "hBP07-056",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "ouro_kronii"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "blue"
+        ],
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": [
+            "#EN",
+            "#Promise"
+        ],
+        "gift_effects": [
+            {
+                "full_english_text": "KRONII_BP07_056_GIFT_FULL_TEXT",
+                "timing": "on_performance_step_start",
+                "conditions": [
+                    {
+                        "condition": "this_card_is_center"
+                    }
+                ],
+                "effect_type": "bloom_from_stacked",
+                "target_member_names": [
+                    "ouro_kronii"
+                ],
+                "optional": true
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "yourenotreadyforme",
+                "costs": [
+                    {
+                        "color": "blue",
+                        "amount": 2
+                    },
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 80,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "red"
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "send_cheer",
+                        "amount_min": 0,
+                        "amount_max": 1,
+                        "from": "self",
+                        "to": "holomem",
+                        "to_limitation": "tag_in",
+                        "to_limitation_tags": [
+                            "#Promise"
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 100,
+                        "conditions": [
+                            {
+                                "condition": "oshi_is",
+                                "required_member_name": "ouro_kronii"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "collab_effects": []
+    },
+    {
         "card_id": "hBP07-069",
         "card_type": "holomem_bloom",
         "bloom_level": 1,
@@ -17196,6 +17730,130 @@
             }
         ],
         "collab_effects": []
+    },
+    {
+        "card_id": "hBP07-097",
+        "card_type": "support",
+        "sub_type": "event",
+        "colors": [],
+        "card_names": [
+            "ruleroftime_promise"
+        ],
+        "rarity": "u",
+        "limited": true,
+        "play_conditions": [
+            {
+                "condition": "stage_all_members_have_tag",
+                "required_tags": [
+                    "#Promise"
+                ]
+            }
+        ],
+        "effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 2,
+                "requirement": "holomem",
+                "requirement_tags": [
+                    "#Promise"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            },
+            {
+                "conditions": [
+                    {
+                        "condition": "my_life_less_than_opponent"
+                    }
+                ],
+                "effect_type": "add_turn_effect_for_holomem",
+                "source_from_chosen": true,
+                "turn_effect": {
+                    "timing": "before_art",
+                    "conditions": [
+                        {
+                            "condition": "performer_is_specific_id",
+                            "required_id": "REPLACED_BY_EFFECT"
+                        }
+                    ],
+                    "effect_type": "power_boost",
+                    "amount": 20
+                }
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-107",
+        "card_type": "support",
+        "sub_type": "mascot",
+        "colors": [],
+        "card_names": [
+            "boros"
+        ],
+        "rarity": "u",
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "check_hp",
+                "effect_type": "bonus_hp",
+                "amount": 20
+            },
+            {
+                "timing": "before_art",
+                "effect_type": "power_boost",
+                "amount": 20,
+                "conditions": [
+                    {
+                        "condition": "attached_to",
+                        "required_member_name": "ouro_kronii"
+                    },
+                    {
+                        "condition": "used_once_per_game_effect",
+                        "condition_effect_id": "prisonoftime"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-109",
+        "card_type": "support",
+        "sub_type": "fan",
+        "card_names": [
+            "kronies"
+        ],
+        "colors": [],
+        "rarity": "c",
+        "play_conditions": [
+            {
+                "condition": "holomem_on_stage",
+                "required_member_name_in": [
+                    "ouro_kronii"
+                ]
+            }
+        ],
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem",
+                "to_limitation": "specific_member_name",
+                "to_limitation_name": "ouro_kronii"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "before_art",
+                "effect_type": "power_boost",
+                "amount": 10
+            }
+        ]
     },
     {
         "card_id": "hPR-001",
