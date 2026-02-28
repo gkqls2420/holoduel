@@ -3,7 +3,6 @@ import os
 import uuid
 import time
 from typing import List
-import tempfile
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import RedirectResponse
@@ -15,7 +14,7 @@ from app.playermanager import PlayerManager, Player
 from app.gameengine import GamePhase
 from app.gameroom import GameRoom
 from app.card_database import CardDatabase
-from app.dbaccess import download_and_extract_game_package
+from app.dbaccess import is_game_package_available
 from app.aiplayer import get_ai_deck_names
 import logging
 from dotenv import load_dotenv
@@ -38,25 +37,15 @@ skip_hosting_game = os.getenv("SKIP_HOSTING_GAME", "false").lower() == "true"
 async def lifespan(app: FastAPI):
     # Actions to perform during startup
     if not skip_hosting_game:
-        # 로컬 게임 패키지 디렉토리 사용
-        unpacked_game_dir = os.path.join("data", "game_package", "unpacked")
-        logger.info(f"Attempting to extract game package to {unpacked_game_dir}...")
-        
-        # 게임 패키지 압축 해제 시도
-        success = await download_and_extract_game_package(unpacked_game_dir)
-        
-        if success:
-            logger.info("Game package extracted successfully, starting application.")
-            # Serve the static game files
-            app.mount("/game", StaticFiles(directory=unpacked_game_dir), name="game")
-            # Make unpacked_dir accessible to route handlers via app state
-            app.state.unpacked_game_dir = unpacked_game_dir
+        game_dir = os.path.join("data", "game_package")
+        if is_game_package_available(game_dir):
+            logger.info(f"Game package found at {game_dir}, serving static files.")
+            app.mount("/game", StaticFiles(directory=game_dir), name="game")
         else:
-            logger.warning("Game package not found or extraction failed. Game hosting disabled.")
-            # 게임 패키지가 없을 때는 기본 응답만 제공
+            logger.warning("Game package not found. Game hosting disabled.")
             @app.get("/game")
             async def game_not_available():
-                return {"message": "Game package not available"}
+                return {"message": "Game package not available. Place HTML5 export files in data/game_package/"}
 
     yield  # Application runs here
 
@@ -80,10 +69,9 @@ app.add_middleware(
 async def health_check():
     return {"status": "healthy", "service": "holoduel-server"}
 
-# Redirect from root (/) to /game/index.html
 @app.get("/")
 async def root():
-    return RedirectResponse(url="/game/index.html")
+    return RedirectResponse(url="/game/game.html")
 
 # HTML5 WebSocket 연결을 위한 추가 엔드포인트
 @app.get("/ws")

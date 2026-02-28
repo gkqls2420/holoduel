@@ -8,7 +8,6 @@ import json
 from app.dbaccess import (
     ensure_directories,
     upload_match_to_local_storage,
-    upload_game_package_local,
     download_match_logs_between_dates
 )
 from datetime import datetime, timezone, timedelta

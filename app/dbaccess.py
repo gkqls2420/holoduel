@@ -1,5 +1,4 @@
 import os
-import zipfile
 import json
 import secrets
 import string
@@ -44,45 +43,12 @@ def upload_match_to_local_storage(match_data):
     except Exception as e:
         logger.error(f"Error saving match data to local storage: {e}")
 
-def upload_game_package_local(game_zip_path):
-    """게임 패키지를 로컬에 복사합니다."""
-    try:
-        ensure_directories()
-        
-        # 게임 패키지를 로컬 디렉토리에 복사
-        import shutil
-        destination_path = os.path.join(GAME_PACKAGE_DIR, "game.zip")
-        shutil.copy2(game_zip_path, destination_path)
-        
-        logger.info(f"Game package copied to local storage: {destination_path}")
-        
-    except Exception as e:
-        logger.error(f"Error copying game package to local storage: {e}")
-
-async def download_and_extract_game_package_local(destination_path):
-    """로컬에서 게임 패키지를 다운로드하고 압축을 해제합니다."""
-    try:
-        ensure_directories()
-        
-        # 로컬 게임 패키지 경로
-        local_game_zip = os.path.join(GAME_PACKAGE_DIR, "game.zip")
-        
-        # 게임 패키지가 존재하는지 확인
-        if not os.path.exists(local_game_zip):
-            logger.warning(f"Game package not found at {local_game_zip}")
-            return False
-        
-        # 압축 해제
-        logger.info(f"Extracting game package from {local_game_zip} to {destination_path}")
-        with zipfile.ZipFile(local_game_zip, 'r') as zip_ref:
-            zip_ref.extractall(destination_path)
-        
-        logger.info(f"Game package extracted successfully to {destination_path}")
-        return True
-        
-    except Exception as e:
-        logger.error(f"Error extracting game package: {e}")
-        return False
+def is_game_package_available(game_dir=None):
+    """게임 패키지 디렉토리에 HTML 파일이 존재하는지 확인합니다."""
+    if game_dir is None:
+        game_dir = GAME_PACKAGE_DIR
+    html_files = [f for f in os.listdir(game_dir) if f.endswith(".html")] if os.path.isdir(game_dir) else []
+    return len(html_files) > 0
 
 def download_match_logs_between_dates(start_date, end_date, download_path):
     """지정된 날짜 범위의 매치 로그를 다운로드합니다."""
@@ -115,19 +81,8 @@ def download_match_logs_between_dates(start_date, end_date, download_path):
     except Exception as e:
         logger.error(f"Error downloading match logs: {e}")
 
-# 기존 Azure 함수들을 로컬 함수로 대체하는 래퍼 함수들
 def upload_match_to_blob_storage(match_data):
-    """Azure Blob Storage 대신 로컬 저장소를 사용합니다."""
     upload_match_to_local_storage(match_data)
 
-def upload_game_package(game_zip_path):
-    """Azure Blob Storage 대신 로컬 저장소를 사용합니다."""
-    upload_game_package_local(game_zip_path)
-
-async def download_and_extract_game_package(destination_path):
-    """Azure Blob Storage 대신 로컬 저장소를 사용합니다."""
-    return await download_and_extract_game_package_local(destination_path)
-
 def download_blobs_between_dates(start_date, end_date, download_path):
-    """Azure Blob Storage 대신 로컬 저장소를 사용합니다."""
     download_match_logs_between_dates(start_date, end_date, download_path)
