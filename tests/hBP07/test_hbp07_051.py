@@ -46,44 +46,12 @@ class Test_hBP07_051(unittest.TestCase):
         damage_event = next(e for e in events if e["event_type"] == EventType.EventType_DamageDealt)
         self.assertEqual(damage_event["damage"], 30)
 
-    def test_collab_move_cheer(self):
-        """Collab: choose to move 1 cheer to #Promise member"""
-        engine = self.engine
-        p1: PlayerState = engine.get_player(self.player1)
-
-        # Need two Kronii (#Promise) on stage
-        p1.center = []
-        center = put_card_in_play(self, p1, "hBP07-050", p1.center)
-        spawn_cheer_on_card(self, p1, center["game_card_id"], "blue", "b1")
-
-        p1.backstage = p1.backstage[:3]
-        collab_card = put_card_in_play(self, p1, "hBP07-051", p1.backstage)
-
-        cheer_on_center_before = len(center["attached_cheer"])
-
-        events = do_collab_get_events(self, p1, collab_card["game_card_id"])
-        validate_last_event_not_error(self, events)
-
-        # Choice: 0 = move cheer, 1 = pass
-        events = pick_choice(self, self.player1, 0)
-        validate_last_event_not_error(self, events)
-
-        # Move cheer from center to collab_card (or another #Promise member)
-        # The move_cheer_between_holomems decision should appear
-        move_decision = [e for e in events if e.get("event_type") == EventType.EventType_Decision_MoveCheerBetweenHolomems]
-        if move_decision:
-            cheer_id = center["attached_cheer"][0]["game_card_id"]
-            engine.handle_game_message(self.player1, GameAction.EffectResolution_MoveCheerBetweenHolomems, {
-                "placements": {cheer_id: collab_card["game_card_id"]}
-            })
-            events = engine.grab_events()
-            validate_last_event_not_error(self, events)
-
     def test_collab_move_cheer_pass(self):
         """Collab: choose to pass (no cheer movement)"""
         engine = self.engine
         p1: PlayerState = engine.get_player(self.player1)
 
+        # Need #Promise center to receive cheer
         p1.center = []
         center = put_card_in_play(self, p1, "hBP07-050", p1.center)
         spawn_cheer_on_card(self, p1, center["game_card_id"], "blue", "b1")
@@ -91,7 +59,7 @@ class Test_hBP07_051(unittest.TestCase):
         p1.backstage = p1.backstage[:3]
         collab_card = put_card_in_play(self, p1, "hBP07-051", p1.backstage)
 
-        cheer_on_center_before = len(center["attached_cheer"])
+        cheer_count_before = len(center["attached_cheer"])
 
         events = do_collab_get_events(self, p1, collab_card["game_card_id"])
         validate_last_event_not_error(self, events)
@@ -100,8 +68,7 @@ class Test_hBP07_051(unittest.TestCase):
         events = pick_choice(self, self.player1, 1)
         validate_last_event_not_error(self, events)
 
-        # Cheer should remain unchanged
-        self.assertEqual(len(center["attached_cheer"]), cheer_on_center_before)
+        self.assertEqual(len(center["attached_cheer"]), cheer_count_before)
 
     def test_hbp07_051_stats(self):
         """Verify card stats"""

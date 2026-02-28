@@ -17187,7 +17187,8 @@
                     },
                     {
                         "effect_type": "archive_from_hand",
-                        "amount": 1
+                        "amount": 1,
+                        "ability_source": ""
                     }
                 ]
             },

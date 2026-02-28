@@ -42,18 +42,14 @@ class Test_hBP07_005(unittest.TestCase):
         hand_count_before = len(p1.hand)
         bottom_cards = [p1.deck[-1]["game_card_id"], p1.deck[-2]["game_card_id"]]
 
-        engine.handle_game_message(self.player1, GameAction.MainStepOshiSkill, {
-            "skill_id": "ontheringofoblivion",
-        })
-        events = engine.grab_events()
-        validate_last_event_not_error(self, events)
+        events = use_oshi_action(self, "ontheringofoblivion")
 
         # Should have drawn 2 from bottom, so those cards are now in hand
         hand_ids = [c["game_card_id"] for c in p1.hand]
         for card_id in bottom_cards:
             self.assertIn(card_id, hand_ids)
 
-        # Now need to archive 1 from hand
+        # Now need to archive 1 from hand - engine should present this choice
         archive_card = p1.hand[0]
         engine.handle_game_message(self.player1, GameAction.EffectResolution_ChooseCardsForEffect, {
             "card_ids": [archive_card["game_card_id"]]
@@ -62,7 +58,6 @@ class Test_hBP07_005(unittest.TestCase):
         validate_last_event_not_error(self, events)
 
         self.assertIn(archive_card["game_card_id"], [c["game_card_id"] for c in p1.archive])
-        # Net gain: +2 draw -1 archive = +1 hand
         self.assertEqual(len(p1.hand), hand_count_before + 1)
 
     def test_ontheringofoblivion_once_per_turn(self):
@@ -71,8 +66,9 @@ class Test_hBP07_005(unittest.TestCase):
         p1: PlayerState = engine.get_player(self.player1)
 
         p1.generate_holopower(6)
+        actions = reset_mainstep(self)
 
-        use_oshi_action(self, "ontheringofoblivion")
+        events = use_oshi_action(self, "ontheringofoblivion")
 
         # Archive 1 from hand
         engine.handle_game_message(self.player1, GameAction.EffectResolution_ChooseCardsForEffect, {
@@ -81,6 +77,7 @@ class Test_hBP07_005(unittest.TestCase):
         events = engine.grab_events()
         validate_last_event_not_error(self, events)
 
+        # Still have holopower left, but skill should not appear again
         actions = reset_mainstep(self)
         oshi_actions = [a for a in actions if a["action_type"] == GameAction.MainStepOshiSkill]
         skill_ids = [a["skill_id"] for a in oshi_actions]
@@ -92,27 +89,22 @@ class Test_hBP07_005(unittest.TestCase):
         p1: PlayerState = engine.get_player(self.player1)
         p2: PlayerState = engine.get_player(self.player2)
 
-        # Put debut in center then bloom to 1st then 2nd
+        # Put 1st bloom directly in center (bypass bloomed_this_turn restriction)
         p1.center = []
-        debut = put_card_in_play(self, p1, "hBP07-050", p1.center)
-        bloom1_card = add_card_to_hand(self, p1, "hBP07-052")
+        bloom1 = put_card_in_play(self, p1, "hBP07-052", p1.center)
+
+        # Then bloom to 2nd from hand
+        bloom2 = add_card_to_hand(self, p1, "hBP07-055")
         engine.handle_game_message(self.player1, GameAction.MainStepBloom, {
-            "card_id": bloom1_card["game_card_id"],
-            "target_id": debut["game_card_id"],
+            "card_id": bloom2["game_card_id"],
+            "target_id": bloom1["game_card_id"],
         })
         events = engine.grab_events()
         validate_last_event_not_error(self, events)
 
-        # Now bloom to 2nd
-        bloom2_card = add_card_to_hand(self, p1, "hBP07-055")
-        engine.handle_game_message(self.player1, GameAction.MainStepBloom, {
-            "card_id": bloom2_card["game_card_id"],
-            "target_id": bloom1_card["game_card_id"],
-        })
-        events = engine.grab_events()
-        validate_last_event_not_error(self, events)
+        # Bloom effect: auto-applies +50 to the only #Promise member
+        # (auto-applied since only 1 target on stage)
 
-        # Now center has Kronii 2nd Bloom
         self.assertEqual(p1.center[0]["card_id"], "hBP07-055")
 
         p1.generate_holopower(5)
@@ -123,13 +115,12 @@ class Test_hBP07_005(unittest.TestCase):
 
         use_oshi_action(self, "prisonoftime")
 
-        # End turn - should get an extra turn (same player active)
+        # End turn - extra turn means same player stays active
         self.assertEqual(engine.active_player_id, self.player1)
         engine.handle_game_message(self.player1, GameAction.MainStepEndTurn, {})
         events = engine.grab_events()
         validate_last_event_not_error(self, events)
 
-        # After extra turn, active player should still be p1
         self.assertEqual(engine.active_player_id, self.player1)
 
     def test_prisonoftime_condition_fail_no_kronii_center(self):
@@ -137,7 +128,6 @@ class Test_hBP07_005(unittest.TestCase):
         engine = self.engine
         p1: PlayerState = engine.get_player(self.player1)
 
-        # Center is default sora starter card (not kronii)
         p1.generate_holopower(5)
         actions = reset_mainstep(self)
         oshi_actions = [a for a in actions if a["action_type"] == GameAction.MainStepOshiSkill]
@@ -149,16 +139,9 @@ class Test_hBP07_005(unittest.TestCase):
         engine = self.engine
         p1: PlayerState = engine.get_player(self.player1)
 
-        # Put debut in center and bloom to 1st only
+        # Put 1st bloom directly in center
         p1.center = []
-        debut = put_card_in_play(self, p1, "hBP07-050", p1.center)
-        bloom1_card = add_card_to_hand(self, p1, "hBP07-052")
-        engine.handle_game_message(self.player1, GameAction.MainStepBloom, {
-            "card_id": bloom1_card["game_card_id"],
-            "target_id": debut["game_card_id"],
-        })
-        events = engine.grab_events()
-        validate_last_event_not_error(self, events)
+        put_card_in_play(self, p1, "hBP07-052", p1.center)
 
         p1.generate_holopower(5)
         actions = reset_mainstep(self)
@@ -174,17 +157,9 @@ class Test_hBP07_005(unittest.TestCase):
         p1.effects_used_this_game.append("prisonoftime")
         p1.generate_holopower(5)
 
-        # Even with Kronii 2nd Bloom in center, skill should not be available
+        # Put 2nd bloom in center
         p1.center = []
-        debut = put_card_in_play(self, p1, "hBP07-050", p1.center)
-        bloom1 = add_card_to_hand(self, p1, "hBP07-052")
-        engine.handle_game_message(self.player1, GameAction.MainStepBloom, {
-            "card_id": bloom1["game_card_id"],
-            "target_id": debut["game_card_id"],
-        })
-        events = engine.grab_events()
-        validate_last_event_not_error(self, events)
-
+        bloom1 = put_card_in_play(self, p1, "hBP07-052", p1.center)
         bloom2 = add_card_to_hand(self, p1, "hBP07-055")
         engine.handle_game_message(self.player1, GameAction.MainStepBloom, {
             "card_id": bloom2["game_card_id"],
