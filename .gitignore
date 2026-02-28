@@ -166,3 +166,4 @@ cython_debug/
 .git_old/
 bat_office/
 bat_home/
+tests/

@@ -3587,7 +3587,7 @@ class GameEngine:
                 if len(holomem_targets) == 0:
                     # No effect.
                     pass
-                if len(holomem_targets) == 1:
+                elif len(holomem_targets) == 1:
                     replace_field_in_conditions(turn_effect_copy, "required_id", holomem_targets[0])
                     if source_from_chosen:
                         turn_effect_copy["source_card_id"] = holomem_targets[0]
