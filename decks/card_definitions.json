@@ -12156,6 +12156,90 @@
         ]
     },
     {
+        "card_id": "hBP03-007",
+        "card_type": "oshi",
+        "card_names": [
+            "tsunomaki_watame"
+        ],
+        "colors": [
+            "yellow"
+        ],
+        "rarity": "osr",
+        "life": 5,
+        "actions": [
+            {
+                "skill_id": "member_sheep_oide",
+                "cost": 2,
+                "limit": "once_per_turn",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_turn",
+                        "skill_id": "member_sheep_oide",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_turn_effect",
+                                "effect_id": "member_sheep_oide"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "choose_cards",
+                        "from": "deck",
+                        "look_at": -1,
+                        "destination": "hand",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "requirement": "support",
+                        "requirement_sub_types": [
+                            "fan"
+                        ],
+                        "reveal_chosen": true,
+                        "remaining_cards_action": "shuffle"
+                    }
+                ]
+            },
+            {
+                "skill_id": "watame_wa_warukunai_yo_ne",
+                "cost": 2,
+                "limit": "once_per_game",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_game",
+                        "skill_id": "watame_wa_warukunai_yo_ne",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_game_effect",
+                                "effect_id": "watame_wa_warukunai_yo_ne"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "send_cheer",
+                        "amount_min": 2,
+                        "amount_max": 2,
+                        "from": "cheer_deck",
+                        "to": "holomem",
+                        "to_limitation": "specific_member_name",
+                        "to_limitation_name": "tsunomaki_watame"
+                    }
+                ]
+            }
+        ],
+        "effects": []
+    },
+    {
         "card_id": "hBP03-022",
         "card_type": "holomem_bloom",
         "bloom_level": 1,
@@ -12552,6 +12636,403 @@
         ]
     },
     {
+        "card_id": "hBP03-067",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "tsunomaki_watame"
+        ],
+        "special_deck_limit": 50,
+        "rarity": "c",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 110,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#Gen4",
+            "#AnimalEars",
+            "#Song"
+        ],
+        "arts": [
+            {
+                "art_id": "konbandododo",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ]
+    },
+    {
+        "card_id": "hBP03-068",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "tsunomaki_watame"
+        ],
+        "rarity": "u",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 90,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#Gen4",
+            "#AnimalEars",
+            "#Song"
+        ],
+        "arts": [
+            {
+                "art_id": "watamenouta",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 1
+                    }
+                ],
+                "power": 20,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "stage_has_attachment_of_name",
+                                "attachment_name": "watamemate"
+                            }
+                        ],
+                        "effect_type": "send_cheer",
+                        "amount_min": 0,
+                        "amount_max": 1,
+                        "from": "archive",
+                        "from_limitation": "color_in",
+                        "from_limitation_colors": [
+                            "yellow"
+                        ],
+                        "to": "holomem",
+                        "to_limitation": "color_in",
+                        "to_limitation_colors": [
+                            "yellow"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP03-069",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "tsunomaki_watame"
+        ],
+        "rarity": "c",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 190,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#Gen4",
+            "#AnimalEars",
+            "#Song"
+        ],
+        "arts": [
+            {
+                "art_id": "iyashi_no_hitotoki",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            },
+            {
+                "art_id": "ouen_shite_kureru_desho",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 3
+                    }
+                ],
+                "power": 90
+            }
+        ]
+    },
+    {
+        "card_id": "hBP03-070",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "tsunomaki_watame"
+        ],
+        "rarity": "u",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 130,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#Gen4",
+            "#AnimalEars",
+            "#Song"
+        ],
+        "arts": [
+            {
+                "art_id": "miteiteyo_watamemate",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 30,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "send_cheer",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "from": "cheer_deck",
+                        "to": "holomem",
+                        "to_limitation": "backstage_and_specific_member_name",
+                        "to_limitation_name": "tsunomaki_watame"
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "stage_has_space"
+                    }
+                ],
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "backstage",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "holomem_debut",
+                "requirement_names": [
+                    "tsunomaki_watame"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ]
+    },
+    {
+        "card_id": "hBP03-071",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "tsunomaki_watame"
+        ],
+        "rarity": "r",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 160,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#Gen4",
+            "#AnimalEars",
+            "#Song"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "archive",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "specific_card",
+                "requirement_card_name": "watamemate",
+                "remaining_cards_action": "nothing"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "tsunomaki_janken",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 50,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "choice",
+                        "choice": [
+                            {
+                                "effect_type": "roll_die",
+                                "source": "holomem_ability",
+                                "die_effects": [
+                                    {
+                                        "english_values": "win",
+                                        "activate_on_values": [
+                                            2,
+                                            4,
+                                            6
+                                        ],
+                                        "effects": [
+                                            {
+                                                "effect_type": "add_turn_effect",
+                                                "turn_effect": {
+                                                    "timing": "before_art",
+                                                    "conditions": [
+                                                        {
+                                                            "condition": "performer_is_specific_id",
+                                                            "required_id": "REPLACED_BY_EFFECT"
+                                                        },
+                                                        {
+                                                            "condition": "target_color",
+                                                            "color_requirement": "red"
+                                                        }
+                                                    ],
+                                                    "effect_type": "power_boost",
+                                                    "amount": 30
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "effect_type": "pass"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP03-072",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "tsunomaki_watame"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#Gen4",
+            "#AnimalEars",
+            "#Song"
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_down",
+                "conditions": [
+                    {
+                        "condition": "downed_card_is_this"
+                    }
+                ],
+                "effect_type": "send_cheer",
+                "amount_min": 0,
+                "amount_max": 1,
+                "from": "downed_holomem",
+                "to": "holomem",
+                "to_limitation": "specific_member_name",
+                "to_limitation_name": "tsunomaki_watame"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "watame_night_fever",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 80,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "blue"
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "performer_is_center"
+                            },
+                            {
+                                "condition": "self_has_cheer_color",
+                                "amount_min": 6,
+                                "condition_colors": [
+                                    "any"
+                                ]
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 100
+                    },
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "performer_is_center"
+                            },
+                            {
+                                "condition": "self_has_cheer_color",
+                                "amount_min": 6,
+                                "condition_colors": [
+                                    "any"
+                                ]
+                            }
+                        ],
+                        "effect_type": "add_turn_effect",
+                        "turn_effect": {
+                            "timing": "before_art",
+                            "conditions": [
+                                {
+                                    "condition": "performer_is_collab"
+                                }
+                            ],
+                            "effect_type": "power_boost",
+                            "amount": 100
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP03-088",
         "card_type": "support",
         "colors": [],
@@ -12648,6 +13129,52 @@
                         "condition": "damage_source_is_opponent"
                     }
                 ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP03-112",
+        "card_type": "support",
+        "sub_type": "fan",
+        "card_names": [
+            "watamemate"
+        ],
+        "rarity": "u",
+        "colors": [],
+        "play_conditions": [
+            {
+                "condition": "holomem_on_stage",
+                "required_member_name_in": [
+                    "tsunomaki_watame"
+                ]
+            }
+        ],
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem",
+                "to_limitation": "specific_member_name",
+                "to_limitation_name": "tsunomaki_watame"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "on_down",
+                "conditions": [
+                    {
+                        "condition": "opponent_turn"
+                    }
+                ],
+                "effect_type": "send_cheer",
+                "amount_min": 0,
+                "amount_max": 2,
+                "from": "downed_holomem",
+                "from_limitation": "color_in",
+                "from_limitation_colors": [
+                    "yellow"
+                ],
+                "to": "holomem",
+                "to_limitation": "specific_member_name",
+                "to_limitation_name": "tsunomaki_watame"
             }
         ]
     },
@@ -16645,6 +17172,114 @@
         ]
     },
     {
+        "card_id": "hBP05-072",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "buzz": true,
+        "card_names": [
+            "tsunomaki_watame"
+        ],
+        "rarity": "r",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 250,
+        "baton_cost": 2,
+        "down_life_cost": 2,
+        "tags": [
+            "#JP",
+            "#Gen4",
+            "#AnimalEars",
+            "#Song"
+        ],
+        "arts": [
+            {
+                "art_id": "irochigai_bag",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 1
+                    }
+                ],
+                "power": 50,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "this_card_is_center"
+                            },
+                            {
+                                "condition": "self_has_cheer_color",
+                                "condition_colors": [
+                                    "any"
+                                ],
+                                "amount_min": 4
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "and": [
+                            {
+                                "effect_type": "add_turn_effect",
+                                "turn_effect": {
+                                    "timing": "before_art",
+                                    "conditions": [
+                                        {
+                                            "condition": "performer_is_collab"
+                                        }
+                                    ],
+                                    "effect_type": "power_boost",
+                                    "amount": 50
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "art_id": "watame_to_beach_date",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 2
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 80,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "oshi_is",
+                                "required_member_name": "tsunomaki_watame"
+                            }
+                        ],
+                        "effect_type": "choice",
+                        "choice": [
+                            {
+                                "effect_type": "send_cheer",
+                                "amount_min": 1,
+                                "amount_max": 1,
+                                "from": "cheer_deck",
+                                "to": "holomem",
+                                "to_limitation": "specific_member_name",
+                                "to_limitation_name": "tsunomaki_watame"
+                            },
+                            {
+                                "effect_type": "pass"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP05-074",
         "card_type": "support",
         "colors": [],
@@ -16902,6 +17537,73 @@
                             1,
                             2
                         ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP05-084",
+        "card_type": "support",
+        "sub_type": "tool",
+        "colors": [],
+        "card_names": [
+            "tsunomaki_watame_harp"
+        ],
+        "rarity": "u",
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "before_art",
+                "effect_type": "power_boost",
+                "amount": 10
+            },
+            {
+                "timing": "before_art",
+                "conditions": [
+                    {
+                        "condition": "attached_to",
+                        "required_member_name": "tsunomaki_watame",
+                        "required_bloom_levels": [
+                            2
+                        ]
+                    },
+                    {
+                        "condition": "stage_has_attachment_of_name",
+                        "attachment_name": "watamemate"
+                    }
+                ],
+                "effect_type": "power_boost",
+                "amount": 10
+            },
+            {
+                "timing": "art_cleanup",
+                "conditions": [
+                    {
+                        "condition": "attached_to",
+                        "required_member_name": "tsunomaki_watame",
+                        "required_bloom_levels": [
+                            2
+                        ]
+                    }
+                ],
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "send_cheer",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "from": "archive",
+                        "to": "holomem",
+                        "to_limitation": "specific_member_name",
+                        "to_limitation_name": "tsunomaki_watame"
+                    },
+                    {
+                        "effect_type": "pass"
                     }
                 ]
             }
@@ -17363,6 +18065,7 @@
                         "requirement_tags": [
                             "#Promise"
                         ],
+                        "reveal_chosen": true,
                         "remaining_cards_action": "nothing",
                         "and": [
                             {
@@ -17607,6 +18310,134 @@
                         "opponent": true
                     }
                 ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-083",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "ramduck",
+            "tsunomaki_watame",
+            "oozora_subaru"
+        ],
+        "rarity": "r",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 170,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#Gen2",
+            "#Gen4",
+            "#Bird",
+            "#AnimalEars",
+            "#Song"
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "hand",
+                "look_at": -1,
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "holomem_named",
+                "requirement_names": [
+                    "oozora_subaru"
+                ],
+                "reveal_chosen": true,
+                "destination": "bottom_of_deck",
+                "remaining_cards_action": "nothing",
+                "after_choose_effect": {
+                    "effect_type": "choose_cards",
+                    "from": "archive",
+                    "look_at": -1,
+                    "amount_min": 1,
+                    "amount_max": 1,
+                    "requirement": "holomem_named",
+                    "requirement_names": [
+                        "tsunomaki_watame",
+                        "oozora_subaru"
+                    ],
+                    "destination": "hand",
+                    "remaining_cards_action": "nothing"
+                }
+            }
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_art_cost_check",
+                "effect_type": "reduce_art_cost",
+                "color": "yellow",
+                "amount": 1,
+                "target_limitation": "collab",
+                "conditions": [
+                    {
+                        "condition": "this_card_is_collab"
+                    },
+                    {
+                        "condition": "or",
+                        "or_conditions": [
+                            {
+                                "condition": "oshi_is",
+                                "required_member_name": "tsunomaki_watame"
+                            },
+                            {
+                                "condition": "oshi_is",
+                                "required_member_name": "oozora_subaru"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "timing": "on_art_cost_check",
+                "effect_type": "reduce_art_cost",
+                "color": "yellow",
+                "amount": 2,
+                "target_limitation": "collab",
+                "conditions": [
+                    {
+                        "condition": "this_card_is_collab"
+                    },
+                    {
+                        "condition": "or",
+                        "or_conditions": [
+                            {
+                                "condition": "oshi_is",
+                                "required_member_name": "tsunomaki_watame"
+                            },
+                            {
+                                "condition": "oshi_is",
+                                "required_member_name": "oozora_subaru"
+                            }
+                        ]
+                    },
+                    {
+                        "condition": "center_is_member_name",
+                        "required_member_names": [
+                            "tsunomaki_watame"
+                        ]
+                    },
+                    {
+                        "condition": "center_bloom_level",
+                        "required_bloom_level": 2
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "i_am_subaru_watame_yeah",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 3
+                    }
+                ],
+                "power": 80
             }
         ]
     },
@@ -17881,6 +18712,348 @@
         ]
     },
     {
+        "card_id": "hBP06-096",
+        "card_type": "support",
+        "sub_type": "event",
+        "colors": [],
+        "card_names": [
+            "ramduck"
+        ],
+        "rarity": "u",
+        "limited": true,
+        "play_conditions": [
+            {
+                "condition": "holomem_on_stage",
+                "required_member_name_in": [
+                    "tsunomaki_watame"
+                ]
+            },
+            {
+                "condition": "holomem_on_stage",
+                "required_member_name_in": [
+                    "oozora_subaru"
+                ]
+            }
+        ],
+        "effects": [
+            {
+                "effect_type": "send_cheer",
+                "amount_min": 1,
+                "amount_max": 1,
+                "from": "archive",
+                "to": "holomem",
+                "to_limitation": "specific_member_name",
+                "to_limitation_name": "tsunomaki_watame"
+            },
+            {
+                "effect_type": "send_cheer",
+                "amount_min": 1,
+                "amount_max": 1,
+                "from": "archive",
+                "to": "holomem",
+                "to_limitation": "specific_member_name",
+                "to_limitation_name": "oozora_subaru"
+            },
+            {
+                "effect_type": "add_turn_effect_for_holomem",
+                "limitation": "name_in",
+                "limitation_names": [
+                    "tsunomaki_watame"
+                ],
+                "source_from_chosen": true,
+                "turn_effect": {
+                    "timing": "before_art",
+                    "conditions": [
+                        {
+                            "condition": "performer_is_specific_id",
+                            "required_id": "REPLACED_BY_EFFECT"
+                        }
+                    ],
+                    "effect_type": "power_boost",
+                    "amount": 20
+                }
+            },
+            {
+                "effect_type": "add_turn_effect_for_holomem",
+                "limitation": "name_in",
+                "limitation_names": [
+                    "oozora_subaru"
+                ],
+                "source_from_chosen": true,
+                "turn_effect": {
+                    "timing": "before_art",
+                    "conditions": [
+                        {
+                            "condition": "performer_is_specific_id",
+                            "required_id": "REPLACED_BY_EFFECT"
+                        }
+                    ],
+                    "effect_type": "power_boost",
+                    "amount": 20
+                }
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-001",
+        "card_type": "oshi",
+        "card_names": [
+            "tsunomaki_watame"
+        ],
+        "colors": [
+            "white"
+        ],
+        "rarity": "osr",
+        "life": 5,
+        "actions": [
+            {
+                "skill_id": "tsunodrill_wanna_taste",
+                "cost": 6,
+                "limit": "once_per_turn",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_turn",
+                        "skill_id": "tsunodrill_wanna_taste",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 6
+                            },
+                            {
+                                "effect_type": "record_used_once_per_turn_effect",
+                                "effect_id": "tsunodrill_wanna_taste"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "add_turn_effect",
+                        "turn_effect": {
+                            "timing": "before_art",
+                            "conditions": [
+                                {
+                                    "condition": "performer_is_member_name",
+                                    "required_member_names": [
+                                        "tsunomaki_watame"
+                                    ]
+                                }
+                            ],
+                            "effect_type": "power_boost",
+                            "amount": 100
+                        }
+                    }
+                ]
+            }
+        ],
+        "effects": [
+            {
+                "oshi_effect": true,
+                "skill_id": "dodododrive",
+                "timing": "before_art",
+                "conditions": [
+                    {
+                        "condition": "performer_is_member_name",
+                        "required_member_names": [
+                            "tsunomaki_watame"
+                        ]
+                    }
+                ],
+                "effect_type": "generate_holopower",
+                "amount": 1
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-008",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "tsunomaki_watame"
+        ],
+        "rarity": "c",
+        "colors": [
+            "white"
+        ],
+        "hp": 120,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#Gen4",
+            "#AnimalEars",
+            "#Song"
+        ],
+        "collab_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "is_going_second_and_first_turn"
+                    }
+                ],
+                "effect_type": "add_turn_effect_for_holomem",
+                "limitation": "name_in",
+                "limitation_names": [
+                    "tsunomaki_watame"
+                ],
+                "turn_effect": {
+                    "timing": "before_art",
+                    "conditions": [
+                        {
+                            "condition": "performer_is_specific_id",
+                            "required_id": "REPLACED_BY_EFFECT"
+                        },
+                        {
+                            "condition": "is_not_art_repeat"
+                        }
+                    ],
+                    "effect_type": "repeat_art"
+                }
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "spring_sheep",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 20
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-012",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "tsunomaki_watame"
+        ],
+        "rarity": "r",
+        "colors": [
+            "white"
+        ],
+        "hp": 190,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#Gen4",
+            "#AnimalEars",
+            "#Song"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "deal_damage",
+                "special": true,
+                "amount": 30,
+                "target": "center_or_collab",
+                "opponent": true,
+                "and": [
+                    {
+                        "effect_type": "draw",
+                        "amount": 1,
+                        "opponent": true
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "watacannon_mo_ukero",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 20,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "draw",
+                        "amount": 1
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-014",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "tsunomaki_watame"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "white"
+        ],
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#Gen4",
+            "#AnimalEars",
+            "#Song"
+        ],
+        "gift_effects": [
+            {
+                "timing": "check_hp",
+                "effect_type": "bonus_hp_per_stacked",
+                "amount": 10
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "nouten_chokugeki_watame_hammer",
+                "costs": [
+                    {
+                        "color": "white",
+                        "amount": 2
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 160,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "red"
+                            }
+                        ]
+                    }
+                ],
+                "on_kill_effects": [
+                    {
+                        "conditions": [
+                            {
+                                "condition": "performer_is_center"
+                            },
+                            {
+                                "condition": "performance_target_has_damage_over_hp",
+                                "amount": 1
+                            }
+                        ],
+                        "effect_type": "deal_damage",
+                        "special": true,
+                        "amount": "overflow_damage",
+                        "target": "holomem",
+                        "opponent": true,
+                        "limitation": "bloom_level",
+                        "limitation_bloom_level": 2
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP07-005",
         "card_type": "oshi",
         "card_names": [
@@ -17966,6 +19139,180 @@
                         "effect_type": "take_extra_turn"
                     }
                 ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-009",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "tsunomaki_watame"
+        ],
+        "colors": [
+            "white"
+        ],
+        "rarity": "u",
+        "hp": 130,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#Gen4",
+            "#AnimalEars",
+            "#Song"
+        ],
+        "arts": [
+            {
+                "art_id": "gabugabu",
+                "costs": [
+                    {
+                        "color": "white",
+                        "amount": 1
+                    }
+                ],
+                "power": 20,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "this_card_is_center"
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 20
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-010",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "tsunomaki_watame"
+        ],
+        "colors": [
+            "white"
+        ],
+        "rarity": "c",
+        "hp": 170,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#Gen4",
+            "#AnimalEars",
+            "#Song"
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "generate_holopower",
+                "amount": 1,
+                "and": [
+                    {
+                        "effect_type": "choose_cards",
+                        "from": "holopower",
+                        "look_at": -1,
+                        "destination": "hand",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "reveal_chosen": true,
+                        "remaining_cards_action": "shuffle"
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "minna_no_koe_kikeru_kana",
+                "costs": [
+                    {
+                        "color": "white",
+                        "amount": 1
+                    }
+                ],
+                "power": 40
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-011",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "tsunomaki_watame"
+        ],
+        "colors": [
+            "white"
+        ],
+        "rarity": "c",
+        "hp": 140,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#Gen4",
+            "#AnimalEars",
+            "#Song"
+        ],
+        "bloom_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "not_used_once_per_turn_effect",
+                        "condition_effect_id": "guruguru_sheep"
+                    }
+                ],
+                "pre_effects": [
+                    {
+                        "effect_type": "record_used_once_per_turn_effect",
+                        "effect_id": "guruguru_sheep"
+                    }
+                ],
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 1,
+                "amount_max": 1,
+                "requirement": "holomem_bloom",
+                "requirement_names": [
+                    "tsunomaki_watame"
+                ],
+                "requirement_bloom_levels": [
+                    1
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_art_cost_check",
+                "effect_type": "reduce_art_cost",
+                "color": "any",
+                "amount": 1,
+                "target_limitation": "self",
+                "conditions": [
+                    {
+                        "condition": "self_has_cheer_color",
+                        "condition_colors": [
+                            "white"
+                        ],
+                        "amount_min": 2
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "kore_botan_hajikechau_yo",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 3
+                    }
+                ],
+                "power": 70
             }
         ]
     },
@@ -18644,6 +19991,171 @@
                 "timing": "before_art",
                 "effect_type": "power_boost",
                 "amount": 10
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-013",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "tsunomaki_watame"
+        ],
+        "colors": [
+            "white"
+        ],
+        "rarity": "u",
+        "hp": 210,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#Gen4",
+            "#AnimalEars",
+            "#Song"
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "add_turn_effect",
+                "turn_effect": {
+                    "timing": "before_art",
+                    "conditions": [
+                        {
+                            "condition": "performer_is_member_name",
+                            "required_member_names": [
+                                "tsunomaki_watame"
+                            ]
+                        }
+                    ],
+                    "effect_type": "power_boost",
+                    "amount": 20
+                },
+                "and": [
+                    {
+                        "conditions": [
+                            {
+                                "condition": "center_has_cheer_count",
+                                "amount_min": 6
+                            }
+                        ],
+                        "effect_type": "draw",
+                        "amount": 2
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "thank_you_over_sheep",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 90,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "purple"
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 50
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost_per_attachment_name_on_stage",
+                        "attachment_name": "watamemate",
+                        "amount": 50,
+                        "performer_only": true
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-102",
+        "card_type": "support",
+        "sub_type": "tool",
+        "colors": [],
+        "card_names": [
+            "tsunomaki_watame_hammer"
+        ],
+        "rarity": "u",
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "before_art",
+                "conditions": [
+                    {
+                        "condition": "attached_to",
+                        "required_member_name": "tsunomaki_watame"
+                    }
+                ],
+                "effect_type": "power_boost",
+                "amount": 20
+            },
+            {
+                "timing": "before_art",
+                "conditions": [
+                    {
+                        "condition": "attached_to",
+                        "required_member_name": "tsunomaki_watame",
+                        "required_bloom_levels": [
+                            2
+                        ]
+                    },
+                    {
+                        "condition": "attached_owner_is_location",
+                        "condition_location": "center"
+                    }
+                ],
+                "effect_type": "power_boost",
+                "amount": 30
+            },
+            {
+                "timing": "art_cleanup",
+                "conditions": [
+                    {
+                        "condition": "attached_to",
+                        "required_member_name": "tsunomaki_watame",
+                        "required_bloom_levels": [
+                            2
+                        ]
+                    },
+                    {
+                        "condition": "attached_owner_is_location",
+                        "condition_location": "center"
+                    }
+                ],
+                "effect_type": "roll_die",
+                "source": "support_card",
+                "die_effects": [
+                    {
+                        "english_values": "3 or 5",
+                        "activate_on_values": [
+                            3,
+                            5
+                        ],
+                        "effects": [
+                            {
+                                "effect_type": "deal_damage",
+                                "special": true,
+                                "amount": 50,
+                                "target": "holomem",
+                                "opponent": false,
+                                "exclude_source": true
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     },

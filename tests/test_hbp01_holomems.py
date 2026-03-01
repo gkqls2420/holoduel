@@ -576,6 +576,110 @@ class Test_hbp01_holomems(unittest.TestCase):
         validate_event(self, events[2], EventType.EventType_Decision_MainStep, self.player1, { "active_player": self.player1 })
         self.assertEqual(len(player2.life), 5)
         actions = reset_mainstep(self)
+
+    def test_hbp01_013_bloom_down_gameover_no_backstage(self):
+        """hBP01-013 bloom downs center when opponent has no backstage -> game over (no holomems left)
+        Even with prevent_life_loss, if no holomems remain, game should end."""
+        p1deck = generate_deck_with([], {"hBP01-010": 2, "hBP01-013": 2, }, [])
+        initialize_game_to_third_turn(self, p1deck)
+        player1 : PlayerState = self.engine.get_player(self.players[0]["player_id"])
+        player2 : PlayerState = self.engine.get_player(self.players[1]["player_id"])
+        engine = self.engine
+        self.assertEqual(engine.active_player_id, self.player1)
+
+        """Test"""
+        self.assertEqual(len(player2.life), 5)
+        test_card = put_card_in_play(self, player1, "hBP01-010", player1.backstage)
+        player1.backstage = []
+        player1.center = [test_card]
+        bloom_card = add_card_to_hand(self, player1, "hBP01-013")
+        actions = reset_mainstep(self)
+
+        p2center = player2.center[0]
+        p2center["damage"] = 50
+        player2.backstage = []
+
+        engine.handle_game_message(self.player1, GameAction.MainStepBloom, {
+            "card_id": bloom_card["game_card_id"],
+            "target_id": test_card["game_card_id"]
+        })
+        events = engine.grab_events()
+        self.assertEqual(len(events), 10)
+        validate_event(self, events[0], EventType.EventType_Bloom, self.player1, {
+            "bloom_player_id": self.player1,
+            "bloom_card_id": bloom_card["game_card_id"],
+            "target_card_id": test_card["game_card_id"],
+            "bloom_from": "hand",
+        })
+        validate_event(self, events[2], EventType.EventType_DamageDealt, self.player1, {
+            "damage": 30,
+            "target_player": self.player2,
+            "special": True,
+        })
+        validate_event(self, events[4], EventType.EventType_DownedHolomem_Before, self.player1, {})
+        validate_event(self, events[6], EventType.EventType_DownedHolomem, self.player1, {
+            "game_over": True,
+            "target_player": self.player2,
+            "life_lost": 0,
+            "life_loss_prevented": True,
+        })
+        validate_event(self, events[8], EventType.EventType_GameOver, self.player1, {
+            "loser_id": self.player2,
+            "reason_id": GameOverReason.GameOverReason_NoHolomemsLeft,
+        })
+        self.assertEqual(len(player2.life), 5)
+
+    def test_hbp01_013_bloom_down_with_backstage(self):
+        """hBP01-013 bloom downs center when opponent has backstage.
+        Verifies the full event chain completes without errors and returns to main step."""
+        p1deck = generate_deck_with([], {"hBP01-010": 2, "hBP01-013": 2, }, [])
+        initialize_game_to_third_turn(self, p1deck)
+        player1 : PlayerState = self.engine.get_player(self.players[0]["player_id"])
+        player2 : PlayerState = self.engine.get_player(self.players[1]["player_id"])
+        engine = self.engine
+        self.assertEqual(engine.active_player_id, self.player1)
+
+        """Test"""
+        self.assertEqual(len(player2.life), 5)
+        test_card = put_card_in_play(self, player1, "hBP01-010", player1.backstage)
+        player1.backstage = []
+        player1.center = [test_card]
+        bloom_card = add_card_to_hand(self, player1, "hBP01-013")
+        actions = reset_mainstep(self)
+
+        p2center = player2.center[0]
+        p2center["damage"] = 50
+        self.assertGreater(len(player2.backstage), 0)
+
+        engine.handle_game_message(self.player1, GameAction.MainStepBloom, {
+            "card_id": bloom_card["game_card_id"],
+            "target_id": test_card["game_card_id"]
+        })
+        events = engine.grab_events()
+        self.assertEqual(len(events), 10)
+        validate_event(self, events[0], EventType.EventType_Bloom, self.player1, {
+            "bloom_player_id": self.player1,
+            "bloom_card_id": bloom_card["game_card_id"],
+            "target_card_id": test_card["game_card_id"],
+            "bloom_from": "hand",
+        })
+        validate_event(self, events[2], EventType.EventType_DamageDealt, self.player1, {
+            "damage": 30,
+            "target_player": self.player2,
+            "special": True,
+        })
+        validate_event(self, events[4], EventType.EventType_DownedHolomem_Before, self.player1, {})
+        validate_event(self, events[6], EventType.EventType_DownedHolomem, self.player1, {
+            "game_over": False,
+            "target_player": self.player2,
+            "life_lost": 0,
+            "life_loss_prevented": True,
+        })
+        validate_event(self, events[8], EventType.EventType_Decision_MainStep, self.player1, { "active_player": self.player1 })
+        self.assertEqual(len(player2.life), 5)
+        self.assertEqual(p2center["damage"], 80)
+        actions = reset_mainstep(self)
+
     def test_hbp01_014_deal_damage_collab_deal_damage(self):
         p1deck = generate_deck_with([], {"hBP01-010": 2, "hBP01-014": 2, }, [])
         initialize_game_to_third_turn(self, p1deck)
