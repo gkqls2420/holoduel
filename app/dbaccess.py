@@ -1,4 +1,5 @@
 import os
+import zipfile
 import json
 import secrets
 import string
@@ -43,12 +44,27 @@ def upload_match_to_local_storage(match_data):
     except Exception as e:
         logger.error(f"Error saving match data to local storage: {e}")
 
-def is_game_package_available(game_dir=None):
-    """게임 패키지 디렉토리에 HTML 파일이 존재하는지 확인합니다."""
-    if game_dir is None:
-        game_dir = GAME_PACKAGE_DIR
-    html_files = [f for f in os.listdir(game_dir) if f.endswith(".html")] if os.path.isdir(game_dir) else []
-    return len(html_files) > 0
+async def extract_game_package(destination_path):
+    """game.zip을 찾아서 압축을 해제합니다. 성공 시 True 반환."""
+    try:
+        ensure_directories()
+        local_game_zip = os.path.join(GAME_PACKAGE_DIR, "game.zip")
+
+        if not os.path.exists(local_game_zip):
+            logger.warning(f"Game package not found at {local_game_zip}")
+            return False
+
+        logger.info(f"Extracting game package from {local_game_zip} to {destination_path}")
+        os.makedirs(destination_path, exist_ok=True)
+        with zipfile.ZipFile(local_game_zip, 'r') as zip_ref:
+            zip_ref.extractall(destination_path)
+
+        logger.info(f"Game package extracted successfully to {destination_path}")
+        return True
+
+    except Exception as e:
+        logger.error(f"Error extracting game package: {e}")
+        return False
 
 def download_match_logs_between_dates(start_date, end_date, download_path):
     """지정된 날짜 범위의 매치 로그를 다운로드합니다."""
