@@ -2323,7 +2323,6 @@
         "card_names": [
             "nanashi_mumei"
         ],
-        "special_deck_limit": 1,
         "rarity": "u",
         "colors": [
             "white"
@@ -11942,6 +11941,7 @@
         "card_names": [
             "tatang"
         ],
+        "special_deck_limit": 1,
         "rarity": "c",
         "colors": [],
         "effects": [
