@@ -494,6 +494,7 @@ class PlayerState:
         self.clock_time_used = 0
         self.performance_cleanup_effects_pending = []
         self.performance_attacked_this_turn = False
+        self.performance_step_start_used_effect = False
         self.last_revealed_cards = []
         self.last_die_roll_results = []
         self.die_rolled_by_holomem_names_this_turn = []
@@ -1139,6 +1140,7 @@ class PlayerState:
         self.collabed_this_turn = False
         self.turn_effects = []
         self.performance_attacked_this_turn = False
+        self.performance_step_start_used_effect = False
         self.used_limited_this_turn = False
         self.event_card_whit_magic_tag = False
         self.played_support_this_turn = False
@@ -1178,7 +1180,20 @@ class PlayerState:
             self.move_card(card_id, "backstage")
 
     def bloom(self, bloom_card_id, target_card_id, continuation):
+        if self.engine.in_performance_step_start_effects:
+            self.performance_step_start_used_effect = True
+
         bloom_card, _, bloom_from_zone_name = self.find_and_remove_card(bloom_card_id)
+        if bloom_card is None:
+            for holomem in self.get_holomem_on_stage():
+                for i, stacked in enumerate(holomem["stacked_cards"]):
+                    if stacked["game_card_id"] == bloom_card_id:
+                        bloom_card = stacked
+                        holomem["stacked_cards"].pop(i)
+                        bloom_from_zone_name = "stacked"
+                        break
+                if bloom_card:
+                    break
         target_card, zone, _ = self.find_and_remove_card(target_card_id)
 
         previous_bloom_level = 0
@@ -1612,6 +1627,7 @@ class GameEngine:
         
         # 블룸 출처 추적을 위한 변수
         self.last_bloom_source_skill_id = ""
+        self.in_performance_step_start_effects = False
 
         self.take_damage_state : TakeDamageState = None
         self.performance_artstatboosts = ArtStatBoosts()
@@ -2414,7 +2430,7 @@ class GameEngine:
         available_actions.append({
             "action_type": GameAction.PerformanceStepEndTurn,
         })
-        if len(available_actions) > 1 and not active_player.performance_attacked_this_turn:
+        if len(available_actions) > 1 and not active_player.performance_attacked_this_turn and not active_player.performance_step_start_used_effect:
             available_actions.append({
                 "action_type": GameAction.PerformanceStepCancel,
             })
@@ -2448,17 +2464,23 @@ class GameEngine:
                     add_ids_to_effects(gift_effects, opponent_player.player_id, holomem["game_card_id"])
                     opponent_effects.extend(gift_effects)
 
+            def after_all_perf_start_effects():
+                self.in_performance_step_start_effects = False
+                self.continue_performance_step()
+
             def after_active_effects():
                 if opponent_effects:
-                    self.begin_resolving_effects(opponent_effects, self.continue_performance_step)
+                    self.begin_resolving_effects(opponent_effects, after_all_perf_start_effects)
                 else:
-                    self.continue_performance_step()
+                    after_all_perf_start_effects()
 
+            if active_effects or opponent_effects:
+                self.in_performance_step_start_effects = True
             if active_effects:
                 self.begin_resolving_effects(active_effects, after_active_effects)
                 return
             elif opponent_effects:
-                self.begin_resolving_effects(opponent_effects, self.continue_performance_step)
+                self.begin_resolving_effects(opponent_effects, after_all_perf_start_effects)
                 return
 
         self.continue_performance_step()
@@ -7045,6 +7067,7 @@ class GameEngine:
                 "amount_min": 0,
                 "amount_max": 1,
                 "bloom_card_id": card_ids[0],
+                "effect": effect,
                 "effect_resolution": self.handle_bloom_into_target,
                 "continuation": continuation,
             })
@@ -7093,7 +7116,7 @@ class GameEngine:
             self.last_bloom_source_skill_id = decision_info_copy["effect"].get("source_skill_id", "")
         else:
             self.last_bloom_source_skill_id = ""
-            
+
         effect_player.bloom(bloom_card_id, card_ids[0], continuation)
 
     def handle_return_holomem_to_debut(self, decision_info_copy, performing_player_id:str, card_ids:List[str], continuation):
