@@ -85,6 +85,7 @@ class EffectType:
     EffectType_PowerBoostPerCondition = "power_boost_per_condition"
     EffectType_PowerBoostPerAttachmentNameOnStage = "power_boost_per_attachment_name_on_stage"
     EffectType_PowerBoostPerCheerOnBothStages = "power_boost_per_cheer_on_both_stages"
+    EffectType_PowerBoostPerCardsInHand = "power_boost_per_cards_in_hand"
     EffectType_RecordEffectCardIdUsedThisTurn = "record_effect_card_id_used_this_turn"
     EffectType_RecordLastDieResult = "record_last_die_result"
     EffectType_RecordUsedOncePerGameEffect = "record_used_once_per_game_effect"
@@ -3759,6 +3760,10 @@ class GameEngine:
                                 cards_can_choose = ([card["game_card_id"] for card in effect_player.hand if is_card_holomem(card)])
                             case _:
                                 cards_can_choose = ids_from_cards(effect_player.hand)
+                        self.archive_count_required = min(self.archive_count_required, len(cards_can_choose))
+                        if self.archive_count_required == 0:
+                            self.continue_resolving_effects()
+                            return
                         all_card_seen = ids_from_cards(effect_player.hand)
                         choose_event = {
                             "event_type": EventType.EventType_Decision_ChooseCards,
@@ -3923,6 +3928,9 @@ class GameEngine:
                     case "tag_in":
                         limitation_tags = effect.get("limitation_tags", [])
                         bloomed_cards_this_turn = [h for h in bloomed_cards_this_turn if any(tag in h["tags"] for tag in limitation_tags)]
+                    case "bloom_level":
+                        limitation_bloom_level = effect.get("limitation_bloom_level")
+                        bloomed_cards_this_turn = [h for h in bloomed_cards_this_turn if h.get("bloom_level", 0) == limitation_bloom_level]
                 valid_blooms_dict = {}
                 for bloomed_card in bloomed_cards_this_turn:
                     for card_in_hand in effect_player.hand:
@@ -4723,6 +4731,8 @@ class GameEngine:
                             multiplier = self.last_die_value
                         case "die_roll_sum":
                             multiplier = sum(effect_player.last_die_roll_results)
+                        case "last_chosen_count":
+                            multiplier = len(self.last_chosen_cards)
                 amount *= multiplier
                 self.handle_power_boost(amount, effect["source_card_id"])
             case EffectType.EffectType_PowerBoostPerAllFans:
@@ -4799,6 +4809,11 @@ class GameEngine:
                 per_amount = effect["amount"]
                 backstage_mems = len(effect_player.backstage)
                 total = per_amount * backstage_mems
+                self.handle_power_boost(total, effect["source_card_id"])
+            case EffectType.EffectType_PowerBoostPerCardsInHand:
+                per_amount = effect["amount"]
+                hand_count = len(effect_player.hand)
+                total = per_amount * hand_count
                 self.handle_power_boost(total, effect["source_card_id"])
             case EffectType.EffectType_PowerBoostPerHolomem:
                 per_amount = effect["amount"]
@@ -6391,9 +6406,26 @@ class GameEngine:
         player = self.get_player(player_id)
         skill_id = action_data["skill_id"]
 
+        action = next(a for a in player.oshi_card["actions"] if a["skill_id"] == skill_id)
+        skill_limit = action.get("limit", "")
+
         action_effects = player.get_oshi_action_effects(skill_id)
         add_ids_to_effects(action_effects, player_id, player.oshi_card["game_card_id"])
-        self.begin_resolving_effects(action_effects, continuation)
+
+        def after_oshi_effects():
+            if skill_limit == "once_per_game":
+                sp_effects = []
+                for holomem in player.get_holomem_on_stage():
+                    if "gift_effects" in holomem:
+                        effects = filter_effects_at_timing(holomem["gift_effects"], "on_sp_oshi_skill")
+                        add_ids_to_effects(effects, player_id, holomem["game_card_id"])
+                        sp_effects.extend(effects)
+                if sp_effects:
+                    self.begin_resolving_effects(sp_effects, continuation)
+                    return
+            continuation()
+
+        self.begin_resolving_effects(action_effects, after_oshi_effects)
 
         return True
 
