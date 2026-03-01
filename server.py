@@ -14,7 +14,7 @@ from app.playermanager import PlayerManager, Player
 from app.gameengine import GamePhase
 from app.gameroom import GameRoom
 from app.card_database import CardDatabase
-from app.dbaccess import extract_game_package
+from app.dbaccess import is_game_package_available
 from app.aiplayer import get_ai_deck_names
 import logging
 from dotenv import load_dotenv
@@ -37,16 +37,15 @@ skip_hosting_game = os.getenv("SKIP_HOSTING_GAME", "false").lower() == "true"
 async def lifespan(app: FastAPI):
     # Actions to perform during startup
     if not skip_hosting_game:
-        unpacked_dir = os.path.join("data", "game_package", "unpacked")
-        success = await extract_game_package(unpacked_dir)
-        if success:
-            logger.info(f"Game package ready at {unpacked_dir}, serving static files.")
-            app.mount("/game", StaticFiles(directory=unpacked_dir), name="game")
+        game_dir = os.path.join("data", "game_package")
+        if is_game_package_available(game_dir):
+            logger.info(f"Game package found at {game_dir}, serving static files.")
+            app.mount("/game", StaticFiles(directory=game_dir), name="game")
         else:
-            logger.warning("Game package extraction failed. Game hosting disabled.")
+            logger.warning("Game package not found. Game hosting disabled.")
             @app.get("/game")
             async def game_not_available():
-                return {"message": "Game package not available. Place game.zip in data/game_package/"}
+                return {"message": "Game package not available. Place HTML5 export files in data/game_package/"}
 
     yield  # Application runs here
 
