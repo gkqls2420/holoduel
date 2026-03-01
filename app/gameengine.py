@@ -87,6 +87,7 @@ class EffectType:
     EffectType_PowerBoostPerAttachmentNameOnStage = "power_boost_per_attachment_name_on_stage"
     EffectType_PowerBoostPerCheerOnBothStages = "power_boost_per_cheer_on_both_stages"
     EffectType_PowerBoostPerCardsInHand = "power_boost_per_cards_in_hand"
+    EffectType_PowerBoostPerLostLife = "power_boost_per_lost_life"
     EffectType_RecordEffectCardIdUsedThisTurn = "record_effect_card_id_used_this_turn"
     EffectType_RecordLastDieResult = "record_last_die_result"
     EffectType_RecordUsedOncePerGameEffect = "record_used_once_per_game_effect"
@@ -183,6 +184,7 @@ class Condition:
     Condition_PerformerBloomLevel = "performer_bloom_level"
     Condition_PerformerHasDamage = "performer_has_damage"
     Condition_PerformerIsMemberName = "performer_is_member_name"
+    Condition_PerformerIsBuzz = "performer_is_buzz"
     Condition_PlayedSupportThisTurn = "played_support_this_turn"
     Condition_SupportCardNameUsedThisTurn = "support_card_name_used_this_turn"
     Condition_RevealedCardsCount = "revealed_cards_count"
@@ -190,6 +192,7 @@ class Condition:
     Condition_SelfStageHasCheerColorTypes = "self_stage_has_cheer_color_types"
     Condition_SelfHasCheerColor = "self_has_cheer_color"
     Condition_SelfStageCheerLessThanOpponent = "self_stage_cheer_less_than_opponent"
+    Condition_SelfZoneHasHolomem = "self_zone_has_holomem"
     Condition_StageAllMembersHaveTag = "stage_all_members_have_tag"
     Condition_StageHasSpace = "stage_has_space"
     Condition_TargetColor = "target_color"
@@ -3378,6 +3381,10 @@ class GameEngine:
                     return False
                 required_member_names = condition["required_member_names"]
                 return any(name in self.performance_performer_card["card_names"] for name in required_member_names)
+            case Condition.Condition_PerformerIsBuzz:
+                if not self.performance_performer_card:
+                    return False
+                return self.performance_performer_card.get("buzz", False)
             case Condition.Condition_PlayedSupportThisTurn:
                 return effect_player.played_support_this_turn
             case Condition.Condition_SupportCardNameUsedThisTurn:
@@ -3425,6 +3432,16 @@ class GameEngine:
                 opponent = self.other_player(effect_player.player_id)
                 opponent_cheer = sum(len(h["attached_cheer"]) for h in opponent.get_holomem_on_stage())
                 return self_cheer < opponent_cheer
+            case Condition.Condition_SelfZoneHasHolomem:
+                zone = condition["condition_zone"]
+                match zone:
+                    case "center":
+                        return len(effect_player.center) > 0
+                    case "collab":
+                        return len(effect_player.collab) > 0
+                    case "backstage":
+                        return len(effect_player.backstage) > 0
+                return False
             case Condition.Condition_StageAllMembersHaveTag:
                 required_tags = condition["required_tags"]
                 holomems = effect_player.get_holomem_on_stage()
@@ -4881,6 +4898,13 @@ class GameEngine:
                 per_amount = effect["amount"]
                 hand_count = len(effect_player.hand)
                 total = per_amount * hand_count
+                self.handle_power_boost(total, effect["source_card_id"])
+            case EffectType.EffectType_PowerBoostPerLostLife:
+                per_amount = effect["amount"]
+                initial_life = effect_player.oshi_card["life"]
+                current_life = len(effect_player.life)
+                lost_life = initial_life - current_life
+                total = per_amount * lost_life
                 self.handle_power_boost(total, effect["source_card_id"])
             case EffectType.EffectType_PowerBoostPerHolomem:
                 per_amount = effect["amount"]

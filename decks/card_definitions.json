@@ -12636,6 +12636,200 @@
         ]
     },
     {
+        "card_id": "hBP03-061",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "inugami_korone"
+        ],
+        "special_deck_limit": 50,
+        "rarity": "c",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 120,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#Gamers",
+            "#AnimalEars"
+        ],
+        "arts": [
+            {
+                "art_id": "oyayo",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 20
+            },
+            {
+                "art_id": "yubiyubi",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 3
+                    }
+                ],
+                "power": 60
+            }
+        ]
+    },
+    {
+        "card_id": "hBP03-062",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "inugami_korone"
+        ],
+        "rarity": "u",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 100,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#Gamers",
+            "#AnimalEars"
+        ],
+        "arts": [
+            {
+                "art_id": "gochuumon_wa_kore_de",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ],
+        "collab_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "self_has_cheer_color",
+                        "amount_min": 1,
+                        "condition_colors": [
+                            "any"
+                        ]
+                    }
+                ],
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "archive_cheer_from_holomem",
+                        "from": "self",
+                        "amount": 1,
+                        "and": [
+                            {
+                                "effect_type": "choose_cards",
+                                "from": "deck",
+                                "look_at": -1,
+                                "destination": "hand",
+                                "amount_min": 0,
+                                "amount_max": 1,
+                                "requirement": "holomem_debut",
+                                "requirement_tags": [
+                                    "#Gamers"
+                                ],
+                                "reveal_chosen": true,
+                                "remaining_cards_action": "shuffle"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "pass"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP03-063",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "inugami_korone"
+        ],
+        "rarity": "c",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#Gamers",
+            "#AnimalEars"
+        ],
+        "arts": [
+            {
+                "art_id": "otsukorone",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ]
+    },
+    {
+        "card_id": "hBP03-064",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "inugami_korone"
+        ],
+        "rarity": "u",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 160,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#Gamers",
+            "#AnimalEars"
+        ],
+        "arts": [
+            {
+                "art_id": "buraaaaa",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 40,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost_per_lost_life",
+                        "amount": 10
+                    }
+                ]
+            },
+            {
+                "art_id": "osei",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 3
+                    }
+                ],
+                "power": 70
+            }
+        ]
+    },
+    {
         "card_id": "hBP03-067",
         "card_type": "holomem_debut",
         "card_names": [
@@ -18314,6 +18508,65 @@
         ]
     },
     {
+        "card_id": "hBP06-067",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "inugami_korone"
+        ],
+        "rarity": "c",
+        "colors": [
+            "purple"
+        ],
+        "hp": 100,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#Gamers",
+            "#AnimalEars"
+        ],
+        "arts": [
+            {
+                "art_id": "yubiipponchoudai",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 20
+            }
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "choose_cards",
+                        "from": "hand",
+                        "destination": "archive",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "requirement": "holomem",
+                        "requirement_tags": [
+                            "#Gamers"
+                        ],
+                        "reveal_chosen": true,
+                        "remaining_cards_action": "nothing",
+                        "and": [
+                            {
+                                "effect_type": "draw",
+                                "amount": 1
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "pass"
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP06-083",
         "card_type": "holomem_bloom",
         "bloom_level": 1,
@@ -18708,6 +18961,68 @@
                         "effect_type": "pass"
                     }
                 ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-094",
+        "card_type": "support",
+        "sub_type": "event",
+        "colors": [],
+        "card_names": [
+            "workout"
+        ],
+        "rarity": "c",
+        "limited": true,
+        "play_conditions": [
+            {
+                "condition": "or",
+                "or_conditions": [
+                    {
+                        "condition": "self_zone_has_holomem",
+                        "condition_zone": "collab"
+                    },
+                    {
+                        "condition": "opponent_has_no_collab"
+                    }
+                ]
+            }
+        ],
+        "effects": [
+            {
+                "effect_type": "add_turn_effect_for_holomem",
+                "source_from_chosen": true,
+                "turn_effect": {
+                    "timing": "before_art",
+                    "conditions": [
+                        {
+                            "condition": "performer_is_specific_id",
+                            "required_id": "REPLACED_BY_EFFECT"
+                        }
+                    ],
+                    "effect_type": "power_boost",
+                    "amount": 20,
+                    "and": [
+                        {
+                            "conditions": [
+                                {
+                                    "condition": "or",
+                                    "or_conditions": [
+                                        {
+                                            "condition": "performer_is_buzz"
+                                        },
+                                        {
+                                            "condition": "performer_bloom_level",
+                                            "condition_bloom_level": 2
+                                        }
+                                    ]
+                                }
+                            ],
+                            "effect_type": "power_boost",
+                            "amount": 30
+                        }
+                    ]
+                }
             }
         ]
     },
