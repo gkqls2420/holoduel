@@ -156,6 +156,7 @@ class Condition:
     Condition_DownedCardIsThis = "downed_card_is_this"
     Condition_DownedCardHasAnyTag = "downed_card_has_any_tag"
     Condition_DownedCardIsBuzzOr2nd = "downed_card_is_buzz_or_2nd"
+    Condition_DownedCardWasBackstage = "downed_card_was_backstage"
     Condition_EffectCardIdNotUsedThisTurn = "effect_card_id_not_used_this_turn"
     Condition_HasAttachmentOfType = "has_attachment_of_type"
     Condition_HasAttachmentOfTypesAny = "has_attachment_of_types_any"
@@ -171,6 +172,7 @@ class Condition:
     Condition_NotUsedOncePerGameEffect = "not_used_once_per_game_effect"
     Condition_NotUsedOncePerTurnEffect = "not_used_once_per_turn_effect"
     Condition_UsedOncePerGameEffect = "used_once_per_game_effect"
+    Condition_UsedOncePerTurnEffect = "used_once_per_turn_effect"
     Condition_OpponentTurn = "opponent_turn"
     Condition_OshiIs = "oshi_is"
     Condition_OshiIsColor = "oshi_is_color"
@@ -201,6 +203,7 @@ class Condition:
     Condition_TargetIsMemberName = "target_is_member_name"
     Condition_TargetIsBackstage = "target_is_backstage"
     Condition_TargetIsNotBackstage = "target_is_not_backstage"
+    Condition_TargetBloomLevel = "target_bloom_level"
     Condition_ThisCardIsCenter = "this_card_is_center"
     Condition_ThisCardIsCenterOrCollab = "this_card_is_center_or_collab"
     Condition_ThisCardIsCollab = "this_card_is_collab"
@@ -1251,6 +1254,8 @@ class PlayerState:
             for condition in effect.get("conditions", []):
                 if condition.get("required_id", "") == target_card_id:
                     condition["required_id"] = bloom_card_id
+            if effect.get("source_card_id", "") == target_card_id:
+                effect["source_card_id"] = bloom_card_id
 
         bloom_event = {
             "event_type": EventType.EventType_Bloom,
@@ -1340,8 +1345,13 @@ class PlayerState:
 
     def get_special_action_effects(self, card_id: str, effect_id: str):
         card, _, _ = self.find_card(card_id, include_stacked_cards=True)
-        action = next(action for action in card["special_actions"] if action["effect_id"] == effect_id)
-        return deepcopy(action["effects"])
+        for action in card.get("special_actions", []):
+            if action["effect_id"] == effect_id:
+                return deepcopy(action["effects"])
+        for gift in card.get("gift_effects", []):
+            if gift.get("effect_id") == effect_id:
+                return deepcopy(gift["effects"])
+        raise StopIteration(f"Special action {effect_id} not found on card {card_id}")
     def find_and_remove_attached(self, attached_id):
         previous_holder_id = None
         found_card = None
@@ -2217,6 +2227,21 @@ class GameEngine:
                         "card_id": attached_support["game_card_id"],
                         "owning_card_id": holomem["game_card_id"]
                     })
+
+        # E2. Use gift effects with main_step_action timing.
+        for holomem in active_player.get_holomem_on_stage():
+            if "gift_effects" in holomem:
+                for gift in holomem["gift_effects"]:
+                    if gift.get("timing") == "main_step_action":
+                        if "conditions" in gift:
+                            if not self.are_conditions_met(active_player, holomem["game_card_id"], gift["conditions"]):
+                                continue
+                        available_actions.append({
+                            "action_type": GameAction.MainStepSpecialAction,
+                            "effect_id": gift["effect_id"],
+                            "card_id": holomem["game_card_id"],
+                            "owning_card_id": holomem["game_card_id"]
+                        })
 
         # F. Use Support Cards
         for card in active_player.hand:
@@ -3194,6 +3219,12 @@ class GameEngine:
                     bloom_level = downed_card.get("bloom_level", 0)
                     return is_buzz or bloom_level == 2
                 return False
+            case Condition.Condition_DownedCardWasBackstage:
+                if self.down_holomem_state and self.down_holomem_state.holomem_card:
+                    downed_card = self.down_holomem_state.holomem_card
+                    downed_player = self.get_player(downed_card["owner_id"])
+                    return downed_player.get_holomem_zone(downed_card) == "backstage"
+                return False
             case Condition.Condition_EffectCardIdNotUsedThisTurn:
                 return not effect_player.has_used_card_effect_this_turn(source_card_id)
             case Condition.Condition_HasAttachedCard:
@@ -3321,6 +3352,9 @@ class GameEngine:
             case Condition.Condition_NotUsedOncePerTurnEffect:
                 condition_effect_id = condition["condition_effect_id"]
                 return not effect_player.has_used_once_per_turn_effect(condition_effect_id)
+            case Condition.Condition_UsedOncePerTurnEffect:
+                condition_effect_id = condition["condition_effect_id"]
+                return effect_player.has_used_once_per_turn_effect(condition_effect_id)
             case Condition.Condition_OpponentTurn:
                 return self.active_player_id != effect_player.player_id
             case Condition.Condition_OshiIs:
@@ -3495,6 +3529,12 @@ class GameEngine:
                 return self.performance_target_card in self.performance_target_player.backstage
             case Condition.Condition_TargetIsNotBackstage:
                 return self.performance_target_card not in self.performance_target_player.backstage
+            case Condition.Condition_TargetBloomLevel:
+                if not self.performance_target_card:
+                    return False
+                required_bloom_level = condition["condition_bloom_level"]
+                target_bloom_level = self.performance_target_card.get("bloom_level", -1)
+                return target_bloom_level == required_bloom_level
             case Condition.Condition_ThisCardIsCenter:
                 if len(effect_player.center) == 0:
                     return False
@@ -3885,11 +3925,15 @@ class GameEngine:
                 effect_player.archive_attached_cards([attachment_id])
             case EffectType.EffectType_ArchiveAttachmentFromStageByName:
                 attachment_name = effect.get("attachment_name", "")
+                destination = effect.get("destination", "archive")
                 holomems = effect_player.get_holomem_on_stage()
                 for holomem in holomems:
                     for attached in holomem.get("attached_support", []):
                         if attachment_name in attached.get("card_names", []):
-                            effect_player.archive_attached_cards([attached["game_card_id"]])
+                            if destination == "bottom_of_deck":
+                                effect_player.move_card(attached["game_card_id"], "deck", add_to_bottom=True)
+                            else:
+                                effect_player.archive_attached_cards([attached["game_card_id"]])
                             break
                     else:
                         continue
@@ -4390,6 +4434,7 @@ class GameEngine:
                     case "overflow_damage":
                         target_hp = self.performance_target_player.get_card_hp(self.performance_target_card)
                         amount = max(0, self.performance_target_card["damage"] - target_hp)
+                effect["amount"] = amount
 
                 target_cards = []
                 match target:
@@ -5810,11 +5855,13 @@ class GameEngine:
                         passed_on_continuation = True
             case EffectType.EffectType_ActivateHolomem:
                 requirement_tags = effect.get("requirement_tags", [])
+                requirement_names = effect.get("requirement_names", [])
                 resting_holomem_ids = []
                 for holomem in effect_player.get_holomem_on_stage():
                     if is_card_resting(holomem):
                         if not requirement_tags or any(tag in holomem.get("tags", []) for tag in requirement_tags):
-                            resting_holomem_ids.append(holomem["game_card_id"])
+                            if not requirement_names or any(name in holomem.get("card_names", []) for name in requirement_names):
+                                resting_holomem_ids.append(holomem["game_card_id"])
                 if len(resting_holomem_ids) == 0:
                     pass
                 elif len(resting_holomem_ids) == 1:
