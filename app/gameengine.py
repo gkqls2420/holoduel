@@ -1063,9 +1063,14 @@ class PlayerState:
         return None, None, None
 
     def find_attachment(self, attachment_id):
-        # Assume this is an attachment, find it on the holomem.
         for holomem in self.get_holomem_on_stage():
             for attachment in holomem["attached_support"]:
+                if attachment["game_card_id"] == attachment_id:
+                    return attachment
+            for attachment in holomem["attached_cheer"]:
+                if attachment["game_card_id"] == attachment_id:
+                    return attachment
+            for attachment in holomem["stacked_cards"]:
                 if attachment["game_card_id"] == attachment_id:
                     return attachment
         return None
@@ -1081,6 +1086,18 @@ class PlayerState:
         if not card:
             card, previous_holder_id = self.find_and_remove_attached(card_id)
             from_zone_name = previous_holder_id
+
+        if to_zone in ["archive", "deck", "cheer_deck", "holopower"] and is_card_holomem(card):
+            for stacked in card.get("stacked_cards", []):
+                self.archive.insert(0, stacked)
+            for cheer in card.get("attached_cheer", []):
+                self.archive.insert(0, cheer)
+            for support in card.get("attached_support", []):
+                self.archive.insert(0, support)
+            card["stacked_cards"] = []
+            card["attached_cheer"] = []
+            card["attached_support"] = []
+
         match to_zone:
             case "archive":
                 if add_to_bottom:
@@ -1357,47 +1374,41 @@ class PlayerState:
         found_card = None
         for card in self.get_holomem_on_stage():
             if attached_id in ids_from_cards(card["attached_cheer"]):
-                # Remove the cheer.
-                found_card = next(card for card in card["attached_cheer"] if card["game_card_id"] == attached_id)
+                found_card = next(c for c in card["attached_cheer"] if c["game_card_id"] == attached_id)
                 previous_holder_id = card["game_card_id"]
                 card["attached_cheer"].remove(found_card)
                 break
             if attached_id in ids_from_cards(card["attached_support"]):
-                # Remove the support.
-                found_card = next(card for card in card["attached_support"] if card["game_card_id"] == attached_id)
+                found_card = next(c for c in card["attached_support"] if c["game_card_id"] == attached_id)
                 previous_holder_id = card["game_card_id"]
                 card["attached_support"].remove(found_card)
                 break
             if attached_id in ids_from_cards(card["stacked_cards"]):
-                # Remove the stacked card.
-                found_card = next(card for card in card["stacked_cards"] if card["game_card_id"] == attached_id)
+                found_card = next(c for c in card["stacked_cards"] if c["game_card_id"] == attached_id)
                 previous_holder_id = card["game_card_id"]
                 card["stacked_cards"].remove(found_card)
                 break
         if not previous_holder_id:
-            # Check the life deck.
             if attached_id in ids_from_cards(self.life):
-                found_card = next(card for card in self.life if card["game_card_id"] == attached_id)
+                found_card = next(c for c in self.life if c["game_card_id"] == attached_id)
                 self.life.remove(found_card)
                 previous_holder_id = "life"
-            # And the archive.
             elif attached_id in ids_from_cards(self.archive):
-                found_card = next(card for card in self.archive if card["game_card_id"] == attached_id)
+                found_card = next(c for c in self.archive if c["game_card_id"] == attached_id)
                 self.archive.remove(found_card)
                 previous_holder_id = "archive"
-            # And the cheer deck.
             elif attached_id in ids_from_cards(self.cheer_deck):
-                found_card = next(card for card in self.cheer_deck if card["game_card_id"] == attached_id)
+                found_card = next(c for c in self.cheer_deck if c["game_card_id"] == attached_id)
                 self.cheer_deck.remove(found_card)
                 previous_holder_id = "cheer_deck"
         return found_card, previous_holder_id
 
     def find_and_remove_support(self, support_id):
         previous_holder_id = None
+        support_card = None
         for card in self.get_holomem_on_stage():
             if support_id in ids_from_cards(card["attached_support"]):
-                # Remove the support card.
-                support_card = next(card for card in card["attached_support"] if card["game_card_id"] == support_id)
+                support_card = next(c for c in card["attached_support"] if c["game_card_id"] == support_id)
                 previous_holder_id = card["game_card_id"]
                 card["attached_support"].remove(support_card)
                 break
@@ -5578,7 +5589,7 @@ class GameEngine:
                 if len(affected_player.center) > 0:
                     affected_player.set_holomem_hp(affected_player.center[0]["game_card_id"], amount)
             case EffectType.EffectType_ShuffleArchiveToDeck:
-                archived_cards = effect_player.archive
+                archived_cards = list(effect_player.archive)
                 match effect.get("limitation"):
                     case "holomem":
                         archived_cards = [card for card in archived_cards if is_card_holomem(card)]
@@ -5586,8 +5597,11 @@ class GameEngine:
                     effect_player.move_card(card["game_card_id"], "deck", hidden_info=False)
                 effect_player.shuffle_deck()
             case EffectType.EffectType_ShuffleHandToDeck:
-                self.last_card_count = len(effect_player.hand)
-                effect_player.shuffle_hand_to_deck()
+                target_player = effect_player
+                if effect.get("opponent", False):
+                    target_player = self.other_player(effect_player_id)
+                self.last_card_count = len(target_player.hand)
+                target_player.shuffle_hand_to_deck()
             case EffectType.EffectType_SpendHolopower:
                 amount = effect["amount"]
                 effect_player.spend_holopower(amount)
@@ -6699,6 +6713,22 @@ class GameEngine:
         player = self.get_player(player_id)
         center_mem = player.center[0]
         baton_cost = center_mem["baton_cost"]
+        # Apply baton cost reductions (same logic as determine_available_actions)
+        reduce_cost_effects = player.get_effects_at_timing("on_baton_cost_check", center_mem, "")
+        for effect in reduce_cost_effects:
+            if effect["effect_type"] == EffectType.EffectType_ReduceBatonCost:
+                conditions = effect.get("conditions", [])
+                target_matches = True
+                for cond in conditions:
+                    if cond.get("condition") == "this_card_is_target":
+                        required_id = cond.get("required_id", "")
+                        if required_id != center_mem["game_card_id"]:
+                            target_matches = False
+                            break
+                if not target_matches:
+                    continue
+                reduction_amount = effect.get("amount", 0)
+                baton_cost = max(0, baton_cost - reduction_amount)
         if len(cheer_ids) < baton_cost:
             self.send_event(self.make_error_event(player_id, "invalid_cheer", "Not enough cheer to pass the baton."))
             return False
@@ -6855,7 +6885,7 @@ class GameEngine:
                 self.send_event(self.make_error_event(player_id, "invalid_target", "Cheer already on target."))
                 return False
 
-        if "multi_to" not in self.current_decision:
+        if not self.current_decision.get("multi_to", False):
             # There should only be one target.
             if len(set(placements.values())) != 1:
                 self.send_event(self.make_error_event(player_id, "invalid_target", "Multiple targets chosen."))
@@ -7339,8 +7369,8 @@ class GameEngine:
         from_zone = decision_info_copy["from_zone"]
         to_zone = decision_info_copy["to_zone"]
         reveal_chosen = decision_info_copy["reveal_chosen"]
-        # Archive is a public zone - always reveal cards moved there
-        if to_zone == "archive":
+        # Archive is a public zone - always reveal cards moved from/to archive
+        if to_zone == "archive" or from_zone == "archive":
             reveal_chosen = True
         remaining_cards_action = decision_info_copy["remaining_cards_action"]
         all_card_seen = decision_info_copy["all_card_seen"]
