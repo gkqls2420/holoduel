@@ -13521,7 +13521,7 @@
                 "art_id": "hora_yo",
                 "costs": [
                     {
-                        "color": "yellow",
+                        "color": "any",
                         "amount": 2
                     }
                 ],
@@ -28870,6 +28870,233 @@
                 "amount_max": 1,
                 "from": "archive",
                 "to": "holomem"
+            }
+        ]
+    },
+    {
+        "card_id": "hSD13-003",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "elizabeth_rose_bloodflame"
+        ],
+        "rarity": "c",
+        "colors": [
+            "red"
+        ],
+        "hp": 140,
+        "baton_cost": 2,
+        "special_deck_limit": 50,
+        "tags": [
+            "#EN",
+            "#Justice",
+            "#Song"
+        ],
+        "arts": [
+            {
+                "art_id": "ohohoho",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ]
+    },
+    {
+        "card_id": "hSD13-004",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "elizabeth_rose_bloodflame"
+        ],
+        "rarity": "c",
+        "colors": [
+            "red"
+        ],
+        "hp": 170,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Justice",
+            "#Song"
+        ],
+        "arts": [
+            {
+                "art_id": "roses_are_red",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 40
+            },
+            {
+                "art_id": "the_flames_in_my_heart_are_blue",
+                "costs": [
+                    {
+                        "color": "red",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 3
+                    }
+                ],
+                "power": 140
+            }
+        ]
+    },
+    {
+        "card_id": "hSD13-005",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "elizabeth_rose_bloodflame"
+        ],
+        "rarity": "u",
+        "colors": [
+            "red"
+        ],
+        "hp": 160,
+        "baton_cost": 2,
+        "tags": [
+            "#EN",
+            "#Justice",
+            "#Song"
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_down",
+                "effect_id": "for_justice_erb",
+                "conditions": [
+                    {
+                        "condition": "opponent_turn"
+                    },
+                    {
+                        "condition": "downed_card_has_any_tag",
+                        "condition_tags": [
+                            "#Justice"
+                        ]
+                    },
+                    {
+                        "condition": "effect_card_id_not_used_this_turn"
+                    }
+                ],
+                "pre_effects": [
+                    {
+                        "effect_type": "record_effect_card_id_used_this_turn"
+                    }
+                ],
+                "effect_type": "send_cheer",
+                "amount_min": 1,
+                "amount_max": 1,
+                "from": "cheer_deck",
+                "to": "holomem",
+                "to_limitation": "source_card"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "lovely_to_see_you",
+                "costs": [
+                    {
+                        "color": "red",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 50
+            }
+        ]
+    },
+    {
+        "card_id": "hSD13-006",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "elizabeth_rose_bloodflame"
+        ],
+        "rarity": "u",
+        "colors": [
+            "red"
+        ],
+        "hp": 150,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Justice",
+            "#Song"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "add_turn_effect_for_holomem",
+                "limitation": "tag_in",
+                "limitation_tags": [
+                    "#Justice"
+                ],
+                "source_from_chosen": true,
+                "turn_effect": {
+                    "timing": "before_art",
+                    "conditions": [
+                        {
+                            "condition": "performer_is_specific_id",
+                            "required_id": "REPLACED_BY_EFFECT"
+                        }
+                    ],
+                    "effect_type": "power_boost",
+                    "amount": 20
+                }
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "what_must_be_protected",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ]
+    },
+    {
+        "card_id": "hSD13-016",
+        "card_type": "support",
+        "sub_type": "event",
+        "card_names": [
+            "justice"
+        ],
+        "rarity": "u",
+        "colors": [],
+        "limited": true,
+        "play_conditions": [
+            {
+                "condition": "cards_in_hand",
+                "amount_max": 7
+            }
+        ],
+        "effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": 4,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 4,
+                "requirement": "holomem",
+                "requirement_tags": [
+                    "#Justice"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "order_on_bottom"
             }
         ]
     },
