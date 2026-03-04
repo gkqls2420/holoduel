@@ -578,6 +578,10 @@ def handle_send_cheer(engine, effect_player, effect):
                     case "backstage_and_specific_member_name":
                         to_limitation_name = effect.get("to_limitation_name", "")
                         to_options = [card for card in effect_player.backstage if to_limitation_name in card["card_names"]]
+                    case "source_card":
+                        source_card_id = effect.get("source_card_id", "")
+                        holomems = effect_player.get_holomem_on_stage()
+                        to_options = [card for card in holomems if card["game_card_id"] == source_card_id]
                     case _:
                         raise NotImplementedError(f"Unimplemented to limitation: {to_limitation}")
             else:
