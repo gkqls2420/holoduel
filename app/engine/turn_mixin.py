@@ -436,17 +436,22 @@ class TurnMixin:
             if performer["resting"] or performer["used_art_this_turn"]:
                 continue
 
-            opponent_performers = self.other_player(self.active_player_id).get_holomem_on_stage(only_performers=True, only_collab=target_can_only_be_collab)
-            if not opponent_performers:
-                # We killed them all this turn.
-                continue
-
             for art in performer["arts"]:
                 if active_player.is_art_requirement_met(performer, art):
                     if "art_conditions" in art and not self.are_conditions_met(active_player, performer["game_card_id"], art["art_conditions"]):
                         continue
+
+                    can_target_backstage = art.get("can_target_backstage", False)
+                    if can_target_backstage:
+                        opponent_targets = opponent.get_holomem_on_stage(only_performers=False, only_collab=target_can_only_be_collab)
+                    else:
+                        opponent_targets = opponent.get_holomem_on_stage(only_performers=True, only_collab=target_can_only_be_collab)
+
+                    if not opponent_targets:
+                        continue
+
                     performer_position = "center" if active_player.is_center_holomem(performer["game_card_id"]) else "collab"
-                    valid_targets = ids_from_cards(opponent_performers)
+                    valid_targets = ids_from_cards(opponent_targets)
                     if "target_condition" in art:
                         match art["target_condition"]:
                             case "all_if_meets_conditions":
@@ -454,7 +459,7 @@ class TurnMixin:
                                 if self.are_conditions_met(active_player, performer["game_card_id"], conditions):
                                     valid_targets = ids_from_cards(opponent.get_holomem_on_stage(only_performers=False, only_collab=target_can_only_be_collab))
                             case "center_only":
-                                valid_targets = ids_from_cards([target for target in opponent_performers if opponent.is_center_holomem(target["game_card_id"])])
+                                valid_targets = ids_from_cards([target for target in opponent_targets if opponent.is_center_holomem(target["game_card_id"])])
 
 
                     if len(valid_targets) > 0:

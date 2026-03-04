@@ -77,24 +77,10 @@ class Test_hBP02_026(unittest.TestCase):
             "target_id": center_card_id
         })
         events = engine.grab_events()
-        # Events - bloom, choose cheer
+        # Cheer selection is auto-resolved (only 1 matching cheer, amount 1/1)
+        # Events - bloom, then ask where to place
         validate_consecutive_events(self, self.player1, events, [
             (EventType.EventType_Bloom, {}),
-            (EventType.EventType_Decision_ChooseCards, { 
-                "from_zone": "cheer_deck",
-                "to_zone": "holomem" })
-        ])
-        choose_event = next(e for e in events if e["event_type"] == EventType.EventType_Decision_ChooseCards and e["event_player_id"] == self.player1)
-        cards_can_choose = choose_event["cards_can_choose"]
-        self.assertEqual(len(cards_can_choose), 1)
-        self.assertEqual(cards_can_choose[0], g1["game_card_id"])
-        # Only 1 cheer, so choose it.
-        engine.handle_game_message(self.player1, GameAction.EffectResolution_ChooseCardsForEffect, {
-            "card_ids": [g1["game_card_id"]]
-        })
-        events = engine.grab_events()
-        # Events - Ask where to place.
-        validate_consecutive_events(self, self.player1, events, [
             (EventType.EventType_Decision_ChooseHolomemForEffect, {})
         ])
         holomem_event = next(e for e in events if e["event_type"] == EventType.EventType_Decision_ChooseHolomemForEffect and e["event_player_id"] == self.player1)

@@ -195,6 +195,31 @@ def handle_deal_damage_per_cheer_in_archive(engine, effect_player, effect):
     return False
 
 
+def handle_deal_damage_per_holomem_on_stage(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    amount_per = effect["amount_per"]
+    has_tag = effect.get("has_tag", None)
+    holomems = effect_player.get_holomem_on_stage()
+    if has_tag:
+        holomems = [h for h in holomems if has_tag in h.get("tags", [])]
+    effect_copy = deepcopy(effect)
+    effect_copy["amount"] = amount_per * len(holomems)
+    effect_copy["effect_type"] = EffectType.EffectType_DealDamage
+    engine.add_effects_to_front([effect_copy])
+    return False
+
+
+def handle_deal_damage_per_support_in_archive(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    amount_per = effect["amount_per"]
+    support_count = sum(1 for card in effect_player.archive if card.get("card_type") == "support")
+    effect_copy = deepcopy(effect)
+    effect_copy["amount"] = amount_per * support_count
+    effect_copy["effect_type"] = EffectType.EffectType_DealDamage
+    engine.add_effects_to_front([effect_copy])
+    return False
+
+
 def handle_deal_damage_per_stacked(engine, effect_player, effect):
     """Returns True if continuation was passed on, False otherwise."""
     effect_player_id = effect_player.player_id
@@ -425,7 +450,9 @@ DAMAGE_HANDLERS = {
     EffectType.EffectType_DealDamage: handle_deal_damage,
     EffectType.EffectType_DealDamage_Internal: handle_deal_damage_internal,
     EffectType.EffectType_DealDamagePerCheerInArchive: handle_deal_damage_per_cheer_in_archive,
+    EffectType.EffectType_DealDamagePerHolomemOnStage: handle_deal_damage_per_holomem_on_stage,
     EffectType.EffectType_DealDamagePerStacked: handle_deal_damage_per_stacked,
+    EffectType.EffectType_DealDamagePerSupportInArchive: handle_deal_damage_per_support_in_archive,
     EffectType.EffectType_DealLifeDamage: handle_deal_life_damage,
     EffectType.EffectType_DownHolomem: handle_down_holomem,
     EffectType.EffectType_ReduceDamage: handle_reduce_damage,

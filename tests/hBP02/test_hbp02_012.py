@@ -215,14 +215,13 @@ class Test_hBP02_012(unittest.TestCase):
     self.assertEqual(engine.active_player_id, self.player1)
 
     engine.handle_game_message(self.player1, GameAction.MainStepBloom, { "card_id": bloom_card_id, "target_id": center_card_id })
-    engine.handle_game_message(self.player1, GameAction.EffectResolution_ChooseCardsForEffect, { "card_ids": [mascot_card_id] })
+    # Mascot selection is auto-resolved (only 1 mascot, amount 1/1)
     engine.handle_game_message(self.player1, GameAction.EffectResolution_ChooseCardsForEffect, { "card_ids": [target_card_id] })
 
     # Events
     events = engine.grab_events()
     validate_consecutive_events(self, self.player1, events, [
       (EventType.EventType_Bloom, { "bloom_card_id": bloom_card_id }),
-      (EventType.EventType_Decision_ChooseCards, { "cards_can_choose": [mascot_card_id] }),
 
       (EventType.EventType_Decision_ChooseHolomemForEffect, {}),
 

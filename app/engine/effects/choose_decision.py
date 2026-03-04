@@ -51,6 +51,7 @@ def handle_choose_cards(engine, effect_player, effect):
     requirement_card_name = effect.get("requirement_card_name", "")
     requirement_card_names = effect.get("requirement_card_names", [])
     requirement_match_oshi_color = effect.get("requirement_match_oshi_color", False)
+    requirement_match_oshi_name = effect.get("requirement_match_oshi_name", False)
     requirement_only_holomems_with_any_tag = effect.get("requirement_only_holomems_with_any_tag", False)
     requirement_colors = effect.get("requirement_colors", [])
     requirement_sub_types = effect.get("requirement_sub_types", [])
@@ -73,6 +74,7 @@ def handle_choose_cards(engine, effect_player, effect):
         "requirement_card_name": requirement_card_name,
         "requirement_card_names": requirement_card_names,
         "requirement_match_oshi_color": requirement_match_oshi_color,
+        "requirement_match_oshi_name": requirement_match_oshi_name,
         "requirement_only_holomems_with_any_tag": requirement_only_holomems_with_any_tag,
         "requirement_colors": requirement_colors,
         "requirement_sub_types": requirement_sub_types,
@@ -202,6 +204,12 @@ def handle_choose_cards(engine, effect_player, effect):
         # Restrict to oshi color.
         if requirement_match_oshi_color:
             cards_can_choose = [card for card in cards_can_choose if effect_player.matches_oshi_color(card["colors"])]
+
+        # Restrict to cards sharing a name with the player's oshi.
+        if requirement_match_oshi_name:
+            oshi_names = effect_player.oshi_card.get("card_names", [])
+            cards_can_choose = [card for card in cards_can_choose
+                if "card_names" in card and any(name in card["card_names"] for name in oshi_names)]
 
         # Restrict to specified support sub types
         if requirement_sub_types:
@@ -431,6 +439,14 @@ def handle_generate_choice_template(engine, effect_player, effect):
             max_count = min(len(effect_player.cheer_deck), max_count)
         case "holopower":
             max_count = min(len(effect_player.holopower), max_count)
+        case "performer_cheer":
+            performer = engine.performance_performer_card
+            if performer:
+                cheer_count = len(performer.get("attached_cheer", []))
+                max_count = min(cheer_count, max_count)
+            else:
+                max_count = 0
+            max_count = min(max_count, len(effect_player.cheer_deck))
     choices = []
     for i in range(starts_at, max_count + 1):
         # Populate the "amount": "X"/"multiX" fields.

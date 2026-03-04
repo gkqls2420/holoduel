@@ -416,6 +416,17 @@ def handle_move_cheer_between_holomems(engine, effect_player, effect):
     return False
 
 
+def handle_return_revealed_to_holopower_bottom(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    revealed = getattr(effect_player, "last_revealed_cards", [])
+    for card in revealed:
+        if card in effect_player.holopower:
+            effect_player.holopower.remove(card)
+            effect_player.holopower.append(card)
+    effect_player.last_revealed_cards = []
+    return False
+
+
 def handle_reveal_top_deck(engine, effect_player, effect):
     """Returns True if continuation was passed on, False otherwise."""
     effect_player_id = effect_player.player_id
@@ -432,6 +443,25 @@ def handle_reveal_top_deck(engine, effect_player, effect):
         engine.broadcast_event(reveal_event)
         after_reveal_effects = effect_player.get_effects_at_timing("after_reveal", None)
         engine.add_effects_to_front(after_reveal_effects)
+    return False
+
+
+def handle_reveal_top_holopower(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    if len(effect_player.holopower) > 0:
+        amount = effect.get("amount", 1)
+        top_cards = effect_player.holopower[:amount]
+        effect_player.last_revealed_cards = top_cards
+        reveal_event = {
+            "event_type": EventType.EventType_RevealCards,
+            "effect_player_id": effect_player_id,
+            "card_ids": ids_from_cards(top_cards),
+            "source": "topholopower"
+        }
+        engine.broadcast_event(reveal_event)
+    else:
+        effect_player.last_revealed_cards = []
     return False
 
 
@@ -833,7 +863,9 @@ CARD_MOVEMENT_HANDLERS = {
     EffectType.EffectType_Draw: handle_draw,
     EffectType.EffectType_GenerateHolopower: handle_generate_holopower,
     EffectType.EffectType_MoveCheerBetweenHolomems: handle_move_cheer_between_holomems,
+    EffectType.EffectType_ReturnRevealedToHolopowerBottom: handle_return_revealed_to_holopower_bottom,
     EffectType.EffectType_RevealTopDeck: handle_reveal_top_deck,
+    EffectType.EffectType_RevealTopHolopower: handle_reveal_top_holopower,
     EffectType.EffectType_SendCheer: handle_send_cheer,
     EffectType.EffectType_SendCollabBack: handle_send_collab_back,
     EffectType.EffectType_ShuffleArchiveToDeck: handle_shuffle_archive_to_deck,

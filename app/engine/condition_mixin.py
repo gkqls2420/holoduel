@@ -422,13 +422,17 @@ class ConditionMixin:
                 amount = condition["amount"]
                 return self.performance_target_card["damage"] >= self.performance_target_player.get_card_hp(self.performance_target_card) + amount
             case Condition.Condition_PerformerIsCenter:
-                if len(self.performance_performing_player.center) == 0:
+                performing_player = self.performance_performing_player or effect_player
+                performer_card_id = self.performance_performer_card["game_card_id"] if self.performance_performer_card else source_card_id
+                if len(performing_player.center) == 0:
                     return False
-                return self.performance_performing_player.center[0]["game_card_id"] == self.performance_performer_card["game_card_id"]
+                return performing_player.center[0]["game_card_id"] == performer_card_id
             case Condition.Condition_PerformerIsCollab:
-                if len(self.performance_performing_player.collab) == 0:
+                performing_player = self.performance_performing_player or effect_player
+                performer_card_id = self.performance_performer_card["game_card_id"] if self.performance_performer_card else source_card_id
+                if len(performing_player.collab) == 0:
                     return False
-                return self.performance_performing_player.collab[0]["game_card_id"] == self.performance_performer_card["game_card_id"]
+                return performing_player.collab[0]["game_card_id"] == performer_card_id
             case Condition.Condition_PerformerIsColor:
                 condition_colors = condition["condition_colors"]
                 for color in self.performance_performer_card["colors"]:
@@ -715,6 +719,29 @@ class ConditionMixin:
                     if source_card:
                         return any(tag in source_card.get("tags", []) for tag in condition_tags)
                 return False
+            case Condition.Condition_RevealedCardHasAnyTag:
+                condition_tags = condition.get("condition_tags", [])
+                revealed = getattr(effect_player, "last_revealed_cards", [])
+                return any(
+                    any(tag in card.get("tags", []) for tag in condition_tags)
+                    for card in revealed
+                )
+            case Condition.Condition_RevealedCardIsHolomem:
+                revealed = getattr(effect_player, "last_revealed_cards", [])
+                return all(is_card_holomem(card) for card in revealed) if revealed else False
+            case Condition.Condition_StageAllMembersHaveTag:
+                required_tags = condition.get("required_tags", [])
+                holomems = effect_player.get_holomem_on_stage()
+                if not holomems:
+                    return False
+                return all(
+                    any(tag in holomem.get("tags", []) for tag in required_tags)
+                    for holomem in holomems
+                )
+            case Condition.Condition_SupportInArchive:
+                amount_min = condition.get("amount_min", 1)
+                support_count = sum(1 for card in effect_player.archive if card.get("card_type") == "support")
+                return support_count >= amount_min
             case _:
                 raise NotImplementedError(f"Unimplemented condition: {condition['condition']}")
         return False

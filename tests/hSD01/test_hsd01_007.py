@@ -28,26 +28,21 @@ class Test_hSD01_007(unittest.TestCase):
     p1.backstage = []
     collab_card = put_card_in_play(self, p1, "hSD01-007", p1.backstage)
 
+    # The top deck card will become holopower during collab
+    moved_card_id = p1.deck[0]["game_card_id"]
+
     # Events
+    # Holopower selection is auto-resolved (collab generates exactly 1 holopower, amount 1/1)
     events = do_collab_get_events(self, p1, collab_card["game_card_id"])
     validate_consecutive_events(self, self.player1, events, [
       (EventType.EventType_Collab, { "collab_card_id": collab_card["game_card_id"] }),
-      (EventType.EventType_Decision_ChooseCards, { "from_zone": "holopower" })
+      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "hand" }),
+      (EventType.EventType_Decision_ChooseCards, { "from_zone": "hand" })
     ])
 
 
     """Test"""
     self.assertEqual(engine.active_player_id, self.player1)
-    moved_card_id = p1.holopower[0]["game_card_id"]
-
-    engine.handle_game_message(self.player1, GameAction.EffectResolution_ChooseCardsForEffect, { "card_ids": [moved_card_id] })
-
-    # Events
-    events = engine.grab_events()
-    validate_consecutive_events(self, self.player1, events, [
-      (EventType.EventType_MoveCard, { "from": "holopower", "to_zone": "hand" }),
-      (EventType.EventType_Decision_ChooseCards, { "from_zone": "hand" })
-    ])
 
     engine.handle_game_message(self.player1, GameAction.EffectResolution_ChooseCardsForEffect, { "card_ids": [moved_card_id] })
 

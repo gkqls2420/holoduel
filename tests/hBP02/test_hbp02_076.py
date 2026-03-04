@@ -38,7 +38,7 @@ class Test_hBP02_076(unittest.TestCase):
 
     engine.handle_game_message(self.player1, GameAction.MainStepPlaySupport, { "card_id": item_card_id })
     engine.handle_game_message(self.player1, GameAction.EffectResolution_ChooseCardsForEffect, { "card_ids": [debut_card_id] })
-    engine.handle_game_message(self.player1, GameAction.EffectResolution_ChooseCardsForEffect, { "card_ids": [bloom_card_id] })
+    # Bloom selection is auto-resolved (1 matching bloom in deck, amount 1/1)
 
     # Events
     events = engine.grab_events()
@@ -47,7 +47,6 @@ class Test_hBP02_076(unittest.TestCase):
       (EventType.EventType_Decision_ChooseCards, {}),
 
       (EventType.EventType_MoveCard, { "from": "hand", "to_zone": "deck", "card_id": debut_card_id }),
-      (EventType.EventType_Decision_ChooseCards, { "cards_can_choose": [bloom_card_id] }),
 
       (EventType.EventType_MoveCard, { "from": "deck", "to_zone": "hand", "card_id": bloom_card_id }),
       (EventType.EventType_ShuffleDeck, {}),
