@@ -319,6 +319,44 @@ def handle_down_holomem(engine, effect_player, effect):
     return False
 
 
+def handle_redirect_damage(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    requirement_colors = effect.get("redirect_requirement_colors", [])
+    require_buzz_or_2nd = effect.get("redirect_requirement_buzz_or_2nd", False)
+
+    original_target_id = engine.take_damage_state.target_card["game_card_id"]
+    candidates = effect_player.get_holomem_on_stage()
+    candidates = [h for h in candidates if h["game_card_id"] != original_target_id]
+    if requirement_colors:
+        candidates = [h for h in candidates if any(c in h["colors"] for c in requirement_colors)]
+    if require_buzz_or_2nd:
+        candidates = [h for h in candidates if h.get("buzz", False) or h.get("bloom_level", 0) == 2]
+
+    candidate_ids = ids_from_cards(candidates)
+    if len(candidate_ids) == 0:
+        return False
+
+    decision_event = {
+        "event_type": EventType.EventType_Decision_ChooseHolomemForEffect,
+        "desired_response": GameAction.EffectResolution_ChooseCardsForEffect,
+        "effect_player_id": effect_player_id,
+        "cards_can_choose": candidate_ids,
+        "effect": effect,
+    }
+    engine.broadcast_event(decision_event)
+    engine.set_decision({
+        "decision_type": DecisionType.DecisionEffect_ChooseCardsForEffect,
+        "decision_player": effect_player_id,
+        "cards_can_choose": candidate_ids,
+        "amount_min": 1,
+        "amount_max": 1,
+        "effect_resolution": engine.handle_redirect_damage_choice,
+        "continuation": engine.continue_resolving_effects,
+    })
+    return True
+
+
 def handle_reduce_damage(engine, effect_player, effect):
     """Returns True if continuation was passed on, False otherwise."""
     effect_player_id = effect_player.player_id
@@ -455,6 +493,7 @@ DAMAGE_HANDLERS = {
     EffectType.EffectType_DealDamagePerSupportInArchive: handle_deal_damage_per_support_in_archive,
     EffectType.EffectType_DealLifeDamage: handle_deal_life_damage,
     EffectType.EffectType_DownHolomem: handle_down_holomem,
+    EffectType.EffectType_RedirectDamage: handle_redirect_damage,
     EffectType.EffectType_ReduceDamage: handle_reduce_damage,
     EffectType.EffectType_ReduceRequiredArchiveCount: handle_reduce_required_archive_count,
     EffectType.EffectType_RestoreHp: handle_restore_hp,

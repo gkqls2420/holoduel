@@ -418,6 +418,11 @@ class PlayerState:
                 match effect["effect_type"]:
                     case EffectType.EffectType_BonusHp:
                         bonus_hp += effect["amount"]
+                    case EffectType.EffectType_BonusHpPerAttachedCheer:
+                        if effect["source_card_id"] == card["game_card_id"]:
+                            per_amount = effect["amount"]
+                            attached_cheers = [c for c in card.get("attached_cheer", []) if c["card_type"] == "cheer"]
+                            bonus_hp += per_amount * len(attached_cheers)
                     case EffectType.EffectType_BonusHpPerStacked:
                         if effect["source_card_id"] == card["game_card_id"]:
                             per_amount = effect["amount"]

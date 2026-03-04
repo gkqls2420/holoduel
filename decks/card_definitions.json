@@ -16920,6 +16920,56 @@
         "collab_effects": []
     },
     {
+        "card_id": "hBP04-087",
+        "card_type": "holomem_spot",
+        "bloom_blocked": true,
+        "card_names": [
+            "elizabeth_rose_bloodflame"
+        ],
+        "rarity": "c",
+        "colors": [
+            "red"
+        ],
+        "hp": 140,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Justice",
+            "#Song"
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_take_damage",
+                "effect_type": "reduce_damage",
+                "amount": 20,
+                "conditions": [
+                    {
+                        "condition": "this_card_is_collab"
+                    },
+                    {
+                        "condition": "damage_target_is_center"
+                    },
+                    {
+                        "condition": "damage_target_is_debut"
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "erb",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 20
+            }
+        ],
+        "collab_effects": []
+    },
+    {
         "card_id": "hBP05-008",
         "card_type": "holomem_debut",
         "card_names": [
@@ -29097,6 +29147,241 @@
                 ],
                 "reveal_chosen": true,
                 "remaining_cards_action": "order_on_bottom"
+            }
+        ]
+    },
+    {
+        "card_id": "hSD13-007",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "elizabeth_rose_bloodflame"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "red"
+        ],
+        "hp": 180,
+        "baton_cost": 3,
+        "tags": [
+            "#EN",
+            "#Justice",
+            "#Song"
+        ],
+        "gift_effects": [
+            {
+                "timing": "check_hp",
+                "effect_type": "bonus_hp_per_attached_cheer",
+                "amount": 10
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "evil_slaying_cadenza",
+                "costs": [
+                    {
+                        "color": "red",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 100,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "purple"
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost_per_attached_cheer",
+                        "amount": 20
+                    }
+                ],
+                "on_kill_effects": [
+                    {
+                        "conditions": [
+                            {
+                                "condition": "downed_card_belongs_to_opponent"
+                            }
+                        ],
+                        "effect_type": "send_cheer",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "from": "cheer_deck",
+                        "to": "holomem",
+                        "to_limitation": "source_card"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hSD13-001",
+        "card_type": "oshi",
+        "card_names": [
+            "elizabeth_rose_bloodflame"
+        ],
+        "rarity": "osr",
+        "colors": [
+            "red"
+        ],
+        "life": 5,
+        "actions": [
+            {
+                "skill_id": "just_like_that",
+                "cost": 3,
+                "limit": "once_per_game",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_game",
+                        "skill_id": "just_like_that",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 3
+                            },
+                            {
+                                "effect_type": "record_used_once_per_game_effect",
+                                "effect_id": "just_like_that"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "choose_cards",
+                        "from": "archive",
+                        "destination": "stage",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "requirement": "holomem",
+                        "requirement_tags": [
+                            "#Justice"
+                        ],
+                        "reveal_chosen": true,
+                        "remaining_cards_action": "none",
+                        "after_choose_effect": {
+                            "effect_type": "send_cheer",
+                            "amount_min": 1,
+                            "amount_max": 5,
+                            "from": "archive",
+                            "to": "holomem",
+                            "to_limitation": "last_chosen"
+                        }
+                    }
+                ]
+            }
+        ],
+        "effects": [
+            {
+                "oshi_effect": "true",
+                "skill_id": "pioneer_of_order",
+                "cost": 3,
+                "limit": "once_per_turn",
+                "conditions": [
+                    {
+                        "condition": "not_used_once_per_turn_effect",
+                        "condition_effect_id": "pioneer_of_order"
+                    },
+                    {
+                        "condition": "holopower_at_least",
+                        "amount": 3
+                    },
+                    {
+                        "condition": "opponent_turn"
+                    },
+                    {
+                        "condition": "damage_target_is_center"
+                    }
+                ],
+                "timing": "on_take_damage",
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "oshi_effect": "true",
+                        "limit": "once_per_turn",
+                        "skill_id": "pioneer_of_order",
+                        "cost": 3,
+                        "effect_type": "redirect_damage",
+                        "redirect_requirement_colors": [
+                            "red"
+                        ],
+                        "redirect_requirement_buzz_or_2nd": true,
+                        "pre_effects": [
+                            {
+                                "effect_type": "oshi_activation",
+                                "limit": "once_per_turn",
+                                "skill_id": "pioneer_of_order",
+                                "pre_effects": [
+                                    {
+                                        "effect_type": "spend_holopower",
+                                        "amount": 3
+                                    },
+                                    {
+                                        "effect_type": "record_used_once_per_turn_effect",
+                                        "effect_id": "pioneer_of_order"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "pass"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hSD13-017",
+        "card_type": "support",
+        "sub_type": "event",
+        "card_names": [
+            "justice_just_like_that"
+        ],
+        "rarity": "u",
+        "colors": [],
+        "limited": true,
+        "play_conditions": [
+            {
+                "condition": "stage_all_members_have_tag",
+                "required_tags": [
+                    "#Justice"
+                ]
+            }
+        ],
+        "effects": [
+            {
+                "effect_type": "return_stacked_to_hand",
+                "amount_min": 1,
+                "amount_max": 2,
+                "and": [
+                    {
+                        "effect_type": "add_turn_effect_for_holomem",
+                        "limitation": "last_chosen_holomem",
+                        "turn_effect": {
+                            "timing": "before_art",
+                            "conditions": [
+                                {
+                                    "condition": "performer_is_specific_id",
+                                    "required_id": "REPLACED_BY_EFFECT"
+                                }
+                            ],
+                            "effect_type": "power_boost",
+                            "amount_per_last_card_count": 20
+                        }
+                    }
+                ]
             }
         ]
     },

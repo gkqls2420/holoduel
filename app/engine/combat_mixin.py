@@ -197,28 +197,38 @@ class CombatMixin:
             damage += self.take_damage_state.added_damage
 
         if self.take_damage_state.prevented_damage:
-            # Recalculate the damage based on prevented damage.
             target_card["damage"] -= damage
             damage = max(0, damage - self.take_damage_state.prevented_damage)
             target_card["damage"] += damage
+
+        redirect_target = self.take_damage_state.redirect_target
+        redirect_target_player = self.take_damage_state.redirect_target_player
         self.take_damage_state = self.take_damage_state.nested_state
 
-        # Damage is decided here, so play the event.
+        if redirect_target and redirect_target_player:
+            target_card["damage"] -= damage
+            actual_target = redirect_target
+            actual_target_player = redirect_target_player
+            actual_target["damage"] += damage
+        else:
+            actual_target = target_card
+            actual_target_player = target_player
+
         damage_event = {
             "event_type": EventType.EventType_DamageDealt,
-            "target_id": target_card["game_card_id"],
-            "target_player": target_player.player_id,
+            "target_id": actual_target["game_card_id"],
+            "target_player": actual_target_player.player_id,
             "damage": damage,
             "special": special,
         }
         self.broadcast_event(damage_event)
 
-        died = target_card["damage"] >= target_player.get_card_hp(target_card)
+        died = actual_target["damage"] >= actual_target_player.get_card_hp(actual_target)
         if died:
-            self.begin_down_holomem(dealing_player, target_player, dealing_card, target_card, art_info, lambda :
-                self.complete_deal_damage(dealing_player, target_player, dealing_card, target_card, damage, special, prevent_life_loss, died, art_info, continuation))
+            self.begin_down_holomem(dealing_player, actual_target_player, dealing_card, actual_target, art_info, lambda :
+                self.complete_deal_damage(dealing_player, actual_target_player, dealing_card, actual_target, damage, special, prevent_life_loss, died, art_info, continuation))
         else:
-            self.complete_deal_damage(dealing_player, target_player, dealing_card, target_card, damage, special, prevent_life_loss, died, art_info, continuation)
+            self.complete_deal_damage(dealing_player, actual_target_player, dealing_card, actual_target, damage, special, prevent_life_loss, died, art_info, continuation)
 
     def complete_deal_damage(self, dealing_player : PlayerState, target_player : PlayerState, dealing_card, target_card, damage, special, prevent_life_loss, died, art_info, continuation):
         if died:

@@ -535,6 +535,54 @@ def handle_multiple_die_roll(engine, effect_player, effect):
     return False
 
 
+def handle_return_stacked_to_hand(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise.
+    Phase 1: choose a holomem on stage that has stacked cards.
+    Phase 2 (in action_handler): choose which stacked cards to return to hand."""
+    effect_player_id = effect_player.player_id
+    amount_min = effect.get("amount_min", 1)
+    amount_max = effect.get("amount_max", 2)
+
+    holomem_targets = effect_player.get_holomem_on_stage()
+    holomem_targets = [h for h in holomem_targets
+        if len([c for c in h.get("stacked_cards", []) if is_card_holomem(c)]) > 0]
+
+    if len(holomem_targets) == 0:
+        return False
+
+    holomem_ids = ids_from_cards(holomem_targets)
+    if len(holomem_ids) == 1:
+        engine.handle_return_stacked_choose_cards(
+            {"effect": effect, "amount_min": amount_min, "amount_max": amount_max},
+            effect_player_id,
+            holomem_ids,
+            engine.continue_resolving_effects,
+        )
+        return True
+
+    decision_event = {
+        "event_type": EventType.EventType_Decision_ChooseHolomemForEffect,
+        "desired_response": GameAction.EffectResolution_ChooseCardsForEffect,
+        "effect_player_id": effect_player_id,
+        "cards_can_choose": holomem_ids,
+        "effect": effect,
+    }
+    engine.broadcast_event(decision_event)
+    engine.set_decision({
+        "decision_type": DecisionType.DecisionEffect_ChooseCardsForEffect,
+        "decision_player": effect_player_id,
+        "cards_can_choose": holomem_ids,
+        "amount_min": 1,
+        "amount_max": 1,
+        "effect": effect,
+        "amount_min_stacked": amount_min,
+        "amount_max_stacked": amount_max,
+        "effect_resolution": engine.handle_return_stacked_choose_cards,
+        "continuation": engine.continue_resolving_effects,
+    })
+    return True
+
+
 CHOOSE_DECISION_HANDLERS = {
     EffectType.EffectType_Choice: handle_choice,
     EffectType.EffectType_ChooseCards: handle_choose_cards,
@@ -542,4 +590,5 @@ CHOOSE_DECISION_HANDLERS = {
     EffectType.EffectType_OrderCards: handle_order_cards,
     EffectType.EffectType_GenerateChoiceTemplate: handle_generate_choice_template,
     EffectType.EffectType_MultipleDieRoll: handle_multiple_die_roll,
+    EffectType.EffectType_ReturnStackedToHand: handle_return_stacked_to_hand,
 }

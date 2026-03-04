@@ -612,6 +612,9 @@ def handle_send_cheer(engine, effect_player, effect):
                         source_card_id = effect.get("source_card_id", "")
                         holomems = effect_player.get_holomem_on_stage()
                         to_options = [card for card in holomems if card["game_card_id"] == source_card_id]
+                    case "last_chosen":
+                        holomems = effect_player.get_holomem_on_stage()
+                        to_options = [card for card in holomems if card["game_card_id"] in engine.last_chosen_cards]
                     case _:
                         raise NotImplementedError(f"Unimplemented to limitation: {to_limitation}")
             else:

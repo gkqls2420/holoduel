@@ -1117,6 +1117,101 @@ class ActionHandlerMixin:
 
         continuation()
 
+    def handle_redirect_damage_choice(self, decision_info_copy, performing_player_id:str, card_ids:List[str], continuation):
+        effect_player = self.get_player(performing_player_id)
+        redirect_target_id = card_ids[0]
+        redirect_target, _, _ = effect_player.find_card(redirect_target_id)
+        self.take_damage_state.redirect_target = redirect_target
+        self.take_damage_state.redirect_target_player = effect_player
+        continuation()
+
+    def handle_return_stacked_choose_cards(self, decision_info_copy, performing_player_id:str, card_ids:List[str], continuation):
+        effect_player = self.get_player(performing_player_id)
+        holomem_id = card_ids[0]
+        holomem_card, _, _ = effect_player.find_card(holomem_id)
+        if not holomem_card:
+            continuation()
+            return
+
+        self.last_chosen_holomem_id = holomem_id
+        stacked_holomems = [c for c in holomem_card.get("stacked_cards", []) if is_card_holomem(c)]
+        if len(stacked_holomems) == 0:
+            continuation()
+            return
+
+        amount_min = decision_info_copy.get("amount_min", decision_info_copy.get("amount_min_stacked", 1))
+        amount_max = min(decision_info_copy.get("amount_max", decision_info_copy.get("amount_max_stacked", 2)), len(stacked_holomems))
+        stacked_ids = ids_from_cards(stacked_holomems)
+
+        decision_event = {
+            "event_type": EventType.EventType_Decision_ChooseCards,
+            "desired_response": GameAction.EffectResolution_ChooseCardsForEffect,
+            "effect_player_id": performing_player_id,
+            "all_card_seen": stacked_ids,
+            "cards_can_choose": stacked_ids,
+            "amount_min": amount_min,
+            "amount_max": amount_max,
+            "effect": decision_info_copy.get("effect", {}),
+        }
+        self.broadcast_event(decision_event)
+        self.set_decision({
+            "decision_type": DecisionType.DecisionEffect_ChooseCardsForEffect,
+            "decision_player": performing_player_id,
+            "all_card_seen": stacked_ids,
+            "cards_can_choose": stacked_ids,
+            "amount_min": amount_min,
+            "amount_max": amount_max,
+            "holomem_id": holomem_id,
+            "effect": decision_info_copy.get("effect", {}),
+            "effect_resolution": self.handle_return_stacked_result,
+            "continuation": continuation,
+        })
+
+    def handle_return_stacked_result(self, decision_info_copy, performing_player_id:str, card_ids:List[str], continuation):
+        effect_player = self.get_player(performing_player_id)
+        holomem_id = decision_info_copy["holomem_id"]
+        holomem_card, _, _ = effect_player.find_card(holomem_id)
+        if not holomem_card:
+            continuation()
+            return
+
+        returned_count = 0
+        for card_id in card_ids:
+            for stacked in holomem_card.get("stacked_cards", []):
+                if stacked["game_card_id"] == card_id:
+                    holomem_card["stacked_cards"].remove(stacked)
+                    effect_player.hand.append(stacked)
+                    effect_player.reset_card_stats(stacked)
+                    move_event = {
+                        "event_type": EventType.EventType_MoveCard,
+                        "moving_player_id": performing_player_id,
+                        "from": holomem_id,
+                        "to_zone": "hand",
+                        "zone_card_id": "",
+                        "card_id": card_id,
+                    }
+                    self.broadcast_event(move_event)
+                    returned_count += 1
+                    break
+
+        self.last_card_count = returned_count
+        self.last_chosen_cards = card_ids
+        self.broadcast_bonus_hp_updates()
+
+        effect = decision_info_copy.get("effect", {})
+        and_effects = effect.get("and", [])
+        if and_effects:
+            chained_effects = deepcopy(and_effects)
+            for chained in chained_effects:
+                turn_effect = chained.get("turn_effect", {})
+                if "amount_per_last_card_count" in turn_effect:
+                    per_amount = turn_effect.pop("amount_per_last_card_count")
+                    turn_effect["amount"] = per_amount * returned_count
+            add_ids_to_effects(chained_effects, performing_player_id, effect.get("source_card_id", ""))
+            self.add_effects_to_front(chained_effects)
+
+        continuation()
+
     def handle_choose_stacked_to_hand_result(self, decision_info_copy, performing_player_id:str, card_ids:List[str], continuation):
         # Store the chosen card IDs to be sent to hand when the holomem is processed as downed
         self.stacked_cards_to_hand_ids = card_ids

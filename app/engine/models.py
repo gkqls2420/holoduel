@@ -28,6 +28,8 @@ class TakeDamageState:
         self.special = False
         self.prevent_life_loss = False
         self.art_info = {}
+        self.redirect_target = None
+        self.redirect_target_player = None
 
         self.nested_state = None
 
