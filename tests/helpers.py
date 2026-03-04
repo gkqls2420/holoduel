@@ -46,8 +46,16 @@ def validate_event(self : unittest.TestCase, event, event_type, event_player_id,
     for key, value in event_data.items():
         self.assertEqual(event[key], value)
 
+FILTERED_EVENT_TYPES = {EventType.EventType_BonusHpUpdate}
+
+def filter_events(events: list) -> list:
+    return [e for e in events if e.get("event_type") not in FILTERED_EVENT_TYPES]
+
 def validate_consecutive_events(self: unittest.TestCase, player_id: str, for_events: list, against_data: list[(EventType, dict)]):
-    player_events = list(filter(lambda event: event["event_player_id"] == player_id, for_events))
+    player_events = list(filter(
+        lambda event: event["event_player_id"] == player_id and event["event_type"] not in FILTERED_EVENT_TYPES,
+        for_events
+    ))
 
     self.assertGreater(len(player_events), 0, f"No events for {player_id}")
     self.assertEqual(len(player_events), len(against_data), f"Events to compare are not equal")
@@ -231,8 +239,9 @@ def do_bloom(self : unittest.TestCase, player : PlayerState, card_id, target_id)
     })
     events = self.engine.grab_events()
     validate_last_event_not_error(self, events)
-    self.assertEqual(len(events), 4) # bloom + mainstep again
-    validate_event(self, events[0], EventType.EventType_Bloom, player.player_id, {
+    filtered = filter_events(events)
+    self.assertEqual(len(filtered), 4) # bloom + mainstep again
+    validate_event(self, filtered[0], EventType.EventType_Bloom, player.player_id, {
         "bloom_player_id": player.player_id,
         "bloom_card_id": card_id,
         "target_card_id": target_id,

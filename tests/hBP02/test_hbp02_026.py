@@ -84,7 +84,8 @@ class Test_hBP02_026(unittest.TestCase):
                 "from_zone": "cheer_deck",
                 "to_zone": "holomem" })
         ])
-        cards_can_choose = events[2]["cards_can_choose"]
+        choose_event = next(e for e in events if e["event_type"] == EventType.EventType_Decision_ChooseCards and e["event_player_id"] == self.player1)
+        cards_can_choose = choose_event["cards_can_choose"]
         self.assertEqual(len(cards_can_choose), 1)
         self.assertEqual(cards_can_choose[0], g1["game_card_id"])
         # Only 1 cheer, so choose it.
@@ -96,7 +97,8 @@ class Test_hBP02_026(unittest.TestCase):
         validate_consecutive_events(self, self.player1, events, [
             (EventType.EventType_Decision_ChooseHolomemForEffect, {})
         ])
-        cards_can_choose = events[0]["cards_can_choose"]
+        holomem_event = next(e for e in events if e["event_type"] == EventType.EventType_Decision_ChooseHolomemForEffect and e["event_player_id"] == self.player1)
+        cards_can_choose = holomem_event["cards_can_choose"]
         # Only Gamers are options
         self.assertEqual(len(cards_can_choose), 2)
         engine.handle_game_message(self.player1, GameAction.EffectResolution_ChooseCardsForEffect, {

@@ -296,6 +296,7 @@ class AIPlayer:
             EventType.EventType_LifeDamageDealt: self._handle_event_ignore,
             EventType.EventType_SpecialActionActivation: self._handle_event_ignore,
             EventType.EventType_Bloom: self._handle_event_ignore,
+            EventType.EventType_BonusHpUpdate: self._handle_event_ignore,
             EventType.EventType_BoostStat: self._handle_event_ignore,
             EventType.EventType_CheerStep: self._handle_cheer_step,
             EventType.EventType_Choice_SendCollabBack: self._handle_choice,

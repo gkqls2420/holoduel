@@ -7374,6 +7374,12 @@
         ],
         "rarity": "u",
         "limited": true,
+        "play_conditions": [
+            {
+                "condition": "opponent_zone_has_holomem",
+                "condition_zone": "center"
+            }
+        ],
         "effects": [
             {
                 "effect_type": "switch_center_with_back",
@@ -8546,12 +8552,6 @@
                         ]
                     },
                     {
-                        "effect_type": "order_cards",
-                        "from": "deck",
-                        "destination": "deck",
-                        "amount": 3
-                    },
-                    {
                         "effect_type": "reveal_top_deck",
                         "amount": 3
                     },
@@ -8559,10 +8559,13 @@
                         "effect_type": "choice",
                         "choice": [
                             {
-                                "effect_type": "pass"
+                                "effect_type": "archive_revealed_cards"
                             },
                             {
-                                "effect_type": "archive_revealed_cards"
+                                "effect_type": "order_cards",
+                                "from": "deck",
+                                "destination": "deck",
+                                "amount": 3
                             }
                         ]
                     }
@@ -8686,6 +8689,112 @@
                         "target_condition": "bloomable_this_turn",
                         "target_location": "stage",
                         "optional": true
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP02-007",
+        "card_type": "oshi",
+        "card_names": [
+            "mori_calliope"
+        ],
+        "colors": [
+            "purple"
+        ],
+        "rarity": "osr",
+        "life": 5,
+        "actions": [
+            {
+                "skill_id": "sampling",
+                "cost": 2,
+                "limit": "once_per_turn",
+                "effects": [
+                    {
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_turn",
+                        "skill_id": "sampling",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_turn_effect",
+                                "effect_id": "sampling"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "archive_from_hand",
+                        "amount": 2,
+                        "and": [
+                            {
+                                "effect_type": "choose_cards",
+                                "from": "archive",
+                                "look_at": -1,
+                                "destination": "hand",
+                                "amount_min": 2,
+                                "amount_max": 2,
+                                "requirement": "holomem",
+                                "requirement_tags": [
+                                    "#EN"
+                                ],
+                                "remaining_cards_action": "nothing"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "skill_id": "shinigami_rap",
+                "cost": 2,
+                "limit": "once_per_game",
+                "action_conditions": [
+                    {
+                        "condition": "holomem_on_stage",
+                        "location": "center",
+                        "required_member_name_in": [
+                            "mori_calliope"
+                        ]
+                    }
+                ],
+                "effects": [
+                    {
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_game",
+                        "skill_id": "shinigami_rap",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_game_effect",
+                                "effect_id": "shinigami_rap"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "add_turn_effect_for_holomem",
+                        "limitation": "name_in",
+                        "limitation_names": [
+                            "mori_calliope"
+                        ],
+                        "turn_effect": {
+                            "timing": "before_art",
+                            "conditions": [
+                                {
+                                    "condition": "performer_is_specific_id",
+                                    "required_id": "REPLACED_BY_EFFECT"
+                                },
+                                {
+                                    "condition": "is_not_art_repeat"
+                                }
+                            ],
+                            "effect_type": "repeat_art"
+                        }
                     }
                 ]
             }
@@ -10997,6 +11106,358 @@
         ]
     },
     {
+        "card_id": "hBP02-054",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "mori_calliope"
+        ],
+        "special_deck_limit": 50,
+        "rarity": "c",
+        "colors": [
+            "purple"
+        ],
+        "hp": 90,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Myth",
+            "#Song"
+        ],
+        "arts": [
+            {
+                "art_id": "grim_reapers_first_apprentice",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "holomem_in_archive",
+                                "amount_min": 1
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 10
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP02-055",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "mori_calliope"
+        ],
+        "rarity": "u",
+        "colors": [
+            "purple"
+        ],
+        "hp": 80,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Myth",
+            "#Song"
+        ],
+        "arts": [
+            {
+                "art_id": "my_stage",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 2
+                    }
+                ],
+                "power": 20
+            }
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "archive_from_hand",
+                        "amount": 1,
+                        "requirement": "holomem",
+                        "and": [
+                            {
+                                "effect_type": "add_turn_effect_for_holomem",
+                                "limitation": "tag_in",
+                                "limitation_tags": [
+                                    "#Myth"
+                                ],
+                                "turn_effect": {
+                                    "timing": "before_art",
+                                    "conditions": [
+                                        {
+                                            "condition": "performer_is_specific_id",
+                                            "required_id": "REPLACED_BY_EFFECT"
+                                        }
+                                    ],
+                                    "effect_type": "power_boost",
+                                    "amount": 20
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "pass"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP02-056",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "mori_calliope"
+        ],
+        "rarity": "c",
+        "colors": [
+            "purple"
+        ],
+        "hp": 110,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Myth",
+            "#Song"
+        ],
+        "arts": [
+            {
+                "art_id": "cash_money",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 1
+                    }
+                ],
+                "power": 50
+            }
+        ]
+    },
+    {
+        "card_id": "hBP02-057",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "mori_calliope"
+        ],
+        "rarity": "u",
+        "colors": [
+            "purple"
+        ],
+        "hp": 130,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Myth",
+            "#Song"
+        ],
+        "arts": [
+            {
+                "art_id": "lets_heat_up_together",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 50
+            }
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "archive_from_hand",
+                        "amount": 2,
+                        "requirement": "holomem",
+                        "requirement_same_tag": true,
+                        "and": [
+                            {
+                                "effect_type": "draw",
+                                "amount": 2
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "pass"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP02-058",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "mori_calliope"
+        ],
+        "rarity": "r",
+        "colors": [
+            "purple"
+        ],
+        "hp": 140,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Myth",
+            "#Song"
+        ],
+        "arts": [
+            {
+                "art_id": "dead_beat",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "has_attachment_of_types_any",
+                                "condition_types": [
+                                    "tool",
+                                    "mascot"
+                                ]
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 30
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "archive",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "specific_card",
+                "requirement_card_names": [
+                    "mori_calliopes_scythe",
+                    "death_sensei"
+                ],
+                "remaining_cards_action": "nothing"
+            }
+        ]
+    },
+    {
+        "card_id": "hBP02-059",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "mori_calliope"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "purple"
+        ],
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": [
+            "#EN",
+            "#Myth",
+            "#Song"
+        ],
+        "arts": [
+            {
+                "art_id": "featuring_myth",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 2
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 80,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "blue"
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 50
+                    },
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "holomem_in_archive",
+                                "amount_min": 4,
+                                "tag_in": [
+                                    "#Myth"
+                                ]
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 40
+                    },
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "holomem_in_archive",
+                                "amount_min": 8,
+                                "tag_in": [
+                                    "#Myth"
+                                ]
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 40
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "archive",
+                "amount_min": 1,
+                "amount_max": 1,
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ]
+    },
+    {
         "card_id": "hBP02-062",
         "card_type": "holomem_bloom",
         "bloom_level": 1,
@@ -11703,6 +12164,48 @@
         ]
     },
     {
+        "card_id": "hBP02-088",
+        "card_type": "support",
+        "sub_type": "tool",
+        "colors": [],
+        "card_names": [
+            "mori_calliopes_scythe"
+        ],
+        "rarity": "u",
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "before_art",
+                "effect_type": "power_boost",
+                "amount": 10
+            },
+            {
+                "timing": "on_attach",
+                "conditions": [
+                    {
+                        "condition": "attached_to",
+                        "required_member_name": "mori_calliope",
+                        "required_bloom_levels": [
+                            1,
+                            2
+                        ]
+                    }
+                ],
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": 1,
+                "destination": "archive",
+                "amount_min": 1,
+                "amount_max": 1,
+                "remaining_cards_action": "nothing"
+            }
+        ]
+    },
+    {
         "card_id": "hBP02-089",
         "card_type": "support",
         "sub_type": "mascot",
@@ -12085,6 +12588,39 @@
                         "amount": 1
                     }
                 ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP02-098",
+        "card_type": "support",
+        "sub_type": "mascot",
+        "colors": [],
+        "card_names": [
+            "death_sensei"
+        ],
+        "rarity": "c",
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "check_hp",
+                "effect_type": "bonus_hp",
+                "amount": 20
+            },
+            {
+                "timing": "on_art_cost_check",
+                "conditions": [
+                    {
+                        "condition": "attached_to",
+                        "required_member_name": "mori_calliope"
+                    }
+                ],
+                "effect_type": "convert_art_cost_colors",
+                "target_color": "any"
             }
         ]
     },
@@ -14909,6 +15445,89 @@
         ]
     },
     {
+        "card_id": "hBP04-062",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "buzz": true,
+        "card_names": [
+            "mori_calliope"
+        ],
+        "rarity": "r",
+        "colors": [
+            "purple"
+        ],
+        "hp": 240,
+        "baton_cost": 2,
+        "down_life_cost": 2,
+        "tags": [
+            "#EN",
+            "#Myth",
+            "#Song"
+        ],
+        "arts": [
+            {
+                "art_id": "last_drink",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 50,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "choose_cards",
+                        "from": "deck",
+                        "look_at": 2,
+                        "destination": "archive",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "remaining_cards_action": "order_on_top"
+                    }
+                ]
+            }
+        ],
+        "gift_effects": [
+            {
+                "timing": "before_art",
+                "conditions": [
+                    {
+                        "condition": "this_card_is_center_or_collab"
+                    },
+                    {
+                        "condition": "or",
+                        "or_conditions": [
+                            {
+                                "condition": "has_attached_card",
+                                "required_card_name": "mori_calliopes_scythe"
+                            },
+                            {
+                                "condition": "has_attached_card",
+                                "required_card_name": "death_sensei"
+                            }
+                        ]
+                    },
+                    {
+                        "condition": "performer_has_any_tag",
+                        "condition_tags": [
+                            "#Myth"
+                        ]
+                    },
+                    {
+                        "condition": "performer_is_center"
+                    }
+                ],
+                "effect_type": "power_boost",
+                "amount": 30
+            }
+        ]
+    },
+    {
         "card_id": "hBP04-067",
         "card_type": "holomem_debut",
         "card_names": [
@@ -15858,6 +16477,236 @@
                     },
                     {
                         "effect_type": "pass"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-079",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "natsuiro_matsuri"
+        ],
+        "rarity": "c",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 120,
+        "baton_cost": 1,
+        "special_deck_limit": 50,
+        "tags": [
+            "#JP",
+            "#Gen1",
+            "#Shooter"
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_down",
+                "conditions": [
+                    {
+                        "condition": "opponent_turn"
+                    },
+                    {
+                        "condition": "downed_card_is_this"
+                    }
+                ],
+                "effect_type": "send_cheer",
+                "amount_min": 0,
+                "amount_max": 1,
+                "from": "downed_holomem",
+                "to": "holomem",
+                "multi_to": false
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "hololive_no_seiso_tantou",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 10
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-080",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "natsuiro_matsuri"
+        ],
+        "rarity": "c",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 180,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#Gen1",
+            "#Shooter"
+        ],
+        "arts": [
+            {
+                "art_id": "natsuiro_ouentan",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            },
+            {
+                "art_id": "tatakae_chi_wo_chi_de_arae",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 50
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-081",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "natsuiro_matsuri"
+        ],
+        "rarity": "u",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 120,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#Gen1",
+            "#Shooter"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "cheer_deck",
+                "look_at": -1,
+                "destination": "holomem",
+                "to_limitation": "source_card",
+                "amount_min": 1,
+                "amount_max": 1,
+                "requirement": "color_in",
+                "requirement_colors": [
+                    "yellow"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "zenryoku_de_utau_yo",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 1
+                    }
+                ],
+                "power": 20
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-082",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "natsuiro_matsuri"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 180,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#Gen1",
+            "#Shooter"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "multiple_die_roll",
+                "amount": "per_unique_tag_members",
+                "tag": "#Gen1",
+                "source": "holomem_ability",
+                "die_effects": [
+                    {
+                        "effect_type": "choice",
+                        "choice": [
+                            {
+                                "effect_type": "roll_die",
+                                "source": "holomem_ability",
+                                "die_effects": [
+                                    {
+                                        "english_values": "4+",
+                                        "activate_on_values": [
+                                            4,
+                                            5,
+                                            6
+                                        ],
+                                        "effects": [
+                                            {
+                                                "effect_type": "send_cheer",
+                                                "amount_min": 1,
+                                                "amount_max": 1,
+                                                "from": "cheer_deck",
+                                                "to": "holomem",
+                                                "to_limitation": "source_card"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "effect_type": "pass"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "mam_ni_deuneun_geo_chajassda",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 1
+                    }
+                ],
+                "power": 60,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost_per_attached_cheer",
+                        "amount": 20
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "white"
+                            }
+                        ]
                     }
                 ]
             }
@@ -19038,6 +19887,317 @@
         ]
     },
     {
+        "card_id": "hBP06-057",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "mori_calliope"
+        ],
+        "rarity": "c",
+        "colors": [
+            "blue"
+        ],
+        "hp": 110,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Myth",
+            "#Song"
+        ],
+        "arts": [
+            {
+                "art_id": "moris_underground_live",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 20,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "draw",
+                        "amount": 1,
+                        "and": [
+                            {
+                                "effect_type": "archive_from_hand",
+                                "amount": 1
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-058",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "mori_calliope"
+        ],
+        "rarity": "u",
+        "colors": [
+            "blue"
+        ],
+        "hp": 160,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Myth",
+            "#Song"
+        ],
+        "arts": [
+            {
+                "art_id": "a_chefs_journeys_end",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "self_has_cheer_color",
+                                "condition_colors": [
+                                    "purple"
+                                ],
+                                "amount_min": 1
+                            }
+                        ],
+                        "effect_type": "draw",
+                        "amount": 1
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "choose_cards",
+                        "from": "deck",
+                        "look_at": 2,
+                        "destination": "archive",
+                        "amount_min": 2,
+                        "amount_max": 2,
+                        "remaining_cards_action": "nothing"
+                    }
+                ]
+            }
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "draw",
+                "amount": 3,
+                "and": [
+                    {
+                        "effect_type": "archive_from_hand",
+                        "amount": 2
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-059",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "mori_calliope"
+        ],
+        "rarity": "r",
+        "colors": [
+            "blue"
+        ],
+        "hp": 160,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Myth",
+            "#Song"
+        ],
+        "arts": [
+            {
+                "art_id": "in_a_dream",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 3
+                    }
+                ],
+                "power": 80
+            }
+        ],
+        "bloom_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "holomem_on_stage",
+                        "tag_in": [
+                            "#EN"
+                        ],
+                        "amount_min": 3
+                    }
+                ],
+                "effect_type": "choose_cards",
+                "from": "cheer_deck",
+                "look_at": -1,
+                "destination": "holomem",
+                "amount_min": 1,
+                "amount_max": 1,
+                "requirement": "color_in",
+                "requirement_colors": [
+                    "purple",
+                    "blue"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-060",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "mori_calliope"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "blue"
+        ],
+        "hp": 210,
+        "baton_cost": 2,
+        "tags": [
+            "#EN",
+            "#Myth",
+            "#Song"
+        ],
+        "arts": [
+            {
+                "art_id": "bulls_eye",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 60,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "red"
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 50
+                    },
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "oshi_is",
+                                "required_member_name": "mori_calliope"
+                            }
+                        ],
+                        "effect_type": "choice",
+                        "choice": [
+                            {
+                                "effect_type": "choose_cards",
+                                "from": "deck",
+                                "look_at": 2,
+                                "destination": "archive",
+                                "amount_min": 2,
+                                "amount_max": 2,
+                                "remaining_cards_action": "nothing",
+                                "and": [
+                                    {
+                                        "effect_type": "send_cheer",
+                                        "amount_min": 1,
+                                        "amount_max": 1,
+                                        "from": "cheer_deck",
+                                        "to": "holomem"
+                                    }
+                                ]
+                            },
+                            {
+                                "effect_type": "pass"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "art_id": "memento_mori",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 4
+                    }
+                ],
+                "power": 200,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "red"
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 50
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "add_turn_effect_for_holomem",
+                        "limitation": "tag_in",
+                        "limitation_tags": [
+                            "#Myth"
+                        ],
+                        "turn_effect": {
+                            "timing": "before_art",
+                            "conditions": [
+                                {
+                                    "condition": "performer_is_specific_id",
+                                    "required_id": "REPLACED_BY_EFFECT"
+                                }
+                            ],
+                            "effect_type": "power_boost",
+                            "amount": 20
+                        }
+                    },
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "oshi_is",
+                                "required_member_name": "mori_calliope"
+                            },
+                            {
+                                "condition": "holomem_in_archive",
+                                "amount_min": 8
+                            }
+                        ],
+                        "effect_type": "choice",
+                        "choice": [
+                            {
+                                "effect_type": "draw",
+                                "amount": 1
+                            },
+                            {
+                                "effect_type": "pass"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP06-067",
         "card_type": "holomem_debut",
         "card_names": [
@@ -19416,6 +20576,56 @@
         ]
     },
     {
+        "card_id": "hBP06-085",
+        "card_type": "support",
+        "sub_type": "item",
+        "colors": [],
+        "card_names": [
+            "favoritepc"
+        ],
+        "rarity": "u",
+        "limited": true,
+        "effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "holomem_debut",
+                "reveal_chosen": true,
+                "remaining_cards_action": "nothing",
+                "after_choose_effect": {
+                    "effect_type": "choose_cards",
+                    "from": "deck",
+                    "look_at": -1,
+                    "destination": "hand",
+                    "amount_min": 0,
+                    "amount_max": 1,
+                    "requirement": "buzz",
+                    "requirement_same_name_as_last_choice": true,
+                    "reveal_chosen": true,
+                    "remaining_cards_action": "nothing"
+                }
+            },
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "support",
+                "requirement_tags": [
+                    "#BuzzGoods"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ]
+    },
+    {
         "card_id": "hBP06-021",
         "card_type": "holomem_bloom",
         "bloom_level": 2,
@@ -19778,6 +20988,52 @@
         ]
     },
     {
+        "card_id": "hBP06-097",
+        "card_type": "support",
+        "sub_type": "tool",
+        "colors": [],
+        "card_names": [
+            "kawaii_sutajan"
+        ],
+        "rarity": "c",
+        "tags": [
+            "#BuzzGoods"
+        ],
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "check_hp",
+                "effect_type": "bonus_hp",
+                "amount": 30,
+                "conditions": [
+                    {
+                        "condition": "attached_owner_is_buzz"
+                    }
+                ]
+            },
+            {
+                "timing": "on_take_damage",
+                "effect_type": "reduce_damage",
+                "amount": "all",
+                "conditions": [
+                    {
+                        "condition": "attached_owner_is_buzz"
+                    },
+                    {
+                        "condition": "damage_source_is_opponent"
+                    },
+                    {
+                        "condition": "damage_not_from_art"
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP06-099",
         "card_type": "support",
         "sub_type": "tool",
@@ -19825,6 +21081,614 @@
                         "effect_type": "pass"
                     }
                 ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-004",
+        "card_type": "oshi",
+        "card_names": [
+            "nakiri_ayame"
+        ],
+        "colors": [
+            "red"
+        ],
+        "rarity": "osr",
+        "life": 5,
+        "actions": [
+            {
+                "skill_id": "oni_enra",
+                "cost": 2,
+                "limit": "once_per_turn",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "skill_id": "oni_enra",
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_turn",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_turn_effect",
+                                "effect_id": "oni_enra"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "generate_choice_template",
+                        "starts_at": 1,
+                        "ends_at": 2,
+                        "can_pass": false,
+                        "usage_count_restriction": "cheer_deck",
+                        "template_choice": {
+                            "effect_type": "choose_cards",
+                            "from": "cheer_deck",
+                            "look_at": "X",
+                            "destination": "archive",
+                            "amount_min": "X",
+                            "amount_max": "X",
+                            "remaining_cards_action": "nothing",
+                            "and": [
+                                {
+                                    "effect_type": "draw",
+                                    "amount": "last_card_count"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "skill_id": "idouissen_onigiri",
+                "cost": 2,
+                "limit": "once_per_game",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "skill_id": "idouissen_onigiri",
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_game",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_game_effect",
+                                "effect_id": "idouissen_onigiri"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "deal_damage_per_cheer_in_archive",
+                        "amount_per": 20,
+                        "special": true,
+                        "target": "center_or_collab",
+                        "opponent": true
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-034",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "nakiri_ayame"
+        ],
+        "rarity": "c",
+        "colors": [
+            "red"
+        ],
+        "hp": 130,
+        "baton_cost": 0,
+        "tags": [
+            "#JP",
+            "#Gen2",
+            "#Shooter"
+        ],
+        "arts": [
+            {
+                "art_id": "exciting_summer_beach_date",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 10,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "choice",
+                        "conditions": [
+                            {
+                                "condition": "can_archive_from_hand",
+                                "amount_min": 1,
+                                "condition_source": "holomem_red"
+                            }
+                        ],
+                        "choice": [
+                            {
+                                "effect_type": "archive_from_hand",
+                                "ability_source": "holomem_red",
+                                "amount": 1,
+                                "and": [
+                                    {
+                                        "effect_type": "add_turn_effect",
+                                        "turn_effect": {
+                                            "timing": "before_art",
+                                            "conditions": [
+                                                {
+                                                    "condition": "performer_is_center"
+                                                },
+                                                {
+                                                    "condition": "performer_is_member_name",
+                                                    "required_member_names": [
+                                                        "nakiri_ayame"
+                                                    ]
+                                                }
+                                            ],
+                                            "effect_type": "power_boost",
+                                            "amount": 30
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "effect_type": "pass"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-035",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "nakiri_ayame"
+        ],
+        "rarity": "u",
+        "colors": [
+            "red"
+        ],
+        "hp": 120,
+        "baton_cost": 0,
+        "tags": [
+            "#JP",
+            "#Gen2",
+            "#Shooter"
+        ],
+        "arts": [
+            {
+                "art_id": "wanna_sleep_more",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 20
+            }
+        ],
+        "collab_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "is_going_second_and_first_turn"
+                    }
+                ],
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "holomem",
+                "to_limitation": "specific_member_name",
+                "to_limitation_name": "nakiri_ayame",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "support",
+                "requirement_sub_types": [
+                    "tool",
+                    "mascot",
+                    "fan"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-036",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "nakiri_ayame"
+        ],
+        "rarity": "c",
+        "colors": [
+            "red"
+        ],
+        "hp": 140,
+        "baton_cost": 0,
+        "tags": [
+            "#JP",
+            "#Gen2",
+            "#Shooter"
+        ],
+        "arts": [
+            {
+                "art_id": "happy_time_after_bath",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "choice",
+                        "choice": [
+                            {
+                                "effect_type": "choose_cards",
+                                "from": "cheer_deck",
+                                "look_at": 1,
+                                "destination": "archive",
+                                "amount_min": 1,
+                                "amount_max": 1,
+                                "remaining_cards_action": "nothing",
+                                "and": [
+                                    {
+                                        "effect_type": "draw",
+                                        "amount": 1
+                                    }
+                                ]
+                            },
+                            {
+                                "effect_type": "pass"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "specific_card",
+                "requirement_card_names": [
+                    "asura_rakshasa",
+                    "kijinto_asura",
+                    "poyoyo"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-037",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "nakiri_ayame"
+        ],
+        "rarity": "u",
+        "colors": [
+            "red"
+        ],
+        "hp": 140,
+        "baton_cost": 0,
+        "tags": [
+            "#JP",
+            "#Gen2",
+            "#Shooter"
+        ],
+        "arts": [
+            {
+                "art_id": "stay_healthy_forever",
+                "costs": [
+                    {
+                        "color": "red",
+                        "amount": 2
+                    }
+                ],
+                "power": 50,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "choice",
+                        "choice": [
+                            {
+                                "effect_type": "choose_cards",
+                                "from": "cheer_deck",
+                                "look_at": 1,
+                                "destination": "archive",
+                                "amount_min": 1,
+                                "amount_max": 1,
+                                "remaining_cards_action": "nothing",
+                                "and": [
+                                    {
+                                        "effect_type": "deal_damage",
+                                        "special": true,
+                                        "target": "center_or_collab",
+                                        "opponent": true,
+                                        "amount": 30
+                                    }
+                                ]
+                            },
+                            {
+                                "effect_type": "pass"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "archive",
+                "look_at": -1,
+                "destination": "cheer_deck_bottom",
+                "amount_min": 0,
+                "amount_max": 2,
+                "requirement": "cheer",
+                "remaining_cards_action": "nothing"
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-038",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "nakiri_ayame"
+        ],
+        "rarity": "r",
+        "colors": [
+            "red"
+        ],
+        "hp": 140,
+        "baton_cost": 0,
+        "tags": [
+            "#JP",
+            "#Gen2",
+            "#Shooter"
+        ],
+        "arts": [
+            {
+                "art_id": "here_we_go",
+                "costs": [
+                    {
+                        "color": "red",
+                        "amount": 1
+                    }
+                ],
+                "power": 30,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "choice",
+                        "choice": [
+                            {
+                                "effect_type": "choose_cards",
+                                "from": "cheer_deck",
+                                "look_at": 1,
+                                "destination": "archive",
+                                "amount_min": 1,
+                                "amount_max": 1,
+                                "remaining_cards_action": "nothing",
+                                "and": [
+                                    {
+                                        "effect_type": "deal_damage",
+                                        "special": true,
+                                        "target": "center_or_collab",
+                                        "opponent": true,
+                                        "amount": 20
+                                    }
+                                ]
+                            },
+                            {
+                                "effect_type": "pass"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "choose_cards",
+                        "from": "cheer_deck",
+                        "look_at": 1,
+                        "destination": "archive",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "remaining_cards_action": "nothing",
+                        "and": [
+                            {
+                                "effect_type": "choose_cards",
+                                "from": "archive",
+                                "look_at": -1,
+                                "destination": "hand",
+                                "amount_min": 0,
+                                "amount_max": 1,
+                                "requirement": "holomem_named",
+                                "requirement_names": [
+                                    "nakiri_ayame"
+                                ],
+                                "remaining_cards_action": "nothing"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "pass"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-039",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "nakiri_ayame"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "red"
+        ],
+        "hp": 160,
+        "baton_cost": 0,
+        "tags": [
+            "#JP",
+            "#Gen2",
+            "#Shooter"
+        ],
+        "arts": [
+            {
+                "art_id": "hyakkiyagyo_nougetsu",
+                "costs": [
+                    {
+                        "color": "red",
+                        "amount": 2
+                    }
+                ],
+                "power": 80,
+                "art_conditions": [
+                    {
+                        "condition": "or",
+                        "or_conditions": [
+                            {
+                                "condition": "performer_is_center"
+                            },
+                            {
+                                "condition": "life_at_most",
+                                "amount": 2
+                            }
+                        ]
+                    }
+                ],
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "green"
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "oshi_is",
+                                "required_member_name": "nakiri_ayame"
+                            }
+                        ],
+                        "effect_type": "generate_choice_template",
+                        "starts_at": 1,
+                        "ends_at": 3,
+                        "can_pass": true,
+                        "usage_count_restriction": "cheer_deck",
+                        "template_choice": {
+                            "effect_type": "choose_cards",
+                            "from": "cheer_deck",
+                            "look_at": "X",
+                            "destination": "archive",
+                            "amount_min": "X",
+                            "amount_max": "X",
+                            "remaining_cards_action": "nothing",
+                            "and": [
+                                {
+                                    "effect_type": "power_boost",
+                                    "amount": 40,
+                                    "multiplier": "last_chosen_count"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_take_damage",
+                "conditions": [
+                    {
+                        "condition": "self_zone_has_holomem",
+                        "condition_zone": "collab"
+                    },
+                    {
+                        "condition": "opponent_has_no_collab"
+                    },
+                    {
+                        "condition": "damage_is_not_special"
+                    },
+                    {
+                        "condition": "damage_source_is_opponent"
+                    }
+                ],
+                "effect_type": "reduce_damage",
+                "amount": "all"
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-098",
+        "card_type": "support",
+        "sub_type": "tool",
+        "card_names": [
+            "kijinto_asura"
+        ],
+        "rarity": "u",
+        "colors": [],
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "before_art",
+                "effect_type": "power_boost",
+                "amount": 10
+            },
+            {
+                "timing": "on_collab",
+                "conditions": [
+                    {
+                        "condition": "attached_to",
+                        "required_member_name": "nakiri_ayame"
+                    },
+                    {
+                        "condition": "life_at_most",
+                        "amount": 1
+                    },
+                    {
+                        "condition": "opponent_has_no_collab"
+                    }
+                ],
+                "effect_type": "opponent_move_back_to_collab"
             }
         ]
     },
@@ -19916,6 +21780,587 @@
                         ],
                         "effect_type": "power_boost",
                         "amount": 40
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-072",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "natsuiro_matsuri"
+        ],
+        "rarity": "c",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 100,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#Gen1",
+            "#Shooter"
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_take_damage",
+                "conditions": [
+                    {
+                        "condition": "damage_source_bloom_level",
+                        "condition_bloom_level": 1
+                    }
+                ],
+                "effect_type": "reduce_damage",
+                "amount": 30
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "yugan",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 20
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-073",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "natsuiro_matsuri"
+        ],
+        "rarity": "u",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 110,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#Gen1",
+            "#Shooter"
+        ],
+        "collab_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "is_going_second_and_first_turn"
+                    },
+                    {
+                        "condition": "oshi_is",
+                        "required_member_name": "natsuiro_matsuri"
+                    }
+                ],
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "limited",
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "gomawo",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 10
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-102",
+        "card_type": "support",
+        "sub_type": "mascot",
+        "card_names": [
+            "ebifuraion"
+        ],
+        "rarity": "c",
+        "colors": [],
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "check_hp",
+                "effect_type": "bonus_hp",
+                "amount": 20
+            },
+            {
+                "timing": "on_down",
+                "conditions": [
+                    {
+                        "condition": "opponent_turn"
+                    },
+                    {
+                        "condition": "attached_to",
+                        "required_member_name": "natsuiro_matsuri"
+                    }
+                ],
+                "effect_type": "send_cheer",
+                "amount_min": 0,
+                "amount_max": 1,
+                "from": "downed_holomem",
+                "to": "holomem",
+                "to_limitation": "specific_member_name",
+                "to_limitation_name": "natsuiro_matsuri"
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-008",
+        "card_type": "oshi",
+        "card_names": [
+            "natsuiro_matsuri"
+        ],
+        "colors": [
+            "yellow"
+        ],
+        "rarity": "osr",
+        "life": 5,
+        "actions": [
+            {
+                "skill_id": "matsurida_wasshoi",
+                "cost": 2,
+                "limit": "once_per_turn",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_turn",
+                        "skill_id": "matsurida_wasshoi",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_turn_effect",
+                                "effect_id": "matsurida_wasshoi"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "roll_die",
+                        "source": "oshi_skill",
+                        "die_effects": [
+                            {
+                                "english_values": "all",
+                                "activate_on_values": [
+                                    1,
+                                    2,
+                                    3,
+                                    4,
+                                    5,
+                                    6
+                                ],
+                                "effects": []
+                            }
+                        ],
+                        "and": [
+                            {
+                                "conditions": [
+                                    {
+                                        "condition": "last_die_gte_life"
+                                    }
+                                ],
+                                "effect_type": "choose_cards",
+                                "from": "deck",
+                                "look_at": -1,
+                                "destination": "hand",
+                                "amount_min": 1,
+                                "amount_max": 1,
+                                "remaining_cards_action": "shuffle"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "condition": "last_die_lte_life"
+                                    }
+                                ],
+                                "effect_type": "generate_holopower",
+                                "amount": 1
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "skill_id": "zettai_ikitai",
+                "cost": 2,
+                "limit": "once_per_game",
+                "action_conditions": [
+                    {
+                        "condition": "center_is_member_name",
+                        "required_member_names": [
+                            "natsuiro_matsuri"
+                        ]
+                    }
+                ],
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_game",
+                        "skill_id": "zettai_ikitai",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_game_effect",
+                                "effect_id": "zettai_ikitai"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "set_limited_uses_allowed",
+                        "amount": 2
+                    }
+                ]
+            }
+        ],
+        "effects": []
+    },
+    {
+        "card_id": "hBP06-074",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "natsuiro_matsuri"
+        ],
+        "rarity": "c",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 140,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#Gen1",
+            "#Shooter"
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "add_turn_effect",
+                "turn_effect": {
+                    "timing": "before_art",
+                    "conditions": [
+                        {
+                            "condition": "performer_is_center"
+                        }
+                    ],
+                    "effect_type": "power_boost_per_played_support",
+                    "amount": 10,
+                    "support_sub_type": "all",
+                    "limit": 3
+                }
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "cure_pale",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-075",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "natsuiro_matsuri"
+        ],
+        "rarity": "u",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 160,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#Gen1",
+            "#Shooter"
+        ],
+        "arts": [
+            {
+                "art_id": "konya_wa_dance_the_night",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 50
+            },
+            {
+                "art_id": "dance_lesson_ganbaru_yo",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 2
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 80,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "multiple_die_roll",
+                        "amount": "per_mascot_and_fan",
+                        "limit": 4,
+                        "source": "holomem_ability",
+                        "die_effects": [
+                            {
+                                "effect_type": "roll_die",
+                                "source": "holomem_ability",
+                                "die_effects": [
+                                    {
+                                        "english_values": "4+",
+                                        "activate_on_values": [
+                                            4,
+                                            5,
+                                            6
+                                        ],
+                                        "effects": [
+                                            {
+                                                "effect_type": "power_boost",
+                                                "amount": 10
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-076",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "natsuiro_matsuri"
+        ],
+        "buzz": true,
+        "rarity": "r",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 250,
+        "baton_cost": 2,
+        "down_life_cost": 2,
+        "tags": [
+            "#JP",
+            "#Gen1",
+            "#Shooter"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "specific_card",
+                "requirement_card_names": [
+                    "ebifuraion",
+                    "matsuris"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "matsuri_chan_ni_meromero_shiro",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 50,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 70,
+                        "conditions": [
+                            {
+                                "condition": "target_bloom_level",
+                                "condition_bloom_level": 2
+                            },
+                            {
+                                "condition": "played_limited_support_this_turn"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-077",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "natsuiro_matsuri"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#Gen1",
+            "#Shooter"
+        ],
+        "bloom_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "my_life_less_than_equal_opponent"
+                    }
+                ],
+                "effect_type": "send_cheer",
+                "amount_min": 0,
+                "amount_max": 1,
+                "from": "cheer_deck",
+                "to": "holomem",
+                "to_limitation": "specific_member_name",
+                "to_limitation_name": "natsuiro_matsuri"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "never_give_up_natsuiro_kon",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 2
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 140,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost_per_played_support",
+                        "amount": 30,
+                        "support_sub_type": "limited"
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "blue"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-103",
+        "card_type": "support",
+        "sub_type": "fan",
+        "card_names": [
+            "matsuris"
+        ],
+        "rarity": "c",
+        "colors": [],
+        "play_conditions": [
+            {
+                "condition": "holomem_on_stage",
+                "required_member_name_in": [
+                    "natsuiro_matsuri"
+                ]
+            }
+        ],
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem",
+                "to_limitation": "specific_member_name",
+                "to_limitation_name": "natsuiro_matsuri"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "before_die_roll",
+                "conditions": [
+                    {
+                        "condition": "or",
+                        "or_conditions": [
+                            {
+                                "condition": "die_roll_source_is_oshi"
+                            },
+                            {
+                                "condition": "die_roll_source_has_tag",
+                                "condition_tags": [
+                                    "#Gen1"
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "archive_this_attachment",
+                        "and": [
+                            {
+                                "effect_type": "force_die_result",
+                                "die_result": 4
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "pass"
                     }
                 ]
             }
@@ -21204,6 +23649,37 @@
         ]
     },
     {
+        "card_id": "hBP07-101",
+        "card_type": "support",
+        "sub_type": "tool",
+        "colors": [],
+        "card_names": [
+            "asmr_mic"
+        ],
+        "rarity": "c",
+        "tags": [
+            "#BuzzGoods"
+        ],
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "on_art_cost_check",
+                "effect_type": "reduce_art_cost",
+                "color": "any",
+                "amount": 1,
+                "conditions": [
+                    {
+                        "condition": "attached_owner_is_buzz"
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP07-102",
         "card_type": "support",
         "sub_type": "tool",
@@ -21355,6 +23831,99 @@
                     {
                         "effect_type": "draw",
                         "amount": 4
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-084",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "natsuiro_matsuri"
+        ],
+        "rarity": "r",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 210,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#Gen1",
+            "#Shooter"
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_down",
+                "conditions": [
+                    {
+                        "condition": "opponent_turn"
+                    },
+                    {
+                        "condition": "downed_card_is_this"
+                    }
+                ],
+                "effect_type": "choose_cards",
+                "from": "archive",
+                "look_at": -1,
+                "destination": "bottom_of_deck",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "limited",
+                "remaining_cards_action": "nothing",
+                "after_choose_effect": {
+                    "conditions": [
+                        {
+                            "condition": "chosen_card_count",
+                            "amount_min": 1
+                        }
+                    ],
+                    "effect_type": "choose_stacked_to_hand",
+                    "amount_min": 1,
+                    "amount_max": 1,
+                    "include_self": true,
+                    "self_only": true
+                }
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "yappari_fps_toka",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 90,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "self_has_cheer_color",
+                                "condition_colors": [
+                                    "blue"
+                                ],
+                                "amount_min": 1
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "send_cheer",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "from": "archive",
+                        "to": "holomem"
                     }
                 ]
             }

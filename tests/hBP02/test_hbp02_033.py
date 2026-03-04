@@ -136,8 +136,10 @@ class Test_hBP02_033(unittest.TestCase):
 
     # Events
     events = engine.grab_events()
-    self.assertEqual(events[6]["card_id"], archive_card_id)
-    self.assertEqual(events[7]["card_id"], archive_card_id)
+    move_events = [e for e in events if e.get("event_type") == EventType.EventType_MoveCard and e.get("from") == "archive"]
+    self.assertGreaterEqual(len(move_events), 2)
+    self.assertEqual(move_events[0]["card_id"], archive_card_id)
+    self.assertEqual(move_events[1]["card_id"], archive_card_id)
     validate_consecutive_events(self, self.player1, events, [
       (EventType.EventType_Bloom, { "bloom_card_id": bloom_card_id }),
       (EventType.EventType_Decision_Choice, {}),

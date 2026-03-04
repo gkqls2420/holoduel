@@ -1,0 +1,841 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+from copy import deepcopy
+
+from app.engine.constants import *
+from app.engine.models import *
+from app.engine.helpers import *
+
+if TYPE_CHECKING:
+    from app.engine.player_state import PlayerState
+
+
+def handle_archive_cheer_from_holomem(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    source_card, _, _ = effect_player.find_card(effect["source_card_id"])
+    ability_source = effect["ability_source"]
+    engine.archive_count_required = effect["amount"]
+    before_archive_effects = effect_player.get_effects_at_timing("before_archive_cheer", source_card, ability_source)
+
+    def archive_cheer_continuation():
+        amount = engine.archive_count_required
+        # Handle "all" amount - calculate actual cheer count for this holomem
+        if str(amount) == "all":
+            from_zone = effect["from"]
+            if from_zone == "self":
+                src_card, _, _ = effect_player.find_card(effect["source_card_id"])
+                amount = len(src_card["attached_cheer"]) if src_card else 0
+            elif from_zone == "attached_owner":
+                owner_holomems = effect_player.get_holomems_with_attachment(effect["source_card_id"])
+                amount = len(owner_holomems[0]["attached_cheer"]) if owner_holomems else 0
+            else:
+                amount = sum(len(h["attached_cheer"]) for h in effect_player.get_holomem_on_stage())
+        from_zone = effect["from"]
+        required_colors = effect.get("required_colors", [])
+        target_holomems = []
+        ability_source = effect["ability_source"]
+        match from_zone:
+            case "self":
+                source_card, _, _ = effect_player.find_card(effect["source_card_id"])
+                target_holomems.append(source_card)
+            case "attached_owner":
+                holomems = effect_player.get_holomems_with_attachment(effect["source_card_id"])
+                if holomems:
+                    target_holomems.append(holomems[0])
+            case "holomem":
+                target_holomems = effect_player.get_holomem_on_stage()
+        cheer_options = []
+        for holomem in target_holomems:
+            if required_colors:
+                matched_cheer = []
+                for cheer in holomem["attached_cheer"]:
+                    if any(color in cheer["colors"] for color in required_colors):
+                        matched_cheer.append(cheer)
+                cheer_options += ids_from_cards(matched_cheer)
+            else:
+                cheer_options += ids_from_cards(holomem["attached_cheer"])
+        after_archive_check_effect = {
+            "player_id": effect_player_id,
+            "effect_type": EffectType.EffectType_AfterArchiveCheerCheck,
+            "effect_player_id": effect_player_id,
+            "previous_archive_count": len(effect_player.archive),
+            "ability_source": ability_source
+        }
+        engine.add_effects_to_front([after_archive_check_effect])
+        if amount == 0:
+            engine.continue_resolving_effects()
+        elif amount == len(cheer_options):
+            # Do it immediately.
+            effect_player.archive_attached_cards(cheer_options)
+            engine.continue_resolving_effects()
+        else:
+            choose_event = {
+                "event_type": EventType.EventType_Decision_ChooseCards,
+                "desired_response": GameAction.EffectResolution_ChooseCardsForEffect,
+                "effect_player_id": effect_player_id,
+                "all_card_seen": cheer_options,
+                "cards_can_choose": cheer_options,
+                "from_zone": "holomem",
+                "to_zone": "archive",
+                "amount_min": amount,
+                "amount_max": amount,
+                "reveal_chosen": True,
+                "remaining_cards_action": "nothing",
+            }
+            engine.broadcast_event(choose_event)
+            engine.set_decision({
+                "decision_type": DecisionType.DecisionEffect_ChooseCardsForEffect,
+                "decision_player": effect_player_id,
+                "all_card_seen": cheer_options,
+                "cards_can_choose": cheer_options,
+                "from_zone": "holomem",
+                "to_zone": "archive",
+                "amount_min": amount,
+                "amount_max": amount,
+                "reveal_chosen": True,
+                "remaining_cards_action": "nothing",
+                "source_card_id": effect["source_card_id"],
+                "effect_resolution": engine.handle_choose_cards_result,
+                "continuation": engine.continue_resolving_effects,
+            })
+
+    engine.begin_resolving_effects(before_archive_effects, archive_cheer_continuation)
+    return True
+
+
+def handle_archive_from_hand(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    amount = effect["amount"]
+    ability_source = effect["ability_source"]
+    requirement_same_tag = effect.get("requirement_same_tag", False)
+    engine.archive_count_required = amount
+    before_archive_effects = effect_player.get_effects_at_timing("before_archive", None, ability_source)
+
+    def archive_hand_continuation():
+        if engine.archive_count_required > 0:
+            # Ask the player to pick cards from their hand to archive.
+            cards_can_choose = []
+            match effect.get("requirement"):
+                case "holomem":
+                    cards_can_choose = ([card["game_card_id"] for card in effect_player.hand if is_card_holomem(card)])
+                case _:
+                    cards_can_choose = ids_from_cards(effect_player.hand)
+            if requirement_same_tag:
+                holomem_cards = [card for card in effect_player.hand if is_card_holomem(card)]
+                eligible_ids = set()
+                for i, card_a in enumerate(holomem_cards):
+                    for card_b in holomem_cards[i+1:]:
+                        if set(card_a.get("tags", [])) & set(card_b.get("tags", [])):
+                            eligible_ids.add(card_a["game_card_id"])
+                            eligible_ids.add(card_b["game_card_id"])
+                cards_can_choose = [cid for cid in cards_can_choose if cid in eligible_ids]
+            engine.archive_count_required = min(engine.archive_count_required, len(cards_can_choose))
+            if engine.archive_count_required == 0:
+                engine.continue_resolving_effects()
+                return
+            all_card_seen = ids_from_cards(effect_player.hand)
+            requirement_details = {}
+            if requirement_same_tag:
+                requirement_details["requirement_same_tag"] = True
+            choose_event = {
+                "event_type": EventType.EventType_Decision_ChooseCards,
+                "desired_response": GameAction.EffectResolution_ChooseCardsForEffect,
+                "effect_player_id": effect_player_id,
+                "all_card_seen": all_card_seen,
+                "cards_can_choose": cards_can_choose,
+                "from_zone": "hand",
+                "to_zone": "archive",
+                "amount_min": engine.archive_count_required,
+                "amount_max": engine.archive_count_required,
+                "reveal_chosen": True,
+                "remaining_cards_action": "nothing",
+                "requirement_details": requirement_details,
+                "hidden_info_player": effect_player_id,
+                "hidden_info_fields": ["all_card_seen", "cards_can_choose"],
+            }
+            engine.broadcast_event(choose_event)
+            engine.set_decision({
+                "decision_type": DecisionType.DecisionEffect_ChooseCardsForEffect,
+                "decision_player": effect_player_id,
+                "all_card_seen": all_card_seen,
+                "cards_can_choose": cards_can_choose,
+                "from_zone": "hand",
+                "to_zone": "archive",
+                "amount_min": engine.archive_count_required,
+                "amount_max": engine.archive_count_required,
+                "reveal_chosen": True,
+                "remaining_cards_action": "nothing",
+                "requirement_same_tag": requirement_same_tag,
+                "source_card_id": effect["source_card_id"],
+                "effect_resolution": engine.handle_choose_cards_result,
+                "continuation": engine.continue_resolving_effects,
+            })
+        else:
+            engine.continue_resolving_effects()
+
+    engine.begin_resolving_effects(before_archive_effects, archive_hand_continuation)
+    return True
+
+
+def handle_archive_revealed_cards(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    engine.archive_count_required = len(effect_player.last_revealed_cards)
+    before_archive_effects = effect_player.get_effects_at_timing("before_archive", None)
+
+    def archive_revealed_cards_continuation():
+        for revealed_card in effect_player.last_revealed_cards:
+            effect_player.move_card(revealed_card["game_card_id"], "archive")
+        engine.continue_resolving_effects()
+
+    engine.begin_resolving_effects(before_archive_effects, archive_revealed_cards_continuation)
+    return True
+
+
+def handle_archive_this_attachment(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    attachment_id = effect["source_card_id"]
+    effect_player.archive_attached_cards([attachment_id])
+    return False
+
+
+def handle_archive_attachment_from_stage_by_name(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    attachment_name = effect.get("attachment_name", "")
+    destination = effect.get("destination", "archive")
+    holomems = effect_player.get_holomem_on_stage()
+    for holomem in holomems:
+        for attached in holomem.get("attached_support", []):
+            if attachment_name in attached.get("card_names", []):
+                if destination == "bottom_of_deck":
+                    effect_player.move_card(attached["game_card_id"], "deck", add_to_bottom=True)
+                else:
+                    effect_player.archive_attached_cards([attached["game_card_id"]])
+                break
+        else:
+            continue
+        break
+    return False
+
+
+def handle_return_this_attachment_to_hand(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    attachment_id = effect["source_card_id"]
+    effect_player.move_card(attachment_id, "hand")
+    return False
+
+
+def handle_archive_top_stacked_holomem(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    card, _, _ = effect_player.find_card(effect["source_card_id"])
+    if len(card["stacked_cards"]) > 0:
+        top_card = card["stacked_cards"][0]
+        effect_player.archive_attached_cards([top_card["game_card_id"]])
+    return False
+
+
+def handle_attach_card_to_holomem(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    source_card_id = effect["source_card_id"]
+    continuation = engine.continue_resolving_effects
+    if "continuation" in effect:
+        # This effect can be called from elsewhere, so use special continuations
+        # if they were added on.
+        continuation = effect["continuation"]
+    holomem_targets = effect_player.get_holomem_on_stage()
+    to_limitation = effect.get("to_limitation", "")
+    to_limitation_colors = effect.get("to_limitation_colors", [])
+    to_limitation_tags = effect.get("to_limitation_tags", [])
+    to_limitation_name = effect.get("to_limitation_name", "")
+    match to_limitation:
+        case "color_in":
+            holomem_targets = [holomem for holomem in holomem_targets \
+                if any(color in holomem["colors"] for color in to_limitation_colors)]
+        case "specific_member_name":
+            holomem_targets = [holomem for holomem in holomem_targets \
+                if to_limitation_name in holomem["card_names"]]
+        case "member_name_in":
+            to_limitation_names = effect.get("to_limitation_names", [])
+            holomem_targets = [holomem for holomem in holomem_targets \
+                if any(name in holomem["card_names"] for name in to_limitation_names)]
+        case "tag_in":
+            holomem_targets = [holomem for holomem in holomem_targets \
+                if any(tag in holomem["tags"] for tag in to_limitation_tags)]
+        case "backstage":
+            holomem_targets = effect_player.backstage
+        case "backstage_and_tag_in":
+            holomem_targets = [holomem for holomem in effect_player.backstage \
+                if any(tag in holomem["tags"] for tag in to_limitation_tags)]
+        case "source_card":
+            attach_to_card_id = effect.get("attach_to_card_id", "")
+            if attach_to_card_id:
+                holomem_targets = [h for h in holomem_targets if h["game_card_id"] == attach_to_card_id]
+
+    exclude_card_id = effect.get("exclude_card_id", "")
+    if exclude_card_id:
+        holomem_targets = [h for h in holomem_targets if h["game_card_id"] != exclude_card_id]
+
+    # restriction for mascots and tools
+    card_to_attach, _, _ = effect_player.find_card(source_card_id, include_stacked_cards=True)
+    # filters out cards that can be attached against support card restrictions
+    holomem_targets = [holomem for holomem in holomem_targets if engine.holomem_can_be_attached_with_support_card(holomem, card_to_attach)]
+
+    if len(holomem_targets) > 0:
+        attach_effect = {
+            "effect_type": EffectType.EffectType_AttachCardToHolomem_Internal,
+            "effect_player_id": effect_player.player_id,
+            "card_id": source_card_id,
+            "card_ids": [], # Filled in by the decision.
+            "to_limitation": to_limitation,
+            "to_limitation_colors": to_limitation_colors,
+            "to_limitation_tags": to_limitation_tags,
+            "to_limitation_name": to_limitation_name,
+            "internal_skip_simultaneous_choice": True,
+        }
+        add_ids_to_effects([attach_effect], effect_player.player_id, source_card_id)
+        decision_event = {
+            "event_type": EventType.EventType_Decision_ChooseHolomemForEffect,
+            "desired_response": GameAction.EffectResolution_ChooseCardsForEffect,
+            "effect_player_id": effect_player.player_id,
+            "cards_can_choose": ids_from_cards(holomem_targets),
+            "effect": attach_effect,
+        }
+        engine.broadcast_event(decision_event)
+        engine.set_decision({
+            "decision_type": DecisionType.DecisionEffect_ChooseCardsForEffect,
+            "decision_player": effect_player.player_id,
+            "all_card_seen": ids_from_cards(holomem_targets),
+            "cards_can_choose": ids_from_cards(holomem_targets),
+            "amount_min": 1,
+            "amount_max": 1,
+            "effect_to_run": attach_effect,
+            "effect_resolution": engine.handle_run_single_effect,
+            "continuation": continuation,
+        })
+    else:
+        continuation()
+        return True
+    return False
+
+
+def handle_attach_card_to_holomem_internal(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    card_to_attach_id = effect["card_id"]
+    target_holomem_id = effect["card_ids"][0]
+    effect_player.move_card(card_to_attach_id, "holomem", target_holomem_id)
+    attached_card = effect_player.find_attachment(card_to_attach_id)
+    if attached_card and "attached_effects" in attached_card:
+        on_attach_effects = [deepcopy(e) for e in attached_card["attached_effects"]
+                                      if e.get("timing") == "on_attach"]
+        if on_attach_effects:
+            add_ids_to_effects(on_attach_effects, effect_player.player_id, card_to_attach_id)
+            engine.add_effects_to_front(on_attach_effects)
+    return False
+
+
+def handle_draw(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    amount = effect.get("amount", len(effect_player.hand))
+    if str(amount) == "last_card_count":
+        amount = engine.last_card_count
+        engine.last_card_count = 0
+    draw_to_hand_size = effect.get("draw_to_hand_size")
+    if draw_to_hand_size:
+        amount = max(0, draw_to_hand_size - amount)
+    if amount > 0:
+        target_player = effect_player
+        if effect.get("opponent", False):
+            target_player = engine.other_player(effect_player_id)
+        from_bottom = effect.get("from_bottom", False)
+        target_player.draw(amount, from_bottom=from_bottom)
+    return False
+
+
+def handle_generate_holopower(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    amount = effect["amount"]
+    effect_player.generate_holopower(amount)
+    return False
+
+
+def handle_move_cheer_between_holomems(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    amount = effect["amount"]
+    to_limitation = effect.get("to_limitation", "")
+    to_limitation_tags = effect.get("to_limitation_tags", [])
+    available_cheer = effect_player.get_cheer_ids_on_holomems()
+    available_targets = effect_player.get_holomem_on_stage()
+    match to_limitation:
+        case "tag_in":
+            available_targets = [holomem for holomem in available_targets if any(tag in holomem["tags"] for tag in to_limitation_tags)]
+        case "specific_member_name":
+            to_limitation_name = effect.get("to_limitation_name", "")
+            available_targets = [holomem for holomem in available_targets if to_limitation_name in holomem["card_names"]]
+    if effect.get("to_exclude_source", False):
+        source_card_id = effect.get("source_card_id", "")
+        available_targets = [h for h in available_targets if h["game_card_id"] != source_card_id]
+    available_targets = ids_from_cards(available_targets)
+    cheer_on_each_mem = effect_player.get_cheer_on_each_holomem()
+
+    has_to_limitation = to_limitation != "" or effect.get("to_exclude_source", False)
+    if (has_to_limitation and len(available_targets) >= 1
+        or not has_to_limitation and len(available_targets) > 1) and len(available_cheer) > 0:
+        decision_event = {
+            "event_type": EventType.EventType_Decision_SendCheer,
+            "desired_response": GameAction.EffectResolution_MoveCheerBetweenHolomems,
+            "effect_player_id": effect_player_id,
+            "amount_min": amount,
+            "amount_max": amount,
+            "from_zone": "holomem",
+            "to_zone": "holomem",
+            "from_options": available_cheer,
+            "to_options": available_targets,
+            "cheer_on_each_mem": cheer_on_each_mem,
+        }
+        engine.broadcast_event(decision_event)
+        engine.set_decision({
+            "decision_type": DecisionType.DecisionEffect_MoveCheerBetweenHolomems,
+            "decision_player": effect_player_id,
+            "amount_min": amount,
+            "amount_max": amount,
+            "available_cheer": available_cheer,
+            "available_targets": available_targets,
+            "continuation": engine.continue_resolving_effects,
+        })
+    return False
+
+
+def handle_reveal_top_deck(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    if len(effect_player.deck) > 0:
+        amount = effect.get("amount", 1)
+        top_cards = effect_player.deck[:amount]
+        effect_player.last_revealed_cards = top_cards
+        reveal_event = {
+            "event_type": EventType.EventType_RevealCards,
+            "effect_player_id": effect_player_id,
+            "card_ids": ids_from_cards(top_cards),
+            "source": "topdeck"
+        }
+        engine.broadcast_event(reveal_event)
+        after_reveal_effects = effect_player.get_effects_at_timing("after_reveal", None)
+        engine.add_effects_to_front(after_reveal_effects)
+    return False
+
+
+def handle_send_cheer(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    # Required params
+    amount_min = effect["amount_min"]
+    amount_max = effect["amount_max"]
+    from_zone = effect["from"]
+    to_zone = effect["to"]
+    # Optional
+    from_limitation = effect.get("from_limitation", "")
+    from_limitation_colors = effect.get("from_limitation_colors", [])
+    from_limitation_tags = effect.get("from_limitation_tags", [])
+    to_limitation = effect.get("to_limitation", "")
+    to_limitation_colors = effect.get("to_limitation_colors", [])
+    to_limitation_tags = effect.get("to_limitation_tags", [])
+    to_limitation_exclude_name = effect.get("to_limitation_exclude_name", "")
+    multi_to = effect.get("multi_to", False)
+    limit_one_per_member = effect.get("limit_one_per_member", False)
+
+    # Determine options
+    from_options = []
+    to_options = []
+    remove_from_to_options = []
+
+    match from_zone:
+        case "archive":
+            # Get archive cheer cards.
+            relevant_archive_cards = [card for card in effect_player.archive if is_card_cheer(card)]
+            if from_limitation:
+                match from_limitation:
+                    case "color_in":
+                        from_options = [card for card in relevant_archive_cards if any(color in card["colors"] for color in from_limitation_colors)]
+                    case _:
+                        raise NotImplementedError(f"Unimplemented from limitation: {from_limitation}")
+            else:
+                from_options = relevant_archive_cards
+            from_options = ids_from_cards(from_options)
+        case "cheer_deck":
+            # Cheer deck is from top.
+            cheer_count = amount_max if isinstance(amount_max, int) else len(effect_player.cheer_deck)
+            from_options = effect_player.cheer_deck[:cheer_count]
+            from_options = ids_from_cards(from_options)
+        case "downed_holomem":
+            holomem = engine.down_holomem_state.holomem_card
+            if from_limitation:
+                match from_limitation:
+                    case "color_in":
+                        from_options = [card for card in holomem["attached_cheer"] \
+                            if any(color in card["colors"] for color in from_limitation_colors)]
+            else:
+                from_options = holomem["attached_cheer"]
+            from_options = ids_from_cards(from_options)
+        case "holomem":
+            holomem_options = effect_player.get_holomem_on_stage()
+            if from_limitation:
+                match from_limitation:
+                    case "tag_in":
+                        holomem_options = [card for card in holomem_options if any(tag in card["tags"] for tag in from_limitation_tags)]
+            for holomem in holomem_options:
+                for cheer in holomem["attached_cheer"]:
+                    from_options.append(cheer)
+            from_options = ids_from_cards(from_options)
+        case "opponent_holomem":
+            opponent = engine.other_player(effect_player_id)
+            holomem_options = opponent.get_holomem_on_stage()
+            if from_limitation:
+                match from_limitation:
+                    case "center":
+                        holomem_options = opponent.center
+                    case _:
+                        raise NotImplementedError(f"Unimplemented from limitation: {from_limitation}")
+            for holomem in holomem_options:
+                from_options.extend(holomem["attached_cheer"])
+            from_options = ids_from_cards(from_options)
+        case "self":
+            from_zone = "holomem"
+            source_card, _, _ = effect_player.find_card(effect["source_card_id"])
+            from_options = ids_from_cards(source_card["attached_cheer"])
+            remove_from_to_options = [effect["source_card_id"]]
+        case _:
+            raise NotImplementedError(f"Unimplemented from zone: {from_zone}")
+
+    match to_zone:
+        case "archive":
+            to_options = ["archive"]
+            # Add the after archive effect unless we're moving opponent cheer.
+            if from_zone != "opponent_holomem":
+                after_archive_check_effect = {
+                    "player_id": effect_player_id,
+                    "effect_type": EffectType.EffectType_AfterArchiveCheerCheck,
+                    "effect_player_id": effect_player_id,
+                    "previous_archive_count": len(effect_player.archive),
+                    "ability_source": effect.get("ability_source", ""),
+                }
+                engine.add_effects_to_front([after_archive_check_effect])
+        case "holomem":
+            if to_limitation:
+                match to_limitation:
+                    case "attached_owner":
+                        source_card = engine.find_card(effect["source_card_id"])
+                        owner_player = engine.get_player(source_card["owner_id"])
+                        to_options = owner_player.get_holomems_with_attachment(effect["source_card_id"])
+                    case "color_in":
+                        to_options = [card for card in effect_player.get_holomem_on_stage() if any(color in card["colors"] for color in to_limitation_colors)]
+                    case "backstage":
+                        to_options = effect_player.backstage
+                    case "center":
+                        to_options = effect_player.center
+                    case "center_or_collab":
+                        to_options = effect_player.center + effect_player.collab
+                    case "specific_member_name":
+                        to_limitation_name = effect.get("to_limitation_name", "")
+                        holomems = effect_player.get_holomem_on_stage()
+                        to_options = [card for card in holomems if to_limitation_name in card["card_names"]]
+                    case "member_name_in":
+                        to_limitation_names = effect.get("to_limitation_names", [])
+                        holomems = effect_player.get_holomem_on_stage()
+                        to_options = [card for card in holomems if any(name in card["card_names"] for name in to_limitation_names)]
+                    case "tag_in":
+                        to_options = [card for card in effect_player.get_holomem_on_stage() if any(tag in card["tags"] for tag in to_limitation_tags)]
+                    case "card_type":
+                        to_limitation_card_type = effect.get("to_limitation_card_type", "")
+                        holomems = effect_player.get_holomem_on_stage()
+                        to_options = [card for card in holomems if to_limitation_card_type == card["card_type"]]
+                    case "tag_and_bloom_level":
+                        to_limitation_bloom_level = effect.get("to_limitation_bloom_level", 0)
+                        holomems = effect_player.get_holomem_on_stage()
+                        to_options = [card for card in holomems if 
+                            card["card_type"] == "holomem_bloom" and 
+                            card.get("bloom_level", 0) == to_limitation_bloom_level and
+                            any(tag in card["tags"] for tag in to_limitation_tags)]
+                    case "has_attachment_of_name":
+                        to_limitation_attachment_name = effect.get("to_limitation_attachment_name", "")
+                        holomems = effect_player.get_holomem_on_stage()
+                        to_options = [card for card in holomems
+                            if any(to_limitation_attachment_name in attached["card_names"]
+                                for attached in card["attached_support"])]
+                    case "backstage_and_tag_in":
+                        to_options = [card for card in effect_player.backstage
+                            if any(tag in card["tags"] for tag in to_limitation_tags)]
+                    case "backstage_and_specific_member_name":
+                        to_limitation_name = effect.get("to_limitation_name", "")
+                        to_options = [card for card in effect_player.backstage if to_limitation_name in card["card_names"]]
+                    case _:
+                        raise NotImplementedError(f"Unimplemented to limitation: {to_limitation}")
+            else:
+                to_options = effect_player.get_holomem_on_stage()
+            if to_limitation_exclude_name:
+                to_options = [card for card in to_options if to_limitation_exclude_name not in card["card_names"]]
+            if effect.get("to_limitation_buzz_only", False):
+                to_options = [card for card in to_options if card.get("buzz", False)]
+
+            # Remove any to_options where the holomem is downed.
+            if engine.down_holomem_state:
+                to_options = [card for card in to_options if card["game_card_id"] != engine.down_holomem_state.holomem_card["game_card_id"]]
+            to_options = ids_from_cards(to_options)
+        case "this_holomem":
+            source_card_id = effect["source_card_id"]
+            source_card, _, _ = effect_player.find_card(source_card_id)
+            if source_card:
+                to_options = [source_card_id]
+            else:
+                owner_holomems = effect_player.get_holomems_with_attachment(source_card_id)
+                if owner_holomems:
+                    to_options = [owner_holomems[0]["game_card_id"]]
+                else:
+                    to_options = [source_card_id]
+            to_zone = "holomem"
+    if str(amount_min) == "all":
+        amount_min = len(from_options)
+    if str(amount_max) == "all":
+        amount_max = len(from_options)
+
+    if remove_from_to_options:
+        for card_id in remove_from_to_options:
+            to_options.remove(card_id)
+    if len(to_options) == 0 or len(from_options) == 0:
+        # No effect.
+        pass
+    elif len(to_options) == 1 and len(from_options) == 1 and amount_min == len(from_options) and amount_max == amount_min:
+        # Do it automatically.
+        placements = {}
+        for from_id in from_options:
+            placements[from_id] = to_options[0]
+        # Do both players as the cheer could be opponent targeted.
+        effect_player.move_cheer_between_holomems(placements)
+        opponent = engine.other_player(effect_player.player_id)
+        opponent.move_cheer_between_holomems(placements)
+    else:
+        if len(from_options) < amount_min:
+            # If there's less cheer than the min, do as many as you can.
+            amount_min = len(from_options)
+
+        if from_zone == "opponent_holomem":
+            opponent = engine.other_player(effect_player_id)
+            cheer_on_each_mem = opponent.get_cheer_on_each_holomem()
+        else:
+            cheer_on_each_mem = effect_player.get_cheer_on_each_holomem()
+        decision_event = {
+            "event_type": EventType.EventType_Decision_SendCheer,
+            "desired_response": GameAction.EffectResolution_MoveCheerBetweenHolomems,
+            "effect_player_id": effect_player_id,
+            "amount_min": amount_min,
+            "amount_max": amount_max,
+            "from_zone": from_zone,
+            "from_limitation": from_limitation,
+            "from_limitation_colors": from_limitation_colors,
+            "to_zone": to_zone,
+            "to_limitation": to_limitation,
+            "to_limitation_colors": to_limitation_colors,
+            "from_options": from_options,
+            "to_options": to_options,
+            "cheer_on_each_mem": cheer_on_each_mem,
+            "multi_to": multi_to,
+            "limit_one_per_member": limit_one_per_member,
+        }
+        engine.broadcast_event(decision_event)
+        engine.set_decision({
+            "decision_type": DecisionType.DecisionEffect_MoveCheerBetweenHolomems,
+            "decision_player": effect_player_id,
+            "amount_min": amount_min,
+            "amount_max": amount_max,
+            "available_cheer": from_options,
+            "available_targets": to_options,
+            "multi_to": multi_to,
+            "limit_one_per_member": limit_one_per_member,
+            "continuation": engine.continue_resolving_effects,
+        })
+    return False
+
+
+def handle_send_collab_back(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    optional = effect.get("optional", False)
+    if optional:
+        # Ask the user if they want to send this collab back to the backstage.
+        choice_info = {
+            "specific_options": ["pass", "ok"]
+        }
+        min_choice = 0
+        max_choice = 1
+        decision_event = {
+            "event_type": EventType.EventType_Choice_SendCollabBack,
+            "desired_response": GameAction.EffectResolution_MakeChoice,
+            "choice_event": True,
+            "effect_player_id": effect_player_id,
+            "choice_info": choice_info,
+            "min_choice": min_choice,
+            "max_choice": max_choice,
+        }
+        engine.broadcast_event(decision_event)
+        engine.set_decision({
+            "decision_type": DecisionType.DecisionChoice,
+            "decision_player": effect_player_id,
+            "choice_info": choice_info,
+            "min_choice": min_choice,
+            "max_choice": max_choice,
+            "resolution_func": engine.handle_choice_return_collab,
+            "continuation": engine.continue_resolving_effects,
+        })
+    else:
+        effect_player.return_collab()
+    return False
+
+
+def handle_shuffle_archive_to_deck(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    archived_cards = list(effect_player.archive)
+    match effect.get("limitation"):
+        case "holomem":
+            archived_cards = [card for card in archived_cards if is_card_holomem(card)]
+    for card in archived_cards:
+        effect_player.move_card(card["game_card_id"], "deck", hidden_info=False)
+    effect_player.shuffle_deck()
+    return False
+
+
+def handle_shuffle_hand_to_deck(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    target_player = effect_player
+    if effect.get("opponent", False):
+        target_player = engine.other_player(effect_player_id)
+    engine.last_card_count = len(target_player.hand)
+    target_player.shuffle_hand_to_deck()
+    return False
+
+
+def handle_spend_holopower(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    amount = effect["amount"]
+    effect_player.spend_holopower(amount)
+    if "oshi_skill_id" in effect:
+        oshi_skill_event = {
+            "event_type": EventType.EventType_OshiSkillActivation,
+            "oshi_player_id": effect_player.player_id,
+            "skill_id": effect["oshi_skill_id"],
+        }
+        engine.broadcast_event(oshi_skill_event)
+    return False
+
+
+def handle_switch_center_with_back(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    target_player = effect_player
+    swap_opponent_cards = "opponent" in effect and effect["opponent"]
+    skip_resting = effect.get("skip_resting", False)
+    required_damage = effect.get("required_damage", 0)
+    if swap_opponent_cards:
+        target_player = engine.other_player(effect_player_id)
+    available_backstage_ids = []
+    for card in target_player.backstage:
+        if skip_resting and card["resting"]:
+            continue
+        if card["damage"] < required_damage:
+            continue
+        available_backstage_ids.append(card["game_card_id"])
+    if len(available_backstage_ids) == 0 or (not swap_opponent_cards and not target_player.can_move_front_stage()):
+        # No effect.
+        pass
+    elif len(available_backstage_ids) == 1:
+        # Do it right away.
+        target_player.swap_center_with_back(available_backstage_ids[0])
+    else:
+        # Ask for a decision.
+        decision_event = {
+            "event_type": EventType.EventType_Decision_SwapHolomemToCenter,
+            "desired_response": GameAction.EffectResolution_ChooseCardsForEffect,
+            "effect_player_id": effect_player_id,
+            "cards_can_choose": available_backstage_ids,
+            "swap_opponent_cards": swap_opponent_cards,
+        }
+        engine.broadcast_event(decision_event)
+        engine.set_decision({
+            "decision_type": DecisionType.DecisionEffect_ChooseCardsForEffect,
+            "decision_player": effect_player_id,
+            "all_card_seen": available_backstage_ids,
+            "cards_can_choose": available_backstage_ids,
+            "amount_min": 1,
+            "amount_max": 1,
+            "effect_resolution": engine.handle_holomem_swap,
+            "continuation": engine.continue_resolving_effects,
+        })
+    return False
+
+
+def handle_set_center_hp(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    amount = effect["amount"]
+    is_opponent = "opponent" in effect and effect["opponent"]
+    affected_player = effect_player
+    if is_opponent:
+        affected_player = engine.other_player(effect_player_id)
+    if len(affected_player.center) > 0:
+        affected_player.set_holomem_hp(affected_player.center[0]["game_card_id"], amount)
+    return False
+
+
+def handle_after_archive_cheer_check(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    previous_archive_count = effect["previous_archive_count"]
+    current_archive_count = len(effect_player.archive)
+    ability_source = effect["ability_source"]
+    if previous_archive_count < current_archive_count:
+        # The player archived some amount of cheer.
+        after_archive_effects = effect_player.get_effects_at_timing("after_archive_cheer", None, ability_source)
+        if engine.performance_art:
+            # Queue to cleanup effects.
+            effect_player.add_performance_cleanup(after_archive_effects)
+        else:
+            # Add it to the rear of the queue.
+            engine.add_effects_to_rear(after_archive_effects)
+    return False
+
+
+CARD_MOVEMENT_HANDLERS = {
+    EffectType.EffectType_ArchiveCheerFromHolomem: handle_archive_cheer_from_holomem,
+    EffectType.EffectType_ArchiveFromHand: handle_archive_from_hand,
+    EffectType.EffectType_ArchiveRevealedCards: handle_archive_revealed_cards,
+    EffectType.EffectType_ArchiveThisAttachment: handle_archive_this_attachment,
+    EffectType.EffectType_ArchiveAttachmentFromStageByName: handle_archive_attachment_from_stage_by_name,
+    EffectType.EffectType_ReturnThisAttachmentToHand: handle_return_this_attachment_to_hand,
+    EffectType.EffectType_ArchiveTopStackedHolomem: handle_archive_top_stacked_holomem,
+    EffectType.EffectType_AttachCardToHolomem: handle_attach_card_to_holomem,
+    EffectType.EffectType_AttachCardToHolomem_Internal: handle_attach_card_to_holomem_internal,
+    EffectType.EffectType_Draw: handle_draw,
+    EffectType.EffectType_GenerateHolopower: handle_generate_holopower,
+    EffectType.EffectType_MoveCheerBetweenHolomems: handle_move_cheer_between_holomems,
+    EffectType.EffectType_RevealTopDeck: handle_reveal_top_deck,
+    EffectType.EffectType_SendCheer: handle_send_cheer,
+    EffectType.EffectType_SendCollabBack: handle_send_collab_back,
+    EffectType.EffectType_ShuffleArchiveToDeck: handle_shuffle_archive_to_deck,
+    EffectType.EffectType_ShuffleHandToDeck: handle_shuffle_hand_to_deck,
+    EffectType.EffectType_SpendHolopower: handle_spend_holopower,
+    EffectType.EffectType_SwitchCenterWithBack: handle_switch_center_with_back,
+    EffectType.EffectType_SetCenterHP: handle_set_center_hp,
+    EffectType.EffectType_AfterArchiveCheerCheck: handle_after_archive_cheer_check,
+}

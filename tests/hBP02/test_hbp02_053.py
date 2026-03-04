@@ -28,7 +28,7 @@ class Test_hBP02_053_CardDefinition(unittest.TestCase):
         self.assertEqual(self.card["hp"], 190)
         self.assertEqual(self.card["baton_cost"], 2)
         self.assertEqual(self.card["rarity"], "rr")
-        self.assertIn("yellow", self.card["colors"])
+        self.assertIn("purple", self.card["colors"])
 
     def test_card_tags(self):
         """Test card tags"""
