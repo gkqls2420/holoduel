@@ -505,7 +505,7 @@ class PlayerState:
                 effects.extend(gift_effects)
 
         for oshi_effect in self.oshi_card.get("effects", []):
-            if oshi_effect["timing"] == timing:
+            if oshi_effect.get("timing") == timing:
                 if "timing_source_requirement" in oshi_effect and oshi_effect["timing_source_requirement"] != timing_source_requirement:
                     continue
                 add_ids_to_effects([oshi_effect], self.player_id, self.oshi_card["game_card_id"])

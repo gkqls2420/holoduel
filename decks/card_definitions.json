@@ -17714,21 +17714,11 @@
                         ]
                     }
                 ]
-            }
-        ],
-        "effects": [
+            },
             {
-                "full_english_text": "OSHI_BP04_002_FULL_TEXT",
-                "oshi_effect": "true",
                 "skill_id": "nokottajikannibingurubinguru",
                 "cost": 2,
                 "limit": "once_per_game",
-                "conditions": [
-                    {
-                        "condition": "not_used_once_per_game_effect",
-                        "condition_effect_id": "nokottajikannibingurubinguru"
-                    }
-                ],
                 "effects": [
                     {
                         "hide_effect_text": true,
@@ -17770,7 +17760,8 @@
                     }
                 ]
             }
-        ]
+        ],
+        "effects": []
     },
     {
         "card_id": "hBP04-021",
