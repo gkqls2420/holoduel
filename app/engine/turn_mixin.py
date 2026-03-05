@@ -366,7 +366,9 @@ class TurnMixin:
 
         # 다음 턴 플레이어의 "직전 상대 턴에 다운됐는지" 플래그 설정
         other_player.holomem_downed_last_opponent_turn = other_player.holomem_downed_this_turn
+        other_player.holomem_downed_names_last_opponent_turn = other_player.holomem_downed_names_this_turn
         active_player.holomem_downed_last_opponent_turn = False
+        active_player.holomem_downed_names_last_opponent_turn = []
 
         active_player.clear_every_turn_effects()
         other_player.clear_every_turn_effects()
@@ -442,6 +444,17 @@ class TurnMixin:
                         continue
 
                     can_target_backstage = art.get("can_target_backstage", False)
+                    if not can_target_backstage:
+                        performer_id = performer["game_card_id"]
+                        for te in active_player.turn_effects:
+                            if te.get("timing") == "enable_backstage_targeting":
+                                conditions = te.get("conditions", [])
+                                for cond in conditions:
+                                    if cond.get("condition") == "performer_is_specific_id" and cond.get("required_id") == performer_id:
+                                        can_target_backstage = True
+                                        break
+                                if can_target_backstage:
+                                    break
                     if can_target_backstage:
                         opponent_targets = opponent.get_holomem_on_stage(only_performers=False, only_collab=target_can_only_be_collab)
                     else:

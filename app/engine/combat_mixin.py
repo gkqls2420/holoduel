@@ -317,6 +317,7 @@ class CombatMixin:
 
         # 홀로멤이 다운됐음을 추적 (직전 상대 턴에 다운됐는지 체크용)
         target_player.holomem_downed_this_turn = True
+        target_player.holomem_downed_names_this_turn.extend(target_card.get("card_names", []))
 
         # Move all attached and stacked cards and the card itself to the archive.
         if self.remove_downed_holomems_to_hand:

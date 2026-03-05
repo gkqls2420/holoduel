@@ -68,6 +68,7 @@ def handle_add_turn_effect_for_holomem(engine, effect_player, effect):
         # No effect.
         pass
     elif len(holomem_targets) == 1:
+        engine.last_chosen_cards = [holomem_targets[0]]
         replace_field_in_conditions(turn_effect_copy, "required_id", holomem_targets[0])
         if source_from_chosen:
             turn_effect_copy["source_card_id"] = holomem_targets[0]

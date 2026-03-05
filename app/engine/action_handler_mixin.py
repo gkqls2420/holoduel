@@ -697,6 +697,10 @@ class ActionHandlerMixin:
         for card_name in card.get("card_names", []):
             if card_name not in player.support_card_names_used_this_turn:
                 player.support_card_names_used_this_turn.append(card_name)
+        # Record the support card tags used this turn
+        for tag in card.get("tags", []):
+            if tag not in player.support_card_tags_used_this_turn:
+                player.support_card_tags_used_this_turn.append(tag)
         if is_card_limited(card):
             player.used_limited_this_turn = True
             player.limited_uses_count_this_turn += 1
@@ -928,6 +932,9 @@ class ActionHandlerMixin:
 
         player = self.get_player(player_id)
         placements = action_data["placements"]
+        target_ids = set(placements.values())
+        if len(target_ids) == 1:
+            self.last_move_cheer_target = next(iter(target_ids))
         player.move_cheer_between_holomems(placements)
         # Could be opponent, so just try on them too.
         # All cards have unique ids so it should be fine.
@@ -1102,6 +1109,7 @@ class ActionHandlerMixin:
     def handle_add_turn_effect_for_holomem(self, decision_info_copy, performing_player_id:str, card_ids:List[str], continuation):
         effect_player = self.get_player(performing_player_id)
         holomem_target = card_ids[0]
+        self.last_chosen_cards = card_ids
         turn_effect = decision_info_copy["turn_effect"]
         replace_field_in_conditions(turn_effect, "required_id", holomem_target)
         if decision_info_copy.get("source_from_chosen", False):

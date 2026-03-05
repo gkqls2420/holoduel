@@ -261,6 +261,10 @@ def handle_attach_card_to_holomem(engine, effect_player, effect):
         case "specific_member_name":
             holomem_targets = [holomem for holomem in holomem_targets \
                 if to_limitation_name in holomem["card_names"]]
+            to_limitation_bloom_level = effect.get("to_limitation_bloom_level", None)
+            if to_limitation_bloom_level is not None:
+                holomem_targets = [holomem for holomem in holomem_targets \
+                    if holomem.get("bloom_level", 0) == to_limitation_bloom_level]
         case "member_name_in":
             to_limitation_names = effect.get("to_limitation_names", [])
             holomem_targets = [holomem for holomem in holomem_targets \
@@ -344,10 +348,15 @@ def handle_attach_card_to_holomem_internal(engine, effect_player, effect):
 def handle_draw(engine, effect_player, effect):
     """Returns True if continuation was passed on, False otherwise."""
     effect_player_id = effect_player.player_id
-    amount = effect.get("amount", len(effect_player.hand))
-    if str(amount) == "last_card_count":
-        amount = engine.last_card_count
-        engine.last_card_count = 0
+    amount_source = effect.get("amount_source", None)
+    if amount_source == "last_chosen_count_divided_by":
+        divisor = effect.get("divisor", 2)
+        amount = len(engine.last_chosen_cards) // divisor
+    else:
+        amount = effect.get("amount", len(effect_player.hand))
+        if str(amount) == "last_card_count":
+            amount = engine.last_card_count
+            engine.last_card_count = 0
     draw_to_hand_size = effect.get("draw_to_hand_size")
     if draw_to_hand_size:
         amount = max(0, draw_to_hand_size - amount)
@@ -371,32 +380,57 @@ def handle_generate_holopower(engine, effect_player, effect):
 def handle_move_cheer_between_holomems(engine, effect_player, effect):
     """Returns True if continuation was passed on, False otherwise."""
     effect_player_id = effect_player.player_id
-    amount = effect["amount"]
+    amount_min = effect.get("amount_min", effect.get("amount", 1))
+    amount_max = effect.get("amount_max", effect.get("amount", amount_min))
     to_limitation = effect.get("to_limitation", "")
     to_limitation_tags = effect.get("to_limitation_tags", [])
-    available_cheer = effect_player.get_cheer_ids_on_holomems()
+    from_limitation = effect.get("from_limitation", "")
+    if from_limitation == "source_card":
+        source_card_id = effect.get("source_card_id", "")
+        available_cheer = []
+        for card in effect_player.get_holomem_on_stage():
+            if card["game_card_id"] == source_card_id or any(a.get("game_card_id") == source_card_id for a in card.get("stacked_cards", [])):
+                for attached_card in card["attached_cheer"]:
+                    if is_card_cheer(attached_card):
+                        available_cheer.append(attached_card["game_card_id"])
+                break
+    else:
+        available_cheer = effect_player.get_cheer_ids_on_holomems()
     available_targets = effect_player.get_holomem_on_stage()
+    to_limitation_location = effect.get("to_limitation_location", "")
+    if to_limitation_location == "backstage":
+        available_targets = [h for h in available_targets if h["game_card_id"] != effect_player.center[0]["game_card_id"]] if effect_player.center else available_targets
     match to_limitation:
         case "tag_in":
             available_targets = [holomem for holomem in available_targets if any(tag in holomem["tags"] for tag in to_limitation_tags)]
         case "specific_member_name":
             to_limitation_name = effect.get("to_limitation_name", "")
             available_targets = [holomem for holomem in available_targets if to_limitation_name in holomem["card_names"]]
+            to_limitation_bloom_level = effect.get("to_limitation_bloom_level", None)
+            if to_limitation_bloom_level is not None:
+                available_targets = [holomem for holomem in available_targets \
+                    if holomem.get("bloom_level", 0) == to_limitation_bloom_level]
+        case "last_chosen":
+            available_targets = [card for card in available_targets if card["game_card_id"] in engine.last_chosen_cards]
     if effect.get("to_exclude_source", False):
         source_card_id = effect.get("source_card_id", "")
         available_targets = [h for h in available_targets if h["game_card_id"] != source_card_id]
+    if effect.get("to_exclude_previous_target", False):
+        last_target = getattr(engine, "last_move_cheer_target", None)
+        if last_target:
+            available_targets = [h for h in available_targets if h["game_card_id"] != last_target]
     available_targets = ids_from_cards(available_targets)
     cheer_on_each_mem = effect_player.get_cheer_on_each_holomem()
 
-    has_to_limitation = to_limitation != "" or effect.get("to_exclude_source", False)
+    has_to_limitation = to_limitation != "" or effect.get("to_exclude_source", False) or to_limitation_location != "" or effect.get("to_exclude_previous_target", False)
     if (has_to_limitation and len(available_targets) >= 1
         or not has_to_limitation and len(available_targets) > 1) and len(available_cheer) > 0:
         decision_event = {
             "event_type": EventType.EventType_Decision_SendCheer,
             "desired_response": GameAction.EffectResolution_MoveCheerBetweenHolomems,
             "effect_player_id": effect_player_id,
-            "amount_min": amount,
-            "amount_max": amount,
+            "amount_min": amount_min,
+            "amount_max": amount_max,
             "from_zone": "holomem",
             "to_zone": "holomem",
             "from_options": available_cheer,
@@ -407,10 +441,11 @@ def handle_move_cheer_between_holomems(engine, effect_player, effect):
         engine.set_decision({
             "decision_type": DecisionType.DecisionEffect_MoveCheerBetweenHolomems,
             "decision_player": effect_player_id,
-            "amount_min": amount,
-            "amount_max": amount,
+            "amount_min": amount_min,
+            "amount_max": amount_max,
             "available_cheer": available_cheer,
             "available_targets": available_targets,
+            "multi_to": effect.get("multi_to", False),
             "continuation": engine.continue_resolving_effects,
         })
     return False
@@ -579,6 +614,10 @@ def handle_send_cheer(engine, effect_player, effect):
                         to_limitation_name = effect.get("to_limitation_name", "")
                         holomems = effect_player.get_holomem_on_stage()
                         to_options = [card for card in holomems if to_limitation_name in card["card_names"]]
+                        to_limitation_bloom_level = effect.get("to_limitation_bloom_level", None)
+                        if to_limitation_bloom_level is not None:
+                            to_options = [card for card in to_options \
+                                if card.get("bloom_level", 0) == to_limitation_bloom_level]
                     case "member_name_in":
                         to_limitation_names = effect.get("to_limitation_names", [])
                         holomems = effect_player.get_holomem_on_stage()

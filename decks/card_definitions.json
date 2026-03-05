@@ -12695,6 +12695,94 @@
         ]
     },
     {
+        "card_id": "hBP03-004",
+        "card_type": "oshi",
+        "card_names": [
+            "fuwamoco"
+        ],
+        "colors": [
+            "blue"
+        ],
+        "rarity": "osr",
+        "life": 5,
+        "actions": [
+            {
+                "skill_id": "mokochan",
+                "cost": 3,
+                "limit": "once_per_turn",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_turn",
+                        "skill_id": "mokochan",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 3
+                            },
+                            {
+                                "effect_type": "record_used_once_per_turn_effect",
+                                "effect_id": "mokochan"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "send_cheer",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "from": "cheer_deck",
+                        "to": "holomem",
+                        "to_limitation": "specific_member_name",
+                        "to_limitation_name": "mococo_abyssgard",
+                        "to_limitation_bloom_level": 1
+                    }
+                ]
+            },
+            {
+                "skill_id": "baubau",
+                "cost": 2,
+                "limit": "once_per_game",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_game",
+                        "skill_id": "baubau",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_game_effect",
+                                "effect_id": "baubau"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "add_turn_effect_for_holomem",
+                        "limitation": "has_tag",
+                        "limitation_tags": [
+                            "#Advent"
+                        ],
+                        "source_from_chosen": true,
+                        "turn_effect": {
+                            "timing": "enable_backstage_targeting",
+                            "effect_type": "enable_backstage_targeting",
+                            "conditions": [
+                                {
+                                    "condition": "performer_is_specific_id",
+                                    "required_id": "REPLACED_BY_EFFECT"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP03-006",
         "card_type": "oshi",
         "card_names": [
@@ -13105,6 +13193,344 @@
         ]
     },
     {
+        "card_id": "hBP03-037",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "mococo_abyssgard"
+        ],
+        "special_deck_limit": 50,
+        "rarity": "c",
+        "colors": [
+            "red"
+        ],
+        "hp": 80,
+        "baton_cost": 0,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#AnimalEars"
+        ],
+        "arts": [
+            {
+                "art_id": "asobu_jikanda",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 20
+            }
+        ],
+        "effects": [
+            {
+                "timing": "on_art_cost_check",
+                "effect_type": "reduce_art_cost",
+                "color": "any",
+                "amount": 1,
+                "conditions": [
+                    {
+                        "condition": "center_is_member_name",
+                        "required_member_names": [
+                            "fuwawa_abyssgard"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP03-038",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "mococo_abyssgard"
+        ],
+        "rarity": "c",
+        "colors": [
+            "red"
+        ],
+        "hp": 130,
+        "baton_cost": 0,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#AnimalEars"
+        ],
+        "arts": [
+            {
+                "art_id": "mococotodonuttocooking",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ],
+        "bloom_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "bloom_target_is_debut"
+                    }
+                ],
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "holomem_named",
+                "requirement_names": [
+                    "fuwawa_abyssgard"
+                ],
+                "requirement_bloom_levels": [
+                    1
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ]
+    },
+    {
+        "card_id": "hBP03-040",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "fuwawa_abyssgard"
+        ],
+        "special_deck_limit": 50,
+        "rarity": "c",
+        "colors": [
+            "blue"
+        ],
+        "hp": 100,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#AnimalEars"
+        ],
+        "arts": [
+            {
+                "art_id": "chihuahuajanaiyo_fuwawadayo",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ]
+    },
+    {
+        "card_id": "hBP03-041",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "fuwawa_abyssgard"
+        ],
+        "rarity": "c",
+        "colors": [
+            "blue"
+        ],
+        "hp": 160,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#AnimalEars"
+        ],
+        "arts": [
+            {
+                "art_id": "makaino_hashukennoseirieki",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 40
+            },
+            {
+                "art_id": "fukufukuna_peku",
+                "costs": [
+                    {
+                        "color": "blue",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 60
+            }
+        ]
+    },
+    {
+        "card_id": "hBP03-042",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "fuwawa_abyssgard"
+        ],
+        "rarity": "u",
+        "colors": [
+            "blue"
+        ],
+        "hp": 140,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#AnimalEars"
+        ],
+        "arts": [
+            {
+                "art_id": "fuwawa_arts_any2",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 50
+            }
+        ],
+        "bloom_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "holomem_on_stage",
+                        "required_member_name_in": [
+                            "mococo_abyssgard"
+                        ]
+                    }
+                ],
+                "effect_type": "deal_damage",
+                "amount": 20,
+                "target": "center_or_backstage",
+                "opponent": true,
+                "special": true,
+                "prevent_life_loss": true
+            }
+        ]
+    },
+    {
+        "card_id": "hBP03-043",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "fuwawa_abyssgard"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "blue"
+        ],
+        "hp": 190,
+        "baton_cost": 2,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#AnimalEars"
+        ],
+        "arts": [
+            {
+                "art_id": "donut_daisuki",
+                "costs": [
+                    {
+                        "color": "blue",
+                        "amount": 1
+                    }
+                ],
+                "power": 60,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "purple"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "art_id": "issho_ni_taberu",
+                "costs": [
+                    {
+                        "color": "blue",
+                        "amount": 1
+                    },
+                    {
+                        "color": "red",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 100,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "purple"
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "after_art",
+                        "conditions": [
+                            {
+                                "condition": "performer_is_center"
+                            },
+                            {
+                                "condition": "oshi_is",
+                                "required_member_name": "fuwamoco"
+                            }
+                        ],
+                        "effect_type": "choice",
+                        "choice": [
+                            {
+                                "effect_type": "send_cheer",
+                                "amount_min": 1,
+                                "amount_max": 1,
+                                "from": "self",
+                                "to": "holomem",
+                                "to_limitation": "specific_member_name",
+                                "to_limitation_name": "mococo_abyssgard",
+                                "and": [
+                                    {
+                                        "effect_type": "deal_damage",
+                                        "amount": 50,
+                                        "target": "center",
+                                        "opponent": true,
+                                        "special": true
+                                    }
+                                ]
+                            },
+                            {
+                                "effect_type": "pass"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP03-044",
         "card_type": "holomem_bloom",
         "bloom_level": 1,
@@ -13277,6 +13703,76 @@
                         "effect_type": "pass"
                     }
                 ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP03-050",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "fuwamoco",
+            "fuwawa_abyssgard",
+            "mococo_abyssgard"
+        ],
+        "rarity": "r",
+        "colors": [
+            "blue",
+            "red"
+        ],
+        "hp": 150,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#AnimalEars"
+        ],
+        "arts": [
+            {
+                "art_id": "makaino_hashukennoseirieki_sisters",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 40,
+                "art_effects": [
+                    {
+                        "timing": "after_art",
+                        "effect_type": "choose_cards",
+                        "from": "cheer_deck",
+                        "look_at": -1,
+                        "destination": "holomem",
+                        "amount_min": 0,
+                        "amount_max": 1,
+                        "requirement": "color_in",
+                        "requirement_colors": [
+                            "blue",
+                            "red"
+                        ],
+                        "to_limitation": "tag_in",
+                        "to_limitation_tags": [
+                            "#Advent"
+                        ],
+                        "reveal_chosen": true,
+                        "remaining_cards_action": "shuffle"
+                    }
+                ]
+            },
+            {
+                "art_id": "futari_sorotte_fuwamoco_desu",
+                "costs": [
+                    {
+                        "color": "blue",
+                        "amount": 1
+                    },
+                    {
+                        "color": "red",
+                        "amount": 1
+                    }
+                ],
+                "power": 60
             }
         ]
     },
@@ -16974,6 +17470,508 @@
         "collab_effects": []
     },
     {
+        "card_id": "hBP04-020",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "juufutei_raden"
+        ],
+        "special_deck_limit": 50,
+        "rarity": "c",
+        "colors": [
+            "green"
+        ],
+        "hp": 110,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#ReGLOSS",
+            "#Alcohol"
+        ],
+        "arts": [
+            {
+                "art_id": "juufuteiichimonhadenshikenshi",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 20
+            },
+            {
+                "art_id": "juufuteiraden_desu",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 40
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-022",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "juufutei_raden"
+        ],
+        "rarity": "c",
+        "colors": [
+            "green"
+        ],
+        "hp": 160,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#ReGLOSS",
+            "#Alcohol"
+        ],
+        "arts": [
+            {
+                "art_id": "hakushikitackle",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            },
+            {
+                "art_id": "maasonnamonodesho",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 50
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-023",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "juufutei_raden"
+        ],
+        "rarity": "u",
+        "colors": [
+            "green"
+        ],
+        "hp": 130,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#ReGLOSS",
+            "#Alcohol"
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_down",
+                "conditions": [
+                    {
+                        "condition": "opponent_turn"
+                    }
+                ],
+                "effect_type": "send_cheer",
+                "amount_min": 0,
+                "amount_max": 1,
+                "from": "downed_holomem",
+                "to": "holomem",
+                "to_limitation": "tag_in",
+                "to_limitation_tags": [
+                    "#ReGLOSS"
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "netatantou",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 40
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-024",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "juufutei_raden"
+        ],
+        "rarity": "r",
+        "colors": [
+            "green"
+        ],
+        "hp": 170,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#ReGLOSS",
+            "#Alcohol"
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_take_damage",
+                "effect_type": "reduce_damage",
+                "amount": "all",
+                "conditions": [
+                    {
+                        "condition": "this_card_is_center"
+                    },
+                    {
+                        "condition": "damage_source_is_opponent"
+                    },
+                    {
+                        "condition": "damage_not_from_art"
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "kassaihanshuu",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    }
+                ],
+                "power": 30,
+                "art_effects": [
+                    {
+                        "timing": "after_art",
+                        "effect_type": "send_cheer",
+                        "amount_min": 0,
+                        "amount_max": 1,
+                        "from": "archive",
+                        "to": "holomem",
+                        "to_limitation": "source_card"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-002",
+        "card_type": "oshi",
+        "card_names": [
+            "juufutei_raden"
+        ],
+        "colors": [
+            "green"
+        ],
+        "rarity": "osr",
+        "life": 6,
+        "actions": [
+            {
+                "skill_id": "regloss_furyuujin",
+                "cost": 2,
+                "limit": "once_per_turn",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_turn",
+                        "skill_id": "regloss_furyuujin",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_turn_effect",
+                                "effect_id": "regloss_furyuujin"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "send_cheer",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "from": "archive",
+                        "to": "holomem",
+                        "to_limitation": "tag_in",
+                        "to_limitation_tags": [
+                            "#ReGLOSS"
+                        ]
+                    }
+                ]
+            }
+        ],
+        "effects": [
+            {
+                "full_english_text": "OSHI_BP04_002_FULL_TEXT",
+                "oshi_effect": "true",
+                "skill_id": "nokottajikannibingurubinguru",
+                "cost": 2,
+                "limit": "once_per_game",
+                "conditions": [
+                    {
+                        "condition": "not_used_once_per_game_effect",
+                        "condition_effect_id": "nokottajikannibingurubinguru"
+                    }
+                ],
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_game",
+                        "skill_id": "nokottajikannibingurubinguru",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_game_effect",
+                                "effect_id": "nokottajikannibingurubinguru"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "choose_cards",
+                        "from": "archive",
+                        "destination": "hand",
+                        "amount_min": 1,
+                        "amount_max": 4,
+                        "requirement": "support",
+                        "requirement_sub_types": [
+                            "event"
+                        ],
+                        "requirement_tags": [
+                            "#Mushroom"
+                        ],
+                        "remaining_cards_action": "nothing",
+                        "and": [
+                            {
+                                "effect_type": "draw",
+                                "amount_source": "last_chosen_count_divided_by",
+                                "divisor": 2
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-021",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "juufutei_raden"
+        ],
+        "rarity": "u",
+        "colors": [
+            "green"
+        ],
+        "hp": 90,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#ReGLOSS",
+            "#Alcohol"
+        ],
+        "collab_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "support_card_tag_used_this_turn",
+                        "condition_tags": [
+                            "#Mushroom"
+                        ]
+                    }
+                ],
+                "effect_type": "restore_hp",
+                "amount": 20,
+                "target": "holomem",
+                "to_limitation": "tag_in",
+                "to_limitation_tags": [
+                    "#ReGLOSS"
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "raden_stanby",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-025",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "juufutei_raden"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "green"
+        ],
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": [
+            "#DEV_IS",
+            "#ReGLOSS",
+            "#Alcohol"
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "support",
+                "requirement_sub_types": [
+                    "event"
+                ],
+                "requirement_tags": [
+                    "#Mushroom"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "tsugijunbigadekitamitaidesho",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 2
+                    },
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 140,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "white"
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "after_art",
+                        "conditions": [
+                            {
+                                "condition": "oshi_is",
+                                "required_member_name": "juufutei_raden"
+                            }
+                        ],
+                        "effect_type": "choice",
+                        "choice": [
+                            {
+                                "effect_type": "move_cheer_between_holomems",
+                                "amount": 1,
+                                "from_limitation": "source_card",
+                                "to_limitation_location": "backstage",
+                                "and": [
+                                    {
+                                        "effect_type": "move_cheer_between_holomems",
+                                        "amount": 1,
+                                        "from_limitation": "source_card",
+                                        "to_limitation_location": "backstage",
+                                        "to_exclude_previous_target": true,
+                                        "and": [
+                                            {
+                                                "effect_type": "power_boost",
+                                                "amount": 30
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "effect_type": "pass"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-094",
+        "card_type": "support",
+        "sub_type": "event",
+        "colors": [],
+        "card_names": [
+            "maitake_dance"
+        ],
+        "rarity": "u",
+        "limited": false,
+        "tags": [
+            "#Mushroom"
+        ],
+        "effects": [
+            {
+                "effect_type": "add_turn_effect_for_holomem",
+                "limitation": "name_in",
+                "limitation_names": [
+                    "juufutei_raden"
+                ],
+                "source_from_chosen": true,
+                "turn_effect": {
+                    "timing": "before_art",
+                    "effect_type": "power_boost",
+                    "amount": 10,
+                    "conditions": [
+                        {
+                            "condition": "self_has_cheer_color",
+                            "condition_colors": [
+                                "any"
+                            ],
+                            "amount_min": 3
+                        }
+                    ]
+                },
+                "and": [
+                    {
+                        "effect_type": "move_cheer_between_holomems",
+                        "to_limitation": "last_chosen",
+                        "amount_min": 1,
+                        "amount_max": 2,
+                        "multi_to": false
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP05-008",
         "card_type": "holomem_debut",
         "card_names": [
@@ -19441,6 +20439,101 @@
                 ],
                 "effect_type": "draw",
                 "amount": 1
+            }
+        ]
+    },
+    {
+        "card_id": "hBP05-029",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "juufutei_raden"
+        ],
+        "buzz": true,
+        "rarity": "r",
+        "colors": [
+            "green"
+        ],
+        "hp": 250,
+        "baton_cost": 2,
+        "down_life_cost": 2,
+        "tags": [
+            "#DEV_IS",
+            "#ReGLOSS",
+            "#Alcohol"
+        ],
+        "arts": [
+            {
+                "art_id": "darekanonameniikitekitakeredo",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 50,
+                "art_effects": [
+                    {
+                        "timing": "after_art",
+                        "conditions": [
+                            {
+                                "condition": "oshi_is",
+                                "required_member_name": "juufutei_raden"
+                            }
+                        ],
+                        "effect_type": "choose_cards",
+                        "from": "deck",
+                        "look_at": -1,
+                        "destination": "hand",
+                        "amount_min": 0,
+                        "amount_max": 1,
+                        "requirement": "support",
+                        "requirement_sub_types": [
+                            "event"
+                        ],
+                        "requirement_tags": [
+                            "#Mushroom"
+                        ],
+                        "reveal_chosen": true,
+                        "remaining_cards_action": "shuffle"
+                    }
+                ]
+            },
+            {
+                "art_id": "yattojibunnojinseioikiteiku",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 80,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 40,
+                        "conditions": [
+                            {
+                                "condition": "holomem_on_stage",
+                                "tag_in": [
+                                    "#ReGLOSS"
+                                ],
+                                "required_bloom_levels": [
+                                    2
+                                ]
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     },
@@ -22956,6 +24049,109 @@
         ]
     },
     {
+        "card_id": "hBP06-087",
+        "card_type": "support",
+        "sub_type": "event",
+        "colors": [],
+        "card_names": [
+            "shimeji_dance"
+        ],
+        "rarity": "u",
+        "limited": false,
+        "tags": [
+            "#Mushroom"
+        ],
+        "play_conditions": [
+            {
+                "condition": "oshi_is",
+                "required_member_name": "juufutei_raden"
+            }
+        ],
+        "effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "cheer_deck",
+                "look_at": 1,
+                "destination": "archive",
+                "amount_min": 1,
+                "amount_max": 1,
+                "remaining_cards_action": "nothing"
+            },
+            {
+                "effect_type": "choose_cards",
+                "from": "archive",
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "holomem_named",
+                "requirement_names": [
+                    "juufutei_raden"
+                ],
+                "remaining_cards_action": "nothing"
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-033",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "juufutei_raden"
+        ],
+        "rarity": "r",
+        "colors": [
+            "green"
+        ],
+        "hp": 160,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#ReGLOSS",
+            "#Alcohol"
+        ],
+        "bloom_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "support_card_tag_used_this_turn",
+                        "condition_tags": [
+                            "#Mushroom"
+                        ]
+                    }
+                ],
+                "limit": "once_per_turn",
+                "effect_type": "draw",
+                "amount": 2
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "kusabira",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    }
+                ],
+                "power": 40,
+                "art_effects": [
+                    {
+                        "timing": "after_art",
+                        "effect_type": "send_cheer",
+                        "amount_min": 0,
+                        "amount_max": 1,
+                        "from": "archive",
+                        "to": "holomem",
+                        "to_limitation": "tag_in",
+                        "to_limitation_tags": [
+                            "#ReGLOSS"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP07-001",
         "card_type": "oshi",
         "card_names": [
@@ -24515,6 +25711,54 @@
                         "to": "holomem"
                     }
                 ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-099",
+        "card_type": "support",
+        "colors": [],
+        "sub_type": "event",
+        "card_names": [
+            "buhi"
+        ],
+        "rarity": "c",
+        "limited": true,
+        "effects": [
+            {
+                "effect_type": "draw",
+                "amount": 2
+            },
+            {
+                "conditions": [
+                    {
+                        "condition": "my_holomem_downed_last_opponent_turn"
+                    }
+                ],
+                "effect_type": "add_turn_effect_for_holomem",
+                "turn_effect": {
+                    "timing": "before_art",
+                    "conditions": [
+                        {
+                            "condition": "performer_is_specific_id",
+                            "required_id": "REPLACED_BY_EFFECT"
+                        }
+                    ],
+                    "effect_type": "power_boost",
+                    "amount": 20
+                }
+            },
+            {
+                "conditions": [
+                    {
+                        "condition": "my_holomem_downed_last_opponent_turn_named",
+                        "condition_names": [
+                            "laplus_darkness"
+                        ]
+                    }
+                ],
+                "effect_type": "draw",
+                "amount": 2
             }
         ]
     },
@@ -28096,6 +29340,50 @@
         ]
     },
     {
+        "card_id": "hSD05-010",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "juufutei_raden"
+        ],
+        "rarity": "u",
+        "colors": [
+            "green"
+        ],
+        "hp": 80,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#ReGLOSS",
+            "#Alcohol"
+        ],
+        "arts": [
+            {
+                "art_id": "chottohitoseki",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 20,
+                "art_effects": [
+                    {
+                        "timing": "after_art",
+                        "effect_type": "send_cheer",
+                        "amount_min": 0,
+                        "amount_max": 1,
+                        "from": "archive",
+                        "to": "holomem",
+                        "to_limitation": "tag_in",
+                        "to_limitation_tags": [
+                            "#ReGLOSS"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hSD06-008",
         "card_type": "holomem_debut",
         "card_names": [
@@ -28894,6 +30182,127 @@
         "gift_effects": [],
         "bloom_effects": [],
         "collab_effects": []
+    },
+    {
+        "card_id": "hSD12-013",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "mococo_abyssgard"
+        ],
+        "rarity": "c",
+        "colors": [
+            "red"
+        ],
+        "hp": 130,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#AnimalEars"
+        ],
+        "arts": [
+            {
+                "art_id": "mococo_arts_any1",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ],
+        "collab_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "stage_all_members_have_tag",
+                        "required_tags": [
+                            "#Advent"
+                        ]
+                    }
+                ],
+                "effect_type": "choose_cards",
+                "from": "backstage",
+                "look_at": -1,
+                "destination": "bottom_of_deck",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "holomem_debut",
+                "after_choose_effect": {
+                    "conditions": [
+                        {
+                            "condition": "chosen_card_count",
+                            "amount_min": 1
+                        }
+                    ],
+                    "effect_type": "draw",
+                    "amount": 2
+                }
+            }
+        ]
+    },
+    {
+        "card_id": "hSD12-014",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "fuwawa_abyssgard"
+        ],
+        "rarity": "c",
+        "colors": [
+            "blue"
+        ],
+        "hp": 100,
+        "baton_cost": 0,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#AnimalEars"
+        ],
+        "arts": [
+            {
+                "art_id": "fuwawa_arts_any1",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ],
+        "collab_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "stage_all_members_have_tag",
+                        "required_tags": [
+                            "#Advent"
+                        ]
+                    }
+                ],
+                "effect_type": "choose_cards",
+                "from": "backstage",
+                "look_at": -1,
+                "destination": "bottom_of_deck",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "holomem_debut",
+                "after_choose_effect": {
+                    "conditions": [
+                        {
+                            "condition": "chosen_card_count",
+                            "amount_min": 1
+                        }
+                    ],
+                    "effect_type": "send_cheer",
+                    "amount_min": 1,
+                    "amount_max": 1,
+                    "from": "cheer_deck",
+                    "to": "holomem"
+                }
+            }
+        ]
     },
     {
         "card_id": "hSD12-015",

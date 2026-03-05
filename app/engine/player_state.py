@@ -43,6 +43,7 @@ class PlayerState:
         self.played_support_this_turn = False
         self.played_support_types_this_turn = {}
         self.support_card_names_used_this_turn = []
+        self.support_card_tags_used_this_turn = []
         self.turn_effects = []
         self.set_next_die_roll = 0
         self.card_effects_used_this_turn = []
@@ -56,7 +57,9 @@ class PlayerState:
         self.last_die_roll_results = []
         self.die_rolled_by_holomem_names_this_turn = []
         self.holomem_downed_this_turn = False
+        self.holomem_downed_names_this_turn = []
         self.holomem_downed_last_opponent_turn = False
+        self.holomem_downed_names_last_opponent_turn = []
         self.block_life_loss_by_effect_this_turn = False
         self.extra_turn_pending = False
 
@@ -510,6 +513,10 @@ class PlayerState:
                             effects.append(ae_copy)
 
         if card and card["card_type"] not in ["support", "oshi"]:
+            card_effects = filter_effects_at_timing(card.get("effects", []), timing)
+            add_ids_to_effects(card_effects, self.player_id, card["game_card_id"])
+            effects.extend(card_effects)
+
             attachments_to_check = card["attached_support"]
             if card["attached_when_downed"]:
                 attachments_to_check = card["attached_when_downed"]
@@ -775,11 +782,13 @@ class PlayerState:
         self.played_support_this_turn = False
         self.played_support_types_this_turn = {}
         self.support_card_names_used_this_turn = []
+        self.support_card_tags_used_this_turn = []
         self.effects_used_this_turn = []
         self.card_effects_used_this_turn = []
         self.last_revealed_cards = []
         self.die_rolled_by_holomem_names_this_turn = []
         self.holomem_downed_this_turn = False
+        self.holomem_downed_names_this_turn = []
         self.block_life_loss_by_effect_this_turn = False
         for card in self.get_holomem_on_stage():
             card["used_art_this_turn"] = False

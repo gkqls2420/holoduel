@@ -59,6 +59,8 @@ def handle_deal_damage(engine, effect_player, effect):
             target_cards = target_player.collab
         case "center_or_collab":
             target_cards = target_player.center + target_player.collab
+        case "center_or_backstage":
+            target_cards = target_player.center + target_player.backstage
         case "current_damage_target":
             # Only valid if still on stage.
             if engine.after_damage_state.target_card in target_player.get_holomem_on_stage():
@@ -279,6 +281,8 @@ def handle_down_holomem(engine, effect_player, effect):
             target_cards = target_player.collab
         case "center_or_collab":
             target_cards = target_player.center + target_player.collab
+        case "center_or_backstage":
+            target_cards = target_player.center + target_player.backstage
         case "holomem":
             target_cards = target_player.get_holomem_on_stage()
         case _:

@@ -95,6 +95,8 @@ def handle_choose_cards(engine, effect_player, effect):
             cards_to_choose_from = effect_player.cheer_deck
         case "deck":
             cards_to_choose_from = effect_player.deck
+        case "backstage":
+            cards_to_choose_from = effect_player.backstage
         case "hand":
             cards_to_choose_from = effect_player.hand
         case "holopower":

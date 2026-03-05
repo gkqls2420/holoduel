@@ -483,6 +483,12 @@ class ConditionMixin:
                     if card_name in effect_player.support_card_names_used_this_turn:
                         return True
                 return False
+            case Condition.Condition_SupportCardTagUsedThisTurn:
+                condition_tags = condition.get("condition_tags", [])
+                for tag in condition_tags:
+                    if tag in effect_player.support_card_tags_used_this_turn:
+                        return True
+                return False
             case Condition.Condition_RevealedCardsCount:
                 amount_min = condition["amount_min"]
                 return len(effect_player.last_revealed_cards) >= amount_min
@@ -693,6 +699,9 @@ class ConditionMixin:
             case Condition.Condition_MyHolomemDownedLastOpponentTurn:
                 # 직전 상대의 턴에 자신의 홀로멤이 다운됐었는지 확인
                 return effect_player.holomem_downed_last_opponent_turn
+            case Condition.Condition_MyHolomemDownedLastOpponentTurnNamed:
+                condition_names = condition.get("condition_names", [])
+                return any(name in effect_player.holomem_downed_names_last_opponent_turn for name in condition_names)
             case Condition.Condition_HasRestingHolomem:
                 requirement_tags = condition.get("requirement_tags", [])
                 for holomem in effect_player.get_holomem_on_stage():
