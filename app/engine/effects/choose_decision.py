@@ -433,7 +433,7 @@ def handle_generate_choice_template(engine, effect_player, effect):
                 can_pass = False
     match usage_count_restriction:
         case "available_archive_from_hand":
-            ability_source = effect["ability_source"]
+            ability_source = effect.get("ability_source", "")
             max_count = min(max_count, effect_player.get_can_archive_from_hand_count(ability_source))
         case "cheer_deck":
             max_count = min(len(effect_player.cheer_deck), max_count)

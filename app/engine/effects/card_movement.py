@@ -14,7 +14,7 @@ def handle_archive_cheer_from_holomem(engine, effect_player, effect):
     """Returns True if continuation was passed on, False otherwise."""
     effect_player_id = effect_player.player_id
     source_card, _, _ = effect_player.find_card(effect["source_card_id"])
-    ability_source = effect["ability_source"]
+    ability_source = effect.get("ability_source", "")
     engine.archive_count_required = effect["amount"]
     before_archive_effects = effect_player.get_effects_at_timing("before_archive_cheer", source_card, ability_source)
 
@@ -34,7 +34,7 @@ def handle_archive_cheer_from_holomem(engine, effect_player, effect):
         from_zone = effect["from"]
         required_colors = effect.get("required_colors", [])
         target_holomems = []
-        ability_source = effect["ability_source"]
+        ability_source = effect.get("ability_source", "")
         match from_zone:
             case "self":
                 source_card, _, _ = effect_player.find_card(effect["source_card_id"])
@@ -108,7 +108,7 @@ def handle_archive_from_hand(engine, effect_player, effect):
     """Returns True if continuation was passed on, False otherwise."""
     effect_player_id = effect_player.player_id
     amount = effect["amount"]
-    ability_source = effect["ability_source"]
+    ability_source = effect.get("ability_source", "")
     requirement_same_tag = effect.get("requirement_same_tag", False)
     engine.archive_count_required = amount
     before_archive_effects = effect_player.get_effects_at_timing("before_archive", None, ability_source)
@@ -840,7 +840,7 @@ def handle_after_archive_cheer_check(engine, effect_player, effect):
     effect_player_id = effect_player.player_id
     previous_archive_count = effect["previous_archive_count"]
     current_archive_count = len(effect_player.archive)
-    ability_source = effect["ability_source"]
+    ability_source = effect.get("ability_source", "")
     if previous_archive_count < current_archive_count:
         # The player archived some amount of cheer.
         after_archive_effects = effect_player.get_effects_at_timing("after_archive_cheer", None, ability_source)

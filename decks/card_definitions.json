@@ -8728,6 +8728,7 @@
                     },
                     {
                         "effect_type": "archive_from_hand",
+                        "ability_source": "oshi_purple",
                         "amount": 2,
                         "and": [
                             {
@@ -11184,6 +11185,7 @@
                 "choice": [
                     {
                         "effect_type": "archive_from_hand",
+                        "ability_source": "holomem_purple",
                         "amount": 1,
                         "requirement": "holomem",
                         "and": [
@@ -11285,6 +11287,7 @@
                 "choice": [
                     {
                         "effect_type": "archive_from_hand",
+                        "ability_source": "holomem_purple",
                         "amount": 2,
                         "requirement": "holomem",
                         "requirement_same_tag": true,
@@ -19272,6 +19275,7 @@
                 "choice": [
                     {
                         "effect_type": "archive_from_hand",
+                        "ability_source": "support_card",
                         "amount": 1,
                         "conditions": [
                             {
@@ -20249,6 +20253,7 @@
                 "and": [
                     {
                         "effect_type": "archive_from_hand",
+                        "ability_source": "holomem_blue",
                         "amount": 2
                     }
                 ]
