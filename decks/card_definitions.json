@@ -13491,7 +13491,7 @@
                         ]
                     },
                     {
-                        "timing": "after_art",
+                        "timing": "after_deal_damage",
                         "conditions": [
                             {
                                 "condition": "performer_is_center"
@@ -13739,7 +13739,7 @@
                 "power": 40,
                 "art_effects": [
                     {
-                        "timing": "after_art",
+                        "timing": "after_deal_damage",
                         "effect_type": "choose_cards",
                         "from": "cheer_deck",
                         "look_at": -1,

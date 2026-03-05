@@ -61,7 +61,7 @@ def handle_choose_cards(engine, effect_player, effect):
     requirement_different_colors = effect.get("requirement_different_colors", False)
     requirement_match_selected_holomem_color = effect.get("requirement_match_selected_holomem_color", None)
     reveal_chosen = effect.get("reveal_chosen", False)
-    remaining_cards_action = effect.get("remaining_cards_action", "NULL")
+    remaining_cards_action = effect.get("remaining_cards_action", "nothing" if from_zone == "backstage" else "NULL")
     after_choose_effect = effect.get("after_choose_effect", None)
     requirement_details = {
         "requirement": requirement,

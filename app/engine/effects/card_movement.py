@@ -686,7 +686,8 @@ def handle_send_cheer(engine, effect_player, effect):
 
     if remove_from_to_options:
         for card_id in remove_from_to_options:
-            to_options.remove(card_id)
+            if card_id in to_options:
+                to_options.remove(card_id)
     if len(to_options) == 0 or len(from_options) == 0:
         # No effect.
         pass
