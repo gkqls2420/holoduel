@@ -747,6 +747,18 @@ class ConditionMixin:
                     any(tag in holomem.get("tags", []) for tag in required_tags)
                     for holomem in holomems
                 )
+            case Condition.Condition_CheerInArchive:
+                required_colors = condition.get("required_colors", [])
+                amount_min = condition.get("amount_min", 1)
+                cheer_count = 0
+                for card in effect_player.archive:
+                    if is_card_cheer(card):
+                        if required_colors:
+                            if any(color in card.get("colors", []) for color in required_colors):
+                                cheer_count += 1
+                        else:
+                            cheer_count += 1
+                return cheer_count >= amount_min
             case Condition.Condition_SupportInArchive:
                 amount_min = condition.get("amount_min", 1)
                 support_count = sum(1 for card in effect_player.archive if card.get("card_type") == "support")

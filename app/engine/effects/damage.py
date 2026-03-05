@@ -487,6 +487,24 @@ def handle_performance_life_lost_increase(engine, effect_player, effect):
     return False
 
 
+def handle_deal_damage_per_tagged_holomem_and_cheer_in_archive(engine, effect_player, effect):
+    """Counts #tagged holomems + all cheer in own archive, deals damage per count."""
+    amount_per = effect["amount_per"]
+    required_tags = effect.get("required_tags", [])
+    count = 0
+    for card in effect_player.archive:
+        if is_card_cheer(card):
+            count += 1
+        elif is_card_holomem(card) and required_tags:
+            if any(tag in card.get("tags", []) for tag in required_tags):
+                count += 1
+    effect_copy = deepcopy(effect)
+    effect_copy["amount"] = amount_per * count
+    effect_copy["effect_type"] = EffectType.EffectType_DealDamage
+    engine.add_effects_to_front([effect_copy])
+    return False
+
+
 DAMAGE_HANDLERS = {
     EffectType.EffectType_AddDamageTaken: handle_add_damage_taken,
     EffectType.EffectType_DealDamage: handle_deal_damage,
@@ -495,6 +513,7 @@ DAMAGE_HANDLERS = {
     EffectType.EffectType_DealDamagePerHolomemOnStage: handle_deal_damage_per_holomem_on_stage,
     EffectType.EffectType_DealDamagePerStacked: handle_deal_damage_per_stacked,
     EffectType.EffectType_DealDamagePerSupportInArchive: handle_deal_damage_per_support_in_archive,
+    EffectType.EffectType_DealDamagePerTaggedHolomemAndCheerInArchive: handle_deal_damage_per_tagged_holomem_and_cheer_in_archive,
     EffectType.EffectType_DealLifeDamage: handle_deal_life_damage,
     EffectType.EffectType_DownHolomem: handle_down_holomem,
     EffectType.EffectType_RedirectDamage: handle_redirect_damage,

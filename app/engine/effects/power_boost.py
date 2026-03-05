@@ -241,6 +241,18 @@ def handle_power_boost_per_condition(engine, effect_player, effect):
     return False
 
 
+def handle_power_boost_per_opponent_archive_cheer(engine, effect_player, effect):
+    """Power boost based on cheer count in opponent's archive."""
+    per_amount = effect["amount"]
+    limit = effect.get("limit", 999)
+    opponent = engine.other_player(effect_player.player_id)
+    cheer_count = sum(1 for card in opponent.archive if is_card_cheer(card))
+    multiplier = min(cheer_count, limit)
+    total = per_amount * multiplier
+    engine.handle_power_boost(total, effect["source_card_id"])
+    return False
+
+
 POWER_BOOST_HANDLERS = {
     EffectType.EffectType_PowerBoost: handle_power_boost,
     EffectType.EffectType_PowerBoostPerAllFans: handle_power_boost_per_all_fans,
@@ -259,4 +271,5 @@ POWER_BOOST_HANDLERS = {
     EffectType.EffectType_PowerBoostPerStacked: handle_power_boost_per_stacked,
     EffectType.EffectType_PowerBoostPerPlayedSupport: handle_power_boost_per_played_support,
     EffectType.EffectType_PowerBoostPerCondition: handle_power_boost_per_condition,
+    EffectType.EffectType_PowerBoostPerOpponentArchiveCheer: handle_power_boost_per_opponent_archive_cheer,
 }

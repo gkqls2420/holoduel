@@ -266,6 +266,23 @@ class PlayerState:
                 reduction_amount = effect.get("amount", 0)
                 if reduction_color in cost_reductions:
                     cost_reductions[reduction_color] += reduction_amount
+                continue
+            if effect["effect_type"] == EffectType.EffectType_ReduceArtCostPerCheerColorTypesInBothArchives:
+                if not self.engine.are_conditions_met(self, effect["source_card_id"], effect.get("conditions", [])):
+                    continue
+                target_limitation = effect.get("target_limitation", "")
+                if target_limitation == "self" and card["game_card_id"] != effect["source_card_id"]:
+                    continue
+                all_colors = set()
+                for player in self.engine.player_states:
+                    for archive_card in player.archive:
+                        if is_card_cheer(archive_card):
+                            for color in archive_card.get("colors", []):
+                                all_colors.add(color)
+                reduction_per = effect.get("amount", 1)
+                total_reduction = len(all_colors) * reduction_per
+                cost_reductions["any"] += total_reduction
+                continue
 
         # Apply cost reductions to create effective costs
         cheer_costs = []

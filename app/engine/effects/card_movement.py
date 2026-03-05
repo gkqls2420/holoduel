@@ -45,6 +45,7 @@ def handle_archive_cheer_from_holomem(engine, effect_player, effect):
                     target_holomems.append(holomems[0])
             case "holomem":
                 target_holomems = effect_player.get_holomem_on_stage()
+        excluded_colors = effect.get("excluded_colors", [])
         cheer_options = []
         for holomem in target_holomems:
             if required_colors:
@@ -52,6 +53,10 @@ def handle_archive_cheer_from_holomem(engine, effect_player, effect):
                 for cheer in holomem["attached_cheer"]:
                     if any(color in cheer["colors"] for color in required_colors):
                         matched_cheer.append(cheer)
+                cheer_options += ids_from_cards(matched_cheer)
+            elif excluded_colors:
+                matched_cheer = [c for c in holomem["attached_cheer"]
+                                 if not any(color in c["colors"] for color in excluded_colors)]
                 cheer_options += ids_from_cards(matched_cheer)
             else:
                 cheer_options += ids_from_cards(holomem["attached_cheer"])
@@ -893,9 +898,63 @@ def handle_after_archive_cheer_check(engine, effect_player, effect):
     return False
 
 
+def handle_archive_from_both_cheer_decks(engine, effect_player, effect):
+    """Archives top card(s) from both players' cheer decks.
+    Sets engine.last_card_count to the number of unique colors among archived cheer."""
+    amount = effect.get("amount", 1)
+    archived_colors = set()
+
+    for _ in range(amount):
+        if len(effect_player.cheer_deck) > 0:
+            card = effect_player.cheer_deck[0]
+            for color in card.get("colors", []):
+                archived_colors.add(color)
+            effect_player.move_card(card["game_card_id"], "archive")
+
+    opponent = engine.other_player(effect_player.player_id)
+    for _ in range(amount):
+        if len(opponent.cheer_deck) > 0:
+            card = opponent.cheer_deck[0]
+            for color in card.get("colors", []):
+                archived_colors.add(color)
+            opponent.move_card(card["game_card_id"], "archive")
+
+    engine.last_card_count = len(archived_colors)
+    return False
+
+
+def handle_draw_per_cheer_on_both_stages(engine, effect_player, effect):
+    """Draws cards equal to the total cheer count on both players' stages."""
+    per_amount = effect.get("amount", 1)
+    count = 0
+    for player in engine.player_states:
+        for holomem in player.get_holomem_on_stage():
+            count += len(holomem["attached_cheer"])
+    draw_amount = per_amount * count
+    if draw_amount > 0:
+        effect_player.draw(draw_amount)
+    return False
+
+
+def handle_archive_hand(engine, effect_player, effect):
+    """Archives all cards from hand. Sets engine.last_card_count to number of archived cards."""
+    engine.last_card_count = len(effect_player.hand)
+    while len(effect_player.hand) > 0:
+        effect_player.move_card(effect_player.hand[0]["game_card_id"], "archive")
+    return False
+
+
+def handle_shuffle_cheer_deck(engine, effect_player, effect):
+    """Shuffles the effect player's cheer deck."""
+    effect_player.shuffle_cheer_deck()
+    return False
+
+
 CARD_MOVEMENT_HANDLERS = {
     EffectType.EffectType_ArchiveCheerFromHolomem: handle_archive_cheer_from_holomem,
+    EffectType.EffectType_ArchiveFromBothCheerDecks: handle_archive_from_both_cheer_decks,
     EffectType.EffectType_ArchiveFromHand: handle_archive_from_hand,
+    EffectType.EffectType_ArchiveHand: handle_archive_hand,
     EffectType.EffectType_ArchiveRevealedCards: handle_archive_revealed_cards,
     EffectType.EffectType_ArchiveThisAttachment: handle_archive_this_attachment,
     EffectType.EffectType_ArchiveAttachmentFromStageByName: handle_archive_attachment_from_stage_by_name,
@@ -904,6 +963,7 @@ CARD_MOVEMENT_HANDLERS = {
     EffectType.EffectType_AttachCardToHolomem: handle_attach_card_to_holomem,
     EffectType.EffectType_AttachCardToHolomem_Internal: handle_attach_card_to_holomem_internal,
     EffectType.EffectType_Draw: handle_draw,
+    EffectType.EffectType_DrawPerCheerOnBothStages: handle_draw_per_cheer_on_both_stages,
     EffectType.EffectType_GenerateHolopower: handle_generate_holopower,
     EffectType.EffectType_MoveCheerBetweenHolomems: handle_move_cheer_between_holomems,
     EffectType.EffectType_ReturnRevealedToHolopowerBottom: handle_return_revealed_to_holopower_bottom,
@@ -912,6 +972,7 @@ CARD_MOVEMENT_HANDLERS = {
     EffectType.EffectType_SendCheer: handle_send_cheer,
     EffectType.EffectType_SendCollabBack: handle_send_collab_back,
     EffectType.EffectType_ShuffleArchiveToDeck: handle_shuffle_archive_to_deck,
+    EffectType.EffectType_ShuffleCheerDeck: handle_shuffle_cheer_deck,
     EffectType.EffectType_ShuffleHandToDeck: handle_shuffle_hand_to_deck,
     EffectType.EffectType_SpendHolopower: handle_spend_holopower,
     EffectType.EffectType_SwitchCenterWithBack: handle_switch_center_with_back,

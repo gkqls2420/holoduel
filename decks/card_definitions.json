@@ -17972,6 +17972,234 @@
         ]
     },
     {
+        "card_id": "hBP04-063",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "koseki_bijou"
+        ],
+        "special_deck_limit": 50,
+        "rarity": "c",
+        "colors": [
+            "purple"
+        ],
+        "hp": 110,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#Baby"
+        ],
+        "arts": [
+            {
+                "art_id": "bonbijou",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 20
+            }
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_down",
+                "conditions": [
+                    {
+                        "condition": "opponent_turn"
+                    },
+                    {
+                        "condition": "downed_card_is_this"
+                    }
+                ],
+                "effect_type": "draw",
+                "amount": 1
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-064",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "koseki_bijou"
+        ],
+        "rarity": "c",
+        "colors": [
+            "purple"
+        ],
+        "hp": 180,
+        "baton_cost": 2,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#Baby"
+        ],
+        "arts": [
+            {
+                "art_id": "shining_gem",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-065",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "koseki_bijou"
+        ],
+        "rarity": "u",
+        "colors": [
+            "purple"
+        ],
+        "hp": 130,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#Baby"
+        ],
+        "arts": [
+            {
+                "art_id": "ore_and_miner",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 1
+                    }
+                ],
+                "power": 30,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "cheer_in_archive",
+                                "required_colors": [
+                                    "red"
+                                ]
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 20
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "archive_cheer_from_holomem",
+                        "from": "holomem",
+                        "amount": 1,
+                        "required_colors": [
+                            "red"
+                        ],
+                        "ability_source": "holomem_ability",
+                        "and": [
+                            {
+                                "effect_type": "draw",
+                                "amount": 2
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "pass"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-066",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "koseki_bijou"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "purple"
+        ],
+        "hp": 190,
+        "baton_cost": 2,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#Baby"
+        ],
+        "arts": [
+            {
+                "art_id": "hope_sparkle_reaches",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 80,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "green"
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 50
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost_per_opponent_archive_cheer",
+                        "amount": 10
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "effect_card_id_not_used_this_turn"
+                    }
+                ],
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "archive_hand",
+                        "and": [
+                            {
+                                "effect_type": "draw",
+                                "amount": "last_card_count"
+                            },
+                            {
+                                "effect_type": "record_effect_card_id_used_this_turn"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "pass"
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP05-008",
         "card_type": "holomem_debut",
         "card_names": [
@@ -29869,6 +30097,87 @@
         "effects": []
     },
     {
+        "card_id": "hSD12-002",
+        "card_type": "oshi",
+        "card_names": [
+            "koseki_bijou"
+        ],
+        "colors": [
+            "purple"
+        ],
+        "rarity": "osr",
+        "life": 5,
+        "actions": [
+            {
+                "skill_id": "biboo_tax",
+                "cost": 2,
+                "limit": "once_per_turn",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "skill_id": "biboo_tax",
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_turn",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_turn_effect",
+                                "effect_id": "biboo_tax"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "archive_from_both_cheer_decks",
+                        "amount": 1,
+                        "and": [
+                            {
+                                "effect_type": "draw",
+                                "amount": "last_card_count"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "skill_id": "ancient_gemstone_sparkle",
+                "cost": 2,
+                "limit": "once_per_game",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "skill_id": "ancient_gemstone_sparkle",
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_game",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_game_effect",
+                                "effect_id": "ancient_gemstone_sparkle"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "deal_damage_per_tagged_holomem_and_cheer_in_archive",
+                        "amount_per": 10,
+                        "required_tags": [
+                            "#Advent"
+                        ],
+                        "special": true,
+                        "target": "center",
+                        "opponent": true
+                    }
+                ]
+            }
+        ],
+        "effects": []
+    },
+    {
         "card_id": "hSD12-003",
         "card_type": "holomem_debut",
         "card_names": [
@@ -30336,6 +30645,316 @@
                 "amount_max": 1,
                 "from": "archive",
                 "to": "holomem"
+            }
+        ]
+    },
+    {
+        "card_id": "hSD12-008",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "koseki_bijou"
+        ],
+        "rarity": "c",
+        "colors": [
+            "purple"
+        ],
+        "hp": 110,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#Baby"
+        ],
+        "arts": [
+            {
+                "art_id": "often_dreaming",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ],
+        "collab_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "is_going_second_and_first_turn"
+                    }
+                ],
+                "effect_type": "draw_per_cheer_on_both_stages",
+                "amount": 1
+            }
+        ]
+    },
+    {
+        "card_id": "hSD12-009",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "koseki_bijou"
+        ],
+        "rarity": "c",
+        "colors": [
+            "purple"
+        ],
+        "hp": 130,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#Baby"
+        ],
+        "arts": [
+            {
+                "art_id": "really_grateful",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": 3,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "holomem",
+                "requirement_tags": [
+                    "#Advent"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "order_on_bottom"
+            }
+        ]
+    },
+    {
+        "card_id": "hSD12-010",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "koseki_bijou"
+        ],
+        "rarity": "u",
+        "colors": [
+            "purple"
+        ],
+        "hp": 170,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#Baby"
+        ],
+        "arts": [
+            {
+                "art_id": "permeating_light",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            },
+            {
+                "art_id": "your_princess_awakens",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 50,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "choice",
+                        "choice": [
+                            {
+                                "effect_type": "archive_cheer_from_holomem",
+                                "from": "self",
+                                "amount": 1,
+                                "excluded_colors": [
+                                    "purple"
+                                ],
+                                "ability_source": "holomem_ability",
+                                "and": [
+                                    {
+                                        "effect_type": "choose_cards",
+                                        "from": "archive",
+                                        "look_at": -1,
+                                        "destination": "hand",
+                                        "amount_min": 0,
+                                        "amount_max": 1,
+                                        "requirement": "holomem",
+                                        "remaining_cards_action": "nothing"
+                                    }
+                                ]
+                            },
+                            {
+                                "effect_type": "pass"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hSD12-011",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "koseki_bijou"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "purple"
+        ],
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#Baby"
+        ],
+        "arts": [
+            {
+                "art_id": "sparkle_take_all",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 3
+                    }
+                ],
+                "power": 110,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "yellow"
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 50
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "draw",
+                "amount": 1
+            },
+            {
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "archive_cheer_from_holomem",
+                        "from": "holomem",
+                        "amount": 1,
+                        "ability_source": "holomem_ability",
+                        "and": [
+                            {
+                                "effect_type": "add_turn_effect_for_holomem",
+                                "turn_effect": {
+                                    "timing": "before_art",
+                                    "effect_type": "power_boost",
+                                    "amount": 40
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "pass"
+                    }
+                ]
+            }
+        ],
+        "effects": [
+            {
+                "timing": "on_art_cost_check",
+                "effect_type": "reduce_art_cost_per_cheer_color_types_in_both_archives",
+                "amount": 1,
+                "target_limitation": "self"
+            }
+        ]
+    },
+    {
+        "card_id": "hSD12-016",
+        "card_type": "support",
+        "sub_type": "mascot",
+        "card_names": [
+            "geow"
+        ],
+        "rarity": "c",
+        "colors": [],
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "check_hp",
+                "effect_type": "bonus_hp",
+                "amount": 20
+            },
+            {
+                "timing": "on_attach",
+                "conditions": [
+                    {
+                        "condition": "attached_to",
+                        "required_member_name": "koseki_bijou",
+                        "required_bloom_levels": [
+                            1,
+                            2
+                        ]
+                    }
+                ],
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "archive_cheer_from_holomem",
+                        "from": "holomem",
+                        "amount": 1,
+                        "ability_source": "support_card",
+                        "and": [
+                            {
+                                "effect_type": "send_cheer",
+                                "amount_min": 1,
+                                "amount_max": 1,
+                                "from": "cheer_deck",
+                                "to": "holomem"
+                            },
+                            {
+                                "effect_type": "shuffle_cheer_deck"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "pass"
+                    }
+                ]
             }
         ]
     },
