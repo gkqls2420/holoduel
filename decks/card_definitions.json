@@ -13365,6 +13365,7 @@
                 "choice": [
                     {
                         "effect_type": "archive_cheer_from_holomem",
+                        "ability_source": "holomem_yellow",
                         "from": "self",
                         "amount": 1,
                         "and": [
@@ -20182,6 +20183,7 @@
                         "and": [
                             {
                                 "effect_type": "archive_from_hand",
+                                "ability_source": "holomem_blue",
                                 "amount": 1
                             }
                         ]
