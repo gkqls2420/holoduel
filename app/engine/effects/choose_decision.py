@@ -5,9 +5,25 @@ from copy import deepcopy
 from app.engine.constants import *
 from app.engine.models import *
 from app.engine.helpers import *
+from app.engine.effects.card_movement import can_move_cheer_between_holomems
 
 if TYPE_CHECKING:
     from app.engine.player_state import PlayerState
+
+CHOICE_FEASIBILITY_CHECKERS = {
+    EffectType.EffectType_MoveCheerBetweenHolomems: can_move_cheer_between_holomems,
+}
+
+
+def _filter_feasible_choices(engine, effect_player, choice):
+    """Remove choice options that cannot resolve, return filtered list."""
+    feasible = []
+    for option in choice:
+        checker = CHOICE_FEASIBILITY_CHECKERS.get(option.get("effect_type"))
+        if checker and not checker(engine, effect_player, option):
+            continue
+        feasible.append(option)
+    return feasible
 
 
 def handle_choice(engine, effect_player, effect):
@@ -30,6 +46,12 @@ def handle_choice(engine, effect_player, effect):
                     if "amount" in option and option["amount"] == "X":
                         option["amount"] = engine.after_damage_state.damage_dealt
     add_ids_to_effects(choice, effect_player_id, effect.get("source_card_id", None))
+
+    choice = _filter_feasible_choices(engine, effect_player, choice)
+    all_pass = all(option.get("effect_type") == EffectType.EffectType_Pass for option in choice)
+    if len(choice) == 0 or all_pass:
+        return False
+
     engine.send_choice_to_player(effect_player_id, choice)
     return False
 
@@ -221,7 +243,10 @@ def handle_choose_cards(engine, effect_player, effect):
         if requirement_same_name_as_last_choice:
             same_names = []
             for card_id in engine.last_chosen_cards:
-                card = engine.find_card(card_id)
+                try:
+                    card = engine.find_card(card_id)
+                except Exception:
+                    card = None
                 if card and "card_names" in card:
                     same_names += card["card_names"]
             if same_names:
@@ -236,10 +261,16 @@ def handle_choose_cards(engine, effect_player, effect):
             # Get the colors of the specified previously selected holomem from stage selection
             if requirement_match_selected_holomem_color < len(engine.stage_selected_holomems):
                 selected_card_id = engine.stage_selected_holomems[requirement_match_selected_holomem_color]
-                selected_card = engine.find_card(selected_card_id)
-                selected_colors = selected_card["colors"]
-                # Include cards that have any color in common with the selected holomem
-                cards_can_choose = [card for card in cards_can_choose if any(color in card["colors"] for color in selected_colors)]
+                try:
+                    selected_card = engine.find_card(selected_card_id)
+                except Exception:
+                    selected_card = None
+                if selected_card:
+                    selected_colors = selected_card["colors"]
+                    # Include cards that have any color in common with the selected holomem
+                    cards_can_choose = [card for card in cards_can_choose if any(color in card["colors"] for color in selected_colors)]
+                else:
+                    cards_can_choose = []
 
     if len(cards_can_choose) < amount_min:
         amount_min = len(cards_can_choose)

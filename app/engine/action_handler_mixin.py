@@ -597,16 +597,16 @@ class ActionHandlerMixin:
         add_ids_to_effects(action_effects, player_id, player.oshi_card["game_card_id"])
 
         def after_oshi_effects():
-            if skill_limit == "once_per_game":
-                sp_effects = []
-                for holomem in player.get_holomem_on_stage():
-                    if "gift_effects" in holomem:
-                        effects = filter_effects_at_timing(holomem["gift_effects"], "on_sp_oshi_skill")
-                        add_ids_to_effects(effects, player_id, holomem["game_card_id"])
-                        sp_effects.extend(effects)
-                if sp_effects:
-                    self.begin_resolving_effects(sp_effects, continuation)
-                    return
+            gift_timing = "on_sp_oshi_skill" if skill_limit == "once_per_game" else "on_oshi_skill"
+            gift_effects = []
+            for holomem in player.get_holomem_on_stage():
+                if "gift_effects" in holomem:
+                    effects = filter_effects_at_timing(holomem["gift_effects"], gift_timing)
+                    add_ids_to_effects(effects, player_id, holomem["game_card_id"])
+                    gift_effects.extend(effects)
+            if gift_effects:
+                self.begin_resolving_effects(gift_effects, continuation)
+                return
             continuation()
 
         self.begin_resolving_effects(action_effects, after_oshi_effects)
@@ -951,10 +951,19 @@ class ActionHandlerMixin:
             return False
 
         chosen_cards = action_data["card_ids"]
+        chosen_card_data = {}
         for card_id in chosen_cards:
             if card_id not in self.current_decision["cards_can_choose"]:
                 self.send_event(self.make_error_event(player_id, "invalid_card", "Invalid card choice."))
                 return False
+            try:
+                card = self.find_card(card_id)
+            except Exception:
+                card = None
+            if not card:
+                self.send_event(self.make_error_event(player_id, "invalid_card", "Chosen card is no longer available."))
+                return False
+            chosen_card_data[card_id] = card
         # Check the amounts against amount_min/max
         if len(chosen_cards) < self.current_decision["amount_min"] or len(chosen_cards) > self.current_decision["amount_max"]:
             self.send_event(self.make_error_event(player_id, "invalid_amount", "Invalid amount of cards chosen."))
@@ -969,7 +978,7 @@ class ActionHandlerMixin:
             # Get all colors from chosen cards
             all_colors = set()
             for card_id in chosen_cards:
-                card = self.find_card(card_id)
+                card = chosen_card_data.get(card_id)
                 all_colors.update(card["colors"])
             
             # Check if we have at least 2 different colors
@@ -979,7 +988,7 @@ class ActionHandlerMixin:
 
         if self.current_decision.get("requirement_same_tag", False):
             if len(chosen_cards) >= 2:
-                cards_data = [self.find_card(cid) for cid in chosen_cards]
+                cards_data = [chosen_card_data.get(cid) for cid in chosen_cards]
                 common_tags = set(cards_data[0].get("tags", []))
                 for card_data in cards_data[1:]:
                     common_tags &= set(card_data.get("tags", []))
@@ -1110,6 +1119,7 @@ class ActionHandlerMixin:
         effect_player = self.get_player(performing_player_id)
         holomem_target = card_ids[0]
         self.last_chosen_cards = card_ids
+        self.last_chosen_holomem_id = holomem_target
         turn_effect = decision_info_copy["turn_effect"]
         replace_field_in_conditions(turn_effect, "required_id", holomem_target)
         if decision_info_copy.get("source_from_chosen", False):
@@ -1512,9 +1522,23 @@ class ActionHandlerMixin:
         remaining_cards_action = decision_info_copy["remaining_cards_action"]
         all_card_seen = decision_info_copy["all_card_seen"]
         source_card_id = decision_info_copy["source_card_id"]
-        remaining_card_ids = [card_id for card_id in all_card_seen if card_id not in card_ids]
-
         player = self.get_player(performing_player_id)
+
+        valid_card_ids = []
+        for card_id in card_ids:
+            card, _, _ = player.find_card(card_id, include_stacked_cards=True)
+            if card:
+                valid_card_ids.append(card_id)
+            else:
+                logger.warning(
+                    "Skipping missing chosen card during resolve player_id=%s card_id=%s from_zone=%s to_zone=%s",
+                    performing_player_id,
+                    card_id,
+                    from_zone,
+                    to_zone,
+                )
+        card_ids = valid_card_ids
+        remaining_card_ids = [card_id for card_id in all_card_seen if card_id not in card_ids]
 
         self.last_chosen_cards = card_ids
         self.last_card_count = len(card_ids)

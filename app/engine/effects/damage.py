@@ -421,6 +421,9 @@ def handle_restore_hp(engine, effect_player, effect):
             target_options = ids_from_cards(holomems)
         case "self":
             target_options = [effect["source_card_id"]]
+        case "last_chosen_holomem":
+            if engine.last_chosen_holomem_id:
+                target_options = [engine.last_chosen_holomem_id]
     targets_allowed = 1
     if hit_all_targets:
         targets_allowed = len(target_options)

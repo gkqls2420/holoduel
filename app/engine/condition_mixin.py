@@ -763,6 +763,16 @@ class ConditionMixin:
                 amount_min = condition.get("amount_min", 1)
                 support_count = sum(1 for card in effect_player.archive if card.get("card_type") == "support")
                 return support_count >= amount_min
+            case Condition.Condition_HolomemUsedArtThisTurn:
+                required_names = condition.get("required_member_name_in", [])
+                for holomem in effect_player.get_holomem_on_stage():
+                    if holomem.get("used_art_this_turn", False):
+                        if any(name in holomem["card_names"] for name in required_names):
+                            return True
+                return False
+            case Condition.Condition_OshiSkillUsedThisTurn:
+                required_skill_id = condition.get("required_skill_id", "")
+                return effect_player.has_used_once_per_turn_effect(required_skill_id)
             case _:
                 raise NotImplementedError(f"Unimplemented condition: {condition['condition']}")
         return False

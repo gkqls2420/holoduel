@@ -41,7 +41,17 @@ class TurnMixin:
             self.broadcast_event(activation_event)
 
             # 2. Move and rest collab.
-            rested_cards, moved_backstage_cards = active_player.reset_collab()
+            skip_rest_ids = set()
+            for card in active_player.collab:
+                for gift in card.get("gift_effects", []):
+                    if gift.get("timing") == "on_collab_to_back" and gift.get("effect_type") == "skip_rest_on_collab_return":
+                        gift_copy = deepcopy(gift)
+                        gift_copy["source_card_id"] = card["game_card_id"]
+                        gift_copy["player_id"] = self.active_player_id
+                        if self.are_conditions_met(gift_copy, active_player):
+                            skip_rest_ids.add(card["game_card_id"])
+                            break
+            rested_cards, moved_backstage_cards = active_player.reset_collab(skip_rest_ids)
             reset_collab_event = {
                 "event_type": EventType.EventType_ResetStepCollab,
                 "active_player": self.active_player_id,

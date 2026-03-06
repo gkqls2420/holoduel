@@ -33,6 +33,9 @@ def handle_add_turn_effect_for_holomem(engine, effect_player, effect):
     limitation = effect.get("limitation", None)
     if limitation:
         match limitation:
+            case "self":
+                source_card_id = effect.get("source_card_id", "")
+                holomem_targets = [holomem for holomem in holomem_targets if holomem["game_card_id"] == source_card_id]
             case "color_in":
                 limitation_colors = effect["limitation_colors"]
                 holomem_targets = [holomem for holomem in holomem_targets if any(color in holomem["colors"] for color in limitation_colors)]
@@ -69,6 +72,7 @@ def handle_add_turn_effect_for_holomem(engine, effect_player, effect):
         pass
     elif len(holomem_targets) == 1:
         engine.last_chosen_cards = [holomem_targets[0]]
+        engine.last_chosen_holomem_id = holomem_targets[0]
         replace_field_in_conditions(turn_effect_copy, "required_id", holomem_targets[0])
         if source_from_chosen:
             turn_effect_copy["source_card_id"] = holomem_targets[0]

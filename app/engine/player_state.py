@@ -505,7 +505,11 @@ class PlayerState:
                 effects.extend(gift_effects)
 
         for oshi_effect in self.oshi_card.get("effects", []):
-            if oshi_effect.get("timing") == timing:
+            oshi_timing = oshi_effect.get("timing")
+            if not oshi_timing:
+                logger.debug("Skipping oshi effect without timing for card_id=%s", self.oshi_card.get("card_id"))
+                continue
+            if oshi_timing == timing:
                 if "timing_source_requirement" in oshi_effect and oshi_effect["timing_source_requirement"] != timing_source_requirement:
                     continue
                 add_ids_to_effects([oshi_effect], self.player_id, self.oshi_card["game_card_id"])
@@ -693,6 +697,15 @@ class PlayerState:
             card, previous_holder_id = self.find_and_remove_attached(card_id)
             from_zone_name = previous_holder_id
 
+        if not card:
+            logger.warning(
+                "move_card skipped missing card_id=%s player_id=%s to_zone=%s",
+                card_id,
+                self.player_id,
+                to_zone,
+            )
+            return False
+
         if to_zone in ["archive", "deck", "cheer_deck", "holopower"] and is_card_holomem(card):
             for stacked in card.get("stacked_cards", []):
                 self.archive.insert(0, stacked)
@@ -754,6 +767,7 @@ class PlayerState:
         if not no_events:
             self.engine.broadcast_event(move_card_event)
             self.engine.broadcast_bonus_hp_updates()
+        return True
 
     def reset_card_stats(self, card):
         if is_card_holomem(card):
@@ -812,15 +826,16 @@ class PlayerState:
             card["played_this_turn"] = False
             card["bloomed_this_turn"] = False
 
-    def reset_collab(self):
-        # For all cards in collab, move them back to backstage and rest them.
+    def reset_collab(self, skip_rest_ids=None):
+        if skip_rest_ids is None:
+            skip_rest_ids = set()
         rested_card_ids = []
         moved_backstage_card_ids = []
         if self.can_move_front_stage():
             for card in self.collab:
-                # Note: You only rest if you move backstage.
-                card["resting"] = True
-                rested_card_ids.append(card["game_card_id"])
+                if card["game_card_id"] not in skip_rest_ids:
+                    card["resting"] = True
+                    rested_card_ids.append(card["game_card_id"])
 
                 self.backstage.append(card)
                 moved_backstage_card_ids.append(card["game_card_id"])

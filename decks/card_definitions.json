@@ -13295,6 +13295,75 @@
         ]
     },
     {
+        "card_id": "hBP03-039",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "buzz": true,
+        "card_names": [
+            "mococo_abyssgard"
+        ],
+        "rarity": "r",
+        "colors": [
+            "red"
+        ],
+        "hp": 240,
+        "baton_cost": 1,
+        "down_life_cost": 2,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#AnimalEars"
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_collab_to_back",
+                "effect_type": "skip_rest_on_collab_return",
+                "conditions": [
+                    {
+                        "condition": "center_is_member_name",
+                        "required_member_names": [
+                            "fuwawa_abyssgard"
+                        ]
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "bosongbosonghan_jjok",
+                "costs": [
+                    {
+                        "color": "red",
+                        "amount": 1
+                    },
+                    {
+                        "color": "blue",
+                        "amount": 1
+                    }
+                ],
+                "power": 50,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 30,
+                        "conditions": [
+                            {
+                                "condition": "performer_is_collab"
+                            },
+                            {
+                                "condition": "center_is_member_name",
+                                "required_member_names": [
+                                    "fuwawa_abyssgard"
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP03-040",
         "card_type": "holomem_debut",
         "card_names": [
@@ -19279,6 +19348,111 @@
         ]
     },
     {
+        "card_id": "hBP05-038",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "mococo_abyssgard"
+        ],
+        "rarity": "r",
+        "colors": [
+            "red"
+        ],
+        "hp": 160,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#AnimalEars"
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_sp_oshi_skill",
+                "conditions": [
+                    {
+                        "condition": "this_card_is_collab"
+                    },
+                    {
+                        "condition": "oshi_is",
+                        "required_member_name": "fuwamoco"
+                    }
+                ],
+                "effect_type": "add_turn_effect_for_holomem",
+                "limitation": "self",
+                "turn_effect": {
+                    "timing": "before_art",
+                    "effect_type": "power_boost",
+                    "amount": 70,
+                    "conditions": [
+                        {
+                            "condition": "performer_is_specific_id",
+                            "required_id": "REPLACED_BY_EFFECT"
+                        }
+                    ]
+                }
+            },
+            {
+                "timing": "on_sp_oshi_skill",
+                "conditions": [
+                    {
+                        "condition": "this_card_is_collab"
+                    },
+                    {
+                        "condition": "oshi_is",
+                        "required_member_name": "fuwamoco"
+                    },
+                    {
+                        "condition": "holomem_on_stage",
+                        "required_bloom_levels": [
+                            2
+                        ]
+                    }
+                ],
+                "effect_type": "add_turn_effect_for_holomem",
+                "limitation": "self",
+                "turn_effect": {
+                    "timing": "before_art",
+                    "effect_type": "power_boost",
+                    "amount": 50,
+                    "conditions": [
+                        {
+                            "condition": "performer_is_specific_id",
+                            "required_id": "REPLACED_BY_EFFECT"
+                        }
+                    ]
+                }
+            }
+        ],
+        "effects": [
+            {
+                "timing": "on_art_cost_check",
+                "effect_type": "reduce_art_cost",
+                "color": "any",
+                "amount": 1,
+                "conditions": [
+                    {
+                        "condition": "center_is_member_name",
+                        "required_member_names": [
+                            "fuwawa_abyssgard"
+                        ]
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "noooooooooi",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ]
+    },
+    {
         "card_id": "hBP05-041",
         "card_type": "holomem_debut",
         "card_names": [
@@ -20078,6 +20252,92 @@
                             },
                             {
                                 "effect_type": "pass"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP05-050",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "buzz": true,
+        "card_names": [
+            "fuwawa_abyssgard"
+        ],
+        "rarity": "r",
+        "colors": [
+            "blue"
+        ],
+        "hp": 250,
+        "baton_cost": 2,
+        "down_life_cost": 2,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#AnimalEars"
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_oshi_skill",
+                "conditions": [
+                    {
+                        "condition": "this_card_is_center"
+                    },
+                    {
+                        "condition": "oshi_is",
+                        "required_member_name": "fuwamoco"
+                    }
+                ],
+                "effect_type": "send_cheer",
+                "amount_min": 1,
+                "amount_max": 1,
+                "from": "cheer_deck",
+                "to": "holomem",
+                "to_limitation": "tag_in",
+                "to_limitation_tags": [
+                    "#Advent"
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "keyboard_crusher",
+                "costs": [
+                    {
+                        "color": "blue",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 100,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 40,
+                        "conditions": [
+                            {
+                                "condition": "holomem_used_art_this_turn",
+                                "required_member_name_in": [
+                                    "mococo_abyssgard"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 30,
+                        "conditions": [
+                            {
+                                "condition": "oshi_skill_used_this_turn",
+                                "required_skill_id": "mokochan"
                             }
                         ]
                     }

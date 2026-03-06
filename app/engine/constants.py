@@ -256,6 +256,8 @@ class Condition:
     Condition_LastDieLteLife = "last_die_lte_life"
     Condition_DieRollSourceIsOshi = "die_roll_source_is_oshi"
     Condition_DieRollSourceHasTag = "die_roll_source_has_tag"
+    Condition_HolomemUsedArtThisTurn = "holomem_used_art_this_turn"
+    Condition_OshiSkillUsedThisTurn = "oshi_skill_used_this_turn"
 
 
 class TurnEffectType:

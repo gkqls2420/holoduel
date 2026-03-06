@@ -382,6 +382,52 @@ def handle_generate_holopower(engine, effect_player, effect):
     return False
 
 
+def can_move_cheer_between_holomems(engine, effect_player, effect):
+    """Check if move_cheer_between_holomems would have valid targets and cheer to move."""
+    to_limitation = effect.get("to_limitation", "")
+    to_limitation_tags = effect.get("to_limitation_tags", [])
+    from_limitation = effect.get("from_limitation", "")
+    if from_limitation == "source_card":
+        source_card_id = effect.get("source_card_id", "")
+        available_cheer = []
+        for card in effect_player.get_holomem_on_stage():
+            if card["game_card_id"] == source_card_id or any(a.get("game_card_id") == source_card_id for a in card.get("stacked_cards", [])):
+                for attached_card in card["attached_cheer"]:
+                    if is_card_cheer(attached_card):
+                        available_cheer.append(attached_card["game_card_id"])
+                break
+    else:
+        available_cheer = effect_player.get_cheer_ids_on_holomems()
+    available_targets = effect_player.get_holomem_on_stage()
+    to_limitation_location = effect.get("to_limitation_location", "")
+    if to_limitation_location == "backstage":
+        available_targets = [h for h in available_targets if h["game_card_id"] != effect_player.center[0]["game_card_id"]] if effect_player.center else available_targets
+    match to_limitation:
+        case "tag_in":
+            available_targets = [holomem for holomem in available_targets if any(tag in holomem["tags"] for tag in to_limitation_tags)]
+        case "specific_member_name":
+            to_limitation_name = effect.get("to_limitation_name", "")
+            available_targets = [holomem for holomem in available_targets if to_limitation_name in holomem["card_names"]]
+            to_limitation_bloom_level = effect.get("to_limitation_bloom_level", None)
+            if to_limitation_bloom_level is not None:
+                available_targets = [holomem for holomem in available_targets \
+                    if holomem.get("bloom_level", 0) == to_limitation_bloom_level]
+        case "last_chosen":
+            available_targets = [card for card in available_targets if card["game_card_id"] in engine.last_chosen_cards]
+    if effect.get("to_exclude_source", False):
+        source_card_id = effect.get("source_card_id", "")
+        available_targets = [h for h in available_targets if h["game_card_id"] != source_card_id]
+    if effect.get("to_exclude_previous_target", False):
+        last_target = getattr(engine, "last_move_cheer_target", None)
+        if last_target:
+            available_targets = [h for h in available_targets if h["game_card_id"] != last_target]
+    available_targets = ids_from_cards(available_targets)
+
+    has_to_limitation = to_limitation != "" or effect.get("to_exclude_source", False) or to_limitation_location != "" or effect.get("to_exclude_previous_target", False)
+    return (has_to_limitation and len(available_targets) >= 1
+        or not has_to_limitation and len(available_targets) > 1) and len(available_cheer) > 0
+
+
 def handle_move_cheer_between_holomems(engine, effect_player, effect):
     """Returns True if continuation was passed on, False otherwise."""
     effect_player_id = effect_player.player_id
