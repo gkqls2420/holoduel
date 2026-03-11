@@ -85,6 +85,7 @@ class EffectType:
     EffectType_PowerBoostPerCondition = "power_boost_per_condition"
     EffectType_PowerBoostPerAttachmentNameOnStage = "power_boost_per_attachment_name_on_stage"
     EffectType_PowerBoostPerCheerOnBothStages = "power_boost_per_cheer_on_both_stages"
+    EffectType_PowerBoostPerHolopower = "power_boost_per_holopower"
     EffectType_PowerBoostPerCardsInHand = "power_boost_per_cards_in_hand"
     EffectType_PowerBoostPerLostLife = "power_boost_per_lost_life"
     EffectType_PowerBoostPerOpponentArchiveCheer = "power_boost_per_opponent_archive_cheer"
@@ -117,6 +118,7 @@ class EffectType:
     EffectType_RollDie_Internal = "roll_die_INTERNAL"
     EffectType_RollDie_Internal_Resolution = "roll_die_INTERNAL_resolution"
     EffectType_SendCheer = "send_cheer"
+    EffectType_SendCheerPerNamedCardsInArchive = "send_cheer_per_named_cards_in_archive"
     EffectType_SendCollabBack = "send_collab_back"
     EffectType_SetCenterHP = "set_center_hp"
     EffectType_ShuffleArchiveToDeck = "shuffle_archive_to_deck"
@@ -125,6 +127,7 @@ class EffectType:
     EffectType_SpendHolopower = "spend_holopower"
     EffectType_SwitchCenterWithBack = "switch_center_with_back"
     EffectType_TakeExtraTurn = "take_extra_turn"
+    EffectType_UseOtherHolomemArts = "use_other_holomem_arts"
     EffectType_OpponentMoveBackToCollab = "opponent_move_back_to_collab"
     EffectType_ArchiveAttachmentFromStageByName = "archive_attachment_from_stage_by_name"
     EffectType_SetLimitedUsesAllowed = "set_limited_uses_allowed"
@@ -258,6 +261,12 @@ class Condition:
     Condition_DieRollSourceHasTag = "die_roll_source_has_tag"
     Condition_HolomemUsedArtThisTurn = "holomem_used_art_this_turn"
     Condition_OshiSkillUsedThisTurn = "oshi_skill_used_this_turn"
+    Condition_CardNamesInArchive = "card_names_in_archive"
+    Condition_SupportCardNameNotUsedThisTurn = "support_card_name_not_used_this_turn"
+    Condition_HolomemReturnedToDeckThisTurn = "holomem_returned_to_deck_this_turn"
+    Condition_ReturnedToDeckCardHasName = "returned_to_deck_card_has_name"
+    Condition_AllStageCheerIsColor = "all_stage_cheer_is_color"
+    Condition_MyTurn = "my_turn"
 
 
 class TurnEffectType:

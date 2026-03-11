@@ -563,7 +563,17 @@ class ConditionMixin:
             case Condition.Condition_StageHasAttachmentsOfTypesCount:
                 condition_types = condition.get("condition_types", [])
                 amount_min = condition.get("amount_min", 1)
-                holomems = effect_player.get_holomem_on_stage()
+                target_player = effect_player
+                if condition.get("opponent", False):
+                    target_player = self.other_player(effect_player.player_id)
+                condition_zone = condition.get("condition_zone", "stage")
+                match condition_zone:
+                    case "center":
+                        holomems = target_player.center
+                    case "collab":
+                        holomems = target_player.collab
+                    case _:
+                        holomems = target_player.get_holomem_on_stage()
                 total_count = 0
                 for sub_type in condition_types:
                     total_count += len(get_cards_of_sub_type_from_holomems(sub_type, holomems))
@@ -773,6 +783,39 @@ class ConditionMixin:
             case Condition.Condition_OshiSkillUsedThisTurn:
                 required_skill_id = condition.get("required_skill_id", "")
                 return effect_player.has_used_once_per_turn_effect(required_skill_id)
+            case Condition.Condition_CardNamesInArchive:
+                required_names = condition.get("card_names", [])
+                amount_min = condition.get("amount_min", 1)
+                count = sum(1 for card in effect_player.archive
+                            if any(name in card.get("card_names", []) for name in required_names))
+                return count >= amount_min
+            case Condition.Condition_SupportCardNameNotUsedThisTurn:
+                condition_card_names = condition.get("condition_card_names", [])
+                for card_name in condition_card_names:
+                    if card_name in effect_player.support_card_names_used_this_turn:
+                        return False
+                return True
+            case Condition.Condition_HolomemReturnedToDeckThisTurn:
+                return effect_player.holomem_returned_to_deck_this_turn
+            case Condition.Condition_ReturnedToDeckCardHasName:
+                condition_names = condition.get("condition_names", [])
+                returned_card = self.returned_to_deck_card
+                if returned_card:
+                    return any(name in returned_card.get("card_names", []) for name in condition_names)
+                return False
+            case Condition.Condition_AllStageCheerIsColor:
+                condition_color = condition["condition_color"]
+                holomems = effect_player.get_holomem_on_stage()
+                total_cheer = 0
+                matching_cheer = 0
+                for holomem in holomems:
+                    for cheer in holomem.get("attached_cheer", []):
+                        total_cheer += 1
+                        if condition_color in cheer.get("colors", []):
+                            matching_cheer += 1
+                return total_cheer > 0 and total_cheer == matching_cheer
+            case Condition.Condition_MyTurn:
+                return self.active_player_id == effect_player.player_id
             case _:
                 raise NotImplementedError(f"Unimplemented condition: {condition['condition']}")
         return False

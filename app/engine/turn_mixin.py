@@ -448,7 +448,28 @@ class TurnMixin:
             if performer["resting"] or performer["used_art_this_turn"]:
                 continue
 
-            for art in performer["arts"]:
+            available_arts = list(performer["arts"])
+            if "gift_effects" in performer:
+                for gift in performer["gift_effects"]:
+                    if gift.get("effect_type") == "use_other_holomem_arts":
+                        if "conditions" in gift and not self.are_conditions_met(
+                            active_player, performer["game_card_id"], gift["conditions"]
+                        ):
+                            continue
+                        required_tags = gift.get("required_tags", [])
+                        all_holomems = active_player.get_holomem_on_stage()
+                        for other_holomem in all_holomems:
+                            if other_holomem["game_card_id"] == performer["game_card_id"]:
+                                continue
+                            if required_tags and not any(
+                                tag in other_holomem.get("tags", []) for tag in required_tags
+                            ):
+                                continue
+                            for other_art in other_holomem["arts"]:
+                                if not any(a["art_id"] == other_art["art_id"] for a in available_arts):
+                                    available_arts.append(other_art)
+
+            for art in available_arts:
                 if active_player.is_art_requirement_met(performer, art):
                     if "art_conditions" in art and not self.are_conditions_met(active_player, performer["game_card_id"], art["art_conditions"]):
                         continue
@@ -568,6 +589,7 @@ class TurnMixin:
             # An art is no longer being performed.
             self.performance_art = ""
             self.performance_artstatboosts.clear()
+            self.performance_performing_player = None
             self.performance_performer_card = None
 
             self.send_performance_step_actions()

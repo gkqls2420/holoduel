@@ -21,7 +21,13 @@ class CombatMixin:
         performer["used_art_this_turn"] = True
         target_owner = self.other_player(self.active_player_id)
         target, _, _ = target_owner.find_card(target_id)
-        art = next(art for art in performer["arts"] if art["art_id"] == art_id)
+        art = None
+        for a in performer["arts"]:
+            if a["art_id"] == art_id:
+                art = a
+                break
+        if art is None:
+            art = self._find_borrowed_art(player, performer, art_id)
 
         art_event = {
             "event_type": EventType.EventType_PerformArt,
@@ -49,6 +55,25 @@ class CombatMixin:
         card_effects = player.get_effects_at_timing("before_art", performer)
         all_effects = card_effects + art_effects
         self.begin_resolving_effects(all_effects, self.continue_perform_art)
+
+    def _find_borrowed_art(self, player, performer, art_id):
+        if "gift_effects" not in performer:
+            return None
+        for gift in performer["gift_effects"]:
+            if gift.get("effect_type") != "use_other_holomem_arts":
+                continue
+            required_tags = gift.get("required_tags", [])
+            for other_holomem in player.get_holomem_on_stage():
+                if other_holomem["game_card_id"] == performer["game_card_id"]:
+                    continue
+                if required_tags and not any(
+                    tag in other_holomem.get("tags", []) for tag in required_tags
+                ):
+                    continue
+                for a in other_holomem["arts"]:
+                    if a["art_id"] == art_id:
+                        return a
+        return None
 
     def continue_perform_art(self):
         # Now all before effects have been resolved.

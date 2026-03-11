@@ -62,4 +62,4 @@ def is_card_holomem(card):
     return card["card_type"] in ["holomem_debut", "holomem_bloom", "holomem_spot"]
 
 def filter_effects_at_timing(effects, timing):
-    return deepcopy([effect for effect in effects if effect["timing"] == timing])
+    return deepcopy([effect for effect in effects if effect.get("timing") == timing])

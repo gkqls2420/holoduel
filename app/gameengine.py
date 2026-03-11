@@ -39,6 +39,7 @@ class GameEngine(GameFlowMixin, TurnMixin, CombatMixin, ConditionMixin, EffectMi
         self.turn_number = 0
         self.floating_cards = []
         self.down_holomem_state : DownHolomemState = None
+        self.returned_to_deck_card = None
         self.last_die_value = 0
         self.die_roll_source = ""
         self.die_roll_source_card_id = ""

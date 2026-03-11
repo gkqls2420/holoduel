@@ -286,6 +286,30 @@ def handle_choose_cards(engine, effect_player, effect):
         if amount_min > available_space:
             amount_min = available_space
 
+    # Auto-skip: no valid cards to choose from
+    if amount_max == 0:
+        decision_info = {
+            "from_zone": from_zone,
+            "to_zone": destination,
+            "reveal_chosen": reveal_chosen,
+            "remaining_cards_action": remaining_cards_action,
+            "all_card_seen": ids_from_cards(cards_to_choose_from),
+            "source_card_id": effect["source_card_id"],
+            "after_choose_effect": after_choose_effect,
+            "to_limitation": effect.get("to_limitation", ""),
+            "to_limitation_colors": effect.get("to_limitation_colors", []),
+            "to_limitation_tags": effect.get("to_limitation_tags", []),
+            "to_limitation_name": effect.get("to_limitation_name", ""),
+            "attach_each_separately": effect.get("attach_each_separately", False),
+            "to_exclude_performer": effect.get("to_exclude_performer", False),
+            "requirement_different_colors": requirement_different_colors,
+            "include_stacked_holomems": effect.get("include_stacked_holomems", False),
+        }
+        engine.handle_choose_cards_result(
+            decision_info, effect_player_id, [], engine.continue_resolving_effects
+        )
+        return True
+
     # Auto-resolve: no player decision needed when all choosable cards must be selected
     if amount_min > 0 and amount_min == amount_max and len(cards_can_choose) == amount_max:
         auto_card_ids = ids_from_cards(cards_can_choose)
@@ -304,6 +328,7 @@ def handle_choose_cards(engine, effect_player, effect):
             "attach_each_separately": effect.get("attach_each_separately", False),
             "to_exclude_performer": effect.get("to_exclude_performer", False),
             "requirement_different_colors": requirement_different_colors,
+            "include_stacked_holomems": effect.get("include_stacked_holomems", False),
         }
         engine.handle_choose_cards_result(
             decision_info, effect_player_id, auto_card_ids, engine.continue_resolving_effects
@@ -347,6 +372,7 @@ def handle_choose_cards(engine, effect_player, effect):
         "after_choose_effect": after_choose_effect,
         "source_card_id": effect["source_card_id"],
         "requirement_different_colors": requirement_different_colors,
+        "include_stacked_holomems": effect.get("include_stacked_holomems", False),
         "effect_resolution": engine.handle_choose_cards_result,
         "continuation": engine.continue_resolving_effects,
     })

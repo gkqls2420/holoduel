@@ -60,6 +60,7 @@ class PlayerState:
         self.holomem_downed_names_this_turn = []
         self.holomem_downed_last_opponent_turn = False
         self.holomem_downed_names_last_opponent_turn = []
+        self.holomem_returned_to_deck_this_turn = False
         self.block_life_loss_by_effect_this_turn = False
         self.extra_turn_pending = False
 
@@ -707,12 +708,21 @@ class PlayerState:
             return False
 
         if to_zone in ["archive", "deck", "cheer_deck", "holopower"] and is_card_holomem(card):
-            for stacked in card.get("stacked_cards", []):
-                self.archive.insert(0, stacked)
-            for cheer in card.get("attached_cheer", []):
-                self.archive.insert(0, cheer)
-            for support in card.get("attached_support", []):
-                self.archive.insert(0, support)
+            all_attached = (
+                card.get("stacked_cards", [])
+                + card.get("attached_cheer", [])
+                + card.get("attached_support", [])
+            )
+            for attached in all_attached:
+                self.archive.insert(0, attached)
+                if not no_events:
+                    self.engine.broadcast_event({
+                        "event_type": EventType.EventType_MoveAttachedCard,
+                        "owning_player_id": self.player_id,
+                        "from_holomem_id": card_id,
+                        "to_holomem_id": "archive",
+                        "attached_id": attached["game_card_id"],
+                    })
             card["stacked_cards"] = []
             card["attached_cheer"] = []
             card["attached_support"] = []
@@ -752,6 +762,10 @@ class PlayerState:
 
         if to_zone in ["center", "backstage", "collab", "holomem"] and from_zone_name in ["hand", "deck"]:
             card["played_this_turn"] = True
+
+        stage_zones = {"center", "collab", "backstage"}
+        if to_zone == "deck" and from_zone_name in stage_zones and is_card_holomem(card):
+            self.holomem_returned_to_deck_this_turn = True
 
         move_card_event = {
             "event_type": EventType.EventType_MoveCard,
@@ -820,6 +834,7 @@ class PlayerState:
         self.die_rolled_by_holomem_names_this_turn = []
         self.holomem_downed_this_turn = False
         self.holomem_downed_names_this_turn = []
+        self.holomem_returned_to_deck_this_turn = False
         self.block_life_loss_by_effect_this_turn = False
         for card in self.get_holomem_on_stage():
             card["used_art_this_turn"] = False
@@ -1057,6 +1072,18 @@ class PlayerState:
             # Find and remove the cheer from its current spot.
             if target_id == "archive":
                 self.archive_attached_cards([cheer_id])
+            elif target_id == "cheer_deck_bottom":
+                cheer_card, previous_holder_id = self.find_and_remove_attached(cheer_id)
+                if cheer_card:
+                    self.cheer_deck.append(cheer_card)
+                    move_cheer_event = {
+                        "event_type": EventType.EventType_MoveAttachedCard,
+                        "owning_player_id": self.player_id,
+                        "from_holomem_id": previous_holder_id,
+                        "to_holomem_id": "cheer_deck",
+                        "attached_id": cheer_id,
+                    }
+                    self.engine.broadcast_event(move_cheer_event)
             else:
                 cheer_card, previous_holder_id = self.find_and_remove_attached(cheer_id)
                 if cheer_card:

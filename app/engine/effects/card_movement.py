@@ -718,6 +718,8 @@ def handle_send_cheer(engine, effect_player, effect):
             if engine.down_holomem_state:
                 to_options = [card for card in to_options if card["game_card_id"] != engine.down_holomem_state.holomem_card["game_card_id"]]
             to_options = ids_from_cards(to_options)
+        case "cheer_deck_bottom":
+            to_options = ["cheer_deck_bottom"]
         case "this_holomem":
             source_card_id = effect["source_card_id"]
             source_card, _, _ = effect_player.find_card(source_card_id)
@@ -996,6 +998,22 @@ def handle_shuffle_cheer_deck(engine, effect_player, effect):
     return False
 
 
+def handle_send_cheer_per_named_cards_in_archive(engine, effect_player, effect):
+    """Counts cards with specific card_names in archive, then delegates to send_cheer with that amount."""
+    count_card_names = effect["count_card_names"]
+    count = sum(1 for card in effect_player.archive
+                if any(name in card.get("card_names", []) for name in count_card_names))
+    if count == 0:
+        return False
+    effect_copy = deepcopy(effect)
+    effect_copy["amount_min"] = count
+    effect_copy["amount_max"] = count
+    effect_copy["effect_type"] = EffectType.EffectType_SendCheer
+    del effect_copy["count_card_names"]
+    engine.add_effects_to_front([effect_copy])
+    return False
+
+
 CARD_MOVEMENT_HANDLERS = {
     EffectType.EffectType_ArchiveCheerFromHolomem: handle_archive_cheer_from_holomem,
     EffectType.EffectType_ArchiveFromBothCheerDecks: handle_archive_from_both_cheer_decks,
@@ -1016,6 +1034,7 @@ CARD_MOVEMENT_HANDLERS = {
     EffectType.EffectType_RevealTopDeck: handle_reveal_top_deck,
     EffectType.EffectType_RevealTopHolopower: handle_reveal_top_holopower,
     EffectType.EffectType_SendCheer: handle_send_cheer,
+    EffectType.EffectType_SendCheerPerNamedCardsInArchive: handle_send_cheer_per_named_cards_in_archive,
     EffectType.EffectType_SendCollabBack: handle_send_collab_back,
     EffectType.EffectType_ShuffleArchiveToDeck: handle_shuffle_archive_to_deck,
     EffectType.EffectType_ShuffleCheerDeck: handle_shuffle_cheer_deck,

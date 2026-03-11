@@ -1660,9 +1660,73 @@ class ActionHandlerMixin:
                             self.choose_cards_cleanup_remaining(performing_player_id, remaining_card_ids, remaining_cards_action, from_zone, from_zone, continuation)
                     })
         elif to_zone == "bottom_of_deck":
+            stage_zones = {"center", "collab", "backstage"}
+            returned_holomem_cards = []
+            include_stacked = decision_info_copy.get("include_stacked_holomems", False)
+            cards_for_ordering = []
+
             for card_id in card_ids:
+                card_data, _, _ = player.find_card(card_id)
+                stacked_holomems_extracted = []
+
+                if include_stacked and card_data and is_card_holomem(card_data):
+                    stacked_holomems_extracted = [c for c in card_data.get("stacked_cards", []) if is_card_holomem(c)]
+                    card_data["stacked_cards"] = [c for c in card_data.get("stacked_cards", []) if not is_card_holomem(c)]
+
+                if card_data and from_zone in stage_zones and is_card_holomem(card_data):
+                    returned_holomem_cards.append(card_data)
+
                 player.move_card(card_id, "deck", hidden_info=not reveal_chosen, add_to_bottom=True)
-            self.choose_cards_cleanup_remaining(performing_player_id, remaining_card_ids, remaining_cards_action, from_zone, from_zone, continuation)
+                cards_for_ordering.append(card_id)
+
+                for sh in stacked_holomems_extracted:
+                    self.floating_cards.append(sh)
+                    cards_for_ordering.append(sh["game_card_id"])
+
+            def after_return_timing():
+                if include_stacked and len(cards_for_ordering) > 1:
+                    order_cards_event = {
+                        "event_type": EventType.EventType_Decision_OrderCards,
+                        "desired_response": GameAction.EffectResolution_OrderCards,
+                        "effect_player_id": performing_player_id,
+                        "card_ids": cards_for_ordering,
+                        "from": from_zone,
+                        "to_zone": "deck",
+                        "bottom": True,
+                        "hidden_info_player": performing_player_id,
+                        "hidden_info_fields": ["card_ids"],
+                    }
+                    self.broadcast_event(order_cards_event)
+                    self.set_decision({
+                        "decision_type": DecisionType.DecisionEffect_OrderCards,
+                        "decision_player": performing_player_id,
+                        "card_ids": cards_for_ordering,
+                        "from": from_zone,
+                        "to_zone": "deck",
+                        "bottom": True,
+                        "resolution_func": self.handle_effect_resolution_order_cards,
+                        "continuation": lambda:
+                            self.choose_cards_cleanup_remaining(performing_player_id, remaining_card_ids, remaining_cards_action, from_zone, from_zone, continuation),
+                    })
+                else:
+                    self.choose_cards_cleanup_remaining(performing_player_id, remaining_card_ids, remaining_cards_action, from_zone, from_zone, continuation)
+
+            if returned_holomem_cards:
+                def fire_return_timing(remaining_cards, final_continuation):
+                    if not remaining_cards:
+                        final_continuation()
+                        return
+                    returned_card = remaining_cards[0]
+                    self.returned_to_deck_card = returned_card
+                    timing_effects = player.get_effects_at_timing("on_holomem_return_to_deck", returned_card)
+                    def after_timing():
+                        self.returned_to_deck_card = None
+                        fire_return_timing(remaining_cards[1:], final_continuation)
+                    self.begin_resolving_effects(timing_effects, after_timing)
+
+                fire_return_timing(returned_holomem_cards, after_return_timing)
+            else:
+                after_return_timing()
         elif to_zone == "cheer_deck_bottom":
             for card_id in card_ids:
                 player.move_card(card_id, "cheer_deck", hidden_info=not reveal_chosen, add_to_bottom=True)
