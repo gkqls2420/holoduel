@@ -18063,7 +18063,7 @@
                 "power": 30,
                 "art_effects": [
                     {
-                        "timing": "after_art",
+                        "timing": "before_art",
                         "effect_type": "send_cheer",
                         "amount_min": 0,
                         "amount_max": 1,
@@ -18282,7 +18282,7 @@
                         ]
                     },
                     {
-                        "timing": "after_art",
+                        "timing": "before_art",
                         "conditions": [
                             {
                                 "condition": "oshi_is",
@@ -21374,7 +21374,7 @@
                 "power": 50,
                 "art_effects": [
                     {
-                        "timing": "after_art",
+                        "timing": "before_art",
                         "conditions": [
                             {
                                 "condition": "oshi_is",
@@ -24812,7 +24812,7 @@
                         ]
                     },
                     {
-                        "timing": "after_art",
+                        "timing": "before_art",
                         "conditions": [
                             {
                                 "condition": "life_at_most",
@@ -25035,7 +25035,7 @@
                 "power": 40,
                 "art_effects": [
                     {
-                        "timing": "after_art",
+                        "timing": "before_art",
                         "effect_type": "send_cheer",
                         "amount_min": 0,
                         "amount_max": 1,
@@ -26279,7 +26279,7 @@
                 "power": 20,
                 "art_effects": [
                     {
-                        "timing": "after_art",
+                        "timing": "before_art",
                         "effect_type": "choose_cards",
                         "from": "deck",
                         "look_at": -1,
@@ -26329,7 +26329,7 @@
                 "power": 30,
                 "art_effects": [
                     {
-                        "timing": "after_art",
+                        "timing": "before_art",
                         "effect_type": "draw",
                         "amount": 1,
                         "and": [
@@ -31825,7 +31825,7 @@
                 "power": 20,
                 "art_effects": [
                     {
-                        "timing": "after_art",
+                        "timing": "before_art",
                         "effect_type": "send_cheer",
                         "amount_min": 0,
                         "amount_max": 1,

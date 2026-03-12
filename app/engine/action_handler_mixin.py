@@ -1225,14 +1225,11 @@ class ActionHandlerMixin:
         effect = decision_info_copy.get("effect", {})
         and_effects = effect.get("and", [])
         if and_effects:
-            chained_effects = deepcopy(and_effects)
-            for chained in chained_effects:
+            for chained in and_effects:
                 turn_effect = chained.get("turn_effect", {})
                 if "amount_per_last_card_count" in turn_effect:
                     per_amount = turn_effect.pop("amount_per_last_card_count")
                     turn_effect["amount"] = per_amount * returned_count
-            add_ids_to_effects(chained_effects, performing_player_id, effect.get("source_card_id", ""))
-            self.add_effects_to_front(chained_effects)
 
         continuation()
 

@@ -390,6 +390,16 @@ class CombatMixin:
         self.process_life_lost(life_lost, life_to_distribute, target_player, game_over, game_over_reason, continuation)
 
     def begin_cleanup_art(self):
-        # Check for any cleanup effects.
+        art_after_art_effects = filter_effects_at_timing(
+            self.performance_art.get("art_effects", []), "after_art"
+        )
+        add_ids_to_effects(
+            art_after_art_effects,
+            self.performance_performing_player.player_id,
+            self.performance_performer_card["game_card_id"]
+        )
+        self.begin_resolving_effects(art_after_art_effects, self._perform_art_cleanup)
+
+    def _perform_art_cleanup(self):
         performer_cleanup_effects = self.performance_performing_player.get_effects_at_timing("art_cleanup", self.performance_performer_card)
         self.begin_resolving_effects(performer_cleanup_effects, self.continue_performance_step, [], simultaneous_choice=True)
