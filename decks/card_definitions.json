@@ -26800,6 +26800,270 @@
         "collab_effects": []
     },
     {
+        "card_id": "hBP07-059",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "shiori_novella"
+        ],
+        "rarity": "c",
+        "colors": [
+            "blue"
+        ],
+        "hp": 120,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Advent"
+        ],
+        "arts": [
+            {
+                "art_id": "a_cozy_spooky_night_together",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 10,
+                "art_effects": [
+                    {
+                        "timing": "after_deal_damage",
+                        "effect_type": "deal_damage",
+                        "amount": 10,
+                        "special": true,
+                        "target": "holomem",
+                        "opponent": true
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [],
+        "collab_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "is_going_second_and_first_turn"
+                    }
+                ],
+                "effect_type": "choose_cards",
+                "from": "archive",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 1,
+                "amount_max": 1,
+                "requirement": "support",
+                "remaining_cards_action": "nothing"
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-060",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "shiori_novella"
+        ],
+        "rarity": "u",
+        "colors": [
+            "blue"
+        ],
+        "hp": 190,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Advent"
+        ],
+        "arts": [
+            {
+                "art_id": "ingredient_dissection",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 10,
+                "art_effects": []
+            },
+            {
+                "art_id": "dont_let_her_cook",
+                "costs": [
+                    {
+                        "color": "blue",
+                        "amount": 1
+                    }
+                ],
+                "power": 50,
+                "art_conditions": [
+                    {
+                        "condition": "support_in_archive",
+                        "amount_min": 4
+                    }
+                ],
+                "art_effects": []
+            }
+        ],
+        "bloom_effects": [],
+        "collab_effects": []
+    },
+    {
+        "card_id": "hBP07-061",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "shiori_novella"
+        ],
+        "rarity": "r",
+        "colors": [
+            "blue"
+        ],
+        "hp": 140,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Advent"
+        ],
+        "arts": [
+            {
+                "art_id": "you_cant_miss_it",
+                "costs": [
+                    {
+                        "color": "blue",
+                        "amount": 1
+                    }
+                ],
+                "power": 20,
+                "art_effects": [
+                    {
+                        "timing": "after_deal_damage",
+                        "effect_type": "deal_damage",
+                        "amount": 20,
+                        "special": true,
+                        "target": "backstage",
+                        "opponent": true
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "oshi_is",
+                        "required_member_name": "shiori_novella"
+                    }
+                ],
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": 4,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "support",
+                "reveal_chosen": true,
+                "remaining_cards_action": "order_on_bottom"
+            }
+        ],
+        "collab_effects": []
+    },
+    {
+        "card_id": "hBP07-062",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "shiori_novella"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "blue"
+        ],
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": [
+            "#EN",
+            "#Advent"
+        ],
+        "arts": [
+            {
+                "art_id": "unleashed_forbidden_knowledge",
+                "costs": [
+                    {
+                        "color": "blue",
+                        "amount": 1
+                    }
+                ],
+                "power": 60,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "send_cheer",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "from": "archive",
+                        "to": "holomem",
+                        "to_limitation": "tag_in",
+                        "to_limitation_tags": [
+                            "#Advent"
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 100,
+                        "conditions": [
+                            {
+                                "condition": "oshi_is",
+                                "required_member_name": "shiori_novella"
+                            },
+                            {
+                                "condition": "self_has_cheer_color",
+                                "amount_min": 4
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "red"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [],
+        "collab_effects": [
+            {
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "archive_from_hand",
+                        "amount": 2,
+                        "ability_source": "holomem_blue",
+                        "requirement": "support",
+                        "and": [
+                            {
+                                "effect_type": "add_turn_effect_for_holomem",
+                                "turn_effect": {
+                                    "timing": "before_art",
+                                    "effect_type": "power_boost",
+                                    "amount": 50
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "pass"
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP07-006",
         "card_type": "oshi",
         "card_names": [
