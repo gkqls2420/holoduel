@@ -419,6 +419,8 @@ class ConditionMixin:
                         return True
                 return False
             case Condition.Condition_PerformanceTargetHasDamageOverHp:
+                if not self.performance_target_card or not self.performance_target_player:
+                    return False
                 amount = condition["amount"]
                 return self.performance_target_card["damage"] >= self.performance_target_player.get_card_hp(self.performance_target_card) + amount
             case Condition.Condition_PerformerIsCenter:
@@ -434,15 +436,21 @@ class ConditionMixin:
                     return False
                 return performing_player.collab[0]["game_card_id"] == performer_card_id
             case Condition.Condition_PerformerIsColor:
+                if not self.performance_performer_card:
+                    return False
                 condition_colors = condition["condition_colors"]
                 for color in self.performance_performer_card["colors"]:
                     if color in condition_colors:
                         return True
                 return False
             case Condition.Condition_PerformerIsSpecificId:
+                if not self.performance_performer_card:
+                    return False
                 required_id = condition["required_id"]
                 return self.performance_performer_card["game_card_id"] == required_id
             case Condition.Condition_PerformerHasAnyTag:
+                if not self.performance_performer_card:
+                    return False
                 valid_tags = condition["condition_tags"]
                 for tag in self.performance_performer_card["tags"]:
                     if tag in valid_tags:
@@ -587,6 +595,8 @@ class ConditionMixin:
                             return True
                 return False
             case Condition.Condition_TargetColor:
+                if not self.performance_target_card:
+                    return False
                 color_requirement = condition["color_requirement"]
                 return color_requirement in self.performance_target_card["colors"]
             case Condition.Condition_TargetHasAnyTag:
@@ -609,8 +619,12 @@ class ConditionMixin:
                         return True
                 return False
             case Condition.Condition_TargetIsBackstage:
+                if not self.performance_target_card or not self.performance_target_player:
+                    return False
                 return self.performance_target_card in self.performance_target_player.backstage
             case Condition.Condition_TargetIsNotBackstage:
+                if not self.performance_target_card or not self.performance_target_player:
+                    return False
                 return self.performance_target_card not in self.performance_target_player.backstage
             case Condition.Condition_TargetBloomLevel:
                 if not self.performance_target_card:

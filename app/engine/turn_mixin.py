@@ -591,5 +591,7 @@ class TurnMixin:
             self.performance_artstatboosts.clear()
             self.performance_performing_player = None
             self.performance_performer_card = None
+            self.performance_target_player = None
+            self.performance_target_card = None
 
             self.send_performance_step_actions()

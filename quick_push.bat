@@ -2,6 +2,9 @@
 echo HoloDuel Server - Quick Push
 echo ============================
 
+REM 원격 변경사항 pull
+git pull origin main
+
 REM 모든 변경사항 추가 및 커밋
 git add .
 git commit -m "Update server files - %date% %time%"
