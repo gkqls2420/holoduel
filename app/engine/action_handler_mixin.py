@@ -1743,7 +1743,7 @@ class ActionHandlerMixin:
         # Deal with unchosen cards.
         if remaining_card_ids:
             match remaining_cards_action:
-                case "nothing":
+                case "nothing" | "none":
                     pass
                 case "archive":
                     for card_id in remaining_card_ids:
