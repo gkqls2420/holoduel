@@ -131,10 +131,16 @@ class ActionHandlerMixin:
         except Exception as e:
             error_details = traceback.format_exc()
             logger.error(f"Error processing game message {action_type} from player {username} - {player_id}: {e} Callstack: {error_details}")
+            callstack_lines = error_details.strip().split("\n")
+            short_callstack = "\n".join(callstack_lines[-6:]) if len(callstack_lines) > 6 else error_details.strip()
             self.broadcast_event({
                 "event_type": EventType.EventType_GameError,
                 "error_id": "internal_error",
-                "error_message": f"Internal server error during {action_type}",
+                "error_message": f"Internal server error during {action_type}: {str(e)}",
+                "error_action_type": action_type,
+                "error_action_data": action_data,
+                "error_game_phase": str(self.phase),
+                "error_callstack": short_callstack,
             })
             if not self.is_game_over():
                 self.end_game(player_id, GameOverReason.GameOverReason_Resign)
@@ -1743,7 +1749,7 @@ class ActionHandlerMixin:
         # Deal with unchosen cards.
         if remaining_card_ids:
             match remaining_cards_action:
-                case "nothing" | "none":
+                case "nothing":
                     pass
                 case "archive":
                     for card_id in remaining_card_ids:

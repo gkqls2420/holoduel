@@ -27943,7 +27943,7 @@
                     1
                 ],
                 "reveal_chosen": true,
-                "remaining_cards_action": "none",
+                "remaining_cards_action": "nothing",
                 "after_choose_effect": {
                     "effect_type": "choose_cards",
                     "from": "deck",
@@ -33545,7 +33545,7 @@
                             "#Justice"
                         ],
                         "reveal_chosen": true,
-                        "remaining_cards_action": "none",
+                        "remaining_cards_action": "nothing",
                         "after_choose_effect": {
                             "effect_type": "send_cheer",
                             "amount_min": 1,

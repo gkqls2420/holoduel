@@ -293,6 +293,23 @@ async def websocket_endpoint(websocket: WebSocket):
     except Exception as e:
         error_details = traceback.format_exc()
         logger.error(f"Error websocket loop from player {player.get_username()} - {player.player_id}: {e} Callstack: {error_details}")
+        try:
+            await send_error_message(websocket, "server_exception", f"Server error: {str(e)}")
+        except:
+            pass
+        player.connected = False
+        matchmaking.remove_player_from_queue(player)
+        for room in game_rooms:
+            if player in room.players or player in room.observers:
+                try:
+                    await room.handle_player_disconnect(player)
+                    check_cleanup_room(room)
+                except:
+                    pass
+                break
+        player_manager.remove_player(player_id)
+        await manager.disconnect(websocket)
+        await broadcast_server_info()
 
 def cleanup_room(room: GameRoom):
     logger.info("Cleanup game room ID: %s" % room.room_id)
