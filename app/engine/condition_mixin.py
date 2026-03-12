@@ -150,10 +150,13 @@ class ConditionMixin:
                 center_card = effect_player.center[0]
                 return any(name in center_card["card_names"] for name in required_member_names)
             case Condition.Condition_CenterBloomLevel:
-                if len(effect_player.center) == 0:
+                target_player = effect_player
+                if condition.get("opponent", False):
+                    target_player = self.other_player(effect_player.player_id)
+                if len(target_player.center) == 0:
                     return False
                 required_bloom_level = condition["required_bloom_level"]
-                center_card = effect_player.center[0]
+                center_card = target_player.center[0]
                 return center_card.get("bloom_level", 0) == required_bloom_level
             case Condition.Condition_CenterHasCheerCount:
                 if len(effect_player.center) == 0:
@@ -331,6 +334,9 @@ class ConditionMixin:
                     case _:
                         holomems = effect_player.get_holomem_on_stage()
 
+                if condition.get("is_buzz", False):
+                    holomems = [h for h in holomems if h.get("buzz", False)]
+
                 if "required_member_name_in" in condition:
                     required_names_in = condition["required_member_name_in"]
                     return any(member_name in holomem["card_names"] for member_name in required_names_in for holomem in holomems)
@@ -484,6 +490,9 @@ class ConditionMixin:
                     return False
                 return self.performance_performer_card.get("buzz", False)
             case Condition.Condition_PlayedSupportThisTurn:
+                if "condition_sub_types" in condition:
+                    required_types = condition["condition_sub_types"]
+                    return any(effect_player.played_support_types_this_turn.get(t, 0) > 0 for t in required_types)
                 return effect_player.played_support_this_turn
             case Condition.Condition_SupportCardNameUsedThisTurn:
                 condition_card_names = condition.get("condition_card_names", [])

@@ -19291,6 +19291,109 @@
         ]
     },
     {
+        "card_id": "hBP05-018",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "vestia_zeta"
+        ],
+        "rarity": "r",
+        "colors": [
+            "white"
+        ],
+        "hp": 190,
+        "baton_cost": 2,
+        "tags": [
+            "#ID",
+            "#IDGen3"
+        ],
+        "arts": [
+            {
+                "art_id": "lets_go_to_the_sea",
+                "costs": [
+                    {
+                        "color": "white",
+                        "amount": 1
+                    }
+                ],
+                "power": 60,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "purple"
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 50
+                    },
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "holomem_on_stage",
+                                "tag_in": [
+                                    "#IDGen3"
+                                ],
+                                "is_buzz": true
+                            }
+                        ],
+                        "effect_type": "draw",
+                        "amount": 1
+                    }
+                ]
+            },
+            {
+                "art_id": "summer_vibes",
+                "costs": [
+                    {
+                        "color": "white",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 140,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "purple"
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 50
+                    }
+                ],
+                "on_kill_effects": [
+                    {
+                        "effect_type": "choose_cards",
+                        "from": "deck",
+                        "look_at": -1,
+                        "destination": "hand",
+                        "amount_min": 0,
+                        "amount_max": 1,
+                        "requirement": "holomem_bloom",
+                        "requirement_bloom_levels": [
+                            1
+                        ],
+                        "requirement_tags": [
+                            "#IDGen3"
+                        ],
+                        "reveal_chosen": true,
+                        "remaining_cards_action": "shuffle"
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP05-024",
         "card_type": "holomem_bloom",
         "bloom_level": 1,
@@ -25121,6 +25224,144 @@
         ]
     },
     {
+        "card_id": "hBP07-002",
+        "card_type": "oshi",
+        "card_names": [
+            "vestia_zeta"
+        ],
+        "colors": [
+            "white"
+        ],
+        "rarity": "osr",
+        "life": 5,
+        "actions": [
+            {
+                "skill_id": "goodluckholoh3ro",
+                "cost": 3,
+                "limit": "once_per_turn",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_turn",
+                        "skill_id": "goodluckholoh3ro",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 3
+                            },
+                            {
+                                "effect_type": "record_used_once_per_turn_effect",
+                                "effect_id": "goodluckholoh3ro"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "add_turn_effect_for_holomem",
+                        "source_from_chosen": true,
+                        "turn_effect": {
+                            "timing": "before_art",
+                            "conditions": [
+                                {
+                                    "condition": "performer_is_specific_id",
+                                    "required_id": "REPLACED_BY_EFFECT"
+                                }
+                            ],
+                            "effect_type": "power_boost",
+                            "amount": 50
+                        }
+                    },
+                    {
+                        "effect_type": "add_turn_effect_for_holomem",
+                        "limitation": "last_chosen",
+                        "turn_effect": {
+                            "timing": "before_art",
+                            "conditions": [
+                                {
+                                    "condition": "performer_is_specific_id",
+                                    "required_id": "REPLACED_BY_EFFECT"
+                                },
+                                {
+                                    "condition": "performer_is_buzz"
+                                },
+                                {
+                                    "condition": "performer_has_any_tag",
+                                    "condition_tags": [
+                                        "#IDGen3"
+                                    ]
+                                }
+                            ],
+                            "effect_type": "power_boost",
+                            "amount": 30
+                        }
+                    }
+                ]
+            },
+            {
+                "skill_id": "nothingisimpossible",
+                "cost": 2,
+                "limit": "once_per_game",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_game",
+                        "skill_id": "nothingisimpossible",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_game_effect",
+                                "effect_id": "nothingisimpossible"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "choose_cards",
+                        "from": "archive",
+                        "look_at": -1,
+                        "destination": "holomem",
+                        "amount_min": 0,
+                        "amount_max": 50,
+                        "requirement": "support",
+                        "requirement_sub_types": [
+                            "mascot",
+                            "fan"
+                        ],
+                        "to_limitation": "tag_in",
+                        "to_limitation_tags": [
+                            "#IDGen3"
+                        ],
+                        "remaining_cards_action": "nothing",
+                        "after_choose_effect": {
+                            "conditions": [
+                                {
+                                    "condition": "chosen_card_count",
+                                    "amount_min": 3
+                                }
+                            ],
+                            "effect_type": "add_turn_effect_for_holomem",
+                            "limitation": "last_chosen",
+                            "turn_effect": {
+                                "timing": "before_art",
+                                "conditions": [
+                                    {
+                                        "condition": "performer_is_specific_id",
+                                        "required_id": "REPLACED_BY_EFFECT"
+                                    }
+                                ],
+                                "effect_type": "power_boost",
+                                "amount": 100
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP07-008",
         "card_type": "holomem_debut",
         "card_names": [
@@ -25304,6 +25545,438 @@
                         "opponent": true,
                         "limitation": "bloom_level",
                         "limitation_bloom_level": 2
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-015",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "vestia_zeta"
+        ],
+        "rarity": "c",
+        "colors": [
+            "white"
+        ],
+        "hp": 130,
+        "baton_cost": 1,
+        "tags": [
+            "#ID",
+            "#IDGen3"
+        ],
+        "collab_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "is_going_second_and_first_turn"
+                    }
+                ],
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "buzz",
+                "requirement_tags": [
+                    "#IDGen3"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "found_a_stray_cat",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 20
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-016",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "vestia_zeta"
+        ],
+        "rarity": "u",
+        "colors": [
+            "white"
+        ],
+        "hp": 120,
+        "baton_cost": 1,
+        "tags": [
+            "#ID",
+            "#IDGen3"
+        ],
+        "gift_effects": [
+            {
+                "timing": "check_hp",
+                "conditions": [
+                    {
+                        "condition": "has_attachment_of_type",
+                        "condition_type": "mascot"
+                    }
+                ],
+                "effect_type": "bonus_hp",
+                "amount": 30
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "so_tell_me_your_secrets",
+                "costs": [
+                    {
+                        "color": "white",
+                        "amount": 1
+                    }
+                ],
+                "power": 20
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-017",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "vestia_zeta"
+        ],
+        "rarity": "c",
+        "colors": [
+            "white"
+        ],
+        "hp": 170,
+        "baton_cost": 1,
+        "tags": [
+            "#ID",
+            "#IDGen3"
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_collab",
+                "conditions": [
+                    {
+                        "condition": "this_card_is_center"
+                    },
+                    {
+                        "condition": "holomem_on_stage",
+                        "location": "collab",
+                        "tag_in": [
+                            "#IDGen3"
+                        ],
+                        "is_buzz": true
+                    }
+                ],
+                "effect_type": "add_turn_effect_for_holomem",
+                "source_from_chosen": true,
+                "turn_effect": {
+                    "timing": "before_art",
+                    "conditions": [
+                        {
+                            "condition": "performer_is_specific_id",
+                            "required_id": "REPLACED_BY_EFFECT"
+                        }
+                    ],
+                    "effect_type": "power_boost",
+                    "amount": 30
+                }
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "love_spending_time_with_everyone",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 50
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-018",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "vestia_zeta"
+        ],
+        "rarity": "c",
+        "colors": [
+            "white"
+        ],
+        "hp": 160,
+        "baton_cost": 1,
+        "tags": [
+            "#ID",
+            "#IDGen3"
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": 1,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "support",
+                "reveal_chosen": true,
+                "remaining_cards_action": "order_on_top"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "umami_umami",
+                "costs": [
+                    {
+                        "color": "white",
+                        "amount": 1
+                    }
+                ],
+                "power": 30,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "played_support_this_turn",
+                                "condition_sub_types": [
+                                    "event"
+                                ]
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 30
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-019",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "vestia_zeta"
+        ],
+        "rarity": "r",
+        "colors": [
+            "white"
+        ],
+        "buzz": true,
+        "hp": 230,
+        "baton_cost": 2,
+        "down_life_cost": 2,
+        "tags": [
+            "#ID",
+            "#IDGen3"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "holomem",
+                "to_limitation": "specific_member_name",
+                "to_limitation_name": "vestia_zeta",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "specific_card",
+                "requirement_card_names": [
+                    "bazo",
+                    "zecretary"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "holoid_invited_dancing_queen",
+                "costs": [
+                    {
+                        "color": "white",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 50,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "has_attachment_of_types_any",
+                                "condition_types": [
+                                    "mascot",
+                                    "fan"
+                                ]
+                            }
+                        ],
+                        "effect_type": "draw",
+                        "amount": 1
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-020",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "vestia_zeta"
+        ],
+        "rarity": "u",
+        "colors": [
+            "white"
+        ],
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": [
+            "#ID",
+            "#IDGen3"
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "roll_die",
+                "source": "holomem_ability",
+                "die_effects": [
+                    {
+                        "english_values": "odd",
+                        "activate_on_values": [
+                            1,
+                            3,
+                            5
+                        ],
+                        "effects": [
+                            {
+                                "conditions": [
+                                    {
+                                        "condition": "center_bloom_level",
+                                        "opponent": true,
+                                        "required_bloom_level": 2
+                                    }
+                                ],
+                                "effect_type": "set_center_hp",
+                                "opponent": true,
+                                "amount": 100
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "want_to_perform_more",
+                "costs": [
+                    {
+                        "color": "white",
+                        "amount": 2
+                    }
+                ],
+                "power": 100,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "red"
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 50
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-021",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "vestia_zeta"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "white"
+        ],
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": [
+            "#ID",
+            "#IDGen3"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "archive",
+                "look_at": -1,
+                "destination": "holomem",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "specific_card",
+                "requirement_card_names": [
+                    "bazo",
+                    "zecretary"
+                ],
+                "remaining_cards_action": "nothing"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "best_secret_agent",
+                "costs": [
+                    {
+                        "color": "white",
+                        "amount": 2
+                    },
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 160,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "purple"
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 50
+                    },
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "holomem_on_stage",
+                                "tag_in": [
+                                    "#IDGen3"
+                                ],
+                                "is_buzz": true
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 40
                     }
                 ]
             }
@@ -26770,6 +27443,46 @@
         ]
     },
     {
+        "card_id": "hBP07-108",
+        "card_type": "support",
+        "sub_type": "fan",
+        "colors": [],
+        "card_names": [
+            "zecretary"
+        ],
+        "rarity": "c",
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem",
+                "to_limitation": "specific_member_name",
+                "to_limitation_name": "vestia_zeta"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "check_cheer",
+                "conditions": [
+                    {
+                        "condition": "oshi_is",
+                        "required_member_name": "vestia_zeta"
+                    }
+                ],
+                "effect_type": "bonus_cheer",
+                "amount": 1,
+                "color": "white"
+            },
+            {
+                "timing": "on_take_damage",
+                "conditions": [
+                    {
+                        "condition": "opponent_turn"
+                    }
+                ],
+                "effect_type": "archive_self_attachment"
+            }
+        ]
+    },
+    {
         "card_id": "hBP07-109",
         "card_type": "support",
         "sub_type": "fan",
@@ -27022,6 +27735,67 @@
             {
                 "effect_type": "draw",
                 "amount": 2
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-093",
+        "card_type": "support",
+        "sub_type": "event",
+        "colors": [],
+        "card_names": [
+            "umami"
+        ],
+        "rarity": "c",
+        "play_conditions": [
+            {
+                "condition": "support_card_name_not_used_this_turn",
+                "condition_card_names": [
+                    "umami"
+                ]
+            },
+            {
+                "condition": "self_zone_has_holomem",
+                "condition_zone": "collab"
+            }
+        ],
+        "effects": [
+            {
+                "effect_type": "add_turn_effect_for_holomem",
+                "limitation": "name_in",
+                "limitation_names": [
+                    "vestia_zeta"
+                ],
+                "limitation_location": "collab",
+                "source_from_chosen": true,
+                "turn_effect": {
+                    "timing": "before_art",
+                    "conditions": [
+                        {
+                            "condition": "performer_is_specific_id",
+                            "required_id": "REPLACED_BY_EFFECT"
+                        }
+                    ],
+                    "effect_type": "power_boost",
+                    "amount": 40
+                }
+            },
+            {
+                "effect_type": "roll_die",
+                "source": "support_card",
+                "die_effects": [
+                    {
+                        "english_values": "1-5",
+                        "activate_on_values": [
+                            1,
+                            2,
+                            3,
+                            4,
+                            5
+                        ],
+                        "effects": []
+                    }
+                ]
             }
         ]
     },
@@ -28216,6 +28990,48 @@
                 ],
                 "effect_type": "power_boost",
                 "amount": 20
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-105",
+        "card_type": "support",
+        "sub_type": "mascot",
+        "colors": [],
+        "card_names": [
+            "bazo"
+        ],
+        "rarity": "c",
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "before_art",
+                "effect_type": "power_boost",
+                "amount": 10
+            },
+            {
+                "timing": "art_cleanup",
+                "conditions": [
+                    {
+                        "condition": "attached_to",
+                        "required_member_name": "vestia_zeta"
+                    }
+                ],
+                "effect_type": "choose_cards",
+                "from": "archive",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "support",
+                "requirement_sub_types": [
+                    "fan"
+                ],
+                "remaining_cards_action": "nothing"
             }
         ]
     },
