@@ -583,6 +583,8 @@ def handle_send_cheer(engine, effect_player, effect):
                 match from_limitation:
                     case "color_in":
                         from_options = [card for card in relevant_archive_cards if any(color in card["colors"] for color in from_limitation_colors)]
+                    case "cheer":
+                        from_options = relevant_archive_cards
                     case _:
                         raise NotImplementedError(f"Unimplemented from limitation: {from_limitation}")
             else:
