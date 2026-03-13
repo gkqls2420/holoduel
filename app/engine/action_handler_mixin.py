@@ -1096,6 +1096,34 @@ class ActionHandlerMixin:
         })
         continuation()
 
+    def handle_rest_holomem(self, decision_info_copy, performing_player_id:str, card_ids:List[str], continuation):
+        card_id = card_ids[0]
+        rest_target_player_id = decision_info_copy.get("rest_target_player_id", performing_player_id)
+        target_player = self.get_player(rest_target_player_id)
+        card, _, _ = target_player.find_card(card_id)
+        card["resting"] = True
+        self.broadcast_event({
+            "event_type": EventType.EventType_RestHolomem,
+            "player_id": rest_target_player_id,
+            "rested_card_id": card_id,
+        })
+        continuation()
+
+    def handle_free_arts_turn_effect_choice(self, decision_info_copy, performing_player_id:str, card_ids:List[str], continuation):
+        card_id = card_ids[0]
+        effect_player = self.get_player(performing_player_id)
+        turn_effect = deepcopy(decision_info_copy["turn_effect"])
+        turn_effect["target_limitation"] = "specific_member_id"
+        turn_effect["target_member_id"] = card_id
+        effect_player.add_turn_effect(turn_effect)
+        event = {
+            "event_type": EventType.EventType_AddTurnEffect,
+            "effect_player_id": performing_player_id,
+            "turn_effect": turn_effect,
+        }
+        self.broadcast_event(event)
+        continuation()
+
     def move_back_to_collab_without_effect(self, player: PlayerState, card_id: str):
         """백스테이지 홀로멤을 콜라보 포지션으로 이동 (콜라보 효과 발동 없이)"""
         card, _, _ = player.find_and_remove_card(card_id)

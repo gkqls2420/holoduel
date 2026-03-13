@@ -235,6 +235,14 @@ def handle_return_this_attachment_to_hand(engine, effect_player, effect):
     return False
 
 
+def handle_return_this_card_to_deck(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    card_id = effect["source_card_id"]
+    effect_player.move_card(card_id, "deck")
+    effect_player.shuffle_deck()
+    return False
+
+
 def handle_archive_top_stacked_holomem(engine, effect_player, effect):
     """Returns True if continuation was passed on, False otherwise."""
     effect_player_id = effect_player.player_id
@@ -1025,6 +1033,7 @@ CARD_MOVEMENT_HANDLERS = {
     EffectType.EffectType_ArchiveThisAttachment: handle_archive_this_attachment,
     EffectType.EffectType_ArchiveAttachmentFromStageByName: handle_archive_attachment_from_stage_by_name,
     EffectType.EffectType_ReturnThisAttachmentToHand: handle_return_this_attachment_to_hand,
+    EffectType.EffectType_ReturnThisCardToDeck: handle_return_this_card_to_deck,
     EffectType.EffectType_ArchiveTopStackedHolomem: handle_archive_top_stacked_holomem,
     EffectType.EffectType_AttachCardToHolomem: handle_attach_card_to_holomem,
     EffectType.EffectType_AttachCardToHolomem_Internal: handle_attach_card_to_holomem_internal,

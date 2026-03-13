@@ -46,6 +46,7 @@ class PlayerState:
         self.support_card_tags_used_this_turn = []
         self.turn_effects = []
         self.set_next_die_roll = 0
+        self.force_die_remaining = 0
         self.card_effects_used_this_turn = []
         self.block_movement_for_turn = False
         self.last_archived_count = 0
@@ -62,6 +63,8 @@ class PlayerState:
         self.holomem_downed_names_last_opponent_turn = []
         self.holomem_returned_to_deck_this_turn = False
         self.block_life_loss_by_effect_this_turn = False
+        self.sp_oshi_skill_used_this_turn = False
+        self.die_rolls_this_turn = 0
         self.extra_turn_pending = False
 
         # Set up Oshi.
@@ -248,6 +251,9 @@ class PlayerState:
                 elif target_limitation == "self":
                     if card["game_card_id"] != effect["source_card_id"]:
                         continue
+                elif target_limitation == "specific_member_id":
+                    if card["game_card_id"] != effect.get("target_member_id", ""):
+                        continue
                 # Check target member name
                 target_member_name = effect.get("target_member_name", "")
                 if target_member_name and target_member_name not in card.get("card_names", []):
@@ -262,6 +268,8 @@ class PlayerState:
                             break
                     if not has_attachment:
                         continue
+                if effect.get("free_cost", False):
+                    return True
                 # Apply cost reduction
                 reduction_color = effect.get("color", "")
                 reduction_amount = effect.get("amount", 0)
@@ -830,12 +838,16 @@ class PlayerState:
         self.support_card_tags_used_this_turn = []
         self.effects_used_this_turn = []
         self.card_effects_used_this_turn = []
+        self.set_next_die_roll = 0
+        self.force_die_remaining = 0
         self.last_revealed_cards = []
         self.die_rolled_by_holomem_names_this_turn = []
         self.holomem_downed_this_turn = False
         self.holomem_downed_names_this_turn = []
         self.holomem_returned_to_deck_this_turn = False
         self.block_life_loss_by_effect_this_turn = False
+        self.sp_oshi_skill_used_this_turn = False
+        self.die_rolls_this_turn = 0
         for card in self.get_holomem_on_stage():
             card["used_art_this_turn"] = False
             card["played_this_turn"] = False

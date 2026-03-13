@@ -220,6 +220,10 @@ def handle_choose_cards(engine, effect_player, effect):
         if effect.get("requirement_tags"):
             cards_can_choose = [card for card in cards_can_choose if any(tag in card.get("tags", []) for tag in effect["requirement_tags"])]
 
+        # Restrict to specific colors (post-filter, skip for color_in which handles it as primary requirement).
+        if requirement_colors and requirement != "color_in":
+            cards_can_choose = [card for card in cards_can_choose if any(color in card.get("colors", []) for color in requirement_colors)]
+
         # Restrict to specific names (general post-filter, skip for holomem_named which handles it internally).
         if requirement_names and requirement != "holomem_named":
             cards_can_choose = [card for card in cards_can_choose

@@ -839,6 +839,8 @@ class ConditionMixin:
                 return total_cheer > 0 and total_cheer == matching_cheer
             case Condition.Condition_MyTurn:
                 return self.active_player_id == effect_player.player_id
+            case Condition.Condition_UsedSpOshiSkillThisTurn:
+                return effect_player.sp_oshi_skill_used_this_turn
             case _:
                 raise NotImplementedError(f"Unimplemented condition: {condition['condition']}")
         return False

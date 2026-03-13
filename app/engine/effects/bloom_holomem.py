@@ -473,6 +473,52 @@ def handle_opponent_move_back_to_collab(engine, effect_player, effect):
     return False
 
 
+def handle_rest_holomem(engine, effect_player, effect):
+    """Rests (sets resting=True) an opponent's backstage holomem."""
+    effect_player_id = effect_player.player_id
+    target_player = effect_player
+    if effect.get("opponent", False):
+        target_player = engine.other_player(effect_player_id)
+
+    active_holomem_ids = []
+    for holomem in target_player.backstage:
+        if not is_card_resting(holomem):
+            active_holomem_ids.append(holomem["game_card_id"])
+
+    if len(active_holomem_ids) == 0:
+        pass
+    elif len(active_holomem_ids) == 1:
+        card, _, _ = target_player.find_card(active_holomem_ids[0])
+        card["resting"] = True
+        engine.broadcast_event({
+            "event_type": EventType.EventType_RestHolomem,
+            "player_id": target_player.player_id,
+            "rested_card_id": active_holomem_ids[0],
+        })
+    else:
+        choosing_player_id = effect_player_id
+        decision_event = {
+            "event_type": EventType.EventType_Decision_ChooseHolomemForEffect,
+            "desired_response": GameAction.EffectResolution_ChooseCardsForEffect,
+            "effect_player_id": choosing_player_id,
+            "cards_can_choose": active_holomem_ids,
+        }
+        engine.broadcast_event(decision_event)
+        engine.set_decision({
+            "decision_type": DecisionType.DecisionEffect_ChooseCardsForEffect,
+            "decision_player": choosing_player_id,
+            "all_card_seen": active_holomem_ids,
+            "cards_can_choose": active_holomem_ids,
+            "amount_min": 1,
+            "amount_max": 1,
+            "rest_target_player_id": target_player.player_id,
+            "effect_resolution": engine.handle_rest_holomem,
+            "continuation": engine.continue_resolving_effects,
+        })
+        return True
+    return False
+
+
 BLOOM_HOLOMEM_HANDLERS = {
     EffectType.EffectType_BloomAlreadyBloomedThisTurn: handle_bloom_already_bloomed_this_turn,
     EffectType.EffectType_BloomFromSpecial: handle_bloom_from_special,
@@ -484,4 +530,5 @@ BLOOM_HOLOMEM_HANDLERS = {
     EffectType.EffectType_ActivateHolomem: handle_activate_holomem,
     EffectType.EffectType_ReturnHolomemToDebut: handle_return_holomem_to_debut,
     EffectType.EffectType_OpponentMoveBackToCollab: handle_opponent_move_back_to_collab,
+    EffectType.EffectType_RestHolomem: handle_rest_holomem,
 }

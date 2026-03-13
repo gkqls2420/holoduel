@@ -108,6 +108,7 @@ class EffectType:
     EffectType_RestoreHp_Internal = "restore_hp_INTERNAL"
     EffectType_ReturnHolomemToDebut = "return_holomem_to_debut"
     EffectType_ReturnThisAttachmentToHand = "return_this_attachment_to_hand"
+    EffectType_ReturnThisCardToDeck = "return_this_card_to_deck"
     EffectType_ReturnRevealedToHolopowerBottom = "return_revealed_to_holopower_bottom"
     EffectType_ReturnStackedToHand = "return_stacked_to_hand"
     EffectType_RevealTopDeck = "reveal_top_deck"
@@ -130,6 +131,11 @@ class EffectType:
     EffectType_UseOtherHolomemArts = "use_other_holomem_arts"
     EffectType_OpponentMoveBackToCollab = "opponent_move_back_to_collab"
     EffectType_ArchiveAttachmentFromStageByName = "archive_attachment_from_stage_by_name"
+    EffectType_DealDamagePerDieRollsThisTurn = "deal_damage_per_die_rolls_this_turn"
+    EffectType_ForceMultipleDieResult = "force_multiple_die_result"
+    EffectType_FreeArtsTurnEffect = "free_arts_turn_effect"
+    EffectType_PowerBoostPerRestingOpponentHolomem = "power_boost_per_resting_opponent_holomem"
+    EffectType_RestHolomem = "rest_holomem"
     EffectType_SetLimitedUsesAllowed = "set_limited_uses_allowed"
 
 class Condition:
@@ -267,6 +273,7 @@ class Condition:
     Condition_ReturnedToDeckCardHasName = "returned_to_deck_card_has_name"
     Condition_AllStageCheerIsColor = "all_stage_cheer_is_color"
     Condition_MyTurn = "my_turn"
+    Condition_UsedSpOshiSkillThisTurn = "used_sp_oshi_skill_this_turn"
 
 
 class TurnEffectType:
@@ -330,6 +337,7 @@ class EventType:
     EventType_Emote = "emote"
     EventType_AccumulatedDamageTargets = "accumulated_damage_targets"
     EventType_BonusHpUpdate = "bonus_hp_update"
+    EventType_RestHolomem = "rest_holomem"
 
 class GameOverReason:
     GameOverReason_NoHolomemsLeft = "no_holomems_left"

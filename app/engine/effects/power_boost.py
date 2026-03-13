@@ -262,6 +262,16 @@ def handle_power_boost_per_holopower(engine, effect_player, effect):
     return False
 
 
+def handle_power_boost_per_resting_opponent_holomem(engine, effect_player, effect):
+    """Power boost based on the number of resting holomems on opponent's stage."""
+    per_amount = effect["amount"]
+    opponent = engine.other_player(effect_player.player_id)
+    resting_count = sum(1 for card in opponent.get_holomem_on_stage() if is_card_resting(card))
+    total = per_amount * resting_count
+    engine.handle_power_boost(total, effect["source_card_id"])
+    return False
+
+
 POWER_BOOST_HANDLERS = {
     EffectType.EffectType_PowerBoost: handle_power_boost,
     EffectType.EffectType_PowerBoostPerAllFans: handle_power_boost_per_all_fans,
@@ -282,4 +292,5 @@ POWER_BOOST_HANDLERS = {
     EffectType.EffectType_PowerBoostPerCondition: handle_power_boost_per_condition,
     EffectType.EffectType_PowerBoostPerOpponentArchiveCheer: handle_power_boost_per_opponent_archive_cheer,
     EffectType.EffectType_PowerBoostPerHolopower: handle_power_boost_per_holopower,
+    EffectType.EffectType_PowerBoostPerRestingOpponentHolomem: handle_power_boost_per_resting_opponent_holomem,
 }

@@ -57,6 +57,17 @@ def handle_add_turn_effect_for_holomem(engine, effect_player, effect):
                         holomem_targets = []
                 else:
                     holomem_targets = []
+    limitation_location = effect.get("limitation_location", "")
+    if limitation_location:
+        location_ids = set()
+        match limitation_location:
+            case "collab":
+                location_ids = {c["game_card_id"] for c in effect_player.collab}
+            case "center":
+                location_ids = {c["game_card_id"] for c in effect_player.center}
+            case "backstage":
+                location_ids = {c["game_card_id"] for c in effect_player.backstage}
+        holomem_targets = [h for h in holomem_targets if h["game_card_id"] in location_ids]
     if "limitation_attachment_tags" in effect:
         req_tags = effect["limitation_attachment_tags"]
         holomem_targets = [h for h in holomem_targets if any(
@@ -210,11 +221,17 @@ def handle_roll_die_internal(engine, effect_player, effect):
     rigged = False
     if effect_player.set_next_die_roll:
         die_result = effect_player.set_next_die_roll
-        effect_player.set_next_die_roll = 0
+        if effect_player.force_die_remaining > 0:
+            effect_player.force_die_remaining -= 1
+            if effect_player.force_die_remaining <= 0:
+                effect_player.set_next_die_roll = 0
+        else:
+            effect_player.set_next_die_roll = 0
         rigged = True
     else:
         die_result = engine.random_gen.randint(1, 6)
     engine.last_die_value = die_result
+    effect_player.die_rolls_this_turn += 1
 
     die_event = {
         "event_type": EventType.EventType_RollDie,
@@ -308,6 +325,8 @@ def handle_oshi_activation(engine, effect_player, effect):
     """Returns True if continuation was passed on, False otherwise."""
     effect_player_id = effect_player.player_id
     skill_id = effect["skill_id"]
+    if effect["limit"] == "once_per_game":
+        effect_player.sp_oshi_skill_used_this_turn = True
     oshi_skill_event = {
         "event_type": EventType.EventType_OshiSkillActivation,
         "oshi_player_id": effect_player.player_id,
@@ -342,6 +361,66 @@ def handle_choose_stacked_to_hand_internal(engine, effect_player, effect):
     return False
 
 
+def handle_force_multiple_die_result(engine, effect_player, effect):
+    """Forces all dice in subsequent multiple_die_roll to a specific value for this turn."""
+    die_result = effect["die_result"]
+    count = effect.get("count", 999)
+    effect_player.set_next_die_roll = die_result
+    effect_player.force_die_remaining = count
+    return False
+
+
+def handle_free_arts_turn_effect(engine, effect_player, effect):
+    """Adds a turn effect that makes a chosen holomem's arts free (zero cost)."""
+    effect_player_id = effect_player.player_id
+    holomem_targets = effect_player.get_holomem_on_stage()
+    requirement_tags = effect.get("requirement_tags", [])
+    if requirement_tags:
+        holomem_targets = [h for h in holomem_targets if any(tag in h.get("tags", []) for tag in requirement_tags)]
+
+    turn_effect = {
+        "timing": "on_art_cost_check",
+        "effect_type": EffectType.EffectType_ReduceArtCost,
+        "source_card_id": effect["source_card_id"],
+        "free_cost": True,
+    }
+    holomem_ids = ids_from_cards(holomem_targets)
+
+    if len(holomem_ids) == 0:
+        pass
+    elif len(holomem_ids) == 1:
+        turn_effect["target_limitation"] = "specific_member_id"
+        turn_effect["target_member_id"] = holomem_ids[0]
+        effect_player.add_turn_effect(turn_effect)
+        event = {
+            "event_type": EventType.EventType_AddTurnEffect,
+            "effect_player_id": effect_player_id,
+            "turn_effect": turn_effect,
+        }
+        engine.broadcast_event(event)
+    else:
+        decision_event = {
+            "event_type": EventType.EventType_Decision_ChooseHolomemForEffect,
+            "desired_response": GameAction.EffectResolution_ChooseCardsForEffect,
+            "effect_player_id": effect_player_id,
+            "cards_can_choose": holomem_ids,
+        }
+        engine.broadcast_event(decision_event)
+        engine.set_decision({
+            "decision_type": DecisionType.DecisionEffect_ChooseCardsForEffect,
+            "decision_player": effect_player_id,
+            "all_card_seen": holomem_ids,
+            "cards_can_choose": holomem_ids,
+            "amount_min": 1,
+            "amount_max": 1,
+            "turn_effect": turn_effect,
+            "effect_resolution": engine.handle_free_arts_turn_effect_choice,
+            "continuation": engine.continue_resolving_effects,
+        })
+        return True
+    return False
+
+
 def handle_set_limited_uses_allowed(engine, effect_player, effect):
     """Returns True if continuation was passed on, False otherwise."""
     effect_player.limited_uses_allowed_this_turn = effect["amount"]
@@ -363,6 +442,8 @@ TURN_RECORD_HANDLERS = {
     EffectType.EffectType_RollDie_Internal_Resolution: handle_roll_die_internal_resolution,
     EffectType.EffectType_RerollDie: handle_reroll_die,
     EffectType.EffectType_ForceDieResult: handle_force_die_result,
+    EffectType.EffectType_ForceMultipleDieResult: handle_force_multiple_die_result,
+    EffectType.EffectType_FreeArtsTurnEffect: handle_free_arts_turn_effect,
     EffectType.EffectType_GoFirst: handle_go_first,
     EffectType.EffectType_OshiActivation: handle_oshi_activation,
     EffectType.EffectType_Pass: handle_pass,

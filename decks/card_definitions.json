@@ -15429,6 +15429,77 @@
         ]
     },
     {
+        "card_id": "hBP04-005",
+        "card_type": "oshi",
+        "card_names": [
+            "laplus_darkness"
+        ],
+        "colors": [
+            "purple"
+        ],
+        "rarity": "osr",
+        "life": 5,
+        "actions": [
+            {
+                "skill_id": "sousuu_no_shigoto",
+                "cost": 2,
+                "limit": "once_per_turn",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_turn",
+                        "skill_id": "sousuu_no_shigoto",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_turn_effect",
+                                "effect_id": "sousuu_no_shigoto"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "force_multiple_die_result",
+                        "die_result": 5,
+                        "count": 999
+                    }
+                ]
+            },
+            {
+                "skill_id": "wareware_himitsu_kessha_holox",
+                "cost": 3,
+                "limit": "once_per_game",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_game",
+                        "skill_id": "wareware_himitsu_kessha_holox",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 3
+                            },
+                            {
+                                "effect_type": "record_used_once_per_game_effect",
+                                "effect_id": "wareware_himitsu_kessha_holox"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "free_arts_turn_effect",
+                        "requirement_tags": [
+                            "#SecretSocietyholoX"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP04-006",
         "card_type": "oshi",
         "card_names": [
@@ -17821,6 +17892,360 @@
             }
         ],
         "collab_effects": []
+    },
+    {
+        "card_id": "hBP04-054",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "laplus_darkness"
+        ],
+        "colors": [
+            "purple"
+        ],
+        "rarity": "c",
+        "hp": 100,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX",
+            "#Shooter"
+        ],
+        "special_deck_limit": 50,
+        "arts": [
+            {
+                "art_id": "gwalmokhaera",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-055",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "laplus_darkness"
+        ],
+        "colors": [
+            "purple"
+        ],
+        "rarity": "u",
+        "hp": 100,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX",
+            "#Shooter"
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "roll_die",
+                "source": "holomem_ability",
+                "die_effects": [
+                    {
+                        "english_values": "3+",
+                        "activate_on_values": [
+                            3,
+                            4,
+                            5,
+                            6
+                        ],
+                        "effects": [
+                            {
+                                "effect_type": "rest_holomem",
+                                "opponent": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "eden_no_hoshi",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost_per_resting_opponent_holomem",
+                        "amount": 10
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-056",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "laplus_darkness"
+        ],
+        "colors": [
+            "purple"
+        ],
+        "rarity": "c",
+        "hp": 160,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX",
+            "#Shooter"
+        ],
+        "arts": [
+            {
+                "art_id": "ichigo_daisuki",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 1
+                    }
+                ],
+                "power": 40
+            },
+            {
+                "art_id": "plusmate_shokun",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 2
+                    }
+                ],
+                "power": 70
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-057",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "laplus_darkness"
+        ],
+        "colors": [
+            "purple"
+        ],
+        "rarity": "u",
+        "hp": 130,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX",
+            "#Shooter"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "roll_die",
+                "source": "holomem_ability",
+                "die_effects": [
+                    {
+                        "english_values": "odd",
+                        "activate_on_values": [
+                            1,
+                            3,
+                            5
+                        ],
+                        "effects": [
+                            {
+                                "effect_type": "choose_cards",
+                                "from": "archive",
+                                "destination": "hand",
+                                "amount_min": 1,
+                                "amount_max": 1,
+                                "requirement": "holomem",
+                                "requirement_tags": [
+                                    "#SecretSocietyholoX"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "english_values": "even",
+                        "activate_on_values": [
+                            2,
+                            4,
+                            6
+                        ],
+                        "effects": [
+                            {
+                                "effect_type": "choose_cards",
+                                "from": "archive",
+                                "destination": "top_of_deck",
+                                "amount_min": 1,
+                                "amount_max": 1,
+                                "requirement": "holomem",
+                                "requirement_tags": [
+                                    "#SecretSocietyholoX"
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "saikou_no_stage",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 40
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-058",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "laplus_darkness"
+        ],
+        "colors": [
+            "purple"
+        ],
+        "rarity": "r",
+        "hp": 140,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX",
+            "#Shooter"
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "multiple_die_roll",
+                "amount": 3,
+                "die_effects": [
+                    {
+                        "effect_type": "roll_die",
+                        "source": "holomem_ability",
+                        "die_effects": [
+                            {
+                                "english_values": "odd",
+                                "activate_on_values": [
+                                    1,
+                                    3,
+                                    5
+                                ],
+                                "effects": [
+                                    {
+                                        "effect_type": "deal_damage",
+                                        "amount": 10,
+                                        "target": "center",
+                                        "special": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "kono_mi_ni_katsu_tsumori_ka",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-059",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "laplus_darkness"
+        ],
+        "colors": [
+            "purple"
+        ],
+        "rarity": "rr",
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX",
+            "#Shooter"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "archive_from_hand",
+                "amount": 1,
+                "ability_source": "hBP04-059_bloom",
+                "and": [
+                    {
+                        "effect_type": "multiple_die_roll",
+                        "amount": 3,
+                        "die_effects": [
+                            {
+                                "effect_type": "roll_die",
+                                "source": "holomem_ability",
+                                "die_effects": [
+                                    {
+                                        "english_values": "odd",
+                                        "activate_on_values": [
+                                            1,
+                                            3,
+                                            5
+                                        ],
+                                        "effects": [
+                                            {
+                                                "effect_type": "draw",
+                                                "amount": 1
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "konomi_saikyou_densetsu",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 2
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 120,
+                "art_effects": [
+                    {
+                        "timing": "after_deal_damage",
+                        "effect_type": "deal_damage_per_die_rolls_this_turn",
+                        "amount_per": 10,
+                        "target": "center",
+                        "opponent": true,
+                        "special": true
+                    }
+                ]
+            }
+        ]
     },
     {
         "card_id": "hBP04-087",
@@ -24145,6 +24570,128 @@
         ]
     },
     {
+        "card_id": "hBP06-071",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "laplus_darkness"
+        ],
+        "colors": [
+            "purple"
+        ],
+        "rarity": "r",
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX",
+            "#Shooter"
+        ],
+        "arts": [
+            {
+                "art_id": "laplus_to_issho",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 2
+                    }
+                ],
+                "power": 80,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "yellow"
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "multiple_die_roll",
+                        "amount": 3,
+                        "die_effects": [
+                            {
+                                "english_values": "odd",
+                                "activate_on_values": [
+                                    1,
+                                    3,
+                                    5
+                                ],
+                                "effects": [
+                                    {
+                                        "effect_type": "power_boost",
+                                        "amount": 20
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "art_id": "minna_gwalmokhaera",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 5
+                    }
+                ],
+                "power": 120,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "yellow"
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "multiple_die_roll",
+                        "amount": 5,
+                        "die_effects": [
+                            {
+                                "english_values": "odd",
+                                "activate_on_values": [
+                                    1,
+                                    3,
+                                    5
+                                ],
+                                "effects": [
+                                    {
+                                        "effect_type": "draw",
+                                        "amount": 1
+                                    },
+                                    {
+                                        "effect_type": "deal_damage",
+                                        "amount": 30,
+                                        "target": "center",
+                                        "special": true
+                                    },
+                                    {
+                                        "effect_type": "deal_damage",
+                                        "amount": 30,
+                                        "target": "collab",
+                                        "opponent": true,
+                                        "special": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP06-072",
         "card_type": "holomem_debut",
         "card_names": [
@@ -27017,7 +27564,10 @@
                             },
                             {
                                 "condition": "self_has_cheer_color",
-                                "amount_min": 4
+                                "amount_min": 4,
+                                "condition_colors": [
+                                    "any"
+                                ]
                             }
                         ]
                     },
@@ -27615,6 +28165,267 @@
         "collab_effects": []
     },
     {
+        "card_id": "hBP07-071",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "laplus_darkness"
+        ],
+        "colors": [
+            "purple"
+        ],
+        "rarity": "c",
+        "hp": 120,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX",
+            "#Shooter"
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": 5,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "holomem_debut",
+                "requirement_colors": [
+                    "purple"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "order_on_bottom"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "shusei_asagohan",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-072",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "laplus_darkness"
+        ],
+        "colors": [
+            "purple"
+        ],
+        "rarity": "u",
+        "hp": 150,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX",
+            "#Shooter"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "stage",
+                "destination": "stage",
+                "amount_min": 1,
+                "amount_max": 1,
+                "requirement": "holomem",
+                "requirement_tags": [
+                    "#SecretSocietyholoX"
+                ],
+                "remaining_cards_action": "nothing",
+                "and": [
+                    {
+                        "effect_type": "multiple_die_roll",
+                        "amount": 3,
+                        "die_effects": [
+                            {
+                                "english_values": "odd",
+                                "activate_on_values": [
+                                    1,
+                                    3,
+                                    5
+                                ],
+                                "effects": [
+                                    {
+                                        "effect_type": "add_turn_effect_for_holomem",
+                                        "limitation": "last_chosen_holomem",
+                                        "turn_effect": {
+                                            "timing": "before_art",
+                                            "conditions": [
+                                                {
+                                                    "condition": "performer_is_specific_id",
+                                                    "required_id": "REPLACED_BY_EFFECT"
+                                                }
+                                            ],
+                                            "effect_type": "power_boost",
+                                            "amount": 10
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "himitsu_da_yo",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 60
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-073",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "laplus_darkness"
+        ],
+        "colors": [
+            "purple"
+        ],
+        "rarity": "r",
+        "hp": 170,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX",
+            "#Shooter",
+            "#Song"
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "add_turn_effect",
+                "turn_effect": {
+                    "effect_type": "reduce_art_cost",
+                    "amount": 2,
+                    "target_limitation": "self"
+                }
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "kono_mi_no_uta",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 30,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "choose_cards",
+                        "from": "deck",
+                        "destination": "hand",
+                        "amount_min": 0,
+                        "amount_max": 1,
+                        "requirement": "holomem_named",
+                        "requirement_names": [
+                            "laplus_darkness"
+                        ],
+                        "reveal_chosen": true,
+                        "remaining_cards_action": "shuffle"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-074",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "laplus_darkness"
+        ],
+        "colors": [
+            "purple"
+        ],
+        "rarity": "rr",
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX",
+            "#Shooter",
+            "#Song"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": 3,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 3,
+                "requirement": "holomem",
+                "reveal_chosen": true,
+                "remaining_cards_action": "order_on_bottom"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "kono_mi_no_uta_wo_kike",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 110,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "green"
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 40,
+                        "conditions": [
+                            {
+                                "condition": "center_is_color",
+                                "condition_colors": [
+                                    "purple"
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP07-097",
         "card_type": "support",
         "sub_type": "event",
@@ -28057,7 +28868,11 @@
                             4,
                             5
                         ],
-                        "effects": []
+                        "effects": [
+                            {
+                                "effect_type": "return_this_card_to_deck"
+                            }
+                        ]
                     }
                 ]
             }
@@ -32965,6 +33780,51 @@
                     }
                 ],
                 "amount": 1
+            }
+        ]
+    },
+    {
+        "card_id": "hSD06-010",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "laplus_darkness"
+        ],
+        "colors": [
+            "purple"
+        ],
+        "rarity": "u",
+        "hp": 60,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX",
+            "#Shooter"
+        ],
+        "arts": [
+            {
+                "art_id": "kyouki_no_matsuri",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 20,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "performer_is_collab"
+                            },
+                            {
+                                "condition": "used_sp_oshi_skill_this_turn"
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 50
+                    }
+                ]
             }
         ]
     },
