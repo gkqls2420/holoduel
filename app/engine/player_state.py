@@ -542,6 +542,16 @@ class PlayerState:
                             add_ids_to_effects([ae_copy], self.player_id, attached_card["game_card_id"])
                             effects.append(ae_copy)
 
+        for holomem in self.get_holomem_on_stage():
+            for attached_card in holomem.get("attached_support", []):
+                for ae in attached_card.get("attached_effects", []):
+                    if not isinstance(ae, dict):
+                        continue
+                    if ae.get("timing") == timing and ae.get("global_trigger", False):
+                        ae_copy = deepcopy(ae)
+                        add_ids_to_effects([ae_copy], self.player_id, attached_card["game_card_id"])
+                        effects.append(ae_copy)
+
         if card and card["card_type"] not in ["support", "oshi"]:
             card_effects = filter_effects_at_timing(card.get("effects", []), timing)
             add_ids_to_effects(card_effects, self.player_id, card["game_card_id"])
@@ -553,6 +563,8 @@ class PlayerState:
             for attached_card in attachments_to_check:
                 attached_effects = attached_card.get("attached_effects", [])
                 for attached_effect in attached_effects:
+                    if attached_effect.get("global_trigger", False):
+                        continue
                     if attached_effect["timing"] == timing:
                         if "timing_source_requirement" in attached_effect and attached_effect["timing_source_requirement"] != timing_source_requirement:
                             continue
@@ -715,7 +727,7 @@ class PlayerState:
             )
             return False
 
-        if to_zone in ["archive", "deck", "cheer_deck", "holopower"] and is_card_holomem(card):
+        if to_zone in ["archive", "deck", "top_of_deck", "cheer_deck", "holopower"] and is_card_holomem(card):
             all_attached = (
                 card.get("stacked_cards", [])
                 + card.get("attached_cheer", [])
@@ -758,6 +770,8 @@ class PlayerState:
                     self.deck.append(card)
                 else:
                     self.deck.insert(0, card)
+            case "top_of_deck":
+                self.deck.insert(0, card)
             case "hand":
                 self.hand.append(card)
                 # Reset any card stats when returning to hand.
@@ -772,7 +786,7 @@ class PlayerState:
             card["played_this_turn"] = True
 
         stage_zones = {"center", "collab", "backstage"}
-        if to_zone == "deck" and from_zone_name in stage_zones and is_card_holomem(card):
+        if to_zone in ["deck", "top_of_deck"] and from_zone_name in stage_zones and is_card_holomem(card):
             self.holomem_returned_to_deck_this_turn = True
 
         move_card_event = {

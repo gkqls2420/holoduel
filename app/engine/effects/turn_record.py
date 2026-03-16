@@ -14,12 +14,16 @@ if TYPE_CHECKING:
 def handle_add_turn_effect(engine, effect_player, effect):
     """Returns True if continuation was passed on, False otherwise."""
     effect_player_id = effect_player.player_id
-    effect["turn_effect"]["source_card_id"] = effect["source_card_id"]
-    effect_player.add_turn_effect(effect["turn_effect"])
+    turn_effect = deepcopy(effect["turn_effect"])
+    if "amount_per_last_card_count" in turn_effect:
+        per_amount = turn_effect.pop("amount_per_last_card_count")
+        turn_effect["amount"] = per_amount * engine.last_card_count
+    turn_effect["source_card_id"] = effect["source_card_id"]
+    effect_player.add_turn_effect(turn_effect)
     event = {
         "event_type": EventType.EventType_AddTurnEffect,
         "effect_player_id": effect_player_id,
-        "turn_effect": effect["turn_effect"],
+        "turn_effect": turn_effect,
     }
     engine.broadcast_event(event)
     engine.broadcast_bonus_hp_updates()
@@ -75,6 +79,9 @@ def handle_add_turn_effect_for_holomem(engine, effect_player, effect):
             for s in h.get("attached_support", [])
         )]
     turn_effect_copy = deepcopy(effect["turn_effect"])
+    if "amount_per_last_card_count" in turn_effect_copy:
+        per_amount = turn_effect_copy.pop("amount_per_last_card_count")
+        turn_effect_copy["amount"] = per_amount * engine.last_card_count
     turn_effect_copy["source_card_id"] = effect["source_card_id"]
     source_from_chosen = effect.get("source_from_chosen", False)
     holomem_targets = ids_from_cards(holomem_targets)
@@ -427,6 +434,12 @@ def handle_set_limited_uses_allowed(engine, effect_player, effect):
     return False
 
 
+def handle_count_cheer_on_stage(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    engine.last_card_count = len(effect_player.get_cheer_ids_on_holomems())
+    return False
+
+
 TURN_RECORD_HANDLERS = {
     EffectType.EffectType_AddTurnEffect: handle_add_turn_effect,
     EffectType.EffectType_AddTurnEffectForHolomem: handle_add_turn_effect_for_holomem,
@@ -450,4 +463,5 @@ TURN_RECORD_HANDLERS = {
     EffectType.EffectType_TakeExtraTurn: handle_take_extra_turn,
     EffectType.EffectType_ChooseStackedToHand_Internal: handle_choose_stacked_to_hand_internal,
     EffectType.EffectType_SetLimitedUsesAllowed: handle_set_limited_uses_allowed,
+    EffectType.EffectType_CountCheerOnStage: handle_count_cheer_on_stage,
 }

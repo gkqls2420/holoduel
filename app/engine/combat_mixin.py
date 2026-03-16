@@ -196,6 +196,8 @@ class CombatMixin:
         self.take_damage_state.target_card = target_card
         self.take_damage_state.target_card_zone = target_player.get_holomem_zone(target_card)
         self.take_damage_state.art_info = art_info
+        if self.performance_artstatboosts and self.performance_artstatboosts.cannot_be_reduced:
+            self.take_damage_state.cannot_be_reduced = True
 
         # Get on_deal_damage effects from dealing player (e.g., gift effects that boost special damage)
         on_deal_damage_effects = dealing_player.get_effects_at_timing("on_deal_damage", dealing_card)
@@ -221,7 +223,7 @@ class CombatMixin:
             target_card["damage"] += self.take_damage_state.added_damage
             damage += self.take_damage_state.added_damage
 
-        if self.take_damage_state.prevented_damage:
+        if self.take_damage_state.prevented_damage and not self.take_damage_state.cannot_be_reduced:
             target_card["damage"] -= damage
             damage = max(0, damage - self.take_damage_state.prevented_damage)
             target_card["damage"] += damage

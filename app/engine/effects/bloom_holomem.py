@@ -21,6 +21,10 @@ def handle_bloom_already_bloomed_this_turn(engine, effect_player, effect):
         case "bloom_level":
             limitation_bloom_level = effect.get("limitation_bloom_level")
             bloomed_cards_this_turn = [h for h in bloomed_cards_this_turn if h.get("bloom_level", 0) == limitation_bloom_level]
+        case "name_in":
+            limitation_names = effect.get("limitation_names", [])
+            bloomed_cards_this_turn = [h for h in bloomed_cards_this_turn
+                if any(name in h.get("card_names", []) for name in limitation_names)]
     valid_blooms_dict = {}
     for bloomed_card in bloomed_cards_this_turn:
         for card_in_hand in effect_player.hand:

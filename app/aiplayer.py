@@ -576,10 +576,11 @@ class AIPlayer:
         cheer_on_each_mem = event["cheer_on_each_mem"]
 
         placements = {}
-        for i in range(amount_min):
+        desired_amount = min(amount_max, len(available_cheer))
+        for i in range(desired_amount):
             cheer_to_send = available_cheer[i]
-            for i in range(len(available_targets)):
-                target = available_targets[i]
+            for j in range(len(available_targets)):
+                target = available_targets[j]
                 if cheer_to_send not in cheer_on_each_mem[target]:
                     placements[cheer_to_send] = target
                     break
@@ -649,10 +650,11 @@ class AIPlayer:
         cheer_on_each_mem = event["cheer_on_each_mem"]
 
         placements = {}
-        for i in range(amount_min):
+        desired_amount = min(amount_max, len(from_options))
+        for i in range(desired_amount):
             cheer_to_send = from_options[i]
-            for i in range(len(to_options)):
-                target = to_options[i]
+            for j in range(len(to_options)):
+                target = to_options[j]
                 if target not in cheer_on_each_mem or \
                 cheer_to_send not in cheer_on_each_mem[target]:
                     placements[cheer_to_send] = target

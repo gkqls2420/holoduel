@@ -1155,6 +1155,9 @@ class ActionHandlerMixin:
         self.last_chosen_cards = card_ids
         self.last_chosen_holomem_id = holomem_target
         turn_effect = decision_info_copy["turn_effect"]
+        if "amount_per_last_card_count" in turn_effect:
+            per_amount = turn_effect.pop("amount_per_last_card_count")
+            turn_effect["amount"] = per_amount * self.last_card_count
         replace_field_in_conditions(turn_effect, "required_id", holomem_target)
         if decision_info_copy.get("source_from_chosen", False):
             turn_effect["source_card_id"] = holomem_target

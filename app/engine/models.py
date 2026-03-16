@@ -10,11 +10,13 @@ class ArtStatBoosts:
         self.power = 0
         self.repeat_art = False
         self.is_repeat = False
+        self.cannot_be_reduced = False
 
     def clear(self):
         self.power = 0
         self.repeat_art = False
         self.is_repeat = False
+        self.cannot_be_reduced = False
 
 class TakeDamageState:
     def __init__(self):
@@ -27,6 +29,7 @@ class TakeDamageState:
         self.target_card_zone = ""
         self.special = False
         self.prevent_life_loss = False
+        self.cannot_be_reduced = False
         self.art_info = {}
         self.redirect_target = None
         self.redirect_target_player = None
@@ -34,6 +37,8 @@ class TakeDamageState:
         self.nested_state = None
 
     def get_incoming_damage(self):
+        if self.cannot_be_reduced:
+            return max(0, self.incoming_base_damage + self.added_damage)
         return max(0, self.incoming_base_damage + self.added_damage - self.prevented_damage)
 
 class AfterDamageState:

@@ -13142,6 +13142,89 @@
         ]
     },
     {
+        "card_id": "hBP03-024",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "kazama_iroha"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "green"
+        ],
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "send_cheer",
+                "amount_min": 1,
+                "amount_max": 1,
+                "from": "archive",
+                "to": "holomem",
+                "to_limitation": "member_name",
+                "to_limitation_name": "kazama_iroha",
+                "and": [
+                    {
+                        "effect_type": "send_cheer",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "from": "archive",
+                        "to": "holomem",
+                        "to_limitation": "member_name",
+                        "to_limitation_name": "hoshimachi_suisei"
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "kazamaga_benda",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 3
+                    }
+                ],
+                "power": 100,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "performer_is_center"
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 50
+                    },
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "self_has_cheer_color",
+                                "condition_colors": [
+                                    "green"
+                                ],
+                                "exclude": true,
+                                "amount_min": 2
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 50
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP03-036",
         "card_type": "holomem_bloom",
         "bloom_level": 1,
@@ -17904,7 +17987,7 @@
         ],
         "rarity": "c",
         "hp": 100,
-        "baton_cost": 1,
+        "baton_cost": 0,
         "tags": [
             "#JP",
             "#SecretSocietyholoX",
@@ -17935,7 +18018,7 @@
         ],
         "rarity": "u",
         "hp": 100,
-        "baton_cost": 1,
+        "baton_cost": 0,
         "tags": [
             "#JP",
             "#SecretSocietyholoX",
@@ -18037,7 +18120,7 @@
         ],
         "rarity": "u",
         "hp": 130,
-        "baton_cost": 1,
+        "baton_cost": 0,
         "tags": [
             "#JP",
             "#SecretSocietyholoX",
@@ -18065,7 +18148,8 @@
                                 "requirement": "holomem",
                                 "requirement_tags": [
                                     "#SecretSocietyholoX"
-                                ]
+                                ],
+                                "remaining_cards_action": "nothing"
                             }
                         ]
                     },
@@ -18086,7 +18170,8 @@
                                 "requirement": "holomem",
                                 "requirement_tags": [
                                     "#SecretSocietyholoX"
-                                ]
+                                ],
+                                "remaining_cards_action": "nothing"
                             }
                         ]
                     }
@@ -18118,7 +18203,7 @@
         ],
         "rarity": "r",
         "hp": 140,
-        "baton_cost": 1,
+        "baton_cost": 0,
         "tags": [
             "#JP",
             "#SecretSocietyholoX",
@@ -21835,6 +21920,7 @@
             },
             {
                 "timing": "on_kill",
+                "global_trigger": true,
                 "conditions": [
                     {
                         "condition": "attached_to",
@@ -21956,6 +22042,544 @@
                                 ]
                             }
                         ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP05-006",
+        "card_type": "oshi",
+        "card_names": [
+            "nerissa_ravencroft"
+        ],
+        "colors": [
+            "purple"
+        ],
+        "rarity": "osr",
+        "life": 5,
+        "actions": [
+            {
+                "skill_id": "liebestraume",
+                "cost": 1,
+                "limit": "once_per_turn",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_turn",
+                        "skill_id": "liebestraume",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 1
+                            },
+                            {
+                                "effect_type": "record_used_once_per_turn_effect",
+                                "effect_id": "liebestraume"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "add_turn_effect",
+                        "turn_effect": {
+                            "timing": "before_art",
+                            "conditions": [
+                                {
+                                    "condition": "performer_has_tag",
+                                    "condition_tags": [
+                                        "#Song"
+                                    ]
+                                },
+                                {
+                                    "condition": "performer_is_center_or_collab"
+                                }
+                            ],
+                            "effect_type": "power_boost",
+                            "amount": 10
+                        }
+                    }
+                ]
+            },
+            {
+                "skill_id": "shootthemoon",
+                "cost": 4,
+                "limit": "once_per_game",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_game",
+                        "skill_id": "shootthemoon",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 4
+                            },
+                            {
+                                "effect_type": "record_used_once_per_game_effect",
+                                "effect_id": "shootthemoon"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "effects": [
+            {
+                "oshi_effect": true,
+                "timing": "on_art_cost_check",
+                "effect_type": "reduce_art_cost",
+                "color": "any",
+                "amount": 1,
+                "target_member_name": "nerissa_ravencroft",
+                "conditions": [
+                    {
+                        "condition": "used_once_per_game_effect",
+                        "condition_effect_id": "shootthemoon"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP05-057",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "nerissa_ravencroft"
+        ],
+        "rarity": "u",
+        "colors": [
+            "purple"
+        ],
+        "hp": 80,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#Song",
+            "#Bird"
+        ],
+        "arts": [
+            {
+                "art_id": "coolsummernights",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 20
+            }
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "add_turn_effect_for_holomem",
+                "limitation": "has_tag",
+                "limitation_tags": [
+                    "#Song"
+                ],
+                "turn_effect": {
+                    "timing": "before_art",
+                    "conditions": [
+                        {
+                            "condition": "performer_is_specific_id",
+                            "required_id": "REPLACED_BY_EFFECT"
+                        }
+                    ],
+                    "effect_type": "power_boost",
+                    "amount": 10
+                }
+            }
+        ]
+    },
+    {
+        "card_id": "hBP05-058",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "nerissa_ravencroft"
+        ],
+        "rarity": "c",
+        "colors": [
+            "purple"
+        ],
+        "hp": 100,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#Song",
+            "#Bird"
+        ],
+        "arts": [
+            {
+                "art_id": "byeyadarlings",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 10
+            }
+        ],
+        "collab_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "is_going_second_and_first_turn"
+                    },
+                    {
+                        "condition": "oshi_is",
+                        "required_member_name": "nerissa_ravencroft"
+                    }
+                ],
+                "effect_type": "generate_holopower",
+                "amount": 1
+            }
+        ]
+    },
+    {
+        "card_id": "hBP05-059",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "nerissa_ravencroft"
+        ],
+        "rarity": "u",
+        "colors": [
+            "purple"
+        ],
+        "hp": 160,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#Song",
+            "#Bird"
+        ],
+        "arts": [
+            {
+                "art_id": "oneandonly",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 1
+                    }
+                ],
+                "power": 30,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "oshi_is",
+                                "required_member_name": "nerissa_ravencroft"
+                            }
+                        ],
+                        "effect_type": "draw",
+                        "amount": 1
+                    }
+                ]
+            },
+            {
+                "art_id": "tsunonisawaruna",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 50
+            }
+        ]
+    },
+    {
+        "card_id": "hBP05-060",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "nerissa_ravencroft"
+        ],
+        "rarity": "r",
+        "colors": [
+            "purple"
+        ],
+        "hp": 160,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#Song",
+            "#Bird"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 1,
+                "amount_max": 1,
+                "requirement": "specific_card",
+                "requirement_card_names": [
+                    "nerissa_ravencroft_wand",
+                    "jailbird"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "youennanomatsuri",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 40,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "choice",
+                        "choice": [
+                            {
+                                "effect_type": "archive_from_hand",
+                                "ability_source": "holomem_purple",
+                                "amount": 1,
+                                "and": [
+                                    {
+                                        "effect_type": "deal_damage",
+                                        "amount": 20,
+                                        "special": true,
+                                        "target": "center_or_collab",
+                                        "opponent": true
+                                    }
+                                ]
+                            },
+                            {
+                                "effect_type": "pass"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP05-061",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "nerissa_ravencroft"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "purple"
+        ],
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#Song",
+            "#Bird"
+        ],
+        "gift": "deo",
+        "gift_effects": [
+            {
+                "timing": "on_kill",
+                "conditions": [
+                    {
+                        "condition": "this_card_is_performing"
+                    },
+                    {
+                        "condition": "downed_card_belongs_to_opponent"
+                    }
+                ],
+                "effect_type": "draw",
+                "amount": 2
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "unleashedcharm",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 120,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "blue"
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "choice",
+                        "choice": [
+                            {
+                                "effect_type": "archive_from_hand",
+                                "ability_source": "holomem_purple",
+                                "amount_min": 1,
+                                "amount_max": 3,
+                                "and": [
+                                    {
+                                        "effect_type": "add_turn_effect_for_holomem",
+                                        "limitation": "has_tag",
+                                        "limitation_tags": [
+                                            "#Song"
+                                        ],
+                                        "turn_effect": {
+                                            "timing": "before_art",
+                                            "conditions": [
+                                                {
+                                                    "condition": "performer_is_specific_id",
+                                                    "required_id": "REPLACED_BY_EFFECT"
+                                                }
+                                            ],
+                                            "effect_type": "power_boost",
+                                            "amount_per_last_card_count": 20
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "effect_type": "pass"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP05-083",
+        "card_type": "support",
+        "sub_type": "tool",
+        "card_names": [
+            "nerissa_ravencroft_wand"
+        ],
+        "rarity": "u",
+        "colors": [],
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "before_art",
+                "effect_type": "power_boost",
+                "amount": 10
+            },
+            {
+                "timing": "before_archive",
+                "timing_source_requirement": "holomem_purple",
+                "conditions": [
+                    {
+                        "condition": "attached_to",
+                        "required_member_name": "nerissa_ravencroft",
+                        "required_bloom_levels": [
+                            2
+                        ]
+                    },
+                    {
+                        "condition": "attached_owner_is_location",
+                        "condition_location": "center_or_collab"
+                    },
+                    {
+                        "condition": "not_used_once_per_turn_effect",
+                        "condition_effect_id": "nerissa_wand_damage"
+                    }
+                ],
+                "pre_effects": [
+                    {
+                        "effect_type": "record_used_once_per_turn_effect",
+                        "effect_id": "nerissa_wand_damage"
+                    }
+                ],
+                "effect_type": "deal_damage",
+                "amount": 20,
+                "special": true,
+                "target": "center_or_collab",
+                "opponent": true
+            }
+        ]
+    },
+    {
+        "card_id": "hBP05-087",
+        "card_type": "support",
+        "sub_type": "fan",
+        "card_names": [
+            "jailbird"
+        ],
+        "rarity": "u",
+        "colors": [],
+        "play_conditions": [
+            {
+                "condition": "holomem_on_stage",
+                "required_member_name_in": [
+                    "nerissa_ravencroft"
+                ]
+            }
+        ],
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem",
+                "to_limitation": "specific_member_name",
+                "to_limitation_name": "nerissa_ravencroft"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "on_down",
+                "conditions": [
+                    {
+                        "condition": "opponent_turn"
+                    },
+                    {
+                        "condition": "downed_card_is_this"
+                    }
+                ],
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "send_cheer",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "from": "downed_holomem",
+                        "to": "holomem",
+                        "to_limitation": "tag_in",
+                        "to_limitation_tags": [
+                            "#Song"
+                        ]
+                    },
+                    {
+                        "effect_type": "pass"
                     }
                 ]
             }
@@ -23866,6 +24490,104 @@
         ]
     },
     {
+        "card_id": "hBP06-003",
+        "card_type": "oshi",
+        "card_names": [
+            "kazama_iroha"
+        ],
+        "colors": [
+            "green"
+        ],
+        "rarity": "osr",
+        "life": 5,
+        "actions": [
+            {
+                "skill_id": "mayoindaranara_mazu_jikkou",
+                "cost": 2,
+                "limit": "once_per_turn",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "skill_id": "mayoindaranara_mazu_jikkou",
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_turn",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_turn_effect",
+                                "effect_id": "mayoindaranara_mazu_jikkou"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "send_cheer",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "from": "cheer_deck",
+                        "to": "holomem",
+                        "to_limitation": "buzz_or_name_bloomed_from_buzz",
+                        "to_limitation_name": "kazama_iroha"
+                    }
+                ]
+            },
+            {
+                "skill_id": "ultimate_tsuyosen_gozaru",
+                "cost": 2,
+                "limit": "once_per_game",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "skill_id": "ultimate_tsuyosen_gozaru",
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_game",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_game_effect",
+                                "effect_id": "ultimate_tsuyosen_gozaru"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "count_cheer_on_stage"
+                    },
+                    {
+                        "effect_type": "add_turn_effect",
+                        "turn_effect": {
+                            "timing": "before_art",
+                            "conditions": [
+                                {
+                                    "condition": "performer_is_member_name",
+                                    "required_member_names": [
+                                        "kazama_iroha"
+                                    ]
+                                }
+                            ],
+                            "effect_type": "power_boost",
+                            "amount_per_last_card_count": 10
+                        }
+                    },
+                    {
+                        "conditions": [
+                            {
+                                "condition": "holomem_on_stage",
+                                "is_buzz": true
+                            }
+                        ],
+                        "effect_type": "draw",
+                        "amount": 3
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP06-004",
         "card_type": "oshi",
         "card_names": [
@@ -24615,16 +25337,22 @@
                         "amount": 3,
                         "die_effects": [
                             {
-                                "english_values": "odd",
-                                "activate_on_values": [
-                                    1,
-                                    3,
-                                    5
-                                ],
-                                "effects": [
+                                "effect_type": "roll_die",
+                                "source": "holomem_ability",
+                                "die_effects": [
                                     {
-                                        "effect_type": "power_boost",
-                                        "amount": 20
+                                        "english_values": "odd",
+                                        "activate_on_values": [
+                                            1,
+                                            3,
+                                            5
+                                        ],
+                                        "effects": [
+                                            {
+                                                "effect_type": "power_boost",
+                                                "amount": 20
+                                            }
+                                        ]
                                     }
                                 ]
                             }
@@ -24659,29 +25387,35 @@
                         "amount": 5,
                         "die_effects": [
                             {
-                                "english_values": "odd",
-                                "activate_on_values": [
-                                    1,
-                                    3,
-                                    5
-                                ],
-                                "effects": [
+                                "effect_type": "roll_die",
+                                "source": "holomem_ability",
+                                "die_effects": [
                                     {
-                                        "effect_type": "draw",
-                                        "amount": 1
-                                    },
-                                    {
-                                        "effect_type": "deal_damage",
-                                        "amount": 30,
-                                        "target": "center",
-                                        "special": true
-                                    },
-                                    {
-                                        "effect_type": "deal_damage",
-                                        "amount": 30,
-                                        "target": "collab",
-                                        "opponent": true,
-                                        "special": true
+                                        "english_values": "odd",
+                                        "activate_on_values": [
+                                            1,
+                                            3,
+                                            5
+                                        ],
+                                        "effects": [
+                                            {
+                                                "effect_type": "draw",
+                                                "amount": 1
+                                            },
+                                            {
+                                                "effect_type": "deal_damage",
+                                                "amount": 30,
+                                                "target": "center",
+                                                "special": true
+                                            },
+                                            {
+                                                "effect_type": "deal_damage",
+                                                "amount": 30,
+                                                "target": "collab",
+                                                "opponent": true,
+                                                "special": true
+                                            }
+                                        ]
                                     }
                                 ]
                             }
@@ -25695,6 +26429,317 @@
                         "to_limitation_tags": [
                             "#ReGLOSS"
                         ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-022",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "kazama_iroha"
+        ],
+        "rarity": "c",
+        "colors": [
+            "green"
+        ],
+        "hp": 140,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX"
+        ],
+        "arts": [
+            {
+                "art_id": "tezukuri_omamori",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    }
+                ],
+                "power": 10
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-023",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "kazama_iroha"
+        ],
+        "rarity": "u",
+        "colors": [
+            "green"
+        ],
+        "hp": 110,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX"
+        ],
+        "collab_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "is_going_second_and_first_turn"
+                    }
+                ],
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "buzz",
+                "requirement_names": [
+                    "kazama_iroha"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "gozagoza536",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-024",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "kazama_iroha"
+        ],
+        "rarity": "c",
+        "colors": [
+            "green"
+        ],
+        "hp": 200,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX"
+        ],
+        "arts": [
+            {
+                "art_id": "magical_gozaru_no_genkiga_deru_mahou",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 80
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-025",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "kazama_iroha"
+        ],
+        "rarity": "u",
+        "colors": [
+            "green"
+        ],
+        "hp": 150,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX"
+        ],
+        "gift_effects": [
+            {
+                "timing": "before_art",
+                "conditions": [
+                    {
+                        "condition": "this_card_is_center_or_collab"
+                    },
+                    {
+                        "condition": "performer_has_any_tag",
+                        "condition_tags": [
+                            "#SecretSocietyholoX"
+                        ]
+                    }
+                ],
+                "effect_type": "power_boost",
+                "amount": 20
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "kokukokukoku",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 50
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-026",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "buzz": true,
+        "card_names": [
+            "kazama_iroha"
+        ],
+        "rarity": "r",
+        "colors": [
+            "green"
+        ],
+        "hp": 250,
+        "baton_cost": 2,
+        "down_life_cost": 2,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX"
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_collab",
+                "conditions": [
+                    {
+                        "condition": "this_card_is_center"
+                    },
+                    {
+                        "condition": "cards_in_hand",
+                        "amount_min": 5
+                    }
+                ],
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "send_cheer",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "from": "cheer_deck",
+                        "to": "holomem",
+                        "to_limitation": "collab"
+                    },
+                    {
+                        "effect_type": "pass"
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "yorokondekuretara_ureshiina",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 2
+                    }
+                ],
+                "power": 60
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-027",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "kazama_iroha"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "green"
+        ],
+        "hp": 210,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX"
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_kill",
+                "conditions": [
+                    {
+                        "condition": "this_card_is_performing"
+                    },
+                    {
+                        "condition": "downed_card_belongs_to_opponent"
+                    },
+                    {
+                        "condition": "downed_card_was_center"
+                    }
+                ],
+                "effect_type": "bloom_already_bloomed_this_turn",
+                "limitation": "name_in",
+                "limitation_names": [
+                    "kazama_iroha"
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "issho_ni_step",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 160,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "performer_is_center"
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 50
+                    },
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "oshi_is",
+                                "required_member_name": "kazama_iroha"
+                            },
+                            {
+                                "condition": "this_card_is_center_or_collab"
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 40
+                    },
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "bloom_from_buzz"
+                            }
+                        ],
+                        "effect_type": "set_damage_cannot_be_reduced"
                     }
                 ]
             }
@@ -28175,7 +29220,7 @@
         ],
         "rarity": "c",
         "hp": 120,
-        "baton_cost": 1,
+        "baton_cost": 0,
         "tags": [
             "#JP",
             "#SecretSocietyholoX",
@@ -28246,27 +29291,33 @@
                         "amount": 3,
                         "die_effects": [
                             {
-                                "english_values": "odd",
-                                "activate_on_values": [
-                                    1,
-                                    3,
-                                    5
-                                ],
-                                "effects": [
+                                "effect_type": "roll_die",
+                                "source": "holomem_ability",
+                                "die_effects": [
                                     {
-                                        "effect_type": "add_turn_effect_for_holomem",
-                                        "limitation": "last_chosen_holomem",
-                                        "turn_effect": {
-                                            "timing": "before_art",
-                                            "conditions": [
-                                                {
-                                                    "condition": "performer_is_specific_id",
-                                                    "required_id": "REPLACED_BY_EFFECT"
+                                        "english_values": "odd",
+                                        "activate_on_values": [
+                                            1,
+                                            3,
+                                            5
+                                        ],
+                                        "effects": [
+                                            {
+                                                "effect_type": "add_turn_effect_for_holomem",
+                                                "limitation": "last_chosen_holomem",
+                                                "turn_effect": {
+                                                    "timing": "before_art",
+                                                    "conditions": [
+                                                        {
+                                                            "condition": "performer_is_specific_id",
+                                                            "required_id": "REPLACED_BY_EFFECT"
+                                                        }
+                                                    ],
+                                                    "effect_type": "power_boost",
+                                                    "amount": 10
                                                 }
-                                            ],
-                                            "effect_type": "power_boost",
-                                            "amount": 10
-                                        }
+                                            }
+                                        ]
                                     }
                                 ]
                             }
@@ -28315,7 +29366,9 @@
             {
                 "effect_type": "add_turn_effect",
                 "turn_effect": {
+                    "timing": "on_art_cost_check",
                     "effect_type": "reduce_art_cost",
+                    "color": "any",
                     "amount": 2,
                     "target_limitation": "self"
                 }
@@ -28418,6 +29471,88 @@
                                 "condition_colors": [
                                     "purple"
                                 ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-076",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "nerissa_ravencroft"
+        ],
+        "buzz": true,
+        "rarity": "r",
+        "colors": [
+            "purple"
+        ],
+        "hp": 260,
+        "baton_cost": 2,
+        "down_life_cost": 2,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#Song",
+            "#Bird"
+        ],
+        "collab_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "oshi_is",
+                        "required_member_name": "nerissa_ravencroft"
+                    }
+                ],
+                "effect_type": "draw",
+                "amount": 1,
+                "and": [
+                    {
+                        "effect_type": "choose_cards",
+                        "from": "hand",
+                        "look_at": -1,
+                        "destination": "holopower",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "remaining_cards_action": "nothing"
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "ara_tsukamacchatta",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 50,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "choice",
+                        "choice": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 1,
+                                "and": [
+                                    {
+                                        "effect_type": "power_boost",
+                                        "amount": 30
+                                    }
+                                ]
+                            },
+                            {
+                                "effect_type": "pass"
                             }
                         ]
                     }
@@ -29079,6 +30214,59 @@
                 "condition": "support_card_name_not_used_this_turn",
                 "condition_card_names": [
                     "frontier_spirit"
+                ]
+            },
+            {
+                "condition": "or",
+                "or_conditions": [
+                    {
+                        "condition": "card_names_in_archive",
+                        "card_names": [
+                            "azki"
+                        ],
+                        "amount_min": 1
+                    },
+                    {
+                        "condition": "card_names_in_archive",
+                        "card_names": [
+                            "frontier_spirit"
+                        ],
+                        "amount_min": 1
+                    }
+                ]
+            },
+            {
+                "condition": "or",
+                "or_conditions": [
+                    {
+                        "condition": "card_names_in_archive",
+                        "card_names": [
+                            "azki"
+                        ],
+                        "amount_min": 1
+                    },
+                    {
+                        "condition": "cheer_in_archive",
+                        "amount_min": 1
+                    }
+                ]
+            },
+            {
+                "condition": "or",
+                "or_conditions": [
+                    {
+                        "condition": "card_names_in_archive",
+                        "card_names": [
+                            "azki"
+                        ],
+                        "amount_min": 1
+                    },
+                    {
+                        "condition": "holomem_on_stage",
+                        "required_member_name_in": [
+                            "azki"
+                        ]
+                    }
                 ]
             }
         ],
@@ -30111,6 +31299,81 @@
                     "fan"
                 ],
                 "remaining_cards_action": "nothing"
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-030",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "kazama_iroha"
+        ],
+        "rarity": "r",
+        "colors": [
+            "green"
+        ],
+        "hp": 210,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX"
+        ],
+        "bloom_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "bloom_from_buzz"
+                    }
+                ],
+                "effect_type": "restore_hp",
+                "target": "holomem",
+                "amount": 100
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "takusan_aru_takara",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 2
+                    }
+                ],
+                "power": 100,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "yellow"
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 50
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "choice",
+                        "choice": [
+                            {
+                                "effect_type": "archive_cheer_from_holomem",
+                                "amount_min": 2,
+                                "amount_max": 2,
+                                "and": [
+                                    {
+                                        "effect_type": "draw",
+                                        "amount": 2
+                                    }
+                                ]
+                            },
+                            {
+                                "effect_type": "pass"
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     },
@@ -33736,6 +34999,283 @@
         ]
     },
     {
+        "card_id": "hSD06-002",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "kazama_iroha"
+        ],
+        "rarity": "c",
+        "colors": [
+            "green"
+        ],
+        "hp": 80,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX"
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "restore_hp",
+                "target": "holomem",
+                "amount": 10
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "yes_jakinjyaking",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 20
+            }
+        ]
+    },
+    {
+        "card_id": "hSD06-003",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "kazama_iroha"
+        ],
+        "rarity": "u",
+        "colors": [
+            "green"
+        ],
+        "hp": 80,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX"
+        ],
+        "arts": [
+            {
+                "art_id": "ittouryoudan_kirisuteru",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    }
+                ],
+                "power": 30,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "center_has_damage"
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 10
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hSD06-004",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "kazama_iroha"
+        ],
+        "rarity": "c",
+        "colors": [
+            "green"
+        ],
+        "hp": 160,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX"
+        ],
+        "arts": [
+            {
+                "art_id": "hanikamiya_no_goei",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 60
+            }
+        ]
+    },
+    {
+        "card_id": "hSD06-005",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "kazama_iroha"
+        ],
+        "rarity": "c",
+        "colors": [
+            "green"
+        ],
+        "hp": 120,
+        "baton_cost": 1,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "send_cheer",
+                "amount_min": 1,
+                "amount_max": 1,
+                "from": "cheer_deck",
+                "to": "holomem",
+                "to_limitation": "tag_in",
+                "to_limitation_tags": [
+                    "#SecretSocietyholoX"
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "kazama_to_issho",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ]
+    },
+    {
+        "card_id": "hSD06-006",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "buzz": true,
+        "card_names": [
+            "kazama_iroha"
+        ],
+        "rarity": "r",
+        "colors": [
+            "green"
+        ],
+        "hp": 220,
+        "baton_cost": 2,
+        "down_life_cost": 2,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "specific_card",
+                "requirement_card_names": [
+                    "chakimaru",
+                    "pokobe"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "katanano_sabini_narukoto_igaida",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 50
+            }
+        ]
+    },
+    {
+        "card_id": "hSD06-007",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "kazama_iroha"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "green"
+        ],
+        "hp": 180,
+        "baton_cost": 2,
+        "tags": [
+            "#JP",
+            "#SecretSocietyholoX"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "restore_hp",
+                "target": "holomem",
+                "amount": 30,
+                "limitation": "tag_in",
+                "limitation_tags": [
+                    "#SecretSocietyholoX"
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "tensai_janai",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 70,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "cheer_in_play",
+                                "amount_min": 5,
+                                "amount_max": -1
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 50
+                    },
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "blue"
+                            }
+                        ],
+                        "effect_type": "power_boost",
+                        "amount": 50
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hSD06-008",
         "card_type": "holomem_debut",
         "card_names": [
@@ -33825,6 +35365,91 @@
                         "amount": 50
                     }
                 ]
+            }
+        ]
+    },
+    {
+        "card_id": "hSD06-011",
+        "card_type": "support",
+        "colors": [],
+        "sub_type": "tool",
+        "card_names": [
+            "chakimaru"
+        ],
+        "rarity": "c",
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "before_art",
+                "effect_type": "power_boost",
+                "amount": 10
+            },
+            {
+                "timing": "after_take_damage",
+                "conditions": [
+                    {
+                        "condition": "opponent_turn"
+                    },
+                    {
+                        "condition": "attached_to",
+                        "required_member_name": "kazama_iroha",
+                        "required_bloom_levels": [
+                            1,
+                            2
+                        ]
+                    },
+                    {
+                        "condition": "effect_card_id_not_used_this_turn"
+                    }
+                ],
+                "effect_type": "deal_damage",
+                "special": true,
+                "amount": 20,
+                "target": "center",
+                "opponent": true,
+                "prevent_life_loss": true,
+                "and": [
+                    {
+                        "effect_type": "record_effect_card_id_used_this_turn"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hSD06-012",
+        "card_type": "support",
+        "colors": [],
+        "sub_type": "mascot",
+        "card_names": [
+            "pokobe"
+        ],
+        "rarity": "c",
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "check_hp",
+                "effect_type": "bonus_hp",
+                "amount": 10
+            },
+            {
+                "timing": "check_hp",
+                "conditions": [
+                    {
+                        "condition": "attached_to",
+                        "required_member_name": "kazama_iroha"
+                    }
+                ],
+                "effect_type": "bonus_hp",
+                "amount": 20
             }
         ]
     },
@@ -35134,6 +36759,55 @@
                     },
                     {
                         "effect_type": "pass"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hSD12-012",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "nerissa_ravencroft"
+        ],
+        "rarity": "c",
+        "colors": [
+            "purple"
+        ],
+        "hp": 140,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Advent",
+            "#Song",
+            "#Bird"
+        ],
+        "arts": [
+            {
+                "art_id": "utsukushikusomattaomoideha",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 3
+                    }
+                ],
+                "power": 80
+            }
+        ],
+        "effects": [
+            {
+                "timing": "on_art_cost_check",
+                "effect_type": "reduce_art_cost",
+                "color": "any",
+                "amount": 2,
+                "conditions": [
+                    {
+                        "condition": "life_at_most",
+                        "amount": 3
                     }
                 ]
             }

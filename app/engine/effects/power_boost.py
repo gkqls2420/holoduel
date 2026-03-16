@@ -272,6 +272,12 @@ def handle_power_boost_per_resting_opponent_holomem(engine, effect_player, effec
     return False
 
 
+def handle_set_damage_cannot_be_reduced(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    engine.performance_artstatboosts.cannot_be_reduced = True
+    return False
+
+
 POWER_BOOST_HANDLERS = {
     EffectType.EffectType_PowerBoost: handle_power_boost,
     EffectType.EffectType_PowerBoostPerAllFans: handle_power_boost_per_all_fans,
@@ -293,4 +299,5 @@ POWER_BOOST_HANDLERS = {
     EffectType.EffectType_PowerBoostPerOpponentArchiveCheer: handle_power_boost_per_opponent_archive_cheer,
     EffectType.EffectType_PowerBoostPerHolopower: handle_power_boost_per_holopower,
     EffectType.EffectType_PowerBoostPerRestingOpponentHolomem: handle_power_boost_per_resting_opponent_holomem,
+    EffectType.EffectType_SetDamageCannotBeReduced: handle_set_damage_cannot_be_reduced,
 }

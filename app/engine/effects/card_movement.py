@@ -112,19 +112,25 @@ def handle_archive_cheer_from_holomem(engine, effect_player, effect):
 def handle_archive_from_hand(engine, effect_player, effect):
     """Returns True if continuation was passed on, False otherwise."""
     effect_player_id = effect_player.player_id
-    amount = effect["amount"]
+    if "amount_min" in effect:
+        amount_min = effect["amount_min"]
+        amount_max = effect["amount_max"]
+    else:
+        amount_min = effect["amount"]
+        amount_max = effect["amount"]
     ability_source = effect.get("ability_source", "")
     requirement_same_tag = effect.get("requirement_same_tag", False)
-    engine.archive_count_required = amount
+    engine.archive_count_required = amount_max
     before_archive_effects = effect_player.get_effects_at_timing("before_archive", None, ability_source)
 
     def archive_hand_continuation():
         if engine.archive_count_required > 0:
-            # Ask the player to pick cards from their hand to archive.
             cards_can_choose = []
             match effect.get("requirement"):
                 case "holomem":
                     cards_can_choose = ([card["game_card_id"] for card in effect_player.hand if is_card_holomem(card)])
+                case "support":
+                    cards_can_choose = ([card["game_card_id"] for card in effect_player.hand if card.get("card_type") == "support"])
                 case _:
                     cards_can_choose = ids_from_cards(effect_player.hand)
             if requirement_same_tag:
@@ -136,8 +142,9 @@ def handle_archive_from_hand(engine, effect_player, effect):
                             eligible_ids.add(card_a["game_card_id"])
                             eligible_ids.add(card_b["game_card_id"])
                 cards_can_choose = [cid for cid in cards_can_choose if cid in eligible_ids]
-            engine.archive_count_required = min(engine.archive_count_required, len(cards_can_choose))
-            if engine.archive_count_required == 0:
+            actual_max = min(engine.archive_count_required, len(cards_can_choose))
+            actual_min = min(amount_min, actual_max)
+            if actual_max == 0:
                 engine.continue_resolving_effects()
                 return
             all_card_seen = ids_from_cards(effect_player.hand)
@@ -152,8 +159,8 @@ def handle_archive_from_hand(engine, effect_player, effect):
                 "cards_can_choose": cards_can_choose,
                 "from_zone": "hand",
                 "to_zone": "archive",
-                "amount_min": engine.archive_count_required,
-                "amount_max": engine.archive_count_required,
+                "amount_min": actual_min,
+                "amount_max": actual_max,
                 "reveal_chosen": True,
                 "remaining_cards_action": "nothing",
                 "requirement_details": requirement_details,
@@ -168,8 +175,8 @@ def handle_archive_from_hand(engine, effect_player, effect):
                 "cards_can_choose": cards_can_choose,
                 "from_zone": "hand",
                 "to_zone": "archive",
-                "amount_min": engine.archive_count_required,
-                "amount_max": engine.archive_count_required,
+                "amount_min": actual_min,
+                "amount_max": actual_max,
                 "reveal_chosen": True,
                 "remaining_cards_action": "nothing",
                 "requirement_same_tag": requirement_same_tag,
@@ -715,6 +722,22 @@ def handle_send_cheer(engine, effect_player, effect):
                     case "last_chosen":
                         holomems = effect_player.get_holomem_on_stage()
                         to_options = [card for card in holomems if card["game_card_id"] in engine.last_chosen_cards]
+                    case "collab":
+                        to_options = effect_player.collab
+                    case "buzz_or_name_bloomed_from_buzz":
+                        to_limitation_name = effect.get("to_limitation_name", "")
+                        holomems = effect_player.get_holomem_on_stage()
+                        buzz_holomems = [h for h in holomems if h.get("buzz", False)]
+                        bloomed_from_buzz = [h for h in holomems
+                            if to_limitation_name in h.get("card_names", [])
+                            and len(h.get("stacked_cards", [])) > 0
+                            and h["stacked_cards"][0].get("buzz", False)]
+                        seen = set()
+                        to_options = []
+                        for h in buzz_holomems + bloomed_from_buzz:
+                            if h["game_card_id"] not in seen:
+                                seen.add(h["game_card_id"])
+                                to_options.append(h)
                     case _:
                         raise NotImplementedError(f"Unimplemented to limitation: {to_limitation}")
             else:

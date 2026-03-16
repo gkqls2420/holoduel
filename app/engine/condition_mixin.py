@@ -105,6 +105,11 @@ class ConditionMixin:
                             cheer_count += 1
                     return cheer_count >= amount_min
                 return False
+            case Condition.Condition_BloomFromBuzz:
+                source_card, _, _ = effect_player.find_card(source_card_id)
+                if source_card and len(source_card.get("stacked_cards", [])) > 0:
+                    return source_card["stacked_cards"][0].get("buzz", False)
+                return False
             case Condition.Condition_BloomTargetIsDebut:
                 bloom_card, _, _ = effect_player.find_card(source_card_id)
                 # Bloom target is always in the 0 slot.
@@ -127,6 +132,10 @@ class ConditionMixin:
             case Condition.Condition_CardTypeInHand:
                 card_types = condition["condition_card_types"]
                 return any(card["card_type"] in card_types for card in effect_player.hand)
+            case Condition.Condition_CenterHasDamage:
+                if len(effect_player.center) == 0:
+                    return False
+                return effect_player.center[0].get("damage", 0) > 0
             case Condition.Condition_CenterIsColor:
                 if len(effect_player.center) == 0:
                     return False
@@ -279,6 +288,12 @@ class ConditionMixin:
                     downed_card = self.down_holomem_state.holomem_card
                     downed_player = self.get_player(downed_card["owner_id"])
                     return downed_player.get_holomem_zone(downed_card) == "backstage"
+                return False
+            case Condition.Condition_DownedCardWasCenter:
+                if self.down_holomem_state and self.down_holomem_state.holomem_card:
+                    downed_card = self.down_holomem_state.holomem_card
+                    downed_player = self.get_player(downed_card["owner_id"])
+                    return downed_player.get_holomem_zone(downed_card) == "center"
                 return False
             case Condition.Condition_EffectCardIdNotUsedThisTurn:
                 return not effect_player.has_used_card_effect_this_turn(source_card_id)
@@ -532,12 +547,17 @@ class ConditionMixin:
             case Condition.Condition_SelfHasCheerColor:
                 condition_colors = condition["condition_colors"]
                 amount_min = condition["amount_min"]
+                exclude = condition.get("exclude", False)
                 source_card, _, _ = effect_player.find_card(source_card_id)
                 if source_card:
                     cheer_of_matched_colors = 0
                     for cheer in source_card["attached_cheer"]:
-                        if "any" in condition_colors or any(color in cheer["colors"] for color in condition_colors):
-                            cheer_of_matched_colors += 1
+                        if exclude:
+                            if not any(color in cheer["colors"] for color in condition_colors):
+                                cheer_of_matched_colors += 1
+                        else:
+                            if "any" in condition_colors or any(color in cheer["colors"] for color in condition_colors):
+                                cheer_of_matched_colors += 1
                     return amount_min <= cheer_of_matched_colors
                 return False
             case Condition.Condition_SelfStageCheerLessThanOpponent:
