@@ -275,6 +275,12 @@ class ConditionMixin:
                     card_tags = downed_card.get("tags", [])
                     return any(tag in card_tags for tag in condition_tags)
                 return False
+            case Condition.Condition_DownedCardNameIs:
+                if self.down_holomem_state and self.down_holomem_state.holomem_card:
+                    downed_card = self.down_holomem_state.holomem_card
+                    required_name = condition["required_member_name"]
+                    return required_name in downed_card.get("card_names", [])
+                return False
             case Condition.Condition_DownedCardIsBuzzOr2nd:
                 # Check if the downed card is buzz or bloom_level 2
                 if self.down_holomem_state and self.down_holomem_state.holomem_card:

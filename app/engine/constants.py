@@ -179,6 +179,7 @@ class Condition:
     Condition_DownedCardIsColor = "downed_card_is_color"
     Condition_DownedCardIsThis = "downed_card_is_this"
     Condition_DownedCardHasAnyTag = "downed_card_has_any_tag"
+    Condition_DownedCardNameIs = "downed_card_name_is"
     Condition_DownedCardIsBuzzOr2nd = "downed_card_is_buzz_or_2nd"
     Condition_DownedCardWasBackstage = "downed_card_was_backstage"
     Condition_DownedCardWasCenter = "downed_card_was_center"

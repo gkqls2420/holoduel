@@ -388,7 +388,7 @@
                         "destination": "hand",
                         "amount_min": 1,
                         "amount_max": 1,
-                        "requirement": "color_in",
+                        "requirement": "holomem",
                         "requirement_colors": [
                             "white"
                         ],
@@ -934,6 +934,106 @@
                     },
                     {
                         "effect_type": "pass"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBD24-044",
+        "card_type": "oshi",
+        "card_names": [
+            "ichijou_ririka"
+        ],
+        "colors": [
+            "red"
+        ],
+        "rarity": "p",
+        "life": 5,
+        "actions": [
+            {
+                "skill_id": "red_enhance",
+                "cost": 2,
+                "limit": "once_per_turn",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_turn",
+                        "skill_id": "red_enhance",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_turn_effect",
+                                "effect_id": "red_enhance"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "add_turn_effect_for_holomem",
+                        "limitation": "color_in",
+                        "limitation_colors": [
+                            "red"
+                        ],
+                        "conditions": [
+                            {
+                                "condition": "color_on_stage",
+                                "condition_colors": [
+                                    "red"
+                                ]
+                            }
+                        ],
+                        "turn_effect": {
+                            "timing": "before_art",
+                            "conditions": [
+                                {
+                                    "condition": "performer_is_specific_id",
+                                    "required_id": "REPLACED_BY_EFFECT"
+                                }
+                            ],
+                            "effect_type": "power_boost",
+                            "amount": 20
+                        }
+                    }
+                ]
+            },
+            {
+                "skill_id": "birthday_gift_red",
+                "cost": 2,
+                "limit": "once_per_game",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_game",
+                        "skill_id": "birthday_gift_red",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_game_effect",
+                                "effect_id": "birthday_gift_red"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "choose_cards",
+                        "from": "deck",
+                        "look_at": -1,
+                        "destination": "hand",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "requirement": "color_in",
+                        "requirement_colors": [
+                            "red"
+                        ],
+                        "reveal_chosen": true,
+                        "remaining_cards_action": "shuffle"
                     }
                 ]
             }
@@ -8969,7 +9069,6 @@
                 "destination": "hand",
                 "amount_min": 1,
                 "amount_max": 1,
-                "requirement": "support",
                 "requirement_tags": [
                     "#ShirakamiCharacter"
                 ],
@@ -9051,7 +9150,7 @@
                 "from": "attached_support",
                 "look_at": -1,
                 "destination": "holomem",
-                "amount_min": 1,
+                "amount_min": 0,
                 "amount_max": 1,
                 "requirement": "support",
                 "requirement_sub_types": [
@@ -13165,7 +13264,7 @@
                 "amount_max": 1,
                 "from": "archive",
                 "to": "holomem",
-                "to_limitation": "member_name",
+                "to_limitation": "specific_member_name",
                 "to_limitation_name": "kazama_iroha",
                 "and": [
                     {
@@ -13174,7 +13273,7 @@
                         "amount_max": 1,
                         "from": "archive",
                         "to": "holomem",
-                        "to_limitation": "member_name",
+                        "to_limitation": "specific_member_name",
                         "to_limitation_name": "hoshimachi_suisei"
                     }
                 ]
@@ -19107,6 +19206,502 @@
         ]
     },
     {
+        "card_id": "hBP04-032",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "ichijou_ririka"
+        ],
+        "special_deck_limit": 50,
+        "rarity": "c",
+        "colors": [
+            "red"
+        ],
+        "hp": 100,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#ReGLOSS",
+            "#Cooking",
+            "#language"
+        ],
+        "arts": [
+            {
+                "art_id": "con_riri",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-033",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "ichijou_ririka"
+        ],
+        "rarity": "u",
+        "colors": [
+            "red"
+        ],
+        "hp": 120,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#ReGLOSS",
+            "#Cooking",
+            "#language"
+        ],
+        "arts": [
+            {
+                "art_id": "ririka_standby",
+                "costs": [
+                    {
+                        "color": "red",
+                        "amount": 1
+                    }
+                ],
+                "power": 20
+            },
+            {
+                "art_id": "limit_over",
+                "costs": [
+                    {
+                        "color": "red",
+                        "amount": 1
+                    }
+                ],
+                "power": 30,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "support_card_name_used_this_turn",
+                                "condition_card_names": [
+                                    "genkai_meshi"
+                                ]
+                            }
+                        ],
+                        "effect_type": "deal_damage",
+                        "amount": 20,
+                        "target": "collab",
+                        "special": true
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-034",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "ichijou_ririka"
+        ],
+        "rarity": "c",
+        "colors": [
+            "red"
+        ],
+        "hp": 170,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#ReGLOSS",
+            "#Cooking",
+            "#language"
+        ],
+        "arts": [
+            {
+                "art_id": "lets_dance",
+                "costs": [
+                    {
+                        "color": "red",
+                        "amount": 1
+                    }
+                ],
+                "power": 40
+            },
+            {
+                "art_id": "subscribe_or_die",
+                "costs": [
+                    {
+                        "color": "red",
+                        "amount": 1
+                    }
+                ],
+                "power": 60
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-035",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "ichijou_ririka"
+        ],
+        "rarity": "u",
+        "colors": [
+            "red"
+        ],
+        "hp": 130,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#ReGLOSS",
+            "#Cooking",
+            "#language"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "archive",
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "specific_card",
+                "requirement_card_names": [
+                    "genkai_meshi"
+                ],
+                "remaining_cards_action": "nothing"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "shacho_punch",
+                "costs": [
+                    {
+                        "color": "red",
+                        "amount": 1
+                    }
+                ],
+                "power": 50,
+                "art_effects": [
+                    {
+                        "timing": "after_deal_damage",
+                        "effect_type": "deal_damage",
+                        "amount": 20,
+                        "target": "collab",
+                        "special": true
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-037",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "ichijou_ririka"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "red"
+        ],
+        "hp": 200,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#ReGLOSS",
+            "#Cooking",
+            "#language"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "roll_die",
+                "source": "bloom_effect",
+                "die_effects": [
+                    {
+                        "english_values": "4-6",
+                        "activate_on_values": [
+                            4,
+                            5,
+                            6
+                        ],
+                        "effects": [
+                            {
+                                "conditions": [
+                                    {
+                                        "condition": "opponent_has_no_collab"
+                                    }
+                                ],
+                                "effect_type": "opponent_move_back_to_collab"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "o_siauka",
+                "costs": [
+                    {
+                        "color": "red",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 80,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "yellow"
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "after_deal_damage",
+                        "effect_type": "deal_damage",
+                        "amount": 50,
+                        "target": "center",
+                        "special": true
+                    },
+                    {
+                        "timing": "after_deal_damage",
+                        "conditions": [
+                            {
+                                "condition": "support_card_name_used_this_turn",
+                                "condition_card_names": [
+                                    "genkai_meshi"
+                                ]
+                            }
+                        ],
+                        "effect_type": "deal_damage",
+                        "amount": 30,
+                        "target": "center_or_collab",
+                        "special": true
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-091",
+        "card_type": "support",
+        "sub_type": "event",
+        "colors": [],
+        "card_names": [
+            "genkai_meshi"
+        ],
+        "rarity": "u",
+        "limited": true,
+        "tags": [
+            "#Food"
+        ],
+        "play_conditions": [
+            {
+                "condition": "support_card_name_not_used_this_turn",
+                "condition_card_names": [
+                    "genkai_meshi"
+                ]
+            }
+        ],
+        "effects": [
+            {
+                "effect_type": "add_turn_effect_for_holomem",
+                "limitation": "name_in",
+                "limitation_names": [
+                    "ichijou_ririka"
+                ],
+                "source_from_chosen": true,
+                "turn_effect": {
+                    "timing": "on_art_cost_check",
+                    "effect_type": "reduce_art_cost",
+                    "color": "any",
+                    "amount": 1,
+                    "conditions": [
+                        {
+                            "condition": "performer_is_specific_id",
+                            "required_id": "REPLACED_BY_EFFECT"
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-003",
+        "card_type": "oshi",
+        "card_names": [
+            "ichijou_ririka"
+        ],
+        "colors": [
+            "red"
+        ],
+        "rarity": "osr",
+        "life": 5,
+        "actions": [
+            {
+                "skill_id": "reach_the_top",
+                "cost": 3,
+                "limit": "once_per_turn",
+                "action_conditions": [
+                    {
+                        "condition": "center_has_any_tag",
+                        "condition_tags": [
+                            "#ReGLOSS"
+                        ]
+                    }
+                ],
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_turn",
+                        "skill_id": "reach_the_top",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 3
+                            },
+                            {
+                                "effect_type": "record_used_once_per_turn_effect",
+                                "effect_id": "reach_the_top"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "deal_damage",
+                        "amount": 50,
+                        "target": "collab",
+                        "special": true
+                    }
+                ]
+            }
+        ],
+        "effects": [
+            {
+                "oshi_effect": "true",
+                "skill_id": "kawaii_positive_genius",
+                "cost": 1,
+                "limit": "once_per_game",
+                "conditions": [
+                    {
+                        "condition": "not_used_once_per_game_effect",
+                        "condition_effect_id": "kawaii_positive_genius"
+                    },
+                    {
+                        "condition": "holopower_at_least",
+                        "amount": 1
+                    },
+                    {
+                        "condition": "opponent_turn"
+                    },
+                    {
+                        "condition": "downed_card_name_is",
+                        "required_member_name": "ichijou_ririka"
+                    }
+                ],
+                "timing": "on_down",
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "oshi_effect": "true",
+                        "limit": "once_per_game",
+                        "skill_id": "kawaii_positive_genius",
+                        "cost": 1,
+                        "effect_type": "choose_cards",
+                        "from": "deck",
+                        "look_at": -1,
+                        "destination": "hand",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "requirement": "specific_card",
+                        "requirement_card_names": [
+                            "ichijou_ririka"
+                        ],
+                        "reveal_chosen": true,
+                        "remaining_cards_action": "shuffle",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 1
+                            },
+                            {
+                                "effect_type": "record_used_once_per_game_effect",
+                                "effect_id": "kawaii_positive_genius"
+                            },
+                            {
+                                "effect_type": "oshi_activation",
+                                "limit": "once_per_game",
+                                "skill_id": "kawaii_positive_genius"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "pass"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-036",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "ichijou_ririka"
+        ],
+        "rarity": "r",
+        "colors": [
+            "red"
+        ],
+        "hp": 140,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#ReGLOSS",
+            "#Cooking",
+            "#language"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "deal_damage",
+                "amount": 20,
+                "target": "collab",
+                "special": true
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "ihihi",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "target_is_not_backstage"
+                            }
+                        ],
+                        "effect_type": "draw",
+                        "amount": 1
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP05-008",
         "card_type": "holomem_debut",
         "card_names": [
@@ -22086,7 +22681,7 @@
                             "timing": "before_art",
                             "conditions": [
                                 {
-                                    "condition": "performer_has_tag",
+                                    "condition": "performer_has_any_tag",
                                     "condition_tags": [
                                         "#Song"
                                     ]
@@ -25406,6 +26001,7 @@
                                                 "effect_type": "deal_damage",
                                                 "amount": 30,
                                                 "target": "center",
+                                                "opponent": true,
                                                 "special": true
                                             },
                                             {
@@ -26740,6 +27336,97 @@
                             }
                         ],
                         "effect_type": "set_damage_cannot_be_reduced"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP06-047",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "ichijou_ririka"
+        ],
+        "rarity": "r",
+        "colors": [
+            "red"
+        ],
+        "hp": 190,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#ReGLOSS",
+            "#Cooking",
+            "#language"
+        ],
+        "collab_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "oshi_is",
+                        "required_member_name": "ichijou_ririka"
+                    },
+                    {
+                        "condition": "card_names_in_archive",
+                        "card_names": [
+                            "genkai_meshi"
+                        ],
+                        "amount_min": 2
+                    }
+                ],
+                "effect_type": "draw",
+                "amount": 2
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "hontoni_nandemoanai_yo_tasukete",
+                "costs": [
+                    {
+                        "color": "red",
+                        "amount": 1
+                    }
+                ],
+                "power": 70,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "purple"
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "performer_is_collab"
+                            }
+                        ],
+                        "effect_type": "deal_damage",
+                        "amount": 50,
+                        "target": "collab",
+                        "special": true
+                    },
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "performer_is_collab"
+                            },
+                            {
+                                "condition": "opponent_has_no_collab"
+                            }
+                        ],
+                        "effect_type": "deal_damage",
+                        "amount": 50,
+                        "target": "center",
+                        "special": true
                     }
                 ]
             }
@@ -29539,6 +30226,12 @@
                 "art_effects": [
                     {
                         "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "holopower_at_least",
+                                "amount": 1
+                            }
+                        ],
                         "effect_type": "choice",
                         "choice": [
                             {
@@ -29688,7 +30381,7 @@
                         "condition": "opponent_turn"
                     }
                 ],
-                "effect_type": "archive_self_attachment"
+                "effect_type": "archive_this_attachment"
             }
         ]
     },
@@ -31138,7 +31831,7 @@
         ],
         "gift_effects": [
             {
-                "timing": "on_down",
+                "timing": "on_kill",
                 "conditions": [
                     {
                         "condition": "this_card_is_center_or_collab"
@@ -31359,8 +32052,9 @@
                         "choice": [
                             {
                                 "effect_type": "archive_cheer_from_holomem",
-                                "amount_min": 2,
-                                "amount_max": 2,
+                                "amount": 2,
+                                "from": "self",
+                                "ability_source": "holomem_green",
                                 "and": [
                                     {
                                         "effect_type": "draw",
@@ -34995,6 +35689,55 @@
                         ]
                     }
                 ]
+            }
+        ]
+    },
+    {
+        "card_id": "hSD05-011",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "ichijou_ririka"
+        ],
+        "rarity": "u",
+        "colors": [
+            "red"
+        ],
+        "hp": 70,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#ReGLOSS",
+            "#Cooking",
+            "#language"
+        ],
+        "collab_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "center_has_any_tag",
+                        "condition_tags": [
+                            "#ReGLOSS"
+                        ]
+                    },
+                    {
+                        "condition": "cards_in_hand",
+                        "amount_max": 5
+                    }
+                ],
+                "effect_type": "draw",
+                "amount": 1
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "shacho_no_shigoto",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 20
             }
         ]
     },
