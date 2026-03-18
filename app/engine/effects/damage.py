@@ -508,6 +508,20 @@ def handle_deal_damage_per_tagged_holomem_and_cheer_in_archive(engine, effect_pl
     return False
 
 
+def handle_deal_damage_per_opponent_center_cheer(engine, effect_player, effect):
+    """Deals damage based on the number of cheer attached to opponent's center holomem."""
+    amount_per = effect["amount_per"]
+    opponent = engine.other_player(effect_player.player_id)
+    cheer_count = 0
+    if len(opponent.center) > 0:
+        cheer_count = len(opponent.center[0].get("attached_cheer", []))
+    effect_copy = deepcopy(effect)
+    effect_copy["amount"] = amount_per * cheer_count
+    effect_copy["effect_type"] = EffectType.EffectType_DealDamage
+    engine.add_effects_to_front([effect_copy])
+    return False
+
+
 def handle_deal_damage_per_die_rolls_this_turn(engine, effect_player, effect):
     """Deals special damage based on the number of dice rolled this turn."""
     amount_per = effect["amount_per"]
@@ -525,6 +539,7 @@ DAMAGE_HANDLERS = {
     EffectType.EffectType_DealDamage_Internal: handle_deal_damage_internal,
     EffectType.EffectType_DealDamagePerCheerInArchive: handle_deal_damage_per_cheer_in_archive,
     EffectType.EffectType_DealDamagePerHolomemOnStage: handle_deal_damage_per_holomem_on_stage,
+    EffectType.EffectType_DealDamagePerOpponentCenterCheer: handle_deal_damage_per_opponent_center_cheer,
     EffectType.EffectType_DealDamagePerStacked: handle_deal_damage_per_stacked,
     EffectType.EffectType_DealDamagePerSupportInArchive: handle_deal_damage_per_support_in_archive,
     EffectType.EffectType_DealDamagePerTaggedHolomemAndCheerInArchive: handle_deal_damage_per_tagged_holomem_and_cheer_in_archive,

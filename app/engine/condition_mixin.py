@@ -430,12 +430,28 @@ class ConditionMixin:
                 return effect_player.has_used_once_per_game_effect(condition_effect_id)
             case Condition.Condition_NotUsedOncePerTurnEffect:
                 condition_effect_id = condition["condition_effect_id"]
-                return not effect_player.has_used_once_per_turn_effect(condition_effect_id)
+                max_uses = 1
+                for holomem in effect_player.get_holomem_on_stage():
+                    for attached_card in holomem.get("attached_support", []):
+                        for ae in attached_card.get("attached_effects", []):
+                            if not isinstance(ae, dict):
+                                continue
+                            if ae.get("effect_type") == EffectType.EffectType_ModifyOshiSkillLimit:
+                                if ae.get("target_skill_id") == condition_effect_id:
+                                    ae_conditions = ae.get("conditions", [])
+                                    if self.are_conditions_met(effect_player, attached_card["game_card_id"], ae_conditions):
+                                        max_uses = max(max_uses, ae["new_max_uses"])
+                current_uses = effect_player.effects_used_this_turn.get(condition_effect_id, 0)
+                return current_uses < max_uses
             case Condition.Condition_UsedOncePerTurnEffect:
                 condition_effect_id = condition["condition_effect_id"]
                 return effect_player.has_used_once_per_turn_effect(condition_effect_id)
             case Condition.Condition_OpponentTurn:
                 return self.active_player_id != effect_player.player_id
+            case Condition.Condition_OpponentMainStep:
+                if self.active_player_id == effect_player.player_id:
+                    return False
+                return self.current_decision is not None and self.current_decision.get("decision_type") == DecisionType.DecisionMainStep
             case Condition.Condition_OshiIs:
                 required_member_name = condition["required_member_name"]
                 return required_member_name in effect_player.oshi_card["card_names"]
@@ -777,6 +793,14 @@ class ConditionMixin:
                 return self.last_die_value >= len(effect_player.life)
             case Condition.Condition_LastDieLteLife:
                 return self.last_die_value <= len(effect_player.life)
+            case Condition.Condition_DieRollSourceCardNameIs:
+                required_member_name = condition["required_member_name"]
+                source_id = getattr(self, 'die_roll_source_card_id', '')
+                if source_id:
+                    source_card = self.find_card(source_id)
+                    if source_card:
+                        return required_member_name in source_card.get("card_names", [])
+                return False
             case Condition.Condition_DieRollSourceIsOshi:
                 return getattr(self, 'die_roll_source', '') == "oshi_skill"
             case Condition.Condition_DieRollSourceHasTag:
@@ -797,6 +821,9 @@ class ConditionMixin:
             case Condition.Condition_RevealedCardIsHolomem:
                 revealed = getattr(effect_player, "last_revealed_cards", [])
                 return all(is_card_holomem(card) for card in revealed) if revealed else False
+            case Condition.Condition_RevealedCardsHasEvent:
+                revealed = getattr(effect_player, "last_revealed_cards", [])
+                return any(is_card_sub_type(card, "event") for card in revealed)
             case Condition.Condition_StageAllMembersHaveTag:
                 required_tags = condition.get("required_tags", [])
                 holomems = effect_player.get_holomem_on_stage()

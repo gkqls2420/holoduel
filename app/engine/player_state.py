@@ -839,7 +839,13 @@ class PlayerState:
     def clear_every_turn_effects(self):
         self.baton_pass_this_turn = False
         self.collabed_this_turn = False
-        self.turn_effects = []
+        remaining_effects = []
+        for effect in self.turn_effects:
+            if "duration" in effect:
+                effect["duration"] -= 1
+                if effect["duration"] > 0:
+                    remaining_effects.append(effect)
+        self.turn_effects = remaining_effects
         self.performance_attacked_this_turn = False
         self.performance_step_start_used_effect = False
         self.used_limited_this_turn = False

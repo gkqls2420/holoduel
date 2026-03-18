@@ -11,12 +11,14 @@ class ArtStatBoosts:
         self.repeat_art = False
         self.is_repeat = False
         self.cannot_be_reduced = False
+        self.deal_to_center_and_collab = False
 
     def clear(self):
         self.power = 0
         self.repeat_art = False
         self.is_repeat = False
         self.cannot_be_reduced = False
+        self.deal_to_center_and_collab = False
 
 class TakeDamageState:
     def __init__(self):

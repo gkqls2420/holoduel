@@ -253,6 +253,17 @@ def handle_power_boost_per_opponent_archive_cheer(engine, effect_player, effect)
     return False
 
 
+def handle_power_boost_per_cheer_in_archive(engine, effect_player, effect):
+    """Power boost based on cheer count in player's own archive."""
+    per_amount = effect["amount"]
+    limit = effect.get("limit", 999)
+    cheer_count = sum(1 for card in effect_player.archive if is_card_cheer(card))
+    multiplier = min(cheer_count, limit)
+    total = per_amount * multiplier
+    engine.handle_power_boost(total, effect["source_card_id"])
+    return False
+
+
 def handle_power_boost_per_holopower(engine, effect_player, effect):
     """Power boost based on the number of cards in the player's holopower zone."""
     per_amount = effect["amount"]
@@ -278,6 +289,12 @@ def handle_set_damage_cannot_be_reduced(engine, effect_player, effect):
     return False
 
 
+def handle_set_deal_damage_to_center_and_collab(engine, effect_player, effect):
+    """Sets the flag to deal full damage to both opponent's center and collab."""
+    engine.performance_artstatboosts.deal_to_center_and_collab = True
+    return False
+
+
 POWER_BOOST_HANDLERS = {
     EffectType.EffectType_PowerBoost: handle_power_boost,
     EffectType.EffectType_PowerBoostPerAllFans: handle_power_boost_per_all_fans,
@@ -297,7 +314,9 @@ POWER_BOOST_HANDLERS = {
     EffectType.EffectType_PowerBoostPerPlayedSupport: handle_power_boost_per_played_support,
     EffectType.EffectType_PowerBoostPerCondition: handle_power_boost_per_condition,
     EffectType.EffectType_PowerBoostPerOpponentArchiveCheer: handle_power_boost_per_opponent_archive_cheer,
+    EffectType.EffectType_PowerBoostPerCheerInArchive: handle_power_boost_per_cheer_in_archive,
     EffectType.EffectType_PowerBoostPerHolopower: handle_power_boost_per_holopower,
     EffectType.EffectType_PowerBoostPerRestingOpponentHolomem: handle_power_boost_per_resting_opponent_holomem,
     EffectType.EffectType_SetDamageCannotBeReduced: handle_set_damage_cannot_be_reduced,
+    EffectType.EffectType_SetDealDamageToCenterAndCollab: handle_set_deal_damage_to_center_and_collab,
 }

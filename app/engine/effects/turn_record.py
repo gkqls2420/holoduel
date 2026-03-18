@@ -78,12 +78,57 @@ def handle_add_turn_effect_for_holomem(engine, effect_player, effect):
             any(tag in s.get("tags", []) for tag in req_tags)
             for s in h.get("attached_support", [])
         )]
+    if "limitation_bloom_levels" in effect:
+        allowed_levels = effect["limitation_bloom_levels"]
+        holomem_targets = [h for h in holomem_targets if h.get("bloom_level", 0) in allowed_levels]
+    all_targets = effect.get("all_targets", False)
+    target_both_sides = effect.get("target_both_sides", False)
+
+    if target_both_sides:
+        opponent = engine.other_player(effect_player_id)
+        opponent_holomem_targets = opponent.get_holomem_on_stage()
+        if limitation:
+            match limitation:
+                case "name_in":
+                    limitation_names = effect["limitation_names"]
+                    opponent_holomem_targets = [h for h in opponent_holomem_targets if any(name in h["card_names"] for name in limitation_names)]
+                case "has_tag":
+                    limitation_tags = effect["limitation_tags"]
+                    opponent_holomem_targets = [h for h in opponent_holomem_targets if any(tag in h.get("tags", []) for tag in limitation_tags)]
+
     turn_effect_copy = deepcopy(effect["turn_effect"])
     if "amount_per_last_card_count" in turn_effect_copy:
         per_amount = turn_effect_copy.pop("amount_per_last_card_count")
         turn_effect_copy["amount"] = per_amount * engine.last_card_count
     turn_effect_copy["source_card_id"] = effect["source_card_id"]
     source_from_chosen = effect.get("source_from_chosen", False)
+
+    if all_targets:
+        for holomem in holomem_targets:
+            te = deepcopy(turn_effect_copy)
+            replace_field_in_conditions(te, "required_id", holomem["game_card_id"])
+            effect_player.add_turn_effect(te)
+            event = {
+                "event_type": EventType.EventType_AddTurnEffect,
+                "effect_player_id": effect_player_id,
+                "turn_effect": te,
+            }
+            engine.broadcast_event(event)
+        if target_both_sides:
+            opponent_id = opponent.player_id
+            for holomem in opponent_holomem_targets:
+                te = deepcopy(turn_effect_copy)
+                replace_field_in_conditions(te, "required_id", holomem["game_card_id"])
+                opponent.add_turn_effect(te)
+                event = {
+                    "event_type": EventType.EventType_AddTurnEffect,
+                    "effect_player_id": opponent_id,
+                    "turn_effect": te,
+                }
+                engine.broadcast_event(event)
+        engine.broadcast_bonus_hp_updates()
+        return False
+
     holomem_targets = ids_from_cards(holomem_targets)
     if len(holomem_targets) == 0:
         # No effect.

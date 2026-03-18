@@ -637,10 +637,25 @@ def handle_send_cheer(engine, effect_player, effect):
                 match from_limitation:
                     case "center":
                         holomem_options = opponent.center
+                    case "center_or_collab":
+                        holomem_options = opponent.center + opponent.collab
                     case _:
                         raise NotImplementedError(f"Unimplemented from limitation: {from_limitation}")
             for holomem in holomem_options:
                 from_options.extend(holomem["attached_cheer"])
+            from_options = ids_from_cards(from_options)
+        case "opponent_archive":
+            opponent = engine.other_player(effect_player_id)
+            relevant_archive_cards = [card for card in opponent.archive if is_card_cheer(card)]
+            if from_limitation:
+                match from_limitation:
+                    case "color_in":
+                        from_options = [card for card in relevant_archive_cards
+                            if any(color in card["colors"] for color in from_limitation_colors)]
+                    case _:
+                        raise NotImplementedError(f"Unimplemented from limitation: {from_limitation}")
+            else:
+                from_options = relevant_archive_cards
             from_options = ids_from_cards(from_options)
         case "self":
             from_zone = "holomem"
@@ -751,6 +766,21 @@ def handle_send_cheer(engine, effect_player, effect):
             if engine.down_holomem_state:
                 to_options = [card for card in to_options if card["game_card_id"] != engine.down_holomem_state.holomem_card["game_card_id"]]
             to_options = ids_from_cards(to_options)
+        case "opponent_holomem":
+            opponent = engine.other_player(effect_player_id)
+            if to_limitation:
+                match to_limitation:
+                    case "center":
+                        to_options = opponent.center
+                    case "center_or_collab":
+                        to_options = opponent.center + opponent.collab
+                    case _:
+                        raise NotImplementedError(f"Unimplemented to limitation for opponent_holomem: {to_limitation}")
+            else:
+                to_options = opponent.get_holomem_on_stage()
+            if engine.down_holomem_state:
+                to_options = [card for card in to_options if card["game_card_id"] != engine.down_holomem_state.holomem_card["game_card_id"]]
+            to_options = ids_from_cards(to_options)
         case "cheer_deck_bottom":
             to_options = ["cheer_deck_bottom"]
         case "this_holomem":
@@ -791,7 +821,7 @@ def handle_send_cheer(engine, effect_player, effect):
             # If there's less cheer than the min, do as many as you can.
             amount_min = len(from_options)
 
-        if from_zone == "opponent_holomem":
+        if from_zone in ["opponent_holomem", "opponent_archive"]:
             opponent = engine.other_player(effect_player_id)
             cheer_on_each_mem = opponent.get_cheer_on_each_holomem()
         else:

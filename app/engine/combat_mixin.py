@@ -94,7 +94,26 @@ class CombatMixin:
             "after_deal_damage_effects": art_after_deal_damage_effects,
             "art_kill_effects": art_kill_effects,
         }
-        self.deal_damage(active_player, target_owner, self.performance_performer_card, self.performance_target_card, total_power, is_special_damage, False, art_info, self.performance_continuation)
+        if self.performance_artstatboosts.deal_to_center_and_collab:
+            self.deal_damage_to_center_and_collab(active_player, target_owner, total_power, is_special_damage, art_info, self.performance_continuation)
+        else:
+            self.deal_damage(active_player, target_owner, self.performance_performer_card, self.performance_target_card, total_power, is_special_damage, False, art_info, self.performance_continuation)
+
+    def deal_damage_to_center_and_collab(self, dealing_player, target_player, damage, special, art_info, continuation):
+        """Deal full damage to both opponent's center and collab holomems."""
+        center_card = target_player.center[0] if target_player.center else None
+        collab_card = target_player.collab[0] if target_player.collab else None
+
+        def deal_to_collab():
+            if collab_card and collab_card in target_player.get_holomem_on_stage():
+                self.deal_damage(dealing_player, target_player, self.performance_performer_card, collab_card, damage, special, False, art_info, continuation)
+            else:
+                continuation()
+
+        if center_card:
+            self.deal_damage(dealing_player, target_player, self.performance_performer_card, center_card, damage, special, False, art_info, deal_to_collab)
+        else:
+            deal_to_collab()
 
     def process_life_lost(self, life_lost: int, life_to_distribute: list, target_player: PlayerState, game_over: bool, game_over_reason: str, continuation):
         logger.debug(f"process_life_lost: life_lost={life_lost} game_over={game_over} game_over_reason={game_over_reason} life_to_distribute_count={len(life_to_distribute)}")
