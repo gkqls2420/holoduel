@@ -34,7 +34,7 @@ class PlayerState:
         self.center = []
         self.collab = []
         self.holopower = []
-        self.effects_used_this_turn = []
+        self.effects_used_this_turn = {}
         self.effects_used_this_game = []
         self.used_limited_this_turn = False
         self.limited_uses_count_this_turn = 0
@@ -484,11 +484,10 @@ class PlayerState:
         return card_id in self.card_effects_used_this_turn
 
     def record_effect_used_this_turn(self, effect_id):
-        if effect_id not in self.effects_used_this_turn:
-            self.effects_used_this_turn.append(effect_id)
+        self.effects_used_this_turn[effect_id] = self.effects_used_this_turn.get(effect_id, 0) + 1
 
     def has_used_once_per_turn_effect(self, effect_id):
-        return effect_id in self.effects_used_this_turn
+        return self.effects_used_this_turn.get(effect_id, 0) > 0
 
     def record_effect_used_this_game(self, effect_id):
         if effect_id not in self.effects_used_this_game:
@@ -856,7 +855,7 @@ class PlayerState:
         self.played_support_types_this_turn = {}
         self.support_card_names_used_this_turn = []
         self.support_card_tags_used_this_turn = []
-        self.effects_used_this_turn = []
+        self.effects_used_this_turn = {}
         self.card_effects_used_this_turn = []
         self.set_next_die_roll = 0
         self.force_die_remaining = 0
