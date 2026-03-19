@@ -81,6 +81,8 @@ def handle_add_turn_effect_for_holomem(engine, effect_player, effect):
     if "limitation_bloom_levels" in effect:
         allowed_levels = effect["limitation_bloom_levels"]
         holomem_targets = [h for h in holomem_targets if h.get("bloom_level", 0) in allowed_levels]
+    if effect.get("limitation_bloomed_this_turn", False):
+        holomem_targets = [h for h in holomem_targets if h.get("bloomed_this_turn", False)]
     all_targets = effect.get("all_targets", False)
     target_both_sides = effect.get("target_both_sides", False)
 
@@ -102,6 +104,27 @@ def handle_add_turn_effect_for_holomem(engine, effect_player, effect):
         turn_effect_copy["amount"] = per_amount * engine.last_card_count
     turn_effect_copy["source_card_id"] = effect["source_card_id"]
     source_from_chosen = effect.get("source_from_chosen", False)
+
+    global_apply = effect.get("global_apply", False)
+    if global_apply:
+        te = deepcopy(turn_effect_copy)
+        effect_player.add_turn_effect(te)
+        engine.broadcast_event({
+            "event_type": EventType.EventType_AddTurnEffect,
+            "effect_player_id": effect_player_id,
+            "turn_effect": te,
+        })
+        if target_both_sides:
+            opponent = engine.other_player(effect_player_id)
+            te2 = deepcopy(turn_effect_copy)
+            opponent.add_turn_effect(te2)
+            engine.broadcast_event({
+                "event_type": EventType.EventType_AddTurnEffect,
+                "effect_player_id": opponent.player_id,
+                "turn_effect": te2,
+            })
+        engine.broadcast_bonus_hp_updates()
+        return False
 
     if all_targets:
         for holomem in holomem_targets:

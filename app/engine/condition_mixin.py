@@ -23,6 +23,8 @@ class ConditionMixin:
                     if self.is_condition_met(effect_player, source_card_id, or_cond):
                         return True
                 return False
+            case Condition.Condition_AnyHolomemBloomedThisTurn:
+                return any(holomem.get("bloomed_this_turn", False) for holomem in effect_player.get_holomem_on_stage())
             case Condition.Condition_AnyTagHolomemHasCheer:
                 valid_tags = condition["condition_tags"]
                 for card in effect_player.get_holomem_on_stage():
@@ -104,6 +106,11 @@ class ConditionMixin:
                         if "any" in condition_colors or any(color in cheer["colors"] for color in condition_colors):
                             cheer_count += 1
                     return cheer_count >= amount_min
+                return False
+            case Condition.Condition_AttachedOwnerUsedArtThisTurn:
+                holomems = effect_player.get_holomems_with_attachment(source_card_id)
+                if holomems:
+                    return holomems[0].get("used_art_this_turn", False)
                 return False
             case Condition.Condition_BloomFromBuzz:
                 source_card, _, _ = effect_player.find_card(source_card_id)
@@ -244,6 +251,9 @@ class ConditionMixin:
             case Condition.Condition_DamageTargetIsCenter:
                 target_zone = self.take_damage_state.target_card_zone
                 return target_zone == "center"
+            case Condition.Condition_DamageTargetIsBackstage:
+                target_zone = self.take_damage_state.target_card_zone
+                return target_zone == "backstage"
             case Condition.Condition_DamageTargetIsDebut:
                 target_card = self.take_damage_state.target_card
                 return target_card and target_card.get("card_type") == "holomem_debut"
@@ -333,9 +343,11 @@ class ConditionMixin:
                 return False
             case Condition.Condition_HasStackedHolomem:
                 amount_min = condition.get("amount_min", 1)
+                amount_max = condition.get("amount_max", 999)
                 card, _, _ = effect_player.find_card(source_card_id)
-                stacked_holomems = [card for card in card["stacked_cards"] if is_card_holomem(card)]
-                return amount_min <= len(stacked_holomems)
+                stacked_holomems = [c for c in card["stacked_cards"] if is_card_holomem(c)]
+                count = len(stacked_holomems)
+                return amount_min <= count <= amount_max
             case Condition.Condition_HolomemInArchive:
                 holomems = [holomem for holomem in effect_player.archive if is_card_holomem(holomem)]
                 if "tag_in" in condition:
@@ -346,17 +358,22 @@ class ConditionMixin:
                 amount_max = condition.get("amount_max", len(holomems))
                 return amount_min <= len(holomems) <= amount_max
             case Condition.Condition_HolomemOnStage:
+                target_player = self.other_player(effect_player.player_id) if condition.get("opponent", False) else effect_player
                 holomems = []
                 match condition.get("location"):
                     case "center":
-                        holomems = effect_player.center
+                        holomems = target_player.center
                     case "collab":
-                        holomems = effect_player.collab
+                        holomems = target_player.collab
                     case _:
-                        holomems = effect_player.get_holomem_on_stage()
+                        holomems = target_player.get_holomem_on_stage()
 
                 if condition.get("is_buzz", False):
                     holomems = [h for h in holomems if h.get("buzz", False)]
+
+                if "required_bloom_levels" in condition:
+                    required_bloom_levels = condition["required_bloom_levels"]
+                    holomems = [h for h in holomems if h.get("bloom_level", -1) in required_bloom_levels]
 
                 if "required_member_name_in" in condition:
                     required_names_in = condition["required_member_name_in"]
@@ -371,14 +388,11 @@ class ConditionMixin:
                             if any(tag in holomem["tags"] for tag in tags):
                                 return True
                 else:
-                    # No specific member needed, but still check tags and bloom levels.
+                    # No specific member needed, but still check tags (bloom_levels already filtered above).
                     filtered_holomems = holomems
                     if "tag_in" in condition:
                         tags = condition["tag_in"]
                         filtered_holomems = [h for h in filtered_holomems if any(tag in h["tags"] for tag in tags)]
-                    if "required_bloom_levels" in condition:
-                        required_bloom_levels = condition["required_bloom_levels"]
-                        filtered_holomems = [h for h in filtered_holomems if h.get("bloom_level", -1) in required_bloom_levels]
 
                     # Check amount_min if specified
                     if "amount_min" in condition:
@@ -650,6 +664,10 @@ class ConditionMixin:
                     return False
                 color_requirement = condition["color_requirement"]
                 return color_requirement in self.performance_target_card["colors"]
+            case Condition.Condition_TargetHasDamage:
+                if not self.performance_target_card:
+                    return False
+                return self.performance_target_card.get("damage", 0) > 0
             case Condition.Condition_TargetHasAnyTag:
                 valid_tags = condition["condition_tags"]
                 for tag in self.take_damage_state.target_card["tags"]:
@@ -768,9 +786,11 @@ class ConditionMixin:
                 opponent = self.other_player(effect_player.player_id)
                 return len(effect_player.life) < len(opponent.life)
             case Condition.Condition_OpponentHasNoCollab:
-                # 상대 콜라보 홀로멤이 없는지 확인
                 opponent = self.other_player(effect_player.player_id)
                 return len(opponent.collab) == 0
+            case Condition.Condition_OpponentHasCollab:
+                opponent = self.other_player(effect_player.player_id)
+                return len(opponent.collab) > 0
             case Condition.Condition_MyHolomemDownedLastOpponentTurn:
                 # 직전 상대의 턴에 자신의 홀로멤이 다운됐었는지 확인
                 return effect_player.holomem_downed_last_opponent_turn

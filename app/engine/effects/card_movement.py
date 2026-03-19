@@ -242,6 +242,14 @@ def handle_return_this_attachment_to_hand(engine, effect_player, effect):
     return False
 
 
+def handle_return_this_attachment_to_deck_bottom(engine, effect_player, effect):
+    """Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    attachment_id = effect["source_card_id"]
+    effect_player.move_card(attachment_id, "deck", add_to_bottom=True)
+    return False
+
+
 def handle_return_this_card_to_deck(engine, effect_player, effect):
     """Returns True if continuation was passed on, False otherwise."""
     card_id = effect["source_card_id"]
@@ -257,6 +265,57 @@ def handle_archive_top_stacked_holomem(engine, effect_player, effect):
     if len(card["stacked_cards"]) > 0:
         top_card = card["stacked_cards"][0]
         effect_player.archive_attached_cards([top_card["game_card_id"]])
+    return False
+
+
+def handle_archive_stacked_holomem(engine, effect_player, effect):
+    """Archive a selected stacked holomem, with optional card_type filter and from_member_name."""
+    effect_player_id = effect_player.player_id
+    requirement_card_type = effect.get("requirement_card_type", "")
+    from_member_name = effect.get("from_member_name", "")
+
+    candidates = []
+    if from_member_name:
+        for holomem in effect_player.get_holomem_on_stage():
+            if from_member_name in holomem.get("card_names", []):
+                for stacked in holomem["stacked_cards"]:
+                    if is_card_holomem(stacked):
+                        if requirement_card_type and stacked.get("card_type", "") != requirement_card_type:
+                            continue
+                        candidates.append(stacked["game_card_id"])
+    else:
+        card, _, _ = effect_player.find_card(effect["source_card_id"])
+        for stacked in card["stacked_cards"]:
+            if is_card_holomem(stacked):
+                if requirement_card_type and stacked.get("card_type", "") != requirement_card_type:
+                    continue
+                candidates.append(stacked["game_card_id"])
+
+    if len(candidates) == 0:
+        return False
+    elif len(candidates) == 1:
+        effect_player.archive_attached_cards([candidates[0]])
+    else:
+        decision_event = {
+            "event_type": EventType.EventType_Decision_ChooseCards,
+            "desired_response": GameAction.EffectResolution_ChooseCardsForEffect,
+            "effect_player_id": effect_player_id,
+            "cards_can_choose": candidates,
+            "amount_min": 1,
+            "amount_max": 1,
+        }
+        engine.broadcast_event(decision_event)
+        engine.set_decision({
+            "decision_type": DecisionType.DecisionEffect_ChooseCardsForEffect,
+            "decision_player": effect_player_id,
+            "all_card_seen": candidates,
+            "cards_can_choose": candidates,
+            "amount_min": 1,
+            "amount_max": 1,
+            "effect_resolution": lambda engine, ids: effect_player.archive_attached_cards(ids),
+            "continuation": engine.continue_resolving_effects,
+        })
+        return True
     return False
 
 
@@ -399,24 +458,26 @@ def handle_generate_holopower(engine, effect_player, effect):
 
 def can_move_cheer_between_holomems(engine, effect_player, effect):
     """Check if move_cheer_between_holomems would have valid targets and cheer to move."""
+    opponent = effect.get("opponent", False)
+    target_player = engine.other_player(effect_player.player_id) if opponent else effect_player
     to_limitation = effect.get("to_limitation", "")
     to_limitation_tags = effect.get("to_limitation_tags", [])
     from_limitation = effect.get("from_limitation", "")
     if from_limitation == "source_card":
         source_card_id = effect.get("source_card_id", "")
         available_cheer = []
-        for card in effect_player.get_holomem_on_stage():
+        for card in target_player.get_holomem_on_stage():
             if card["game_card_id"] == source_card_id or any(a.get("game_card_id") == source_card_id for a in card.get("stacked_cards", [])):
                 for attached_card in card["attached_cheer"]:
                     if is_card_cheer(attached_card):
                         available_cheer.append(attached_card["game_card_id"])
                 break
     else:
-        available_cheer = effect_player.get_cheer_ids_on_holomems()
-    available_targets = effect_player.get_holomem_on_stage()
+        available_cheer = target_player.get_cheer_ids_on_holomems()
+    available_targets = target_player.get_holomem_on_stage()
     to_limitation_location = effect.get("to_limitation_location", "")
     if to_limitation_location == "backstage":
-        available_targets = [h for h in available_targets if h["game_card_id"] != effect_player.center[0]["game_card_id"]] if effect_player.center else available_targets
+        available_targets = [h for h in available_targets if h["game_card_id"] != target_player.center[0]["game_card_id"]] if target_player.center else available_targets
     match to_limitation:
         case "tag_in":
             available_targets = [holomem for holomem in available_targets if any(tag in holomem["tags"] for tag in to_limitation_tags)]
@@ -446,6 +507,8 @@ def can_move_cheer_between_holomems(engine, effect_player, effect):
 def handle_move_cheer_between_holomems(engine, effect_player, effect):
     """Returns True if continuation was passed on, False otherwise."""
     effect_player_id = effect_player.player_id
+    opponent = effect.get("opponent", False)
+    target_player = engine.other_player(effect_player_id) if opponent else effect_player
     amount_min = effect.get("amount_min", effect.get("amount", 1))
     amount_max = effect.get("amount_max", effect.get("amount", amount_min))
     to_limitation = effect.get("to_limitation", "")
@@ -454,18 +517,18 @@ def handle_move_cheer_between_holomems(engine, effect_player, effect):
     if from_limitation == "source_card":
         source_card_id = effect.get("source_card_id", "")
         available_cheer = []
-        for card in effect_player.get_holomem_on_stage():
+        for card in target_player.get_holomem_on_stage():
             if card["game_card_id"] == source_card_id or any(a.get("game_card_id") == source_card_id for a in card.get("stacked_cards", [])):
                 for attached_card in card["attached_cheer"]:
                     if is_card_cheer(attached_card):
                         available_cheer.append(attached_card["game_card_id"])
                 break
     else:
-        available_cheer = effect_player.get_cheer_ids_on_holomems()
-    available_targets = effect_player.get_holomem_on_stage()
+        available_cheer = target_player.get_cheer_ids_on_holomems()
+    available_targets = target_player.get_holomem_on_stage()
     to_limitation_location = effect.get("to_limitation_location", "")
     if to_limitation_location == "backstage":
-        available_targets = [h for h in available_targets if h["game_card_id"] != effect_player.center[0]["game_card_id"]] if effect_player.center else available_targets
+        available_targets = [h for h in available_targets if h["game_card_id"] != target_player.center[0]["game_card_id"]] if target_player.center else available_targets
     match to_limitation:
         case "tag_in":
             available_targets = [holomem for holomem in available_targets if any(tag in holomem["tags"] for tag in to_limitation_tags)]
@@ -486,7 +549,7 @@ def handle_move_cheer_between_holomems(engine, effect_player, effect):
         if last_target:
             available_targets = [h for h in available_targets if h["game_card_id"] != last_target]
     available_targets = ids_from_cards(available_targets)
-    cheer_on_each_mem = effect_player.get_cheer_on_each_holomem()
+    cheer_on_each_mem = target_player.get_cheer_on_each_holomem()
 
     has_to_limitation = to_limitation != "" or effect.get("to_exclude_source", False) or to_limitation_location != "" or effect.get("to_exclude_previous_target", False)
     if (has_to_limitation and len(available_targets) >= 1
@@ -515,6 +578,58 @@ def handle_move_cheer_between_holomems(engine, effect_player, effect):
             "continuation": engine.continue_resolving_effects,
         })
     return False
+
+
+def handle_return_cheer_and_draw(engine, effect_player, effect):
+    """Returns cheer from this holomem to cheer deck bottom, then draws to match returned count.
+    Returns True if continuation was passed on, False otherwise."""
+    effect_player_id = effect_player.player_id
+    source_card_id = effect.get("source_card_id", "")
+    return_from = effect.get("return_from", "this_holomem")
+    return_to = effect.get("return_to", "cheer_deck_bottom")
+    use_order = effect.get("order", False)
+    draw_to_match = effect.get("draw_to_match_returned_count", False)
+
+    # Get this holomem and its attached cheer
+    source_card, _, _ = effect_player.find_card(source_card_id)
+    if not source_card:
+        owner_holomems = effect_player.get_holomems_with_attachment(source_card_id)
+        source_card = owner_holomems[0] if owner_holomems else None
+    if not source_card:
+        return False
+
+    cheer_cards = [c for c in source_card.get("attached_cheer", []) if is_card_cheer(c)]
+    cheer_ids = ids_from_cards(cheer_cards)
+    returned_count = len(cheer_ids)
+
+    if returned_count == 0:
+        return False
+
+    def do_draw_and_continue():
+        if draw_to_match:
+            draw_count = max(0, returned_count - len(effect_player.hand))
+            if draw_count > 0:
+                effect_player.draw(draw_count)
+        engine.continue_resolving_effects()
+
+    if use_order and returned_count > 1:
+        engine.choose_cards_cleanup_remaining(
+            effect_player_id,
+            cheer_ids,
+            "order_on_bottom",
+            "holomem",
+            "cheer_deck",
+            do_draw_and_continue,
+        )
+        return True
+    else:
+        placements = {cid: "cheer_deck_bottom" for cid in cheer_ids}
+        effect_player.move_cheer_between_holomems(placements)
+        if draw_to_match:
+            draw_count = max(0, returned_count - len(effect_player.hand))
+            if draw_count > 0:
+                effect_player.draw(draw_count)
+        return False
 
 
 def handle_return_revealed_to_holopower_bottom(engine, effect_player, effect):
@@ -569,9 +684,43 @@ def handle_reveal_top_holopower(engine, effect_player, effect):
 def handle_send_cheer(engine, effect_player, effect):
     """Returns True if continuation was passed on, False otherwise."""
     effect_player_id = effect_player.player_id
-    # Required params
-    amount_min = effect["amount_min"]
-    amount_max = effect["amount_max"]
+    # Compute amount_min/amount_max (may be overridden by dynamic sources)
+    amount_min = effect.get("amount_min")
+    amount_max = effect.get("amount_max")
+    if amount_min is None:
+        amount_min = effect.get("amount", 1)
+    if amount_max is None:
+        amount_max = amount_min
+
+    # Dynamic amount from overflow damage (on_kill timing)
+    if effect.get("amount_from_overflow", False):
+        overflow_damage = 0
+        if engine.down_holomem_state and engine.down_holomem_state.holomem_card:
+            downed_card = engine.down_holomem_state.holomem_card
+            target_player = engine.get_player(downed_card["owner_id"])
+            target_hp = target_player.get_card_hp(downed_card)
+            overflow_damage = max(0, downed_card["damage"] - target_hp)
+        overflow_per = effect.get("overflow_per", 30)
+        computed_amount = overflow_damage // overflow_per
+        if computed_amount <= 0:
+            return False
+        amount_min = computed_amount
+        amount_max = computed_amount
+
+    # Dynamic amount from bloom count
+    if effect.get("amount_from_bloom_count", False):
+        bloom_count_tags = effect.get("bloom_count_tags", [])
+        holomems = effect_player.get_holomem_on_stage()
+        bloom_count = sum(
+            1 for h in holomems
+            if h.get("bloomed_this_turn", False)
+            and (not bloom_count_tags or any(tag in h.get("tags", []) for tag in bloom_count_tags))
+        )
+        if bloom_count <= 0:
+            return False
+        amount_min = bloom_count
+        amount_max = bloom_count
+
     from_zone = effect["from"]
     to_zone = effect["to"]
     # Optional
@@ -584,6 +733,8 @@ def handle_send_cheer(engine, effect_player, effect):
     to_limitation_exclude_name = effect.get("to_limitation_exclude_name", "")
     multi_to = effect.get("multi_to", False)
     limit_one_per_member = effect.get("limit_one_per_member", False)
+    to_count = effect.get("to_count")
+    max_per_target = effect.get("max_per_target")
 
     # Determine options
     from_options = []
@@ -843,6 +994,8 @@ def handle_send_cheer(engine, effect_player, effect):
             "cheer_on_each_mem": cheer_on_each_mem,
             "multi_to": multi_to,
             "limit_one_per_member": limit_one_per_member,
+            "max_per_target": max_per_target,
+            "to_count": to_count,
         }
         engine.broadcast_event(decision_event)
         engine.set_decision({
@@ -854,6 +1007,8 @@ def handle_send_cheer(engine, effect_player, effect):
             "available_targets": to_options,
             "multi_to": multi_to,
             "limit_one_per_member": limit_one_per_member,
+            "max_per_target": max_per_target,
+            "to_count": to_count,
             "continuation": engine.continue_resolving_effects,
         })
     return False
@@ -921,7 +1076,7 @@ def handle_shuffle_hand_to_deck(engine, effect_player, effect):
 def handle_spend_holopower(engine, effect_player, effect):
     """Returns True if continuation was passed on, False otherwise."""
     effect_player_id = effect_player.player_id
-    amount = effect["amount"]
+    amount = min(effect["amount"], len(effect_player.holopower))
     effect_player.spend_holopower(amount)
     if "oshi_skill_id" in effect:
         oshi_skill_event = {
@@ -930,6 +1085,19 @@ def handle_spend_holopower(engine, effect_player, effect):
             "skill_id": effect["oshi_skill_id"],
         }
         engine.broadcast_event(oshi_skill_event)
+    return False
+
+
+def handle_switch_center_with_collab(engine, effect_player, effect):
+    """Swaps center and collab positions. Supports opponent parameter."""
+    effect_player_id = effect_player.player_id
+    target_player = effect_player
+    swap_opponent_cards = effect.get("opponent", False)
+    if swap_opponent_cards:
+        target_player = engine.other_player(effect_player_id)
+    if len(target_player.center) == 0 or len(target_player.collab) == 0:
+        return False
+    target_player.swap_center_with_collab()
     return False
 
 
@@ -1086,14 +1254,17 @@ CARD_MOVEMENT_HANDLERS = {
     EffectType.EffectType_ArchiveThisAttachment: handle_archive_this_attachment,
     EffectType.EffectType_ArchiveAttachmentFromStageByName: handle_archive_attachment_from_stage_by_name,
     EffectType.EffectType_ReturnThisAttachmentToHand: handle_return_this_attachment_to_hand,
+    EffectType.EffectType_ReturnThisAttachmentToDeckBottom: handle_return_this_attachment_to_deck_bottom,
     EffectType.EffectType_ReturnThisCardToDeck: handle_return_this_card_to_deck,
     EffectType.EffectType_ArchiveTopStackedHolomem: handle_archive_top_stacked_holomem,
+    EffectType.EffectType_ArchiveStackedHolomem: handle_archive_stacked_holomem,
     EffectType.EffectType_AttachCardToHolomem: handle_attach_card_to_holomem,
     EffectType.EffectType_AttachCardToHolomem_Internal: handle_attach_card_to_holomem_internal,
     EffectType.EffectType_Draw: handle_draw,
     EffectType.EffectType_DrawPerCheerOnBothStages: handle_draw_per_cheer_on_both_stages,
     EffectType.EffectType_GenerateHolopower: handle_generate_holopower,
     EffectType.EffectType_MoveCheerBetweenHolomems: handle_move_cheer_between_holomems,
+    EffectType.EffectType_ReturnCheerAndDraw: handle_return_cheer_and_draw,
     EffectType.EffectType_ReturnRevealedToHolopowerBottom: handle_return_revealed_to_holopower_bottom,
     EffectType.EffectType_RevealTopDeck: handle_reveal_top_deck,
     EffectType.EffectType_RevealTopHolopower: handle_reveal_top_holopower,
@@ -1105,6 +1276,7 @@ CARD_MOVEMENT_HANDLERS = {
     EffectType.EffectType_ShuffleHandToDeck: handle_shuffle_hand_to_deck,
     EffectType.EffectType_SpendHolopower: handle_spend_holopower,
     EffectType.EffectType_SwitchCenterWithBack: handle_switch_center_with_back,
+    EffectType.EffectType_SwitchCenterWithCollab: handle_switch_center_with_collab,
     EffectType.EffectType_SetCenterHP: handle_set_center_hp,
     EffectType.EffectType_AfterArchiveCheerCheck: handle_after_archive_cheer_check,
 }

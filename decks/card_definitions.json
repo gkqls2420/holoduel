@@ -11371,7 +11371,8 @@
                         "amount_per": 20,
                         "special": true,
                         "target": "center_or_collab",
-                        "opponent": true
+                        "opponent": true,
+                        "multiple_targets": "all"
                     },
                     {
                         "timing": "before_art",
@@ -19386,6 +19387,71 @@
         ]
     },
     {
+        "card_id": "hBP04-060",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "murasaki_shion"
+        ],
+        "rarity": "r",
+        "colors": [
+            "purple"
+        ],
+        "hp": 240,
+        "baton_cost": 2,
+        "buzz": true,
+        "down_life_cost": 2,
+        "tags": [
+            "#JP",
+            "#Gen2"
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "send_cheer",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "from": "opponent_archive",
+                        "to": "opponent_holomem",
+                        "to_limitation": "opponent_center"
+                    },
+                    {
+                        "effect_type": "pass"
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "gamingstream",
+                "costs": [
+                    {
+                        "color": "purple",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 40,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "deal_damage_per_opponent_center_cheer",
+                        "amount_per": 10,
+                        "special": true,
+                        "target": "center_or_collab",
+                        "opponent": true,
+                        "multiple_targets": "all"
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hBP04-087",
         "card_type": "holomem_spot",
         "bloom_blocked": true,
@@ -20652,6 +20718,51 @@
                         "amount": 1
                     }
                 ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP04-088",
+        "card_type": "holomem_spot",
+        "bloom_blocked": true,
+        "card_names": [
+            "gigi_murin"
+        ],
+        "rarity": "c",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 130,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Justice"
+        ],
+        "arts": [
+            {
+                "art_id": "okoranaide",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 10
+            }
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_down",
+                "conditions": [
+                    {
+                        "condition": "opponent_turn"
+                    }
+                ],
+                "effect_type": "send_cheer",
+                "amount_min": 1,
+                "amount_max": 1,
+                "from": "cheer_deck",
+                "to": "holomem"
             }
         ]
     },
@@ -31757,7 +31868,7 @@
         "colors": [
             "yellow"
         ],
-        "hp": 140,
+        "hp": 180,
         "baton_cost": 1,
         "tags": [
             "#JP",
@@ -31895,16 +32006,10 @@
                     }
                 ],
                 "effect_type": "add_turn_effect_for_holomem",
-                "all_targets": true,
+                "global_apply": true,
                 "target_both_sides": true,
                 "turn_effect": {
                     "timing": "before_art",
-                    "conditions": [
-                        {
-                            "condition": "performer_is_specific_id",
-                            "required_id": "REPLACED_BY_EFFECT"
-                        }
-                    ],
                     "effect_type": "power_boost",
                     "amount": 40,
                     "duration": 2
@@ -33877,6 +33982,351 @@
                                 "effect_type": "pass"
                             }
                         ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-086",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "gigi_murin"
+        ],
+        "rarity": "r",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 210,
+        "baton_cost": 2,
+        "tags": [
+            "#EN",
+            "#Justice"
+        ],
+        "arts": [
+            {
+                "art_id": "tsuigeki_no_riot",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 2
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 160,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "blue"
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 30,
+                        "conditions": [
+                            {
+                                "condition": "target_has_damage"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "add_turn_effect_for_holomem",
+                "limitation": "name_in",
+                "limitation_names": [
+                    "gigi_murin"
+                ],
+                "source_from_chosen": true,
+                "turn_effect": {
+                    "timing": "enable_backstage_targeting",
+                    "effect_type": "enable_backstage_targeting",
+                    "damaged_only": true,
+                    "conditions": [
+                        {
+                            "condition": "performer_is_specific_id",
+                            "required_id": "REPLACED_BY_EFFECT"
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-032",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "rindou_chihaya"
+        ],
+        "colors": [
+            "green"
+        ],
+        "hp": 130,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#FLOWGLOW"
+        ],
+        "rarity": "c",
+        "collab_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "is_going_second_and_first_turn"
+                    }
+                ],
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "holomem_named",
+                "requirement_names": [
+                    "rindou_chihaya"
+                ],
+                "requirement_bloom_levels": [
+                    1
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "nothing"
+            },
+            {
+                "conditions": [
+                    {
+                        "condition": "is_going_second_and_first_turn"
+                    }
+                ],
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 1,
+                "requirement": "specific_card",
+                "requirement_card_names": [
+                    "fugutaro"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "hitotoori_no_yokaze",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 10
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-033",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "rindou_chihaya"
+        ],
+        "colors": [
+            "green"
+        ],
+        "hp": 160,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#FLOWGLOW"
+        ],
+        "rarity": "u",
+        "bloom_effects": [
+            {
+                "effect_type": "add_turn_effect_for_holomem",
+                "limitation": "has_tag",
+                "limitation_tags": [
+                    "#FLOWGLOW"
+                ],
+                "limitation_bloomed_this_turn": true,
+                "turn_effect": {
+                    "timing": "before_art",
+                    "effect_type": "power_boost",
+                    "amount": 30
+                }
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "something_blue_chihaya",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 50
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-034",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "rindou_chihaya"
+        ],
+        "colors": [
+            "green"
+        ],
+        "hp": 190,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#FLOWGLOW"
+        ],
+        "rarity": "r",
+        "bloom_effects": [
+            {
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "archive_cheer_from_holomem",
+                        "amount": 1,
+                        "from": "stage",
+                        "ability_source": "holomem_green",
+                        "and": [
+                            {
+                                "effect_type": "choose_cards",
+                                "from": "deck",
+                                "look_at": -1,
+                                "destination": "hand",
+                                "amount_min": 1,
+                                "amount_max": 1,
+                                "requirement": "holomem",
+                                "requirement_tags": [
+                                    "#FLOWGLOW"
+                                ],
+                                "requirement_bloom_levels": [
+                                    0,
+                                    1
+                                ],
+                                "reveal_chosen": true,
+                                "remaining_cards_action": "shuffle"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "pass"
+                    }
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "docchi_ga_hayai_kana",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 20,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 10,
+                        "conditions": [
+                            {
+                                "condition": "has_attached_card",
+                                "required_card_name": "fugutaro"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hBP07-035",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "rindou_chihaya"
+        ],
+        "colors": [
+            "green"
+        ],
+        "hp": 190,
+        "baton_cost": 2,
+        "tags": [
+            "#DEV_IS",
+            "#FLOWGLOW"
+        ],
+        "rarity": "rr",
+        "collab_effects": [
+            {
+                "effect_type": "send_cheer",
+                "amount_from_bloom_count": true,
+                "bloom_count_tags": [
+                    "#FLOWGLOW"
+                ],
+                "from": "cheer_deck",
+                "to": "holomem",
+                "to_limitation": "source_card"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "surging_exhaust",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 2
+                    },
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 160,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "blue"
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "after_art",
+                        "effect_type": "return_cheer_and_draw",
+                        "return_from": "this_holomem",
+                        "return_to": "cheer_deck_bottom",
+                        "order": true,
+                        "draw_to_match_returned_count": true
                     }
                 ]
             }
@@ -38365,6 +38815,584 @@
         ]
     },
     {
+        "card_id": "hSD10-001",
+        "card_type": "oshi",
+        "card_names": [
+            "rindou_chihaya"
+        ],
+        "colors": [
+            "green"
+        ],
+        "life": 5,
+        "rarity": "osr",
+        "actions": [
+            {
+                "skill_id": "engine_zenkai_lets_go",
+                "cost": 2,
+                "limit": "once_per_turn",
+                "effects": [
+                    {
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_turn",
+                        "skill_id": "engine_zenkai_lets_go",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_turn_effect",
+                                "effect_id": "engine_zenkai_lets_go"
+                            }
+                        ]
+                    },
+                    {
+                        "conditions": [
+                            {
+                                "condition": "any_holomem_bloomed_this_turn"
+                            }
+                        ],
+                        "effect_type": "add_turn_effect_for_holomem",
+                        "limitation": "has_tag",
+                        "limitation_tags": [
+                            "#FLOWGLOW"
+                        ],
+                        "turn_effect": {
+                            "timing": "before_art",
+                            "effect_type": "power_boost",
+                            "amount": 30
+                        }
+                    }
+                ]
+            },
+            {
+                "skill_id": "ano_saki_no_keshiki",
+                "cost": 2,
+                "limit": "once_per_game",
+                "effects": [
+                    {
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_game",
+                        "skill_id": "ano_saki_no_keshiki",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 2
+                            },
+                            {
+                                "effect_type": "record_used_once_per_game_effect",
+                                "effect_id": "ano_saki_no_keshiki"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "send_cheer",
+                        "amount_min": 1,
+                        "amount_max": 1,
+                        "from": "cheer_deck",
+                        "to": "holomem"
+                    },
+                    {
+                        "effect_type": "add_turn_effect_for_holomem",
+                        "limitation": "has_tag",
+                        "limitation_tags": [
+                            "#FLOWGLOW"
+                        ],
+                        "source_from_chosen": true,
+                        "turn_effect": {
+                            "timing": "before_art",
+                            "conditions": [
+                                {
+                                    "condition": "performer_is_specific_id",
+                                    "required_id": "REPLACED_BY_EFFECT"
+                                }
+                            ],
+                            "effect_type": "power_boost_per_attached_cheer",
+                            "amount": 20
+                        }
+                    }
+                ]
+            }
+        ],
+        "effects": []
+    },
+    {
+        "card_id": "hSD10-002",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "rindou_chihaya"
+        ],
+        "colors": [
+            "green"
+        ],
+        "hp": 110,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#FLOWGLOW"
+        ],
+        "rarity": "c",
+        "special_deck_limit": 50,
+        "arts": [
+            {
+                "art_id": "hajimarindoo",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            }
+        ]
+    },
+    {
+        "card_id": "hSD10-003",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "rindou_chihaya"
+        ],
+        "colors": [
+            "green"
+        ],
+        "hp": 170,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#FLOWGLOW"
+        ],
+        "rarity": "c",
+        "arts": [
+            {
+                "art_id": "engine_zenkai",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 30
+            },
+            {
+                "art_id": "zenshin_zenrei",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 80
+            }
+        ]
+    },
+    {
+        "card_id": "hSD10-004",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "rindou_chihaya"
+        ],
+        "colors": [
+            "green"
+        ],
+        "hp": 150,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#FLOWGLOW"
+        ],
+        "rarity": "u",
+        "bloom_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "oshi_is",
+                        "required_member_name": "rindou_chihaya"
+                    },
+                    {
+                        "condition": "holomem_on_stage",
+                        "opponent": true,
+                        "required_bloom_levels": [
+                            1
+                        ]
+                    }
+                ],
+                "effect_type": "bloom_already_bloomed_this_turn",
+                "limitation": "name_in",
+                "limitation_names": [
+                    "rindou_chihaya"
+                ]
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "powerful_na_untenshu",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 80,
+                "art_effects": [
+                    {
+                        "timing": "after_art",
+                        "conditions": [
+                            {
+                                "condition": "holomem_on_stage",
+                                "tag_in": [
+                                    "#FLOWGLOW"
+                                ],
+                                "amount_min": 3
+                            }
+                        ],
+                        "effect_type": "send_cheer",
+                        "amount_min": 0,
+                        "amount_max": 1,
+                        "from": "cheer_deck",
+                        "to": "holomem",
+                        "to_limitation": "backstage"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hSD10-005",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "rindou_chihaya"
+        ],
+        "colors": [
+            "green"
+        ],
+        "hp": 160,
+        "baton_cost": 1,
+        "tags": [
+            "#DEV_IS",
+            "#FLOWGLOW"
+        ],
+        "rarity": "u",
+        "collab_effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "archive",
+                "look_at": -1,
+                "destination": "bottom_of_deck",
+                "amount_min": 1,
+                "amount_max": 3,
+                "requirement": "holomem",
+                "requirement_tags": [
+                    "#FLOWGLOW"
+                ],
+                "reveal_chosen": false,
+                "order_chosen": true
+            },
+            {
+                "conditions": [
+                    {
+                        "condition": "chosen_card_count",
+                        "amount_min": 3
+                    }
+                ],
+                "effect_type": "send_cheer",
+                "amount_min": 0,
+                "amount_max": 1,
+                "from": "cheer_deck",
+                "to": "holomem"
+            }
+        ],
+        "arts": [
+            {
+                "art_id": "ikimasu_yo",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    }
+                ],
+                "power": 20,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "conditions": [
+                            {
+                                "condition": "any_holomem_bloomed_this_turn"
+                            }
+                        ],
+                        "effect_type": "add_turn_effect_for_holomem",
+                        "limitation": "name_in",
+                        "limitation_names": [
+                            "rindou_chihaya"
+                        ],
+                        "turn_effect": {
+                            "timing": "before_art",
+                            "effect_type": "power_boost",
+                            "amount": 20
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hSD10-006",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "rindou_chihaya"
+        ],
+        "colors": [
+            "green"
+        ],
+        "hp": 200,
+        "baton_cost": 2,
+        "tags": [
+            "#DEV_IS",
+            "#FLOWGLOW"
+        ],
+        "rarity": "rr",
+        "arts": [
+            {
+                "art_id": "kodou_no_soujuusha",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 80,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "white"
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "any_holomem_bloomed_this_turn"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "art_id": "accelera_beat_blaze",
+                "costs": [
+                    {
+                        "color": "green",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 2
+                    }
+                ],
+                "power": 140,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "white"
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "on_kill",
+                        "conditions": [
+                            {
+                                "condition": "downed_card_was_center"
+                            },
+                            {
+                                "condition": "downed_card_belongs_to_opponent"
+                            },
+                            {
+                                "condition": "performance_target_has_damage_over_hp"
+                            }
+                        ],
+                        "effect_type": "send_cheer",
+                        "amount_from_overflow": true,
+                        "overflow_per": 30,
+                        "from": "cheer_deck",
+                        "to": "holomem",
+                        "to_limitation": "backstage",
+                        "to_count": 1
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hSD10-011",
+        "card_type": "support",
+        "sub_type": "event",
+        "card_names": [
+            "whats_up_keeeeep_growing"
+        ],
+        "colors": [],
+        "rarity": "u",
+        "limited": true,
+        "play_conditions": [
+            {
+                "condition": "stage_all_members_have_tag",
+                "required_tags": [
+                    "#FLOWGLOW"
+                ]
+            }
+        ],
+        "effects": [
+            {
+                "effect_type": "send_cheer",
+                "amount_min": 3,
+                "amount_max": 3,
+                "from": "archive",
+                "from_limitation": "cheer",
+                "to": "holomem",
+                "to_limitation": "center_or_collab",
+                "multi_to": true,
+                "max_per_target": 2
+            }
+        ]
+    },
+    {
+        "card_id": "hSD10-012",
+        "card_type": "support",
+        "sub_type": "event",
+        "card_names": [
+            "flow_glow"
+        ],
+        "colors": [],
+        "rarity": "u",
+        "limited": true,
+        "play_conditions": [
+            {
+                "condition": "cards_in_hand",
+                "amount_min": 0,
+                "amount_max": 7
+            }
+        ],
+        "effects": [
+            {
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": 4,
+                "destination": "hand",
+                "amount_min": 0,
+                "amount_max": 4,
+                "requirement": "holomem",
+                "requirement_tags": [
+                    "#FLOWGLOW"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "order_on_bottom"
+            }
+        ]
+    },
+    {
+        "card_id": "hSD10-013",
+        "card_type": "support",
+        "sub_type": "tool",
+        "card_names": [
+            "fugutaro"
+        ],
+        "colors": [],
+        "rarity": "c",
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "before_art",
+                "effect_type": "power_boost",
+                "amount": 10,
+                "conditions": [
+                    {
+                        "condition": "attached_to_has_tags",
+                        "required_tags": [
+                            "#FLOWGLOW"
+                        ]
+                    }
+                ]
+            },
+            {
+                "timing": "on_end_step",
+                "conditions": [
+                    {
+                        "condition": "attached_to_has_tags",
+                        "required_tags": [
+                            "#FLOWGLOW"
+                        ]
+                    },
+                    {
+                        "condition": "attached_owner_used_art_this_turn"
+                    },
+                    {
+                        "condition": "stage_has_space"
+                    }
+                ],
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "choose_cards",
+                        "from": "deck",
+                        "look_at": -1,
+                        "destination": "backstage",
+                        "amount_min": 0,
+                        "amount_max": 1,
+                        "requirement": "holomem",
+                        "requirement_tags": [
+                            "#FLOWGLOW"
+                        ],
+                        "requirement_card_types": [
+                            "holomem_debut",
+                            "holomem_spot"
+                        ],
+                        "reveal_chosen": true,
+                        "remaining_cards_action": "shuffle",
+                        "and": [
+                            {
+                                "effect_type": "return_this_attachment_to_deck_bottom"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "pass"
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "card_id": "hSD12-001",
         "card_type": "oshi",
         "card_names": [
@@ -39824,6 +40852,557 @@
                             "effect_type": "power_boost",
                             "amount_per_last_card_count": 20
                         }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hSD13-002",
+        "card_type": "oshi",
+        "card_names": [
+            "gigi_murin"
+        ],
+        "rarity": "osr",
+        "colors": [
+            "yellow"
+        ],
+        "life": 5,
+        "actions": [
+            {
+                "skill_id": "boatgoesbinted",
+                "cost": 1,
+                "limit": "once_per_turn",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_turn",
+                        "skill_id": "boatgoesbinted",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 1
+                            },
+                            {
+                                "effect_type": "record_used_once_per_turn_effect",
+                                "effect_id": "boatgoesbinted"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "switch_center_with_collab",
+                        "opponent": true,
+                        "conditions": [
+                            {
+                                "condition": "not_used_once_per_turn_effect",
+                                "condition_effect_id": "boatgoesbinted"
+                            },
+                            {
+                                "condition": "holopower_at_least",
+                                "amount": 1
+                            },
+                            {
+                                "condition": "opponent_has_collab"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "skill_id": "jiyuuhonpou_na_tsuisekisha",
+                "cost": 3,
+                "limit": "once_per_game",
+                "effects": [
+                    {
+                        "hide_effect_text": true,
+                        "effect_type": "oshi_activation",
+                        "limit": "once_per_game",
+                        "skill_id": "jiyuuhonpou_na_tsuisekisha",
+                        "pre_effects": [
+                            {
+                                "effect_type": "spend_holopower",
+                                "amount": 3
+                            },
+                            {
+                                "effect_type": "record_used_once_per_game_effect",
+                                "effect_id": "jiyuuhonpou_na_tsuisekisha"
+                            }
+                        ]
+                    },
+                    {
+                        "conditions": [
+                            {
+                                "condition": "not_used_once_per_game_effect",
+                                "condition_effect_id": "jiyuuhonpou_na_tsuisekisha"
+                            },
+                            {
+                                "condition": "holopower_at_least",
+                                "amount": 3
+                            },
+                            {
+                                "condition": "stage_has_space"
+                            }
+                        ],
+                        "effect_type": "choose_cards",
+                        "from": "deck",
+                        "look_at": -1,
+                        "destination": "backstage",
+                        "amount_min": 0,
+                        "amount_max": 2,
+                        "requirement": "holomem_bloom",
+                        "requirement_bloom_levels": [
+                            2
+                        ],
+                        "requirement_names": [
+                            "gigi_murin"
+                        ],
+                        "reveal_chosen": true,
+                        "remaining_cards_action": "shuffle",
+                        "and": [
+                            {
+                                "effect_type": "send_cheer",
+                                "amount_min": 1,
+                                "amount_max": 50,
+                                "from": "archive",
+                                "to": "holomem",
+                                "multi_to": true,
+                                "limit_one_per_member": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hSD13-008",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "gigi_murin"
+        ],
+        "rarity": "c",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 100,
+        "baton_cost": 1,
+        "special_deck_limit": 50,
+        "tags": [
+            "#EN",
+            "#Justice"
+        ],
+        "arts": [
+            {
+                "art_id": "gimurin",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 20
+            }
+        ],
+        "collab_effects": [
+            {
+                "effect_type": "send_cheer",
+                "amount_min": 1,
+                "amount_max": 1,
+                "from": "archive",
+                "to": "holomem",
+                "to_limitation": "tag_in",
+                "to_limitation_tags": [
+                    "#Justice"
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hSD13-009",
+        "card_type": "holomem_debut",
+        "card_names": [
+            "gigi_murin"
+        ],
+        "rarity": "c",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 120,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Justice"
+        ],
+        "arts": [
+            {
+                "art_id": "yippeee",
+                "costs": [
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 20
+            }
+        ],
+        "collab_effects": [
+            {
+                "conditions": [
+                    {
+                        "condition": "is_going_second_and_first_turn"
+                    },
+                    {
+                        "condition": "stage_has_space"
+                    }
+                ],
+                "effect_type": "choose_cards",
+                "from": "deck",
+                "look_at": -1,
+                "destination": "backstage",
+                "amount_min": 1,
+                "amount_max": 1,
+                "requirement": "holomem",
+                "requirement_bloom_levels": [
+                    1
+                ],
+                "requirement_tags": [
+                    "#Justice"
+                ],
+                "reveal_chosen": true,
+                "remaining_cards_action": "shuffle"
+            }
+        ]
+    },
+    {
+        "card_id": "hSD13-012",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "gigi_murin"
+        ],
+        "rarity": "u",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 170,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Justice"
+        ],
+        "arts": [
+            {
+                "art_id": "makeru_wake_ni_wa",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 60
+            }
+        ],
+        "gift_effects": [
+            {
+                "timing": "on_take_damage",
+                "conditions": [
+                    {
+                        "condition": "opponent_turn"
+                    },
+                    {
+                        "condition": "damage_source_is_opponent"
+                    },
+                    {
+                        "condition": "damage_is_special"
+                    },
+                    {
+                        "condition": "damage_target_is_backstage"
+                    },
+                    {
+                        "condition": "has_stacked_holomem"
+                    }
+                ],
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "archive_stacked_holomem",
+                        "and": [
+                            {
+                                "effect_type": "add_turn_effect",
+                                "turn_effect": {
+                                    "timing": "on_take_damage",
+                                    "conditions": [
+                                        {
+                                            "condition": "damage_target_is_backstage"
+                                        },
+                                        {
+                                            "condition": "damage_is_special"
+                                        },
+                                        {
+                                            "condition": "damage_source_is_opponent"
+                                        }
+                                    ],
+                                    "effect_type": "reduce_damage",
+                                    "amount": "all"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "pass"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hSD13-011",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "gigi_murin"
+        ],
+        "rarity": "u",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 140,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Justice"
+        ],
+        "arts": [
+            {
+                "art_id": "subete_no_imi_wo_motomete",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 40,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 20,
+                        "conditions": [
+                            {
+                                "condition": "has_stacked_holomem",
+                                "amount_max": 0
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "bloom_effects": [
+            {
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "archive_stacked_holomem",
+                        "requirement_card_type": "holomem_debut",
+                        "conditions": [
+                            {
+                                "condition": "has_stacked_holomem"
+                            }
+                        ],
+                        "and": [
+                            {
+                                "effect_type": "deal_damage",
+                                "special": true,
+                                "amount": 20,
+                                "target": "collab",
+                                "opponent": true
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "pass"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hSD13-010",
+        "card_type": "holomem_bloom",
+        "bloom_level": 1,
+        "card_names": [
+            "gigi_murin"
+        ],
+        "rarity": "c",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 180,
+        "baton_cost": 1,
+        "tags": [
+            "#EN",
+            "#Justice"
+        ],
+        "arts": [
+            {
+                "art_id": "shui_no_zutsuu_no_tane",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 1
+                    }
+                ],
+                "power": 40
+            },
+            {
+                "art_id": "itazurazuki_no_gremlin",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 1
+                    }
+                ],
+                "power": 60
+            }
+        ]
+    },
+    {
+        "card_id": "hSD13-018",
+        "card_type": "support",
+        "sub_type": "mascot",
+        "card_names": [
+            "popo"
+        ],
+        "rarity": "c",
+        "colors": [],
+        "effects": [
+            {
+                "effect_type": "attach_card_to_holomem"
+            }
+        ],
+        "attached_effects": [
+            {
+                "timing": "check_hp",
+                "effect_type": "bonus_hp",
+                "amount": 20
+            },
+            {
+                "timing": "before_art",
+                "effect_type": "power_boost",
+                "amount": 20,
+                "conditions": [
+                    {
+                        "condition": "attached_to",
+                        "required_member_name": "gigi_murin"
+                    },
+                    {
+                        "condition": "has_stacked_holomem",
+                        "amount_max": 0
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "card_id": "hSD13-013",
+        "card_type": "holomem_bloom",
+        "bloom_level": 2,
+        "card_names": [
+            "gigi_murin"
+        ],
+        "rarity": "rr",
+        "colors": [
+            "yellow"
+        ],
+        "hp": 210,
+        "baton_cost": 2,
+        "tags": [
+            "#EN",
+            "#Justice"
+        ],
+        "arts": [
+            {
+                "art_id": "kara_wo_kowasu_riot",
+                "costs": [
+                    {
+                        "color": "yellow",
+                        "amount": 1
+                    },
+                    {
+                        "color": "any",
+                        "amount": 3
+                    }
+                ],
+                "power": 90,
+                "art_effects": [
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 50,
+                        "conditions": [
+                            {
+                                "condition": "target_color",
+                                "color_requirement": "white"
+                            }
+                        ]
+                    },
+                    {
+                        "timing": "before_art",
+                        "effect_type": "power_boost",
+                        "amount": 90,
+                        "conditions": [
+                            {
+                                "condition": "has_stacked_holomem",
+                                "amount_max": 0
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "gift_effects": [
+            {
+                "timing": "main_step",
+                "conditions": [
+                    {
+                        "condition": "not_used_once_per_turn_effect",
+                        "condition_effect_id": "saiki_no_strength"
+                    }
+                ],
+                "effect_type": "choice",
+                "choice": [
+                    {
+                        "effect_type": "archive_stacked_holomem",
+                        "from_member_name": "gigi_murin",
+                        "and": [
+                            {
+                                "effect_type": "record_used_once_per_turn_effect",
+                                "effect_id": "saiki_no_strength"
+                            },
+                            {
+                                "effect_type": "send_cheer",
+                                "amount_min": 1,
+                                "amount_max": 1,
+                                "from": "cheer_deck",
+                                "to": "self"
+                            }
+                        ]
+                    },
+                    {
+                        "effect_type": "pass"
                     }
                 ]
             }

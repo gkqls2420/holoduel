@@ -367,6 +367,18 @@ class TurnMixin:
 
     def end_player_turn(self):
         active_player = self.get_player(self.active_player_id)
+        on_end_step_effects = []
+        for holomem in active_player.get_holomem_on_stage():
+            effects = active_player.get_effects_at_timing(Timing.Timing_OnEndStep, holomem, "")
+            on_end_step_effects.extend(effects)
+
+        if on_end_step_effects:
+            self.begin_resolving_effects(on_end_step_effects, self._end_player_turn_body)
+        else:
+            self._end_player_turn_body()
+
+    def _end_player_turn_body(self):
+        active_player = self.get_player(self.active_player_id)
         is_extra_turn = active_player.extra_turn_pending
         if is_extra_turn:
             active_player.extra_turn_pending = False
@@ -475,6 +487,7 @@ class TurnMixin:
                         continue
 
                     can_target_backstage = art.get("can_target_backstage", False)
+                    backstage_damaged_only = False
                     if not can_target_backstage:
                         performer_id = performer["game_card_id"]
                         for te in active_player.turn_effects:
@@ -483,11 +496,16 @@ class TurnMixin:
                                 for cond in conditions:
                                     if cond.get("condition") == "performer_is_specific_id" and cond.get("required_id") == performer_id:
                                         can_target_backstage = True
+                                        backstage_damaged_only = te.get("damaged_only", False)
                                         break
                                 if can_target_backstage:
                                     break
                     if can_target_backstage:
-                        opponent_targets = opponent.get_holomem_on_stage(only_performers=False, only_collab=target_can_only_be_collab)
+                        if backstage_damaged_only:
+                            all_holomem = opponent.get_holomem_on_stage(only_performers=False, only_collab=target_can_only_be_collab)
+                            opponent_targets = [h for h in all_holomem if opponent.get_holomem_zone(h) != "backstage" or h.get("damage", 0) > 0]
+                        else:
+                            opponent_targets = opponent.get_holomem_on_stage(only_performers=False, only_collab=target_can_only_be_collab)
                     else:
                         opponent_targets = opponent.get_holomem_on_stage(only_performers=True, only_collab=target_can_only_be_collab)
 

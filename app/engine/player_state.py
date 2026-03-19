@@ -1037,6 +1037,9 @@ class PlayerState:
 
     def spend_holopower(self, amount):
         for _ in range(amount):
+            if not self.holopower:
+                logger.warning("spend_holopower: not enough holopower (requested %d)", amount)
+                break
             top_holopower_id = self.holopower[0]["game_card_id"]
             self.move_card(top_holopower_id, "archive")
 
@@ -1218,6 +1221,14 @@ class PlayerState:
 
         self.move_card(self.center[0]["game_card_id"], "backstage")
         self.move_card(back_id, "center")
+
+    def swap_center_with_collab(self):
+        if len(self.center) == 0 or len(self.collab) == 0:
+            return
+        center_id = self.center[0]["game_card_id"]
+        collab_id = self.collab[0]["game_card_id"]
+        self.move_card(center_id, "collab")
+        self.move_card(collab_id, "center")
 
     def add_turn_effect(self, turn_effect):
         self.turn_effects.append(turn_effect)

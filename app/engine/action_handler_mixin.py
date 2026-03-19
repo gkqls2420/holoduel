@@ -930,6 +930,17 @@ class ActionHandlerMixin:
                 self.send_event(self.make_error_event(player_id, "invalid_target", "Multiple cheer to same target."))
                 return False
 
+        max_per_target = self.current_decision.get("max_per_target")
+        if max_per_target is not None:
+            target_counts = {}
+            for cheer_id, target_id in placements.items():
+                if target_id != "archive":
+                    target_counts[target_id] = target_counts.get(target_id, 0) + 1
+            for target_id, count in target_counts.items():
+                if count > max_per_target:
+                    self.send_event(self.make_error_event(player_id, "invalid_target", f"Target receives more than max_per_target ({max_per_target})."))
+                    return False
+
         return True
 
     def handle_effect_resolution_move_cheer_between_holomems(self, player_id:str, action_data:dict):
@@ -1697,6 +1708,7 @@ class ActionHandlerMixin:
             stage_zones = {"center", "collab", "backstage"}
             returned_holomem_cards = []
             include_stacked = decision_info_copy.get("include_stacked_holomems", False)
+            order_chosen = decision_info_copy.get("order_chosen", False)
             cards_for_ordering = []
 
             for card_id in card_ids:
@@ -1718,7 +1730,7 @@ class ActionHandlerMixin:
                     cards_for_ordering.append(sh["game_card_id"])
 
             def after_return_timing():
-                if include_stacked and len(cards_for_ordering) > 1:
+                if (include_stacked or order_chosen) and len(cards_for_ordering) > 1:
                     order_cards_event = {
                         "event_type": EventType.EventType_Decision_OrderCards,
                         "desired_response": GameAction.EffectResolution_OrderCards,

@@ -4,6 +4,9 @@ STARTING_HAND_SIZE = 7
 MAX_MEMBERS_ON_STAGE = 6
 MAX_FORCED_MULLIGANS = 6
 
+class Timing:
+    Timing_OnEndStep = "on_end_step"
+
 class GamePhase:
     Initializing = "Initializing"
     Mulligan = "Mulligan"
@@ -113,7 +116,9 @@ class EffectType:
     EffectType_RestoreHp_Internal = "restore_hp_INTERNAL"
     EffectType_ReturnHolomemToDebut = "return_holomem_to_debut"
     EffectType_ReturnThisAttachmentToHand = "return_this_attachment_to_hand"
+    EffectType_ReturnThisAttachmentToDeckBottom = "return_this_attachment_to_deck_bottom"
     EffectType_ReturnThisCardToDeck = "return_this_card_to_deck"
+    EffectType_ReturnCheerAndDraw = "return_cheer_and_draw"
     EffectType_ReturnRevealedToHolopowerBottom = "return_revealed_to_holopower_bottom"
     EffectType_ReturnStackedToHand = "return_stacked_to_hand"
     EffectType_RevealTopDeck = "reveal_top_deck"
@@ -133,6 +138,8 @@ class EffectType:
     EffectType_ShuffleHandToDeck = "shuffle_hand_to_deck"
     EffectType_SpendHolopower = "spend_holopower"
     EffectType_SwitchCenterWithBack = "switch_center_with_back"
+    EffectType_SwitchCenterWithCollab = "switch_center_with_collab"
+    EffectType_ArchiveStackedHolomem = "archive_stacked_holomem"
     EffectType_TakeExtraTurn = "take_extra_turn"
     EffectType_UseOtherHolomemArts = "use_other_holomem_arts"
     EffectType_OpponentMoveBackToCollab = "opponent_move_back_to_collab"
@@ -145,6 +152,7 @@ class EffectType:
     EffectType_SetLimitedUsesAllowed = "set_limited_uses_allowed"
 
 class Condition:
+    Condition_AnyHolomemBloomedThisTurn = "any_holomem_bloomed_this_turn"
     Condition_AnyTagHolomemHasCheer = "any_tag_holomem_has_cheer"
     Condition_AttachedTo = "attached_to"
     Condition_AttachedToHasTags = "attached_to_has_tags"
@@ -153,6 +161,7 @@ class Condition:
     Condition_AttachedOwnerIsPerforming = "attached_owner_is_performing"
     Condition_AttachedOwnerHasCheer = "attached_owner_has_cheer"
     Condition_AttachedOwnerIsBuzz = "attached_owner_is_buzz"
+    Condition_AttachedOwnerUsedArtThisTurn = "attached_owner_used_art_this_turn"
     Condition_BloomTargetIsDebut = "bloom_target_is_debut"
     Condition_CanArchiveFromHand = "can_archive_from_hand"
     Condition_CanMoveFrontStage = "can_move_front_stage"
@@ -235,6 +244,7 @@ class Condition:
     Condition_StageAllMembersHaveTag = "stage_all_members_have_tag"
     Condition_StageHasSpace = "stage_has_space"
     Condition_TargetColor = "target_color"
+    Condition_TargetHasDamage = "target_has_damage"
     Condition_TargetHasAnyTag = "target_has_any_tag"
     Condition_TargetHasAttachedCard = "target_has_attached_card"
     Condition_TargetIsMemberName = "target_is_member_name"
@@ -264,6 +274,7 @@ class Condition:
     Condition_StageHasAttachmentOfName = "stage_has_attachment_of_name"
     Condition_DamageSourceHasNameIn = "damage_source_has_name_in"
     Condition_DamageTargetIsCenter = "damage_target_is_center"
+    Condition_DamageTargetIsBackstage = "damage_target_is_backstage"
     Condition_DamageTargetIsDebut = "damage_target_is_debut"
     Condition_DamageSourceBloomLevel = "damage_source_bloom_level"
     Condition_DieRolledByHolomemName = "die_rolled_by_holomem_name"
@@ -287,6 +298,7 @@ class Condition:
     Condition_AllStageCheerIsColor = "all_stage_cheer_is_color"
     Condition_MyTurn = "my_turn"
     Condition_UsedSpOshiSkillThisTurn = "used_sp_oshi_skill_this_turn"
+    Condition_OpponentHasCollab = "opponent_has_collab"
 
 
 class TurnEffectType:

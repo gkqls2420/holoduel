@@ -216,10 +216,6 @@ def handle_choose_cards(engine, effect_player, effect):
         if requirement_buzz_blocked:
             cards_can_choose = [card for card in cards_can_choose if "buzz" not in card or not card["buzz"]]
 
-        # Restrict to only tagged cards.
-        if effect.get("requirement_tags"):
-            cards_can_choose = [card for card in cards_can_choose if any(tag in card.get("tags", []) for tag in effect["requirement_tags"])]
-
         # Restrict to specific colors (post-filter, skip for color_in which handles it as primary requirement).
         if requirement_colors and requirement != "color_in":
             cards_can_choose = [card for card in cards_can_choose if any(color in card.get("colors", []) for color in requirement_colors)]
@@ -275,6 +271,10 @@ def handle_choose_cards(engine, effect_player, effect):
                     cards_can_choose = [card for card in cards_can_choose if any(color in card["colors"] for color in selected_colors)]
                 else:
                     cards_can_choose = []
+
+    # Restrict to only tagged cards (applied independently of requirement).
+    if effect.get("requirement_tags"):
+        cards_can_choose = [card for card in cards_can_choose if any(tag in card.get("tags", []) for tag in effect["requirement_tags"])]
 
     if len(cards_can_choose) < amount_min:
         amount_min = len(cards_can_choose)
