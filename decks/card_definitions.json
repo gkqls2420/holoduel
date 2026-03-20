@@ -16406,31 +16406,7 @@
                 "skill_id": "computer_nara_yoku_shiru_nora",
                 "cost": 2,
                 "limit": "once_per_turn",
-                "conditions": [
-                    {
-                        "condition": "not_used_once_per_turn_effect",
-                        "condition_effect_id": "computer_nara_yoku_shiru_nora"
-                    },
-                    {
-                        "condition": "holopower_at_least",
-                        "amount": 2
-                    }
-                ],
-                "timing": "action",
-                "effect_type": "choose_cards",
-                "from": "deck",
-                "look_at": -1,
-                "destination": "hand",
-                "amount_min": 0,
-                "amount_max": 1,
-                "requirement": "name_contains",
-                "requirement_name_fragment": "computer",
-                "requirement_sub_types": [
-                    "item"
-                ],
-                "reveal_chosen": true,
-                "remaining_cards_action": "shuffle",
-                "pre_effects": [
+                "effects": [
                     {
                         "effect_type": "oshi_activation",
                         "limit": "once_per_turn",
@@ -16445,6 +16421,21 @@
                                 "effect_id": "computer_nara_yoku_shiru_nora"
                             }
                         ]
+                    },
+                    {
+                        "effect_type": "choose_cards",
+                        "from": "deck",
+                        "look_at": -1,
+                        "destination": "hand",
+                        "amount_min": 0,
+                        "amount_max": 1,
+                        "requirement": "name_contains",
+                        "requirement_name_fragment": "computer",
+                        "requirement_sub_types": [
+                            "item"
+                        ],
+                        "reveal_chosen": true,
+                        "remaining_cards_action": "shuffle"
                     }
                 ]
             },
@@ -16452,15 +16443,7 @@
                 "skill_id": "lunaight_shuugou",
                 "cost": 2,
                 "limit": "once_per_game",
-                "conditions": [
-                    {
-                        "condition": "not_used_once_per_game_effect",
-                        "condition_effect_id": "lunaight_shuugou"
-                    },
-                    {
-                        "condition": "holopower_at_least",
-                        "amount": 2
-                    },
+                "action_conditions": [
                     {
                         "condition": "center_is_member_name",
                         "required_member_names": [
@@ -16468,21 +16451,7 @@
                         ]
                     }
                 ],
-                "timing": "action",
-                "effect_type": "choose_cards",
-                "from": "deck",
-                "look_at": -1,
-                "destination": "holomem",
-                "to_limitation": "specific_member_name",
-                "to_limitation_name": "himemori_luna",
-                "amount_min": 1,
-                "amount_max": 4,
-                "requirement": "specific_card",
-                "requirement_card_name": "lunaight",
-                "attach_each_separately": true,
-                "reveal_chosen": true,
-                "remaining_cards_action": "shuffle",
-                "pre_effects": [
+                "effects": [
                     {
                         "effect_type": "oshi_activation",
                         "limit": "once_per_game",
@@ -16497,6 +16466,21 @@
                                 "effect_id": "lunaight_shuugou"
                             }
                         ]
+                    },
+                    {
+                        "effect_type": "choose_cards",
+                        "from": "deck",
+                        "look_at": -1,
+                        "destination": "holomem",
+                        "to_limitation": "specific_member_name",
+                        "to_limitation_name": "himemori_luna",
+                        "amount_min": 1,
+                        "amount_max": 4,
+                        "requirement": "specific_card",
+                        "requirement_card_name": "lunaight",
+                        "attach_each_separately": true,
+                        "reveal_chosen": true,
+                        "remaining_cards_action": "shuffle"
                     }
                 ]
             }
