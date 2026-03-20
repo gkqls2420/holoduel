@@ -237,6 +237,10 @@ class PlayerState:
             if effect["effect_type"] == EffectType.EffectType_ReduceArtCost:
                 if not self.engine.are_conditions_met(self, effect["source_card_id"], effect.get("conditions", [])):
                     continue
+                # Check target art_id restriction
+                target_art_id = effect.get("target_art_id", "")
+                if target_art_id and art.get("art_id", "") != target_art_id:
+                    continue
                 # Check target limitations
                 target_limitation = effect.get("target_limitation", "")
                 if target_limitation == "center":
@@ -273,6 +277,27 @@ class PlayerState:
                 # Apply cost reduction
                 reduction_color = effect.get("color", "")
                 reduction_amount = effect.get("amount", 0)
+                # Dynamic amount: count named attachments on a specified zone
+                per_attachment_name = effect.get("amount_per_attachment_name", "")
+                if per_attachment_name:
+                    per_zone = effect.get("amount_per_attachment_zone", "self")
+                    count_holomems = []
+                    match per_zone:
+                        case "center":
+                            count_holomems = self.center
+                        case "collab":
+                            count_holomems = self.collab
+                        case "self":
+                            src, _, _ = self.find_card(effect["source_card_id"])
+                            count_holomems = [src] if src else []
+                        case _:
+                            count_holomems = self.get_holomem_on_stage()
+                    attachment_count = 0
+                    for h in count_holomems:
+                        for attached in h.get("attached_support", []):
+                            if per_attachment_name in attached.get("card_names", []):
+                                attachment_count += 1
+                    reduction_amount = attachment_count * effect.get("amount_per_unit", 1)
                 if reduction_color in cost_reductions:
                     cost_reductions[reduction_color] += reduction_amount
                 continue

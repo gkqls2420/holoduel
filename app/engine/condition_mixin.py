@@ -130,6 +130,12 @@ class ConditionMixin:
                 return effect_player.can_archive_from_hand(amount_min, condition_source, requirement, requirement_same_tag)
             case Condition.Condition_CanMoveFrontStage:
                 return effect_player.can_move_front_stage()
+            case Condition.Condition_CardsInDeck:
+                amount_min = condition.get("amount_min", -1)
+                amount_max = condition.get("amount_max", -1)
+                if amount_max == -1:
+                    amount_max = UNLIMITED_SIZE
+                return amount_min <= len(effect_player.deck) <= amount_max
             case Condition.Condition_CardsInHand:
                 amount_min = condition.get("amount_min", -1)
                 amount_max = condition.get("amount_max", -1)
@@ -315,7 +321,12 @@ class ConditionMixin:
                 return not effect_player.has_used_card_effect_this_turn(source_card_id)
             case Condition.Condition_HasAttachedCard:
                 required_card_name = condition["required_card_name"]
+                amount_min = condition.get("amount_min", 0)
                 source_card = self.find_card(source_card_id)
+                if amount_min > 0:
+                    count = sum(1 for support in source_card["attached_support"]
+                                if required_card_name in support["card_names"])
+                    return count >= amount_min
                 for support in source_card["attached_support"]:
                     if required_card_name in support["card_names"]:
                         return True
@@ -342,10 +353,16 @@ class ConditionMixin:
                         return True
                 return False
             case Condition.Condition_HasStackedHolomem:
-                amount_min = condition.get("amount_min", 1)
                 amount_max = condition.get("amount_max", 999)
+                default_min = 0 if "amount_max" in condition else 1
+                amount_min = condition.get("amount_min", default_min)
                 card, _, _ = effect_player.find_card(source_card_id)
-                stacked_holomems = [c for c in card["stacked_cards"] if is_card_holomem(c)]
+                if card is None:
+                    holomems = effect_player.get_holomems_with_attachment(source_card_id)
+                    card = holomems[0] if holomems else None
+                if card is None:
+                    return False
+                stacked_holomems = [c for c in card.get("stacked_cards", []) if is_card_holomem(c)]
                 count = len(stacked_holomems)
                 return amount_min <= count <= amount_max
             case Condition.Condition_HolomemInArchive:
@@ -653,12 +670,17 @@ class ConditionMixin:
                 return total_count >= amount_min
             case Condition.Condition_StageHasAttachmentOfName:
                 attachment_name = condition.get("attachment_name", "")
+                inverse = condition.get("inverse", False)
                 holomems = effect_player.get_holomem_on_stage()
+                found = False
                 for holomem in holomems:
                     for attached in holomem.get("attached_support", []):
                         if attachment_name in attached.get("card_names", []):
-                            return True
-                return False
+                            found = True
+                            break
+                    if found:
+                        break
+                return not found if inverse else found
             case Condition.Condition_TargetColor:
                 if not self.performance_target_card:
                     return False
@@ -914,6 +936,15 @@ class ConditionMixin:
                 return self.active_player_id == effect_player.player_id
             case Condition.Condition_UsedSpOshiSkillThisTurn:
                 return effect_player.sp_oshi_skill_used_this_turn
+            case Condition.Condition_ArchivingAttachmentName:
+                if not self.archiving_attachment_card:
+                    return False
+                required_name = condition["required_card_name"]
+                return required_name in self.archiving_attachment_card.get("card_names", [])
+            case Condition.Condition_ArchivingFromCenter:
+                if not self.archiving_attachment_holomem:
+                    return False
+                return self.archiving_attachment_holomem in effect_player.center
             case _:
                 raise NotImplementedError(f"Unimplemented condition: {condition['condition']}")
         return False

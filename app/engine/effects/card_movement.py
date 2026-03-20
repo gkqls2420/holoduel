@@ -210,7 +210,74 @@ def handle_archive_this_attachment(engine, effect_player, effect):
     """Returns True if continuation was passed on, False otherwise."""
     effect_player_id = effect_player.player_id
     attachment_id = effect["source_card_id"]
+
+    attachment_card = engine.find_card(attachment_id)
+    attachment_holomem = None
+    if attachment_card:
+        for holomem in effect_player.get_holomem_on_stage():
+            for attached in holomem.get("attached_support", []):
+                if attached["game_card_id"] == attachment_id:
+                    attachment_holomem = holomem
+                    break
+            if attachment_holomem:
+                break
+
+    engine.archiving_attachment_card = attachment_card
+    engine.archiving_attachment_holomem = attachment_holomem
+    engine.archive_attachment_replaced = False
+
+    before_effects = effect_player.get_effects_at_timing("before_archive_attachment", attachment_card, "") if attachment_card else []
+    if before_effects:
+        def archive_continuation():
+            if not engine.archive_attachment_replaced:
+                effect_player.archive_attached_cards([attachment_id])
+            engine.archiving_attachment_card = None
+            engine.archiving_attachment_holomem = None
+        engine.begin_resolving_effects(before_effects, archive_continuation)
+        return True
+
     effect_player.archive_attached_cards([attachment_id])
+    engine.archiving_attachment_card = None
+    engine.archiving_attachment_holomem = None
+    return False
+
+
+def handle_replace_archive_with_move(engine, effect_player, effect):
+    """Replaces an about-to-be-archived attachment by moving it to a different holomem instead."""
+    if not engine.archiving_attachment_card:
+        return False
+    attachment_id = engine.archiving_attachment_card["game_card_id"]
+    to_name = effect.get("to_limitation_name", "")
+    to_zone = effect.get("to_zone", "backstage")
+
+    target_holomems = []
+    match to_zone:
+        case "backstage":
+            target_holomems = effect_player.backstage
+        case "center":
+            target_holomems = effect_player.center
+        case _:
+            target_holomems = effect_player.get_holomem_on_stage()
+    if to_name:
+        target_holomems = [h for h in target_holomems if to_name in h.get("card_names", [])]
+    if not target_holomems:
+        return False
+
+    attachment_card, previous_holder_id = effect_player.find_and_remove_attached(attachment_id)
+    if not attachment_card:
+        return False
+
+    target = target_holomems[0]
+    target["attached_support"].append(attachment_card)
+    move_event = {
+        "event_type": EventType.EventType_MoveAttachedCard,
+        "owning_player_id": effect_player.player_id,
+        "from_holomem_id": previous_holder_id,
+        "to_holomem_id": target["game_card_id"],
+        "attached_id": attachment_id,
+    }
+    engine.broadcast_event(move_event)
+    engine.archive_attachment_replaced = True
     return False
 
 
@@ -431,6 +498,13 @@ def handle_draw(engine, effect_player, effect):
     if amount_source == "last_chosen_count_divided_by":
         divisor = effect.get("divisor", 2)
         amount = len(engine.last_chosen_cards) // divisor
+    elif amount_source == "unique_tag_holomem_count":
+        tag = effect.get("has_tag", "")
+        holomems = [h for h in effect_player.get_holomem_on_stage() if tag in h.get("tags", [])]
+        seen_names = set()
+        for h in holomems:
+            seen_names.add(tuple(h["card_names"]))
+        amount = len(seen_names)
     else:
         amount = effect.get("amount", len(effect_player.hand))
         if str(amount) == "last_card_count":
@@ -691,6 +765,14 @@ def handle_send_cheer(engine, effect_player, effect):
         amount_min = effect.get("amount", 1)
     if amount_max is None:
         amount_max = amount_min
+
+    # Dynamic amount from last_card_count (choose_cards chain)
+    if effect.get("amount_from_last_card_count", False):
+        computed_amount = engine.last_card_count
+        if computed_amount <= 0:
+            return False
+        amount_min = computed_amount
+        amount_max = computed_amount
 
     # Dynamic amount from overflow damage (on_kill timing)
     if effect.get("amount_from_overflow", False):
@@ -1252,6 +1334,7 @@ CARD_MOVEMENT_HANDLERS = {
     EffectType.EffectType_ArchiveHand: handle_archive_hand,
     EffectType.EffectType_ArchiveRevealedCards: handle_archive_revealed_cards,
     EffectType.EffectType_ArchiveThisAttachment: handle_archive_this_attachment,
+    EffectType.EffectType_ReplaceArchiveWithMove: handle_replace_archive_with_move,
     EffectType.EffectType_ArchiveAttachmentFromStageByName: handle_archive_attachment_from_stage_by_name,
     EffectType.EffectType_ReturnThisAttachmentToHand: handle_return_this_attachment_to_hand,
     EffectType.EffectType_ReturnThisAttachmentToDeckBottom: handle_return_this_attachment_to_deck_bottom,

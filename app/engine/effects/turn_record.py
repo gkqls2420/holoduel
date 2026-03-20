@@ -78,6 +78,12 @@ def handle_add_turn_effect_for_holomem(engine, effect_player, effect):
             any(tag in s.get("tags", []) for tag in req_tags)
             for s in h.get("attached_support", [])
         )]
+    if "limitation_attachment_sub_types" in effect:
+        req_sub_types = effect["limitation_attachment_sub_types"]
+        holomem_targets = [h for h in holomem_targets if any(
+            s.get("sub_type", "") in req_sub_types
+            for s in h.get("attached_support", [])
+        )]
     if "limitation_bloom_levels" in effect:
         allowed_levels = effect["limitation_bloom_levels"]
         holomem_targets = [h for h in holomem_targets if h.get("bloom_level", 0) in allowed_levels]

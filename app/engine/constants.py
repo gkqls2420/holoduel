@@ -111,6 +111,7 @@ class EffectType:
     EffectType_SetDealDamageToCenterAndCollab = "set_deal_damage_to_center_and_collab"
     EffectType_ReduceDamage = "reduce_damage"
     EffectType_ReduceRequiredArchiveCount = "reduce_required_archive_count"
+    EffectType_ReplaceArchiveWithMove = "replace_archive_with_move"
     EffectType_RepeatArt = "repeat_art"
     EffectType_RestoreHp = "restore_hp"
     EffectType_RestoreHp_Internal = "restore_hp_INTERNAL"
@@ -165,6 +166,7 @@ class Condition:
     Condition_BloomTargetIsDebut = "bloom_target_is_debut"
     Condition_CanArchiveFromHand = "can_archive_from_hand"
     Condition_CanMoveFrontStage = "can_move_front_stage"
+    Condition_CardsInDeck = "cards_in_deck"
     Condition_CardsInHand = "cards_in_hand"
     Condition_CardTypeInHand = "card_type_in_hand"
     Condition_CenterHasDamage = "center_has_damage"
@@ -299,6 +301,8 @@ class Condition:
     Condition_MyTurn = "my_turn"
     Condition_UsedSpOshiSkillThisTurn = "used_sp_oshi_skill_this_turn"
     Condition_OpponentHasCollab = "opponent_has_collab"
+    Condition_ArchivingAttachmentName = "archiving_attachment_name"
+    Condition_ArchivingFromCenter = "archiving_from_center"
 
 
 class TurnEffectType:

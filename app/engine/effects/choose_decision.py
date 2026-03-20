@@ -78,6 +78,7 @@ def handle_choose_cards(engine, effect_player, effect):
     requirement_colors = effect.get("requirement_colors", [])
     requirement_sub_types = effect.get("requirement_sub_types", [])
     requirement_same_name_as_last_choice = effect.get("requirement_same_name_as_last_choice", False)
+    requirement_name_fragment = effect.get("requirement_name_fragment", "")
     # two_tone_color_pc extra requirements
     requirement_monocolor_only = effect.get("requirement_monocolor_only", False)
     requirement_different_colors = effect.get("requirement_different_colors", False)
@@ -101,6 +102,7 @@ def handle_choose_cards(engine, effect_player, effect):
         "requirement_colors": requirement_colors,
         "requirement_sub_types": requirement_sub_types,
         "requirement_same_name_as_last_choice": requirement_same_name_as_last_choice,
+        "requirement_name_fragment": requirement_name_fragment,
         "requirement_monocolor_only": requirement_monocolor_only,
         "requirement_different_colors": requirement_different_colors,
         "requirement_match_selected_holomem_color": requirement_match_selected_holomem_color
@@ -190,6 +192,9 @@ def handle_choose_cards(engine, effect_player, effect):
                 elif requirement_card_name:
                     cards_can_choose = [card for card in cards_can_choose
                         if "card_names" in card and requirement_card_name in card["card_names"]]
+            case "name_contains":
+                cards_can_choose = [card for card in cards_can_choose
+                    if "card_names" in card and any(requirement_name_fragment in name for name in card["card_names"])]
             case "support":
                 # Only include cards that are supports.
                 cards_can_choose = [card for card in cards_can_choose if card["card_type"] == "support"]
@@ -203,6 +208,9 @@ def handle_choose_cards(engine, effect_player, effect):
                 cards_can_choose = [card for card in cards_can_choose
                     if (card["card_type"] == "holomem_debut" and any(tag in card.get("tags", []) for tag in debut_tags))
                     or (card["card_type"] == "support" and any(tag in card.get("tags", []) for tag in support_tags))]
+            case "has_collab_effect":
+                cards_can_choose = [card for card in cards_can_choose
+                    if is_card_holomem(card) and card.get("collab_effects", [])]
 
         # Exclude LIMITED if asked.
         if requirement_block_limited:

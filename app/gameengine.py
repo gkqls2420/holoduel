@@ -50,6 +50,9 @@ class GameEngine(GameFlowMixin, TurnMixin, CombatMixin, ConditionMixin, EffectMi
         self.last_chosen_cards = []
         self.stage_selected_holomems = []
         self.last_card_count = 0
+        self.archiving_attachment_card = None
+        self.archiving_attachment_holomem = None
+        self.archive_attachment_replaced = False
         self.next_life_loss_modifier = 0
         self.current_clock_player_id = None
         self.clock_accumulation_start_time = 0
